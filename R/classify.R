@@ -9,9 +9,13 @@ dd_pattern <- "[1-4](st|nd|rd|th)\\s+and\\s+.*\\bat\\b"
 #' Snap verb pattern
 #'
 #' A play is only a `play` if its description contains one of these verbs.
-#' Per CLAUDE.md: rush, pass, sacked, punt, field goal, kneel.
+#' Per CLAUDE.md: rush, pass, sacked, punt, field goal, kneel. `pass` requires
+#' one of complete/incomplete/intercepted/attempt right after it -- a bare
+#' `\\bpass\\b` also matches the word "Pass" inside a penalty name (e.g.
+#' "PENALTY CMU Pass Interference ... NO PLAY."), which wrongly typed three
+#' dead-ball penalty rows as `play` instead of `penalty_no_play`.
 #' @keywords internal
-verb_pattern <- "\\b(rush|pass|sacked|punt|field goal|kneel)\\b"
+verb_pattern <- "\\b(rush|pass (complete|incomplete|intercepted|attempt)|sacked|punt|field goal|kneel)\\b"
 
 #' Classify each play-by-play row into a type
 #'
