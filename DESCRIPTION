@@ -2,7 +2,7 @@ Package: d3ballR
 Title: Division III College Football Play-by-Play Scraper
 Version: 0.0.0.9000
 Authors@R:
-    person("Sam", "Sclaver", email = "you@example.com", role = c("aut", "cre"))
+    person("Sam", "Sclaver", email = "sclaversam@gmail.com", role = c("aut", "cre"))
 Description: Scrapes and parses NCAA Division III college football play-by-play
     data from d3football.com into tidy, per-play tables. Fills a gap in the
     existing ecosystem (cfbfastR and CollegeFootballData cover only Division I),
