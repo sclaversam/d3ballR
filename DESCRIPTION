@@ -1,0 +1,23 @@
+Package: d3pbp
+Title: Division III College Football Play-by-Play Scraper
+Version: 0.0.0.9000
+Authors@R:
+    person("Sam", "Sclaver", email = "you@example.com", role = c("aut", "cre"))
+Description: Scrapes and parses NCAA Division III college football play-by-play
+    data from d3football.com into tidy, per-play tables. Fills a gap in the
+    existing ecosystem (cfbfastR and CollegeFootballData cover only Division I),
+    with initial focus on Centennial Conference teams.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports:
+    dplyr,
+    httr2,
+    rvest,
+    stringr,
+    tibble,
+    tidyr
+Suggests:
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

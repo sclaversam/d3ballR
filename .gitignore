@@ -1,0 +1,17 @@
+# R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# OS / editor
+.DS_Store
+.vscode/
+
+# Scraped / cached data (keep raw inputs out of git; adjust as needed)
+data-raw/cache/
+*.csv.gz
+
+# Rendered notebooks
+analysis/*.html

@@ -1,0 +1,232 @@
+---
+title: "cfbfastR NCAA Football Coverage Audit: DII and DIII"
+subtitle: "Tartan D3 Football Scraper -- Data Availability Checks"
+author: "Sam"
+date: "September 7, 2026"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    theme: readable
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Purpose
+
+Before building a scraper, this document establishes whether the existing
+`cfbfastR` ecosystem already provides NCAA Division II or Division III football
+data. `cfbfastR` version 3.x added a `load_ncaa_mfb_*()` loader family sourced
+from stats.ncaa.org, documented as covering "FCS and lower divisions." These
+checks test that claim directly against the released data.
+
+The verdicts below are computed from the data, not asserted, so this audit
+stays valid if coverage changes in a future release. Re-run to re-check.
+
+NCAA football division codes on stats.ncaa.org:
+
+| Code | Division            |
+|-----:|:--------------------|
+| 11   | FBS (Division I-A)  |
+| 12   | FCS (Division I-AA) |
+| 2    | Division II         |
+| 3    | Division III        |
+
+## Setup
+
+```{r libraries}
+# install.packages("cfbfastR")
+# or: remotes::install_github("sportsdataverse/cfbfastR")
+stopifnot(requireNamespace("cfbfastR", quietly = TRUE))
+
+library(cfbfastR)
+library(dplyr)
+library(tidyr)
+
+# Normalize the division field to a clean integer-as-character key,
+# robust to whether the loader returns it as int, double, or string.
+norm_div <- function(x) as.character(as.integer(round(as.numeric(x))))
+div_levels <- c("11", "12", "2", "3")
+div_labels <- c("11" = "FBS", "12" = "FCS", "2" = "DII", "3" = "DIII")
+```
+
+## 1. Available NCAA football loaders
+
+Confirm which loaders the installed version exposes before calling them. If a
+function name below differs from what later chunks use, the package API has
+shifted and the calls need updating.
+
+```{r loaders}
+ls("package:cfbfastR", pattern = "ncaa_mfb")
+```
+
+## 2. Division codes present in the team universe
+
+Load the team universe once (every published season) and reuse it throughout.
+The teams dataset is the ceiling on coverage: no game, drive, or play can exist
+for a team absent here. First, the raw division codes actually present:
+
+```{r teams-load}
+teams <- load_ncaa_mfb_teams(seasons = TRUE)
+
+sort(unique(teams$division))
+```
+
+The codes are not self-documenting, so anchor their meaning to teams whose
+division is already known. Sampling teams under each code from the most recent
+season makes the mapping obvious (recognizable FBS vs FCS programs).
+
+```{r division-sample}
+teams |>
+  filter(season == max(season)) |>
+  group_by(division) |>
+  slice_head(n = 8) |>
+  select(division, team_name) |>
+  print(n = Inf)
+```
+
+## 3. Team universe by division, every published season
+
+Counting by division across all seasons gives the whole-picture view. Columns
+are forced to include all four divisions so any zero is visible rather than
+silently dropped.
+
+```{r teams-coverage}
+coverage <- teams |>
+  mutate(division = norm_div(division)) |>
+  filter(division %in% div_levels) |>
+  count(season, division) |>
+  complete(season, division = div_levels, fill = list(n = 0)) |>
+  mutate(division = factor(div_labels[division], levels = unname(div_labels))) |>
+  pivot_wider(names_from = division, values_from = n, values_fill = 0) |>
+  arrange(season)
+
+# Team count by division and season
+print(coverage, n = Inf)
+```
+
+## 4. Verdict: does DII or DIII exist at all?
+
+```{r verdict}
+present_codes <- teams |> distinct(division) |> pull(division) |> norm_div()
+
+verdict <- tibble(
+  division      = c("DII", "DIII"),
+  code          = c("2", "3"),
+  team_seasons  = c(
+    sum(norm_div(teams$division) == "2"),
+    sum(norm_div(teams$division) == "3")
+  ),
+  present       = c("2", "3") %in% present_codes
+)
+
+# DII / DIII presence in the cfbfastR team universe
+print(verdict)
+
+has_d2 <- "2" %in% present_codes
+has_d3 <- "3" %in% present_codes
+```
+
+**DII present in cfbfastR:** `r has_d2`  
+**DIII present in cfbfastR:** `r has_d3`
+
+```{r verdict-prose, echo=FALSE, results='asis'}
+if (!has_d2 && !has_d3) {
+  cat("Neither Division II nor Division III appears in any published season. ",
+      "cfbfastR covers Division I only (FBS and FCS). Both lower divisions ",
+      "are an open gap.", sep = "")
+} else {
+  cat("At least one lower division is present. Review the coverage table ",
+      "above for completeness before assuming the gap is closed.", sep = "")
+}
+```
+
+## 5. Unexpected division codes
+
+Guard against the four-code assumption. Any code outside {11, 12, 2, 3} would
+surface here and warrant investigation.
+
+```{r unexpected-codes}
+unexpected <- teams |>
+  mutate(division = norm_div(division)) |>
+  filter(!division %in% div_levels) |>
+  count(division, name = "team_seasons")
+
+print(unexpected)
+```
+
+## 6. Game-level confirmation
+
+The team-level result should hold at the game level, since the schedule dataset
+is keyed on the same team universe. Named DII and DIII programs should return
+zero rows in the most recent season's schedule.
+
+```{r schedule-check}
+audit_season <- max(teams$season)
+
+sched <- load_ncaa_mfb_schedule(seasons = audit_season)
+
+d3_programs <- c("Carnegie Mellon", "Johns Hopkins", "Mount Union",
+                 "North Central (IL)")
+d2_programs <- c("Ferris State", "Grand Valley St.", "Colorado Mines")
+
+game_check <- tibble(
+  division = c("DIII", "DII"),
+  programs_tested = c(length(d3_programs), length(d2_programs)),
+  games_found = c(
+    sched |> filter(team_name %in% d3_programs |
+                      opponent %in% d3_programs) |> nrow(),
+    sched |> filter(team_name %in% d2_programs |
+                      opponent %in% d2_programs) |> nrow()
+  )
+)
+
+# Named lower-division programs found in the most recent schedule
+cat("Schedule season audited:", audit_season, "\n")
+print(game_check)
+```
+
+Note: a zero here is the expected result given a Division I-only universe, not
+a name-matching failure. Program name strings on stats.ncaa.org may differ from
+those above, but any nonzero count would still be meaningful.
+
+## 7. Optional: play-by-play level
+
+Not run by default, since the play-by-play dataset is large and the team
+universe already bounds coverage. Enable only to confirm directly.
+
+```{r pbp-check, eval=FALSE}
+pbp <- load_ncaa_mfb_pbp(seasons = max(teams$season))
+# Inspect whatever division/team identifiers the pbp schema carries and
+# confirm no DII/DIII teams appear.
+glimpse(pbp)
+```
+
+## 8. Summary
+
+```{r summary, echo=FALSE, results='asis'}
+seasons_span <- paste0(min(teams$season), " to ", max(teams$season))
+cat(sprintf(
+  paste0("- Seasons audited: %s\n",
+         "- Divisions present: %s\n",
+         "- DII available in cfbfastR: **%s**\n",
+         "- DIII available in cfbfastR: **%s**\n"),
+  seasons_span,
+  paste(sort(unique(norm_div(teams$division))), collapse = ", "),
+  has_d2, has_d3
+))
+```
+
+If DII and DIII both read `FALSE`, the scraper project targets a genuine,
+complete gap in the SportsDataverse ecosystem, and stats.ncaa.org (which does
+carry both divisions under codes 2 and 3) is the source to build against.
+
+## Reproducibility
+
+```{r session}
+sessionInfo()
+```
