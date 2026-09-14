@@ -1,5 +1,4 @@
 # Carnegie Mellon 2025 game boxscore URLs (no ?view= suffix).
-# Fill in the remaining 10 from CMU's d3football schedule:
 #   https://www.d3football.com/teams/Carnegie_Mellon/2025/index
 # Carnegie Mellon 2025 game boxscore URLs (no ?view= suffix).
 cmu_2025_games <- c(
