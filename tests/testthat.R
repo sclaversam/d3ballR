@@ -1,4 +1,4 @@
 library(testthat)
-library(d3pbp)
+library(d3ballR)
 
-test_check("d3pbp")
+test_check("d3ballR")

@@ -1,4 +1,4 @@
-# d3pbp
+# d3ballR
 
 Scrape and parse **NCAA Division III** college football play-by-play data from
 d3football.com into tidy, per-play tables.
