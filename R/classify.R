@@ -60,7 +60,7 @@ classify_plays <- function(plays) {
 
   row_type <- dplyr::case_when(
     is_dd & has_verb ~ "play",
-    is_dd & stringr::str_detect(plays$play, stringr::regex("penalty", ignore_case = TRUE)) ~ "penalty_no_play",
+    is_dd & !has_verb & stringr::str_detect(plays$play, stringr::regex("penalty", ignore_case = TRUE)) ~ "penalty_no_play",
     stringr::str_detect(plays$play, stringr::regex("drive start", ignore_case = TRUE)) ~ "drive_start",
     same & stringr::str_detect(plays$play, " at \\d{1,2}:\\d{2}$") ~ "drive_header",
     same & stringr::str_detect(plays$play, "^\\d+ plays, -?\\d+ yards, \\d{2}:\\d{2} elapsed$") ~ "drive_footer",
@@ -68,6 +68,12 @@ classify_plays <- function(plays) {
       stringr::str_detect(plays$play, stringr::regex("^Start of|^End of (game|half)", ignore_case = TRUE)) ~ "quarter",
     blank_sit & stringr::str_detect(plays$play, stringr::regex("kickoff", ignore_case = TRUE)) ~ "kickoff",
     blank_sit & stringr::str_detect(plays$play, stringr::regex("kick attempt", ignore_case = TRUE)) ~ "extra_point",
+    # Validated on real data: 9 two-point tries across games 3, 6, 7, 8, 9, 11
+    # of the 11-game 2025 sweep (none in game 1, which is what CLAUDE.md's
+    # original "unvalidated" note referred to). Always blank situation, like
+    # extra points, but phrased "pass attempt"/"rush attempt" rather than
+    # "kick attempt", which is what keeps this rule from colliding with
+    # extra_point above.
     blank_sit & stringr::str_detect(plays$play, stringr::regex("pass attempt|rush attempt", ignore_case = TRUE)) ~ "two_point",
     blank_sit & stringr::str_detect(plays$play, "^[A-Za-z].*\\d+, .*\\d+$") ~ "score",
     stringr::str_detect(plays$play, stringr::regex("^Timeout", ignore_case = TRUE)) ~ "timeout",
