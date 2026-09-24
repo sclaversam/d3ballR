@@ -1,45 +1,72 @@
 # `build_pbp()` output schema
 
 Data dictionary for the per-game tables in `analysis/pbp/{game_id}.csv`,
-produced by `R/build_pbp.R`. One row per event CMU logs (see `row_type`
-below); this is d3ballR's own schema, not CMU's exact column names/values --
-that mapping comes later (see `analysis/rowtype_to_cmu_category.csv` for the
-row_type/play_type -> CMU play_category design notes).
+produced by `R/build_pbp.R`. One row per kept event (see `row_type`). The
+column set and order follow the 36-column cfbfastR-aligned target in
+`analysis/pbp_schema_and_build_plan.md`; the order lives in code as
+`pbp_columns`. Team-agnostic: no CMU-specific `opponent` column (the
+opponent name is still reported in `analysis/pbp_row_counts.csv`).
 
-Types below are the in-memory R type built by `build_pbp()`. A couple round-
-trip through `write.csv()`/`read.csv()` slightly differently than their
-in-memory type -- noted where that applies.
+Status: columns marked **T3** are placeholders, NA on every row, until Task 3
+populates them. They're NA rather than FALSE so an unfilled flag can't be read
+as a real "no".
 
-| column | type | definition | NA / convention notes |
-|---|---|---|---|
-| `game_id` | character | Boxscore id (e.g. `"20250906_e064"`), constant per game. | Never NA. |
-| `opponent` | character | CMU's opponent for the game, read from the boxscore's line-score table header, constant per game. | Never NA. |
-| `play_index` | integer | Sequential 1..N over the kept rows (the CMU-logged events) for this game. | Never NA. |
-| `quarter` | character | Quarter number, forward-filled from the quarter-marker rows before they're dropped. | Never NA. Stored as character (not integer) so a future `"OT"` game can be represented without a type change; every 2025 game is regulation-only (values `"1"`-`"4"`), so it currently round-trips through the CSV as integer on read-back. |
-| `possession` | character | The team with the ball on this row, forward-filled from `drive_header`/`drive_start` rows before they're dropped. | Exactly one NA per game: the opening kickoff, which occurs before any drive has established possession -- there's nothing earlier to forward-fill from. Value is whichever team-name spelling the source drive row used (e.g. `"UChicago"` from a `drive_start` row vs. `"Chicago"` from a `drive_header` row) -- not yet normalized against `opponent`. |
-| `row_type` | character | The classifier label from `R/classify.R`, carried through so the table can be sliced/reconciled by event type later. | Kept rows are exactly the five CMU logs: `play`, `kickoff`, `extra_point`, `two_point`, `penalty_no_play`. |
-| `down` | integer | Down (1-4), parsed from `situation`. | NA for `kickoff`/`extra_point`/`two_point` (no down applies to those events, matching how CMU logs them). Non-NA for `play` and `penalty_no_play`, which always carry a real down-and-distance. |
-| `distance` | integer | Yards to go, parsed from `situation`. | NA wherever `down` is NA. On a literal "and Goal" situation, `distance` is the yards to the goal line. |
-| `Goal_To_Go` | logical | TRUE when the line to gain is the goal line. d3 writes this two ways: literally ("1st and Goal at CMU06") and as a number equal to the distance to the goal ("1st and 4 at UC 4"). Both are TRUE: the text says "Goal", OR `distance` equals the yards to the goal line (computed from the yardline token and which side is the offense's own; see `infer_own_side()`). | NA wherever `down` is NA (no situation to read). |
-| `yard_side` | character | The team token on the yardline (e.g. `"CMU"`, `"UC"`), parsed from `situation`. | NA at midfield (`"at 50"`, no team letters) and wherever `down` is NA. Not yet seen at midfield in the 2025 data, but the parser handles it. |
-| `yard_num` | integer | The yard number off the yardline, parsed from `situation`. Handles both `"CMU35"` (no space) and `"UC 25"` (space) spacings. | NA wherever `down` is NA. |
-| `play_type` | character | For `row_type == "play"`: the parsed play category from `R/parse_play_type.R` (`rush`, `pass_complete`, `pass_incomplete`, `pass_intercepted`, `sack`, `punt_no_return`, `punt_with_return`, `punt_blocked`, `field_goal_good`, `field_goal_missed`, `field_goal_blocked`, `kneel`). For the other four kept row types, `play_type` is just `row_type` itself (`kickoff`, `extra_point`, `two_point`, `penalty_no_play`). | Never NA within the kept row set. |
-| `yards_gained` | integer | Play yards only, penalty enforcement yardage excluded. | Currently populated only for `play_type` in `rush`/`pass_complete`/`sack`/`kneel` (loose gain/loss regex on the description) and `pass_incomplete` (always 0). NA for `kickoff`/`extra_point`/`two_point`/`penalty_no_play` (no snap, or not a rush/pass yardage stat) and for `pass_intercepted`/punts/field goals within `play`, where what "yards_gained" should mean isn't settled yet -- deliberately loose pending real yardage validation. |
-| `situation` | character | Raw down-and-distance text, verbatim (e.g. `"1st and 10 at CMU35"`). | Empty string `""` for `kickoff`/`extra_point`/`two_point`, which have no situation line. |
-| `play` | character | Raw play description text, verbatim. | Never NA/empty within the kept row set. |
+| # | column | type | definition | NA / convention notes |
+|---|---|---|---|---|
+| 1 | `game_id` | character | Boxscore id (e.g. `"20250906_e064"`), constant per game. | Never NA. |
+| 2 | `play_index` | integer | Sequential 1..N over the kept rows for this game. | Never NA. |
+| 3 | `drive_play_number` | integer | Position of the row within its `drive_id` (1, 2, ...), counting every kept row, including PATs and the kickoff that follows a score. | NA where `drive_id` is NA (the opening kickoff). |
+| 4 | `period` | integer | Quarter, forward-filled from the quarter-marker rows before they're dropped. | Never NA. All 2025 games are regulation (1-4); OT has not been seen, so it isn't handled yet. |
+| 5 | `half` | integer | 1 for period 1-2, 2 for period 3-4. | NA for any other period (none in 2025). |
+| 6-8 | `clock_known`, `clock_prev_known`, `clock_next_known` | character | **T3.** Stated game clock and the bracket around it. | All NA for now. |
+| 9 | `pos_team` | character | Team with the ball, forward-filled from `drive_header`/`drive_start` rows before they're dropped. | One NA per game: the opening kickoff, which comes before any drive. Uses the drive rows' spelling (e.g. `"UChicago"`, `"Wis.-La Crosse"`), which can differ from the line-score name. On kickoffs and PATs this is the scoring/kicking team (the row sits before the next drive header). |
+| 10 | `def_pos_team` | character | The other of the game's two `pos_team` values. | NA where `pos_team` is NA. |
+| 11 | `down` | integer | Down (1-4), parsed from `situation`. | NA for `kickoff`/`extra_point`/`two_point`. |
+| 12 | `distance` | integer | Yards to go, parsed from `situation`. | NA wherever `down` is NA. On a literal "and Goal" situation, it's `yards_to_goal`. |
+| 13 | `yards_to_goal` | integer | Distance to the opponent's end zone (0-100): own 25 -> 75, opponent 25 -> 25, bare "at 50" -> 50. Computed from the yardline token plus which token is `pos_team`'s own side. | NA wherever `down` is NA. The page never says which token ("UC", "CMU") belongs to which team name, so `infer_own_side()` infers it per game from how the yard number moves on consecutive snaps (see below). |
+| 14 | `Goal_To_Go` | logical | TRUE when the line to gain is the goal line. d3 writes this two ways: literally ("1st and Goal at CMU06") and as a number equal to the distance to the goal ("1st and 4 at UC 4"). TRUE if the text says "Goal" OR `distance == yards_to_goal`. | NA wherever `down` is NA. |
+| 15 | `play_type` | character | For `row_type == "play"`, the parsed category from `R/parse_play_type.R` (`rush`, `pass_complete`, `pass_incomplete`, `pass_intercepted`, `sack`, `punt_no_return`, `punt_with_return`, `punt_blocked`, `field_goal_good`, `field_goal_missed`, `field_goal_blocked`, `kneel`). For other kept rows, `row_type` itself. | Never NA. |
+| 16 | `yards_gained` | integer | Play yards only, penalty enforcement excluded. | Still the loose pre-Task-3 parse: set only for `rush`/`pass_complete`/`sack`/`kneel` (regex on the description) and `pass_incomplete` (0). Task 3b extends it and applies the no-play rule. |
+| 17-26 | `rush`, `pass`, `completion`, `sack`, `int`, `fumble_vec`, `turnover`, `downs_turnover`, `touchdown`, `safety` | logical | **T3a.** Outcome flags. | All NA for now. |
+| 27-32 | `penalty_flag`, `penalty_yards_signed` (integer), `penalized_team` (character), `penalty_no_play`, `penalty_declined`, `penalty_text` (character) | mixed | **T3b.** Penalty columns. | All NA for now. |
+| 33 | `situation` | character | Raw down-and-distance text, verbatim (audit). | Empty for `kickoff`/`extra_point`/`two_point`. |
+| 34 | `play_text` | character | Raw play description, verbatim (audit). | Never empty. |
+| 35 | `row_type` | character | Classifier label from `R/classify.R` (audit): `play`, `kickoff`, `extra_point`, `two_point`, `penalty_no_play`. | Never NA. |
+| 36 | `drive_id` | integer | Sequential drive number within the game. | NA only on the opening kickoff. See below. |
 
-## Not built yet
+## How `drive_id` is assigned
 
-Per CLAUDE.md's ordering, these are intentionally out of scope for this
-table as it stands:
+d3's drive markers are noisy: a drive normally opens with a `drive_header`
+("TEAM at MM:SS") plus a `drive_start` ("TEAM drive start at MM:SS."), but the
+pair isn't always complete, and `drive_start` is sometimes repeated mid-drive
+(after a spot correction or penalty). The reliable boundary is the
+`drive_footer` ("N plays, N yards, MM:SS elapsed") that closes each drive. A
+new drive begins at the first drive marker after a footer. Later markers before
+the next footer restate the same drive.
 
-- Signed `field_pos` (negative on the offense's own side, positive on the
-  opponent's side) -- `yard_side`/`yard_num` give the raw yardline, but
-  computing the signed version requires reconciling `yard_side` against
-  `possession`, not yet done.
-- Penalty detail columns (`has_penalty`, `penalty_yards`, `penalty_text`) --
-  needed to explain the row-count and yardage gap CMU's data has, since CMU
-  drops penalty rows entirely.
-- CMU's exact column names/values (`side_of_ball`, `play_category`,
-  `play_result`, etc.) -- see `analysis/rowtype_to_cmu_category.csv` for the
-  mapping design notes; not applied to this table yet.
+Rows between a footer and the next marker, usually the kickoff after a score,
+keep the previous drive's id, the same way they keep its `pos_team`. This
+follows the source layout. cfbfastR/CFBD attach a kickoff to the receiving
+team's drive instead, so revisit this if that matters downstream.
+
+StatCrew also opens a new "drive" for a re-kick after a penalty on a punt (a
+0-play footer, e.g. Berry game) and after some penalty-on-FG sequences. We
+follow the source, so those count as separate drives.
+
+## How `yards_to_goal` knows which side is whose
+
+`infer_own_side()` looks at consecutive kept rows where the same `pos_team` is
+on the same yardline token. On its own side the yard number rises as the offense
+gains ground; on the opponent's side it falls. Gains far outnumber losses, so a
+vote over the whole game is decisive. The function stops with an error if a game
+doesn't have exactly two teams and two tokens, or if the vote is close. For the
+2025 CMU games it maps CMU -> `CMU` in all 11, and each opponent to its own
+token (UChicago -> `UC`, Ursinus -> `UCB`, F&M -> `F&M`, ...).
+
+## Known source quirk
+
+A penalty before an extra point (e.g. CMU delay of game on a PAT) shows as a
+`penalty_no_play` row with a placeholder situation like "1st and 10 at JHU3".
+So `distance` (10) exceeds `yards_to_goal` (3). Two such rows in 2025 (JHU
+play 12, Dickinson play 176). `Goal_To_Go` is FALSE there. They're really PAT
+penalties, not scrimmage downs.

@@ -1,155 +1,155 @@
-"game_id","opponent","play_index","quarter","possession","row_type","down","distance","Goal_To_Go","yard_side","yard_num","play_type","yards_gained","situation","play"
-"20250920_l58t","Berry",1,"1",,"kickoff",,,,,,"kickoff",,"","Noah Godhard kickoff 65 yards to the BERRY00, touchback."
-"20250920_l58t","Berry",2,"1","Berry","play",1,10,FALSE,"BERRY",25,"rush",2,"1st and 10 at BERRY25","Josh Rogers rush for 2 yards to the BERRY27 (Leighton Tarke; Victor Ruhland)."
-"20250920_l58t","Berry",3,"1","Berry","play",2,8,FALSE,"BERRY",27,"pass_complete",5,"2nd and 8 at BERRY27","Andrew Hunter pass complete to Bryce Herring for 5 yards to the BERRY32 (Victor Ruhland)."
-"20250920_l58t","Berry",4,"1","Berry","play",3,3,FALSE,"BERRY",32,"pass_complete",23,"3rd and 3 at BERRY32","Andrew Hunter pass complete to Colby Sikes for 23 yards to the CMU45 (Jacob Franze)."
-"20250920_l58t","Berry",5,"1","Berry","play",1,10,FALSE,"CMU",45,"rush",9,"1st and 10 at CMU45","Josh Rogers rush for 9 yards to the CMU36 (Jacob Franze)."
-"20250920_l58t","Berry",6,"1","Berry","play",2,1,FALSE,"CMU",36,"pass_complete",1,"2nd and 1 at CMU36","Andrew Hunter pass complete to Colby Sikes for 1 yard to the CMU35 (Connor Warren)."
-"20250920_l58t","Berry",7,"1","Berry","play",1,10,FALSE,"CMU",35,"pass_complete",1,"1st and 10 at CMU35","Andrew Hunter pass complete to Nate Lyons for 1 yard to the CMU34 (Jack Lawson)."
-"20250920_l58t","Berry",8,"1","Berry","play",2,9,FALSE,"CMU",34,"rush",-2,"2nd and 9 at CMU34","Josh Rogers rush for loss of 2 yards to the CMU36 (Archie Lawler; Connor Warren)."
-"20250920_l58t","Berry",9,"1","Berry","play",3,11,FALSE,"CMU",36,"rush",1,"3rd and 11 at CMU36","Josh Rogers rush for 1 yard to the CMU35 (Amani Tchamwa; Ty Kadur)."
-"20250920_l58t","Berry",10,"1","Berry","penalty_no_play",4,10,FALSE,"CMU",35,"penalty_no_play",,"4th and 10 at CMU35","PENALTY BERRY delay of game (Andrew Hunter) 5 yards to the CMU40."
-"20250920_l58t","Berry",11,"1","Berry","play",4,15,FALSE,"CMU",40,"punt_no_return",,"4th and 15 at CMU40","Miles Hamby punt 35 yards to the CMU05, downed."
-"20250920_l58t","Berry",12,"1","Carnegie Mellon","play",1,10,FALSE,"CMU",5,"rush",3,"1st and 10 at CMU05","Joey McGinnis I rush for 3 yards to the CMU08 (Carver Cole; Cade Petty)."
-"20250920_l58t","Berry",13,"1","Carnegie Mellon","play",2,7,FALSE,"CMU",8,"rush",2,"2nd and 7 at CMU08","Willem Bouma rush for 2 yards to the CMU10 (Dawson Livingst; Michael Clark)."
-"20250920_l58t","Berry",14,"1","Carnegie Mellon","play",3,5,FALSE,"CMU",10,"rush",73,"3rd and 5 at CMU10","Joey McGinnis I rush for 73 yards to the BERRY17 (Cade Petty)."
-"20250920_l58t","Berry",15,"1","Carnegie Mellon","play",1,10,FALSE,"BERRY",17,"pass_incomplete",0,"1st and 10 at BERRY17","Joey McGinnis I pass incomplete to Brendan McCullo."
-"20250920_l58t","Berry",16,"1","Carnegie Mellon","play",2,10,FALSE,"BERRY",17,"pass_incomplete",0,"2nd and 10 at BERRY17","Joey McGinnis I pass incomplete to Brendan McCullo, QB hurry by Christopher Lew."
-"20250920_l58t","Berry",17,"1","Carnegie Mellon","play",3,10,FALSE,"BERRY",17,"rush",1,"3rd and 10 at BERRY17","Joey McGinnis I rush for 1 yard to the BERRY16 (Cade Petty)."
-"20250920_l58t","Berry",18,"1","Carnegie Mellon","play",4,9,FALSE,"BERRY",16,"field_goal_good",,"4th and 9 at BERRY16","Justin Caputo field goal attempt from 33 GOOD, clock 06:18."
-"20250920_l58t","Berry",19,"1","Carnegie Mellon","kickoff",,,,,,"kickoff",,"","Noah Godhard kickoff 65 yards to the BERRY00, touchback."
-"20250920_l58t","Berry",20,"1","Berry","play",1,10,FALSE,"BERRY",25,"pass_incomplete",0,"1st and 10 at BERRY25","Andrew Hunter pass incomplete to Cameron Coleman."
-"20250920_l58t","Berry",21,"1","Berry","play",2,10,FALSE,"BERRY",25,"rush",1,"2nd and 10 at BERRY25","Colby Sikes rush for 1 yard to the BERRY26 (Leighton Tarke; Connor Warren)."
-"20250920_l58t","Berry",22,"1","Berry","play",3,9,FALSE,"BERRY",26,"rush",10,"3rd and 9 at BERRY26","Andrew Hunter rush for 10 yards to the BERRY36 (Avery Campbell; Amani Tchamwa)."
-"20250920_l58t","Berry",23,"1","Berry","play",1,10,FALSE,"BERRY",36,"pass_complete",6,"1st and 10 at BERRY36","Andrew Hunter pass complete to Hunter Coleman for 6 yards to the BERRY42 (Connor Warren)."
-"20250920_l58t","Berry",24,"1","Berry","play",2,4,FALSE,"BERRY",42,"rush",-2,"2nd and 4 at BERRY42","Andrew Hunter rush for loss of 2 yards to the BERRY40 (Lucas Hazard; Amani Tchamwa)."
-"20250920_l58t","Berry",25,"1","Berry","play",3,6,FALSE,"BERRY",40,"pass_complete",13,"3rd and 6 at BERRY40","Andrew Hunter pass complete to Nate Lyons for 13 yards to the CMU47 (Jacob Franze), out-of-bounds."
-"20250920_l58t","Berry",26,"1","Berry","play",1,10,FALSE,"CMU",47,"rush",20,"1st and 10 at CMU47","Colby Sikes rush for 20 yards to the CMU27 (Ethan Ming; Jacob Franze)."
-"20250920_l58t","Berry",27,"1","Berry","play",1,10,FALSE,"CMU",27,"rush",1,"1st and 10 at CMU27","Brayden Hardy rush for 1 yard to the CMU26 (Jack Lawson)."
-"20250920_l58t","Berry",28,"1","Berry","play",2,9,FALSE,"CMU",26,"rush",4,"2nd and 9 at CMU26","Cameron Coleman rush for 4 yards to the CMU22 (Jack Lawson)."
-"20250920_l58t","Berry",29,"1","Berry","penalty_no_play",3,5,FALSE,"CMU",22,"penalty_no_play",,"3rd and 5 at CMU22","PENALTY CMU offside defense (Mitchell Stokey) 5 yards to the CMU17."
-"20250920_l58t","Berry",30,"1","Berry","play",1,10,FALSE,"CMU",17,"pass_incomplete",0,"1st and 10 at CMU17","Andrew Hunter pass incomplete, QB hurry by Leighton Tarke."
-"20250920_l58t","Berry",31,"1","Berry","play",2,10,FALSE,"CMU",17,"rush",5,"2nd and 10 at CMU17","Andrew Hunter rush for 5 yards to the CMU12 (Bennett Grace; Ethan Ming)."
-"20250920_l58t","Berry",32,"2","Berry","play",3,5,FALSE,"CMU",12,"rush",2,"3rd and 5 at CMU12","Colby Sikes rush for 2 yards to the CMU10 (Leighton Tarke; Mitchell Stokey)."
-"20250920_l58t","Berry",33,"2","Berry","play",4,3,FALSE,"CMU",10,"field_goal_good",,"4th and 3 at CMU10","Trey Richards field goal attempt from 27 GOOD, clock 14:16."
-"20250920_l58t","Berry",34,"2","Berry","kickoff",,,,,,"kickoff",,"","Trey Richards kickoff 65 yards to the CMU00, Nick McCullough return 22 yards to the CMU22 (Zion Gervais)."
-"20250920_l58t","Berry",35,"2","Carnegie Mellon","play",1,10,FALSE,"CMU",22,"rush",2,"1st and 10 at CMU22","Willem Bouma rush for 2 yards to the CMU24 (Christopher Lew)."
-"20250920_l58t","Berry",36,"2","Carnegie Mellon","play",2,8,FALSE,"CMU",24,"rush",-3,"2nd and 8 at CMU24","Willem Bouma rush for loss of 3 yards to the CMU21 (Dawson Livingst)."
-"20250920_l58t","Berry",37,"2","Carnegie Mellon","penalty_no_play",3,11,FALSE,"CMU",21,"penalty_no_play",,"3rd and 11 at CMU21","PENALTY CMU false start 5 yards to the CMU16."
-"20250920_l58t","Berry",38,"2","Carnegie Mellon","play",3,16,FALSE,"CMU",16,"rush",10,"3rd and 16 at CMU16","Shadrak Agyei rush for 10 yards to the CMU26 (Brooks Thompson)."
-"20250920_l58t","Berry",39,"2","Carnegie Mellon","play",4,6,FALSE,"CMU",26,"punt_no_return",,"4th and 6 at CMU26","John Norell punt 34 yards to the BERRY40, downed."
-"20250920_l58t","Berry",40,"2","Berry","play",1,10,FALSE,"BERRY",40,"pass_incomplete",0,"1st and 10 at BERRY40","Andrew Hunter pass incomplete to Bryce Herring (Ethan Ming)."
-"20250920_l58t","Berry",41,"2","Berry","play",2,10,FALSE,"BERRY",40,"rush",2,"2nd and 10 at BERRY40","Brayden Hardy rush for 2 yards to the BERRY42 (Ty Kadur; Logan Armstrong)."
-"20250920_l58t","Berry",42,"2","Berry","play",3,8,FALSE,"BERRY",42,"pass_incomplete",0,"3rd and 8 at BERRY42","Andrew Hunter pass incomplete to Bryce Herring, dropped pass."
-"20250920_l58t","Berry",43,"2","Berry","play",4,8,FALSE,"BERRY",42,"punt_no_return",,"4th and 8 at BERRY42","Miles Hamby punt 37 yards to the CMU21, out-of-bounds, PENALTY BERRY holding 10 yards to the BERRY32, NO PLAY."
-"20250920_l58t","Berry",44,"2","Berry","play",4,18,FALSE,"BERRY",32,"punt_no_return",,"4th and 18 at BERRY32","Miles Hamby punt 27 yards to the CMU41, downed."
-"20250920_l58t","Berry",45,"2","Carnegie Mellon","play",1,10,FALSE,"CMU",41,"pass_complete",0,"1st and 10 at CMU41","Joey McGinnis I pass complete to Nick McCullough for no gain to the CMU41 (David Attaochu)."
-"20250920_l58t","Berry",46,"2","Carnegie Mellon","play",2,10,FALSE,"CMU",41,"pass_incomplete",0,"2nd and 10 at CMU41","Joey McGinnis I pass incomplete to Luca Cuttita."
-"20250920_l58t","Berry",47,"2","Carnegie Mellon","play",3,10,FALSE,"CMU",41,"pass_incomplete",0,"3rd and 10 at CMU41","Joey McGinnis I pass incomplete to Nick McCullough (Brooks Thompson)."
-"20250920_l58t","Berry",48,"2","Carnegie Mellon","play",4,10,FALSE,"CMU",41,"punt_no_return",,"4th and 10 at CMU41","John Norell punt 43 yards to the BERRY16, downed."
-"20250920_l58t","Berry",49,"2","Berry","play",1,10,FALSE,"BERRY",16,"sack",-7,"1st and 10 at BERRY16","Andrew Hunter sacked for loss of 7 yards to the BERRY09 (Amani Tchamwa)."
-"20250920_l58t","Berry",50,"2","Berry","play",2,17,FALSE,"BERRY",9,"rush",7,"2nd and 17 at BERRY09","Andrew Hunter rush for 7 yards to the BERRY16 (Connor Warren)."
-"20250920_l58t","Berry",51,"2","Berry","play",3,10,FALSE,"BERRY",16,"pass_complete",1,"3rd and 10 at BERRY16","Andrew Hunter pass complete to Nate Lyons for 1 yard to the BERRY17 (Tai Mann)."
-"20250920_l58t","Berry",52,"2","Berry","play",4,9,FALSE,"BERRY",17,"punt_no_return",,"4th and 9 at BERRY17","Miles Hamby punt 33 yards to the 50 yardline, fair catch by Brendan McCullo."
-"20250920_l58t","Berry",53,"2","Carnegie Mellon","play",1,10,FALSE,"CMU",50,"rush",3,"1st and 10 at CMU50","Willem Bouma rush for 3 yards to the BERRY47 (Will Johnson)."
-"20250920_l58t","Berry",54,"2","Carnegie Mellon","play",2,7,FALSE,"BERRY",47,"rush",8,"2nd and 7 at BERRY47","Joey McGinnis I rush for 8 yards to the BERRY39 (Dawson Livingst)."
-"20250920_l58t","Berry",55,"2","Carnegie Mellon","play",1,10,FALSE,"BERRY",39,"rush",1,"1st and 10 at BERRY39","Willem Bouma rush for 1 yard to the BERRY38 (Will Johnson; Michael Clark)."
-"20250920_l58t","Berry",56,"2","Carnegie Mellon","play",2,9,FALSE,"BERRY",38,"pass_complete",38,"2nd and 9 at BERRY38","Joey McGinnis I pass complete to Reece Kolke for 38 yards to the BERRY00, TOUCHDOWN, clock 05:12."
-"20250920_l58t","Berry",57,"2","Carnegie Mellon","extra_point",,,,,,"extra_point",,"","Justin Caputo kick attempt good."
-"20250920_l58t","Berry",58,"2","Carnegie Mellon","kickoff",,,,,,"kickoff",,"","Noah Godhard kickoff 65 yards to the BERRY00, touchback."
-"20250920_l58t","Berry",59,"2","Berry","play",1,10,FALSE,"BERRY",25,"pass_complete",11,"1st and 10 at BERRY25","Andrew Hunter pass complete to Walker Williams for 11 yards to the BERRY36 (Tai Mann; Connor Warren), out-of-bounds."
-"20250920_l58t","Berry",60,"2","Berry","play",1,10,FALSE,"BERRY",36,"rush",11,"1st and 10 at BERRY36","Colby Sikes rush for 11 yards to the BERRY47 (Jack Lawson; Jacob Franze)."
-"20250920_l58t","Berry",61,"2","Berry","play",1,10,FALSE,"BERRY",47,"pass_incomplete",0,"1st and 10 at BERRY47","Andrew Hunter pass incomplete to Nate Lyons."
-"20250920_l58t","Berry",62,"2","Berry","play",2,10,FALSE,"BERRY",47,"rush",5,"2nd and 10 at BERRY47","Colby Sikes rush for 5 yards to the CMU48 (Victor Ruhland)."
-"20250920_l58t","Berry",63,"2","Berry","play",3,5,FALSE,"CMU",48,"pass_incomplete",0,"3rd and 5 at CMU48","Andrew Hunter pass incomplete to Nate Lyons."
-"20250920_l58t","Berry",64,"2","Berry","play",4,5,FALSE,"CMU",48,"punt_no_return",,"4th and 5 at CMU48","Miles Hamby punt 31 yards to the CMU17, fair catch by Brendan McCullo."
-"20250920_l58t","Berry",65,"2","Carnegie Mellon","play",1,10,FALSE,"CMU",17,"rush",8,"1st and 10 at CMU17","Joey McGinnis I rush for 8 yards to the CMU25 (David Attaochu; Gian Traverzo)."
-"20250920_l58t","Berry",66,"2","Carnegie Mellon","play",2,2,FALSE,"CMU",25,"rush",8,"2nd and 2 at CMU25","Willem Bouma rush for 8 yards to the CMU33 (Jack Murray; Brycen Williams)."
-"20250920_l58t","Berry",67,"2","Carnegie Mellon","play",1,10,FALSE,"CMU",33,"pass_complete",29,"1st and 10 at CMU33","Joey McGinnis I pass complete to Brendan McCullo for 29 yards to the BERRY38 (Steven Pickett)."
-"20250920_l58t","Berry",68,"2","Carnegie Mellon","play",1,10,FALSE,"BERRY",38,"pass_complete",1,"1st and 10 at BERRY38","Joey McGinnis I pass complete to Brendan McCullo for 1 yard to the BERRY37 (Gian Traverzo)."
-"20250920_l58t","Berry",69,"2","Carnegie Mellon","play",2,9,FALSE,"BERRY",37,"pass_complete",6,"2nd and 9 at BERRY37","Joey McGinnis I pass complete to Brendan McCullo for 6 yards to the BERRY31 (Cade Petty; Jack Murray)."
-"20250920_l58t","Berry",70,"2","Carnegie Mellon","play",3,3,FALSE,"BERRY",31,"pass_incomplete",0,"3rd and 3 at BERRY31","Joey McGinnis I pass incomplete to Brendan McCullo (Gian Traverzo)."
-"20250920_l58t","Berry",71,"2","Carnegie Mellon","play",4,3,FALSE,"BERRY",31,"rush",4,"4th and 3 at BERRY31","Joey McGinnis I rush for 4 yards to the BERRY27 (Dawson Livingst; Gian Traverzo)."
-"20250920_l58t","Berry",72,"2","Carnegie Mellon","play",1,10,FALSE,"BERRY",27,"rush",-2,"1st and 10 at BERRY27","Willem Bouma rush for loss of 2 yards to the BERRY29 (Carver Cole)."
-"20250920_l58t","Berry",73,"2","Carnegie Mellon","play",2,12,FALSE,"BERRY",29,"rush",-1,"2nd and 12 at BERRY29","Joey McGinnis I rush for loss of 1 yard to the BERRY30 (Cade Petty), PENALTY CMU holding (Willem Bouma) 10 yards to the BERRY39, NO PLAY."
-"20250920_l58t","Berry",74,"2","Carnegie Mellon","play",2,22,FALSE,"BERRY",39,"rush",13,"2nd and 22 at BERRY39","Joey McGinnis I rush for 13 yards to the BERRY26 (Steven Pickett), out-of-bounds, PENALTY CMU chop block 15 yards to the CMU46, NO PLAY."
-"20250920_l58t","Berry",75,"2","Carnegie Mellon","play",2,37,FALSE,"CMU",46,"pass_incomplete",0,"2nd and 37 at CMU46","Joey McGinnis I pass incomplete to Nick McCullough."
-"20250920_l58t","Berry",76,"2","Carnegie Mellon","play",3,37,FALSE,"CMU",46,"rush",8,"3rd and 37 at CMU46","Willem Bouma rush for 8 yards to the BERRY46 (Alex Mincey; Dawson Livingst)."
-"20250920_l58t","Berry",77,"3","Carnegie Mellon","kickoff",,,,,,"kickoff",,"","Trey Richards kickoff 63 yards to the CMU02, Nick McCullough return 25 yards to the CMU27 (Zion Gervais; Gabe Bauman)."
-"20250920_l58t","Berry",78,"3","Carnegie Mellon","play",1,10,FALSE,"CMU",27,"rush",3,"1st and 10 at CMU27","Willem Bouma rush for 3 yards to the CMU30 (Ben Brookshire; Christopher Lew), PENALTY BERRY personal foul 15 yards to the CMU45."
-"20250920_l58t","Berry",79,"3","Carnegie Mellon","play",1,10,FALSE,"CMU",45,"rush",5,"1st and 10 at CMU45","Willem Bouma rush for 5 yards to the 50 yardline (Chaz Pope)."
-"20250920_l58t","Berry",80,"3","Carnegie Mellon","play",2,5,FALSE,"CMU",50,"rush",1,"2nd and 5 at CMU50","Joey McGinnis I rush for 1 yard to the BERRY49 (Carver Cole)."
-"20250920_l58t","Berry",81,"3","Carnegie Mellon","play",3,4,FALSE,"BERRY",49,"rush",4,"3rd and 4 at BERRY49","Joey McGinnis I rush for 4 yards to the BERRY45 (Carver Cole; Chaz Pope)."
-"20250920_l58t","Berry",82,"3","Carnegie Mellon","play",1,10,FALSE,"BERRY",45,"pass_complete",45,"1st and 10 at BERRY45","Joey McGinnis I pass complete to Nick McCullough for 45 yards to the BERRY00, TOUCHDOWN, clock 12:39."
-"20250920_l58t","Berry",83,"3","Carnegie Mellon","extra_point",,,,,,"extra_point",,"","Justin Caputo kick attempt good."
-"20250920_l58t","Berry",84,"3","Carnegie Mellon","kickoff",,,,,,"kickoff",,"","Noah Godhard kickoff 65 yards to the BERRY00, touchback."
-"20250920_l58t","Berry",85,"3","Berry","play",1,10,FALSE,"BERRY",25,"pass_complete",11,"1st and 10 at BERRY25","Andrew Hunter pass complete to Bryce Herring for 11 yards to the BERRY36 (Victor Ruhland), out-of-bounds."
-"20250920_l58t","Berry",86,"3","Berry","play",1,10,FALSE,"BERRY",36,"rush",9,"1st and 10 at BERRY36","Andrew Hunter rush for 9 yards to the BERRY45 (Jack Lawson)."
-"20250920_l58t","Berry",87,"3","Berry","play",2,1,FALSE,"BERRY",45,"pass_complete",6,"2nd and 1 at BERRY45","Andrew Hunter pass complete to Colby Sikes for 6 yards to the CMU49 (Tai Mann; Bennett Grace)."
-"20250920_l58t","Berry",88,"3","Berry","play",1,10,FALSE,"CMU",49,"pass_incomplete",0,"1st and 10 at CMU49","Andrew Hunter pass incomplete to Cameron Coleman."
-"20250920_l58t","Berry",89,"3","Berry","play",2,10,FALSE,"CMU",49,"rush",-1,"2nd and 10 at CMU49","Andrew Hunter rush for loss of 1 yard to the 50 yardline (Bennett Grace)."
-"20250920_l58t","Berry",90,"3","Berry","play",3,11,FALSE,"BERRY",50,"pass_complete",13,"3rd and 11 at BERRY50","Andrew Hunter pass complete to Colby Sikes for 13 yards to the CMU37 (Tai Mann), out-of-bounds, PENALTY BERRY offense pass interference (Juelz Davis) 15 yards to the BERRY35, NO PLAY."
-"20250920_l58t","Berry",91,"3","Berry","penalty_no_play",3,26,FALSE,"BERRY",35,"penalty_no_play",,"3rd and 26 at BERRY35","PENALTY CMU holding 10 yards to the BERRY45."
-"20250920_l58t","Berry",92,"3","Berry","play",1,10,FALSE,"BERRY",45,"rush",1,"1st and 10 at BERRY45","Brayden Hardy rush for 1 yard to the BERRY46 (Jack Lawson)."
-"20250920_l58t","Berry",93,"3","Berry","play",2,9,FALSE,"BERRY",46,"pass_complete",8,"2nd and 9 at BERRY46","Andrew Hunter pass complete to Colby Sikes for 8 yards to the CMU46 (Jacob Franze), out-of-bounds."
-"20250920_l58t","Berry",94,"3","Berry","play",3,1,FALSE,"CMU",46,"rush",1,"3rd and 1 at CMU46","Brayden Hardy rush for 1 yard to the CMU45 (Jacob Franze; Victor Ruhland)."
-"20250920_l58t","Berry",95,"3","Berry","play",1,10,FALSE,"CMU",45,"sack",-8,"1st and 10 at CMU45","Andrew Hunter sacked for loss of 8 yards to the BERRY47 (Bennett Grace)."
-"20250920_l58t","Berry",96,"3","Berry","play",2,18,FALSE,"BERRY",47,"rush",3,"2nd and 18 at BERRY47","Andrew Hunter rush for 3 yards to the 50 yardline (Gabe Bonnet)."
-"20250920_l58t","Berry",97,"3","Berry","play",3,15,FALSE,"BERRY",50,"rush",11,"3rd and 15 at BERRY50","Andrew Hunter rush for 11 yards to the CMU39 (Leighton Tarke)."
-"20250920_l58t","Berry",98,"3","Berry","play",4,4,FALSE,"CMU",39,"pass_complete",17,"4th and 4 at CMU39","Andrew Hunter pass complete to Colby Sikes for 17 yards to the CMU22, out-of-bounds, PENALTY BERRY illegal shift 5 yards to the CMU44, NO PLAY."
-"20250920_l58t","Berry",99,"3","Berry","play",4,9,FALSE,"CMU",44,"punt_no_return",,"4th and 9 at CMU44","Miles Hamby punt 44 yards to the CMU00, touchback."
-"20250920_l58t","Berry",100,"3","Carnegie Mellon","play",1,10,FALSE,"CMU",20,"rush",6,"1st and 10 at CMU20","Willem Bouma rush for 6 yards to the CMU26 (Gian Traverzo; Will Johnson)."
-"20250920_l58t","Berry",101,"3","Carnegie Mellon","penalty_no_play",2,4,FALSE,"CMU",26,"penalty_no_play",,"2nd and 4 at CMU26","PENALTY CMU false start 5 yards to the CMU21."
-"20250920_l58t","Berry",102,"3","Carnegie Mellon","play",2,9,FALSE,"CMU",21,"rush",5,"2nd and 9 at CMU21","Willem Bouma rush for 5 yards to the CMU26 (Gian Traverzo)."
-"20250920_l58t","Berry",103,"3","Carnegie Mellon","play",3,4,FALSE,"CMU",26,"rush",4,"3rd and 4 at CMU26","Willem Bouma rush for 4 yards to the CMU30 (Brycen Williams), out-of-bounds."
-"20250920_l58t","Berry",104,"3","Carnegie Mellon","play",1,10,FALSE,"CMU",30,"rush",2,"1st and 10 at CMU30","Joey McGinnis I rush for 2 yards to the CMU32 (Will Johnson; Dawson Livingst)."
-"20250920_l58t","Berry",105,"3","Carnegie Mellon","play",2,8,FALSE,"CMU",32,"pass_complete",23,"2nd and 8 at CMU32","Joey McGinnis I pass complete to Reece Kolke for 23 yards to the BERRY45."
-"20250920_l58t","Berry",106,"3","Carnegie Mellon","play",1,10,FALSE,"BERRY",45,"pass_incomplete",0,"1st and 10 at BERRY45","Joey McGinnis I pass incomplete to Nick McCullough."
-"20250920_l58t","Berry",107,"3","Carnegie Mellon","play",2,10,FALSE,"BERRY",45,"rush",4,"2nd and 10 at BERRY45","Joey McGinnis I rush for 4 yards to the BERRY41 (Buie Crawford)."
-"20250920_l58t","Berry",108,"3","Carnegie Mellon","play",3,6,FALSE,"BERRY",41,"rush",-1,"3rd and 6 at BERRY41","Joey McGinnis I rush for loss of 1 yard to the BERRY42 (Jack Murray; David Attaochu)."
-"20250920_l58t","Berry",109,"3","Carnegie Mellon","play",4,7,FALSE,"BERRY",42,"punt_no_return",,"4th and 7 at BERRY42","John Norell punt 38 yards to the BERRY04, downed."
-"20250920_l58t","Berry",110,"3","Berry","play",1,10,FALSE,"BERRY",4,"rush",4,"1st and 10 at BERRY04","Andrew Hunter rush for 4 yards to the BERRY08 (Victor Ruhland)."
-"20250920_l58t","Berry",111,"4","Berry","play",2,6,FALSE,"BERRY",8,"rush",11,"2nd and 6 at BERRY08","Colby Sikes rush for 11 yards to the BERRY19 (Avery Campbell; Bennett Grace)."
-"20250920_l58t","Berry",112,"4","Berry","play",1,10,FALSE,"BERRY",19,"pass_complete",5,"1st and 10 at BERRY19","Andrew Hunter pass complete to Colby Sikes for 5 yards to the BERRY24 (Connor Warren), out-of-bounds."
-"20250920_l58t","Berry",113,"4","Berry","play",2,5,FALSE,"BERRY",24,"pass_incomplete",0,"2nd and 5 at BERRY24","Andrew Hunter pass incomplete (Mitchell Stokey)."
-"20250920_l58t","Berry",114,"4","Berry","play",3,5,FALSE,"BERRY",24,"pass_incomplete",0,"3rd and 5 at BERRY24","Andrew Hunter pass incomplete to Brayden Hardy, QB hurry by Amani Tchamwa."
-"20250920_l58t","Berry",115,"4","Berry","play",4,5,FALSE,"BERRY",24,"punt_no_return",,"4th and 5 at BERRY24","Miles Hamby punt 43 yards to the CMU33, out-of-bounds."
-"20250920_l58t","Berry",116,"4","Carnegie Mellon","play",1,10,FALSE,"CMU",33,"pass_incomplete",0,"1st and 10 at CMU33","Joey McGinnis I pass incomplete to Reece Kolke, dropped pass."
-"20250920_l58t","Berry",117,"4","Carnegie Mellon","play",2,10,FALSE,"CMU",33,"pass_complete",8,"2nd and 10 at CMU33","Joey McGinnis I pass complete to Brendan McCullo for 8 yards to the CMU41 (Jaden Melville)."
-"20250920_l58t","Berry",118,"4","Carnegie Mellon","play",3,2,FALSE,"CMU",41,"rush",9,"3rd and 2 at CMU41","Joey McGinnis I rush for 9 yards to the 50 yardline (Will Johnson)."
-"20250920_l58t","Berry",119,"4","Carnegie Mellon","play",1,10,FALSE,"CMU",50,"rush",-3,"1st and 10 at CMU50","Willem Bouma rush for loss of 3 yards to the CMU47 (Dawson Livingst; Michael Clark)."
-"20250920_l58t","Berry",120,"4","Carnegie Mellon","play",2,13,FALSE,"CMU",47,"pass_intercepted",,"2nd and 13 at CMU47","Joey McGinnis I pass intercepted by Chaz Pope at the BERRY36, Chaz Pope return 12 yards to the BERRY48 (Takashi Shaw; Charlie Katarin)."
-"20250920_l58t","Berry",121,"4","Berry","play",1,10,FALSE,"BERRY",48,"pass_incomplete",0,"1st and 10 at BERRY48","Andrew Hunter pass incomplete (Bennett Grace)."
-"20250920_l58t","Berry",122,"4","Berry","play",2,10,FALSE,"BERRY",48,"rush",20,"2nd and 10 at BERRY48","Andrew Hunter rush for 20 yards to the CMU32 (Victor Ruhland; Ethan Ming)."
-"20250920_l58t","Berry",123,"4","Berry","play",1,10,FALSE,"CMU",32,"pass_incomplete",0,"1st and 10 at CMU32","Andrew Hunter pass incomplete to Hunter Coleman (Leighton Tarke)."
-"20250920_l58t","Berry",124,"4","Berry","play",2,10,FALSE,"CMU",32,"rush",3,"2nd and 10 at CMU32","Andrew Hunter rush for 3 yards to the CMU29 (Jacob Franze; Grayson Metz)."
-"20250920_l58t","Berry",125,"4","Berry","penalty_no_play",3,7,FALSE,"CMU",29,"penalty_no_play",,"3rd and 7 at CMU29","PENALTY BERRY false start 5 yards to the CMU34."
-"20250920_l58t","Berry",126,"4","Berry","play",3,12,FALSE,"CMU",34,"rush",6,"3rd and 12 at CMU34","Andrew Hunter rush for 6 yards to the CMU28 (Bennett Grace; Jack Lawson)."
-"20250920_l58t","Berry",127,"4","Berry","play",4,6,FALSE,"CMU",28,"pass_incomplete",0,"4th and 6 at CMU28","Andrew Hunter pass incomplete to Bryce Herring."
-"20250920_l58t","Berry",128,"4","Carnegie Mellon","play",1,10,FALSE,"CMU",28,"rush",3,"1st and 10 at CMU28","Willem Bouma rush for 3 yards to the CMU31 (Alex Mincey), PENALTY CMU holding (Conor Gaul) 10 yards to the CMU18, NO PLAY."
-"20250920_l58t","Berry",129,"4","Carnegie Mellon","play",1,20,FALSE,"CMU",18,"rush",-2,"1st and 20 at CMU18","Willem Bouma rush for loss of 2 yards to the CMU16 (Alex Mincey)."
-"20250920_l58t","Berry",130,"4","Carnegie Mellon","play",2,22,FALSE,"CMU",16,"rush",5,"2nd and 22 at CMU16","Joey McGinnis I rush for 5 yards to the CMU21 (Carver Cole; Cade Petty)."
-"20250920_l58t","Berry",131,"4","Carnegie Mellon","play",3,17,FALSE,"CMU",21,"rush",3,"3rd and 17 at CMU21","Willem Bouma rush for 3 yards to the CMU24 (Carver Cole)."
-"20250920_l58t","Berry",132,"4","Carnegie Mellon","play",4,14,FALSE,"CMU",24,"punt_no_return",,"4th and 14 at CMU24","John Norell punt 30 yards to the BERRY46, fair catch by Nate Lyons, PENALTY BERRY personal foul 15 yards to the CMU39, NO PLAY."
-"20250920_l58t","Berry",133,"4","Carnegie Mellon","play",1,10,FALSE,"CMU",39,"rush",1,"1st and 10 at CMU39","Willem Bouma rush for 1 yard to the CMU40 (Gian Traverzo; Michael Clark)."
-"20250920_l58t","Berry",134,"4","Carnegie Mellon","play",2,9,FALSE,"CMU",40,"pass_incomplete",0,"2nd and 9 at CMU40","Joey McGinnis I pass incomplete to Reece Kolke (Steven Pickett)."
-"20250920_l58t","Berry",135,"4","Carnegie Mellon","play",3,9,FALSE,"CMU",40,"rush",25,"3rd and 9 at CMU40","Willem Bouma rush for 25 yards to the BERRY35 (Jack Murray), out-of-bounds."
-"20250920_l58t","Berry",136,"4","Carnegie Mellon","play",1,10,FALSE,"BERRY",35,"rush",-3,"1st and 10 at BERRY35","Joey McGinnis I rush for loss of 3 yards to the BERRY38 (Brycen Williams; Cade Petty)."
-"20250920_l58t","Berry",137,"4","Carnegie Mellon","play",2,13,FALSE,"BERRY",38,"rush",2,"2nd and 13 at BERRY38","Willem Bouma rush for 2 yards to the BERRY36 (Carver Cole)."
-"20250920_l58t","Berry",138,"4","Carnegie Mellon","play",3,11,FALSE,"BERRY",36,"rush",-1,"3rd and 11 at BERRY36","Willem Bouma rush for loss of 1 yard to the BERRY37 (Will Johnson)."
-"20250920_l58t","Berry",139,"4","Carnegie Mellon","play",4,12,FALSE,"BERRY",37,"punt_no_return",,"4th and 12 at BERRY37","John Norell punt 25 yards to the BERRY12, fair catch by Nate Lyons."
-"20250920_l58t","Berry",140,"4","Berry","play",1,10,FALSE,"BERRY",12,"rush",3,"1st and 10 at BERRY12","Brayden Hardy rush for 3 yards to the BERRY15 (Amani Tchamwa; Connor Warren)."
-"20250920_l58t","Berry",141,"4","Berry","play",2,7,FALSE,"BERRY",15,"pass_incomplete",0,"2nd and 7 at BERRY15","Andrew Hunter pass incomplete to Colby Sikes."
-"20250920_l58t","Berry",142,"4","Berry","penalty_no_play",3,7,FALSE,"BERRY",15,"penalty_no_play",,"3rd and 7 at BERRY15","PENALTY BERRY false start (Bryson Hill) 5 yards to the BERRY10."
-"20250920_l58t","Berry",143,"4","Berry","play",3,12,FALSE,"BERRY",10,"pass_complete",15,"3rd and 12 at BERRY10","Andrew Hunter pass complete to Brendan Gray for 15 yards to the BERRY25 (Gabe Bonnet)."
-"20250920_l58t","Berry",144,"4","Berry","play",1,10,FALSE,"BERRY",25,"pass_incomplete",0,"1st and 10 at BERRY25","Andrew Hunter pass incomplete to Bryce Herring."
-"20250920_l58t","Berry",145,"4","Berry","play",2,10,FALSE,"BERRY",25,"sack",-7,"2nd and 10 at BERRY25","Andrew Hunter sacked for loss of 7 yards to the BERRY18 (Mitchell Stokey)."
-"20250920_l58t","Berry",146,"4","Berry","play",3,17,FALSE,"BERRY",18,"pass_complete",6,"3rd and 17 at BERRY18","Andrew Hunter pass complete to Brayden Hardy for 6 yards to the BERRY24."
-"20250920_l58t","Berry",147,"4","Berry","play",4,11,FALSE,"BERRY",24,"pass_complete",26,"4th and 11 at BERRY24","Andrew Hunter pass complete to Brendan Gray for 26 yards to the 50 yardline (Jack Lawson; Bennett Grace)."
-"20250920_l58t","Berry",148,"4","Berry","play",1,10,FALSE,"BERRY",50,"pass_incomplete",0,"1st and 10 at BERRY50","Andrew Hunter pass incomplete to Khamari Smith, PENALTY CMU pass interference (Victor Ruhland) 15 yards to the CMU35, NO PLAY."
-"20250920_l58t","Berry",149,"4","Berry","play",1,10,FALSE,"CMU",35,"pass_complete",16,"1st and 10 at CMU35","Andrew Hunter pass complete to Nate Lyons for 16 yards to the CMU19 (Ethan Ming), out-of-bounds."
-"20250920_l58t","Berry",150,"4","Berry","play",1,10,FALSE,"CMU",19,"pass_complete",19,"1st and 10 at CMU19","Andrew Hunter pass complete to Brendan Gray for 19 yards to the CMU00, TOUCHDOWN, clock 00:53."
-"20250920_l58t","Berry",151,"4","Berry","two_point",,,,,,"two_point",,"","Nate Lyons pass attempt to TEAM failed, PENALTY BERRY ineligible man down field declined."
-"20250920_l58t","Berry",152,"4","Berry","kickoff",,,,,,"kickoff",,"","Trey Richards kickoff 14 yards to the BERRY49, Nick McCullough return 0 yards to the BERRY49."
-"20250920_l58t","Berry",153,"4","Carnegie Mellon","play",1,10,FALSE,"BERRY",49,"rush",-1,"1st and 10 at BERRY49","TEAM rush for loss of 1 yard to the 50 yardline."
-"20250920_l58t","Berry",154,"4","Carnegie Mellon","play",2,11,FALSE,"CMU",50,"rush",-1,"2nd and 11 at CMU50","TEAM rush for loss of 1 yard to the CMU49."
+"game_id","play_index","drive_play_number","period","half","clock_known","clock_prev_known","clock_next_known","pos_team","def_pos_team","down","distance","yards_to_goal","Goal_To_Go","play_type","yards_gained","rush","pass","completion","sack","int","fumble_vec","turnover","downs_turnover","touchdown","safety","penalty_flag","penalty_yards_signed","penalized_team","penalty_no_play","penalty_declined","penalty_text","situation","play_text","row_type","drive_id"
+"20250920_l58t",1,,1,1,,,,,,,,,,"kickoff",,,,,,,,,,,,,,,,,,"","Noah Godhard kickoff 65 yards to the BERRY00, touchback.","kickoff",
+"20250920_l58t",2,1,1,1,,,,"Berry","Carnegie Mellon",1,10,75,FALSE,"rush",2,,,,,,,,,,,,,,,,,"1st and 10 at BERRY25","Josh Rogers rush for 2 yards to the BERRY27 (Leighton Tarke; Victor Ruhland).","play",1
+"20250920_l58t",3,2,1,1,,,,"Berry","Carnegie Mellon",2,8,73,FALSE,"pass_complete",5,,,,,,,,,,,,,,,,,"2nd and 8 at BERRY27","Andrew Hunter pass complete to Bryce Herring for 5 yards to the BERRY32 (Victor Ruhland).","play",1
+"20250920_l58t",4,3,1,1,,,,"Berry","Carnegie Mellon",3,3,68,FALSE,"pass_complete",23,,,,,,,,,,,,,,,,,"3rd and 3 at BERRY32","Andrew Hunter pass complete to Colby Sikes for 23 yards to the CMU45 (Jacob Franze).","play",1
+"20250920_l58t",5,4,1,1,,,,"Berry","Carnegie Mellon",1,10,45,FALSE,"rush",9,,,,,,,,,,,,,,,,,"1st and 10 at CMU45","Josh Rogers rush for 9 yards to the CMU36 (Jacob Franze).","play",1
+"20250920_l58t",6,5,1,1,,,,"Berry","Carnegie Mellon",2,1,36,FALSE,"pass_complete",1,,,,,,,,,,,,,,,,,"2nd and 1 at CMU36","Andrew Hunter pass complete to Colby Sikes for 1 yard to the CMU35 (Connor Warren).","play",1
+"20250920_l58t",7,6,1,1,,,,"Berry","Carnegie Mellon",1,10,35,FALSE,"pass_complete",1,,,,,,,,,,,,,,,,,"1st and 10 at CMU35","Andrew Hunter pass complete to Nate Lyons for 1 yard to the CMU34 (Jack Lawson).","play",1
+"20250920_l58t",8,7,1,1,,,,"Berry","Carnegie Mellon",2,9,34,FALSE,"rush",-2,,,,,,,,,,,,,,,,,"2nd and 9 at CMU34","Josh Rogers rush for loss of 2 yards to the CMU36 (Archie Lawler; Connor Warren).","play",1
+"20250920_l58t",9,8,1,1,,,,"Berry","Carnegie Mellon",3,11,36,FALSE,"rush",1,,,,,,,,,,,,,,,,,"3rd and 11 at CMU36","Josh Rogers rush for 1 yard to the CMU35 (Amani Tchamwa; Ty Kadur).","play",1
+"20250920_l58t",10,9,1,1,,,,"Berry","Carnegie Mellon",4,10,35,FALSE,"penalty_no_play",,,,,,,,,,,,,,,,,,"4th and 10 at CMU35","PENALTY BERRY delay of game (Andrew Hunter) 5 yards to the CMU40.","penalty_no_play",1
+"20250920_l58t",11,10,1,1,,,,"Berry","Carnegie Mellon",4,15,40,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 15 at CMU40","Miles Hamby punt 35 yards to the CMU05, downed.","play",1
+"20250920_l58t",12,1,1,1,,,,"Carnegie Mellon","Berry",1,10,95,FALSE,"rush",3,,,,,,,,,,,,,,,,,"1st and 10 at CMU05","Joey McGinnis I rush for 3 yards to the CMU08 (Carver Cole; Cade Petty).","play",2
+"20250920_l58t",13,2,1,1,,,,"Carnegie Mellon","Berry",2,7,92,FALSE,"rush",2,,,,,,,,,,,,,,,,,"2nd and 7 at CMU08","Willem Bouma rush for 2 yards to the CMU10 (Dawson Livingst; Michael Clark).","play",2
+"20250920_l58t",14,3,1,1,,,,"Carnegie Mellon","Berry",3,5,90,FALSE,"rush",73,,,,,,,,,,,,,,,,,"3rd and 5 at CMU10","Joey McGinnis I rush for 73 yards to the BERRY17 (Cade Petty).","play",2
+"20250920_l58t",15,4,1,1,,,,"Carnegie Mellon","Berry",1,10,17,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at BERRY17","Joey McGinnis I pass incomplete to Brendan McCullo.","play",2
+"20250920_l58t",16,5,1,1,,,,"Carnegie Mellon","Berry",2,10,17,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"2nd and 10 at BERRY17","Joey McGinnis I pass incomplete to Brendan McCullo, QB hurry by Christopher Lew.","play",2
+"20250920_l58t",17,6,1,1,,,,"Carnegie Mellon","Berry",3,10,17,FALSE,"rush",1,,,,,,,,,,,,,,,,,"3rd and 10 at BERRY17","Joey McGinnis I rush for 1 yard to the BERRY16 (Cade Petty).","play",2
+"20250920_l58t",18,7,1,1,,,,"Carnegie Mellon","Berry",4,9,16,FALSE,"field_goal_good",,,,,,,,,,,,,,,,,,"4th and 9 at BERRY16","Justin Caputo field goal attempt from 33 GOOD, clock 06:18.","play",2
+"20250920_l58t",19,8,1,1,,,,"Carnegie Mellon","Berry",,,,,"kickoff",,,,,,,,,,,,,,,,,,"","Noah Godhard kickoff 65 yards to the BERRY00, touchback.","kickoff",2
+"20250920_l58t",20,1,1,1,,,,"Berry","Carnegie Mellon",1,10,75,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at BERRY25","Andrew Hunter pass incomplete to Cameron Coleman.","play",3
+"20250920_l58t",21,2,1,1,,,,"Berry","Carnegie Mellon",2,10,75,FALSE,"rush",1,,,,,,,,,,,,,,,,,"2nd and 10 at BERRY25","Colby Sikes rush for 1 yard to the BERRY26 (Leighton Tarke; Connor Warren).","play",3
+"20250920_l58t",22,3,1,1,,,,"Berry","Carnegie Mellon",3,9,74,FALSE,"rush",10,,,,,,,,,,,,,,,,,"3rd and 9 at BERRY26","Andrew Hunter rush for 10 yards to the BERRY36 (Avery Campbell; Amani Tchamwa).","play",3
+"20250920_l58t",23,4,1,1,,,,"Berry","Carnegie Mellon",1,10,64,FALSE,"pass_complete",6,,,,,,,,,,,,,,,,,"1st and 10 at BERRY36","Andrew Hunter pass complete to Hunter Coleman for 6 yards to the BERRY42 (Connor Warren).","play",3
+"20250920_l58t",24,5,1,1,,,,"Berry","Carnegie Mellon",2,4,58,FALSE,"rush",-2,,,,,,,,,,,,,,,,,"2nd and 4 at BERRY42","Andrew Hunter rush for loss of 2 yards to the BERRY40 (Lucas Hazard; Amani Tchamwa).","play",3
+"20250920_l58t",25,6,1,1,,,,"Berry","Carnegie Mellon",3,6,60,FALSE,"pass_complete",13,,,,,,,,,,,,,,,,,"3rd and 6 at BERRY40","Andrew Hunter pass complete to Nate Lyons for 13 yards to the CMU47 (Jacob Franze), out-of-bounds.","play",3
+"20250920_l58t",26,7,1,1,,,,"Berry","Carnegie Mellon",1,10,47,FALSE,"rush",20,,,,,,,,,,,,,,,,,"1st and 10 at CMU47","Colby Sikes rush for 20 yards to the CMU27 (Ethan Ming; Jacob Franze).","play",3
+"20250920_l58t",27,8,1,1,,,,"Berry","Carnegie Mellon",1,10,27,FALSE,"rush",1,,,,,,,,,,,,,,,,,"1st and 10 at CMU27","Brayden Hardy rush for 1 yard to the CMU26 (Jack Lawson).","play",3
+"20250920_l58t",28,9,1,1,,,,"Berry","Carnegie Mellon",2,9,26,FALSE,"rush",4,,,,,,,,,,,,,,,,,"2nd and 9 at CMU26","Cameron Coleman rush for 4 yards to the CMU22 (Jack Lawson).","play",3
+"20250920_l58t",29,10,1,1,,,,"Berry","Carnegie Mellon",3,5,22,FALSE,"penalty_no_play",,,,,,,,,,,,,,,,,,"3rd and 5 at CMU22","PENALTY CMU offside defense (Mitchell Stokey) 5 yards to the CMU17.","penalty_no_play",3
+"20250920_l58t",30,11,1,1,,,,"Berry","Carnegie Mellon",1,10,17,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at CMU17","Andrew Hunter pass incomplete, QB hurry by Leighton Tarke.","play",3
+"20250920_l58t",31,12,1,1,,,,"Berry","Carnegie Mellon",2,10,17,FALSE,"rush",5,,,,,,,,,,,,,,,,,"2nd and 10 at CMU17","Andrew Hunter rush for 5 yards to the CMU12 (Bennett Grace; Ethan Ming).","play",3
+"20250920_l58t",32,13,2,1,,,,"Berry","Carnegie Mellon",3,5,12,FALSE,"rush",2,,,,,,,,,,,,,,,,,"3rd and 5 at CMU12","Colby Sikes rush for 2 yards to the CMU10 (Leighton Tarke; Mitchell Stokey).","play",3
+"20250920_l58t",33,14,2,1,,,,"Berry","Carnegie Mellon",4,3,10,FALSE,"field_goal_good",,,,,,,,,,,,,,,,,,"4th and 3 at CMU10","Trey Richards field goal attempt from 27 GOOD, clock 14:16.","play",3
+"20250920_l58t",34,15,2,1,,,,"Berry","Carnegie Mellon",,,,,"kickoff",,,,,,,,,,,,,,,,,,"","Trey Richards kickoff 65 yards to the CMU00, Nick McCullough return 22 yards to the CMU22 (Zion Gervais).","kickoff",3
+"20250920_l58t",35,1,2,1,,,,"Carnegie Mellon","Berry",1,10,78,FALSE,"rush",2,,,,,,,,,,,,,,,,,"1st and 10 at CMU22","Willem Bouma rush for 2 yards to the CMU24 (Christopher Lew).","play",4
+"20250920_l58t",36,2,2,1,,,,"Carnegie Mellon","Berry",2,8,76,FALSE,"rush",-3,,,,,,,,,,,,,,,,,"2nd and 8 at CMU24","Willem Bouma rush for loss of 3 yards to the CMU21 (Dawson Livingst).","play",4
+"20250920_l58t",37,3,2,1,,,,"Carnegie Mellon","Berry",3,11,79,FALSE,"penalty_no_play",,,,,,,,,,,,,,,,,,"3rd and 11 at CMU21","PENALTY CMU false start 5 yards to the CMU16.","penalty_no_play",4
+"20250920_l58t",38,4,2,1,,,,"Carnegie Mellon","Berry",3,16,84,FALSE,"rush",10,,,,,,,,,,,,,,,,,"3rd and 16 at CMU16","Shadrak Agyei rush for 10 yards to the CMU26 (Brooks Thompson).","play",4
+"20250920_l58t",39,5,2,1,,,,"Carnegie Mellon","Berry",4,6,74,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 6 at CMU26","John Norell punt 34 yards to the BERRY40, downed.","play",4
+"20250920_l58t",40,1,2,1,,,,"Berry","Carnegie Mellon",1,10,60,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at BERRY40","Andrew Hunter pass incomplete to Bryce Herring (Ethan Ming).","play",5
+"20250920_l58t",41,2,2,1,,,,"Berry","Carnegie Mellon",2,10,60,FALSE,"rush",2,,,,,,,,,,,,,,,,,"2nd and 10 at BERRY40","Brayden Hardy rush for 2 yards to the BERRY42 (Ty Kadur; Logan Armstrong).","play",5
+"20250920_l58t",42,3,2,1,,,,"Berry","Carnegie Mellon",3,8,58,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"3rd and 8 at BERRY42","Andrew Hunter pass incomplete to Bryce Herring, dropped pass.","play",5
+"20250920_l58t",43,4,2,1,,,,"Berry","Carnegie Mellon",4,8,58,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 8 at BERRY42","Miles Hamby punt 37 yards to the CMU21, out-of-bounds, PENALTY BERRY holding 10 yards to the BERRY32, NO PLAY.","play",5
+"20250920_l58t",44,1,2,1,,,,"Berry","Carnegie Mellon",4,18,68,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 18 at BERRY32","Miles Hamby punt 27 yards to the CMU41, downed.","play",6
+"20250920_l58t",45,1,2,1,,,,"Carnegie Mellon","Berry",1,10,59,FALSE,"pass_complete",0,,,,,,,,,,,,,,,,,"1st and 10 at CMU41","Joey McGinnis I pass complete to Nick McCullough for no gain to the CMU41 (David Attaochu).","play",7
+"20250920_l58t",46,2,2,1,,,,"Carnegie Mellon","Berry",2,10,59,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"2nd and 10 at CMU41","Joey McGinnis I pass incomplete to Luca Cuttita.","play",7
+"20250920_l58t",47,3,2,1,,,,"Carnegie Mellon","Berry",3,10,59,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"3rd and 10 at CMU41","Joey McGinnis I pass incomplete to Nick McCullough (Brooks Thompson).","play",7
+"20250920_l58t",48,4,2,1,,,,"Carnegie Mellon","Berry",4,10,59,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 10 at CMU41","John Norell punt 43 yards to the BERRY16, downed.","play",7
+"20250920_l58t",49,1,2,1,,,,"Berry","Carnegie Mellon",1,10,84,FALSE,"sack",-7,,,,,,,,,,,,,,,,,"1st and 10 at BERRY16","Andrew Hunter sacked for loss of 7 yards to the BERRY09 (Amani Tchamwa).","play",8
+"20250920_l58t",50,2,2,1,,,,"Berry","Carnegie Mellon",2,17,91,FALSE,"rush",7,,,,,,,,,,,,,,,,,"2nd and 17 at BERRY09","Andrew Hunter rush for 7 yards to the BERRY16 (Connor Warren).","play",8
+"20250920_l58t",51,3,2,1,,,,"Berry","Carnegie Mellon",3,10,84,FALSE,"pass_complete",1,,,,,,,,,,,,,,,,,"3rd and 10 at BERRY16","Andrew Hunter pass complete to Nate Lyons for 1 yard to the BERRY17 (Tai Mann).","play",8
+"20250920_l58t",52,4,2,1,,,,"Berry","Carnegie Mellon",4,9,83,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 9 at BERRY17","Miles Hamby punt 33 yards to the 50 yardline, fair catch by Brendan McCullo.","play",8
+"20250920_l58t",53,1,2,1,,,,"Carnegie Mellon","Berry",1,10,50,FALSE,"rush",3,,,,,,,,,,,,,,,,,"1st and 10 at CMU50","Willem Bouma rush for 3 yards to the BERRY47 (Will Johnson).","play",9
+"20250920_l58t",54,2,2,1,,,,"Carnegie Mellon","Berry",2,7,47,FALSE,"rush",8,,,,,,,,,,,,,,,,,"2nd and 7 at BERRY47","Joey McGinnis I rush for 8 yards to the BERRY39 (Dawson Livingst).","play",9
+"20250920_l58t",55,3,2,1,,,,"Carnegie Mellon","Berry",1,10,39,FALSE,"rush",1,,,,,,,,,,,,,,,,,"1st and 10 at BERRY39","Willem Bouma rush for 1 yard to the BERRY38 (Will Johnson; Michael Clark).","play",9
+"20250920_l58t",56,4,2,1,,,,"Carnegie Mellon","Berry",2,9,38,FALSE,"pass_complete",38,,,,,,,,,,,,,,,,,"2nd and 9 at BERRY38","Joey McGinnis I pass complete to Reece Kolke for 38 yards to the BERRY00, TOUCHDOWN, clock 05:12.","play",9
+"20250920_l58t",57,5,2,1,,,,"Carnegie Mellon","Berry",,,,,"extra_point",,,,,,,,,,,,,,,,,,"","Justin Caputo kick attempt good.","extra_point",9
+"20250920_l58t",58,6,2,1,,,,"Carnegie Mellon","Berry",,,,,"kickoff",,,,,,,,,,,,,,,,,,"","Noah Godhard kickoff 65 yards to the BERRY00, touchback.","kickoff",9
+"20250920_l58t",59,1,2,1,,,,"Berry","Carnegie Mellon",1,10,75,FALSE,"pass_complete",11,,,,,,,,,,,,,,,,,"1st and 10 at BERRY25","Andrew Hunter pass complete to Walker Williams for 11 yards to the BERRY36 (Tai Mann; Connor Warren), out-of-bounds.","play",10
+"20250920_l58t",60,2,2,1,,,,"Berry","Carnegie Mellon",1,10,64,FALSE,"rush",11,,,,,,,,,,,,,,,,,"1st and 10 at BERRY36","Colby Sikes rush for 11 yards to the BERRY47 (Jack Lawson; Jacob Franze).","play",10
+"20250920_l58t",61,3,2,1,,,,"Berry","Carnegie Mellon",1,10,53,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at BERRY47","Andrew Hunter pass incomplete to Nate Lyons.","play",10
+"20250920_l58t",62,4,2,1,,,,"Berry","Carnegie Mellon",2,10,53,FALSE,"rush",5,,,,,,,,,,,,,,,,,"2nd and 10 at BERRY47","Colby Sikes rush for 5 yards to the CMU48 (Victor Ruhland).","play",10
+"20250920_l58t",63,5,2,1,,,,"Berry","Carnegie Mellon",3,5,48,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"3rd and 5 at CMU48","Andrew Hunter pass incomplete to Nate Lyons.","play",10
+"20250920_l58t",64,6,2,1,,,,"Berry","Carnegie Mellon",4,5,48,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 5 at CMU48","Miles Hamby punt 31 yards to the CMU17, fair catch by Brendan McCullo.","play",10
+"20250920_l58t",65,1,2,1,,,,"Carnegie Mellon","Berry",1,10,83,FALSE,"rush",8,,,,,,,,,,,,,,,,,"1st and 10 at CMU17","Joey McGinnis I rush for 8 yards to the CMU25 (David Attaochu; Gian Traverzo).","play",11
+"20250920_l58t",66,2,2,1,,,,"Carnegie Mellon","Berry",2,2,75,FALSE,"rush",8,,,,,,,,,,,,,,,,,"2nd and 2 at CMU25","Willem Bouma rush for 8 yards to the CMU33 (Jack Murray; Brycen Williams).","play",11
+"20250920_l58t",67,3,2,1,,,,"Carnegie Mellon","Berry",1,10,67,FALSE,"pass_complete",29,,,,,,,,,,,,,,,,,"1st and 10 at CMU33","Joey McGinnis I pass complete to Brendan McCullo for 29 yards to the BERRY38 (Steven Pickett).","play",11
+"20250920_l58t",68,4,2,1,,,,"Carnegie Mellon","Berry",1,10,38,FALSE,"pass_complete",1,,,,,,,,,,,,,,,,,"1st and 10 at BERRY38","Joey McGinnis I pass complete to Brendan McCullo for 1 yard to the BERRY37 (Gian Traverzo).","play",11
+"20250920_l58t",69,5,2,1,,,,"Carnegie Mellon","Berry",2,9,37,FALSE,"pass_complete",6,,,,,,,,,,,,,,,,,"2nd and 9 at BERRY37","Joey McGinnis I pass complete to Brendan McCullo for 6 yards to the BERRY31 (Cade Petty; Jack Murray).","play",11
+"20250920_l58t",70,6,2,1,,,,"Carnegie Mellon","Berry",3,3,31,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"3rd and 3 at BERRY31","Joey McGinnis I pass incomplete to Brendan McCullo (Gian Traverzo).","play",11
+"20250920_l58t",71,7,2,1,,,,"Carnegie Mellon","Berry",4,3,31,FALSE,"rush",4,,,,,,,,,,,,,,,,,"4th and 3 at BERRY31","Joey McGinnis I rush for 4 yards to the BERRY27 (Dawson Livingst; Gian Traverzo).","play",11
+"20250920_l58t",72,8,2,1,,,,"Carnegie Mellon","Berry",1,10,27,FALSE,"rush",-2,,,,,,,,,,,,,,,,,"1st and 10 at BERRY27","Willem Bouma rush for loss of 2 yards to the BERRY29 (Carver Cole).","play",11
+"20250920_l58t",73,9,2,1,,,,"Carnegie Mellon","Berry",2,12,29,FALSE,"rush",-1,,,,,,,,,,,,,,,,,"2nd and 12 at BERRY29","Joey McGinnis I rush for loss of 1 yard to the BERRY30 (Cade Petty), PENALTY CMU holding (Willem Bouma) 10 yards to the BERRY39, NO PLAY.","play",11
+"20250920_l58t",74,10,2,1,,,,"Carnegie Mellon","Berry",2,22,39,FALSE,"rush",13,,,,,,,,,,,,,,,,,"2nd and 22 at BERRY39","Joey McGinnis I rush for 13 yards to the BERRY26 (Steven Pickett), out-of-bounds, PENALTY CMU chop block 15 yards to the CMU46, NO PLAY.","play",11
+"20250920_l58t",75,11,2,1,,,,"Carnegie Mellon","Berry",2,37,54,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"2nd and 37 at CMU46","Joey McGinnis I pass incomplete to Nick McCullough.","play",11
+"20250920_l58t",76,12,2,1,,,,"Carnegie Mellon","Berry",3,37,54,FALSE,"rush",8,,,,,,,,,,,,,,,,,"3rd and 37 at CMU46","Willem Bouma rush for 8 yards to the BERRY46 (Alex Mincey; Dawson Livingst).","play",11
+"20250920_l58t",77,13,3,2,,,,"Carnegie Mellon","Berry",,,,,"kickoff",,,,,,,,,,,,,,,,,,"","Trey Richards kickoff 63 yards to the CMU02, Nick McCullough return 25 yards to the CMU27 (Zion Gervais; Gabe Bauman).","kickoff",11
+"20250920_l58t",78,1,3,2,,,,"Carnegie Mellon","Berry",1,10,73,FALSE,"rush",3,,,,,,,,,,,,,,,,,"1st and 10 at CMU27","Willem Bouma rush for 3 yards to the CMU30 (Ben Brookshire; Christopher Lew), PENALTY BERRY personal foul 15 yards to the CMU45.","play",12
+"20250920_l58t",79,2,3,2,,,,"Carnegie Mellon","Berry",1,10,55,FALSE,"rush",5,,,,,,,,,,,,,,,,,"1st and 10 at CMU45","Willem Bouma rush for 5 yards to the 50 yardline (Chaz Pope).","play",12
+"20250920_l58t",80,3,3,2,,,,"Carnegie Mellon","Berry",2,5,50,FALSE,"rush",1,,,,,,,,,,,,,,,,,"2nd and 5 at CMU50","Joey McGinnis I rush for 1 yard to the BERRY49 (Carver Cole).","play",12
+"20250920_l58t",81,4,3,2,,,,"Carnegie Mellon","Berry",3,4,49,FALSE,"rush",4,,,,,,,,,,,,,,,,,"3rd and 4 at BERRY49","Joey McGinnis I rush for 4 yards to the BERRY45 (Carver Cole; Chaz Pope).","play",12
+"20250920_l58t",82,5,3,2,,,,"Carnegie Mellon","Berry",1,10,45,FALSE,"pass_complete",45,,,,,,,,,,,,,,,,,"1st and 10 at BERRY45","Joey McGinnis I pass complete to Nick McCullough for 45 yards to the BERRY00, TOUCHDOWN, clock 12:39.","play",12
+"20250920_l58t",83,6,3,2,,,,"Carnegie Mellon","Berry",,,,,"extra_point",,,,,,,,,,,,,,,,,,"","Justin Caputo kick attempt good.","extra_point",12
+"20250920_l58t",84,7,3,2,,,,"Carnegie Mellon","Berry",,,,,"kickoff",,,,,,,,,,,,,,,,,,"","Noah Godhard kickoff 65 yards to the BERRY00, touchback.","kickoff",12
+"20250920_l58t",85,1,3,2,,,,"Berry","Carnegie Mellon",1,10,75,FALSE,"pass_complete",11,,,,,,,,,,,,,,,,,"1st and 10 at BERRY25","Andrew Hunter pass complete to Bryce Herring for 11 yards to the BERRY36 (Victor Ruhland), out-of-bounds.","play",13
+"20250920_l58t",86,2,3,2,,,,"Berry","Carnegie Mellon",1,10,64,FALSE,"rush",9,,,,,,,,,,,,,,,,,"1st and 10 at BERRY36","Andrew Hunter rush for 9 yards to the BERRY45 (Jack Lawson).","play",13
+"20250920_l58t",87,3,3,2,,,,"Berry","Carnegie Mellon",2,1,55,FALSE,"pass_complete",6,,,,,,,,,,,,,,,,,"2nd and 1 at BERRY45","Andrew Hunter pass complete to Colby Sikes for 6 yards to the CMU49 (Tai Mann; Bennett Grace).","play",13
+"20250920_l58t",88,4,3,2,,,,"Berry","Carnegie Mellon",1,10,49,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at CMU49","Andrew Hunter pass incomplete to Cameron Coleman.","play",13
+"20250920_l58t",89,5,3,2,,,,"Berry","Carnegie Mellon",2,10,49,FALSE,"rush",-1,,,,,,,,,,,,,,,,,"2nd and 10 at CMU49","Andrew Hunter rush for loss of 1 yard to the 50 yardline (Bennett Grace).","play",13
+"20250920_l58t",90,6,3,2,,,,"Berry","Carnegie Mellon",3,11,50,FALSE,"pass_complete",13,,,,,,,,,,,,,,,,,"3rd and 11 at BERRY50","Andrew Hunter pass complete to Colby Sikes for 13 yards to the CMU37 (Tai Mann), out-of-bounds, PENALTY BERRY offense pass interference (Juelz Davis) 15 yards to the BERRY35, NO PLAY.","play",13
+"20250920_l58t",91,7,3,2,,,,"Berry","Carnegie Mellon",3,26,65,FALSE,"penalty_no_play",,,,,,,,,,,,,,,,,,"3rd and 26 at BERRY35","PENALTY CMU holding 10 yards to the BERRY45.","penalty_no_play",13
+"20250920_l58t",92,8,3,2,,,,"Berry","Carnegie Mellon",1,10,55,FALSE,"rush",1,,,,,,,,,,,,,,,,,"1st and 10 at BERRY45","Brayden Hardy rush for 1 yard to the BERRY46 (Jack Lawson).","play",13
+"20250920_l58t",93,9,3,2,,,,"Berry","Carnegie Mellon",2,9,54,FALSE,"pass_complete",8,,,,,,,,,,,,,,,,,"2nd and 9 at BERRY46","Andrew Hunter pass complete to Colby Sikes for 8 yards to the CMU46 (Jacob Franze), out-of-bounds.","play",13
+"20250920_l58t",94,10,3,2,,,,"Berry","Carnegie Mellon",3,1,46,FALSE,"rush",1,,,,,,,,,,,,,,,,,"3rd and 1 at CMU46","Brayden Hardy rush for 1 yard to the CMU45 (Jacob Franze; Victor Ruhland).","play",13
+"20250920_l58t",95,11,3,2,,,,"Berry","Carnegie Mellon",1,10,45,FALSE,"sack",-8,,,,,,,,,,,,,,,,,"1st and 10 at CMU45","Andrew Hunter sacked for loss of 8 yards to the BERRY47 (Bennett Grace).","play",13
+"20250920_l58t",96,12,3,2,,,,"Berry","Carnegie Mellon",2,18,53,FALSE,"rush",3,,,,,,,,,,,,,,,,,"2nd and 18 at BERRY47","Andrew Hunter rush for 3 yards to the 50 yardline (Gabe Bonnet).","play",13
+"20250920_l58t",97,13,3,2,,,,"Berry","Carnegie Mellon",3,15,50,FALSE,"rush",11,,,,,,,,,,,,,,,,,"3rd and 15 at BERRY50","Andrew Hunter rush for 11 yards to the CMU39 (Leighton Tarke).","play",13
+"20250920_l58t",98,14,3,2,,,,"Berry","Carnegie Mellon",4,4,39,FALSE,"pass_complete",17,,,,,,,,,,,,,,,,,"4th and 4 at CMU39","Andrew Hunter pass complete to Colby Sikes for 17 yards to the CMU22, out-of-bounds, PENALTY BERRY illegal shift 5 yards to the CMU44, NO PLAY.","play",13
+"20250920_l58t",99,15,3,2,,,,"Berry","Carnegie Mellon",4,9,44,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 9 at CMU44","Miles Hamby punt 44 yards to the CMU00, touchback.","play",13
+"20250920_l58t",100,1,3,2,,,,"Carnegie Mellon","Berry",1,10,80,FALSE,"rush",6,,,,,,,,,,,,,,,,,"1st and 10 at CMU20","Willem Bouma rush for 6 yards to the CMU26 (Gian Traverzo; Will Johnson).","play",14
+"20250920_l58t",101,2,3,2,,,,"Carnegie Mellon","Berry",2,4,74,FALSE,"penalty_no_play",,,,,,,,,,,,,,,,,,"2nd and 4 at CMU26","PENALTY CMU false start 5 yards to the CMU21.","penalty_no_play",14
+"20250920_l58t",102,3,3,2,,,,"Carnegie Mellon","Berry",2,9,79,FALSE,"rush",5,,,,,,,,,,,,,,,,,"2nd and 9 at CMU21","Willem Bouma rush for 5 yards to the CMU26 (Gian Traverzo).","play",14
+"20250920_l58t",103,4,3,2,,,,"Carnegie Mellon","Berry",3,4,74,FALSE,"rush",4,,,,,,,,,,,,,,,,,"3rd and 4 at CMU26","Willem Bouma rush for 4 yards to the CMU30 (Brycen Williams), out-of-bounds.","play",14
+"20250920_l58t",104,5,3,2,,,,"Carnegie Mellon","Berry",1,10,70,FALSE,"rush",2,,,,,,,,,,,,,,,,,"1st and 10 at CMU30","Joey McGinnis I rush for 2 yards to the CMU32 (Will Johnson; Dawson Livingst).","play",14
+"20250920_l58t",105,6,3,2,,,,"Carnegie Mellon","Berry",2,8,68,FALSE,"pass_complete",23,,,,,,,,,,,,,,,,,"2nd and 8 at CMU32","Joey McGinnis I pass complete to Reece Kolke for 23 yards to the BERRY45.","play",14
+"20250920_l58t",106,7,3,2,,,,"Carnegie Mellon","Berry",1,10,45,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at BERRY45","Joey McGinnis I pass incomplete to Nick McCullough.","play",14
+"20250920_l58t",107,8,3,2,,,,"Carnegie Mellon","Berry",2,10,45,FALSE,"rush",4,,,,,,,,,,,,,,,,,"2nd and 10 at BERRY45","Joey McGinnis I rush for 4 yards to the BERRY41 (Buie Crawford).","play",14
+"20250920_l58t",108,9,3,2,,,,"Carnegie Mellon","Berry",3,6,41,FALSE,"rush",-1,,,,,,,,,,,,,,,,,"3rd and 6 at BERRY41","Joey McGinnis I rush for loss of 1 yard to the BERRY42 (Jack Murray; David Attaochu).","play",14
+"20250920_l58t",109,10,3,2,,,,"Carnegie Mellon","Berry",4,7,42,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 7 at BERRY42","John Norell punt 38 yards to the BERRY04, downed.","play",14
+"20250920_l58t",110,1,3,2,,,,"Berry","Carnegie Mellon",1,10,96,FALSE,"rush",4,,,,,,,,,,,,,,,,,"1st and 10 at BERRY04","Andrew Hunter rush for 4 yards to the BERRY08 (Victor Ruhland).","play",15
+"20250920_l58t",111,2,4,2,,,,"Berry","Carnegie Mellon",2,6,92,FALSE,"rush",11,,,,,,,,,,,,,,,,,"2nd and 6 at BERRY08","Colby Sikes rush for 11 yards to the BERRY19 (Avery Campbell; Bennett Grace).","play",15
+"20250920_l58t",112,3,4,2,,,,"Berry","Carnegie Mellon",1,10,81,FALSE,"pass_complete",5,,,,,,,,,,,,,,,,,"1st and 10 at BERRY19","Andrew Hunter pass complete to Colby Sikes for 5 yards to the BERRY24 (Connor Warren), out-of-bounds.","play",15
+"20250920_l58t",113,4,4,2,,,,"Berry","Carnegie Mellon",2,5,76,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"2nd and 5 at BERRY24","Andrew Hunter pass incomplete (Mitchell Stokey).","play",15
+"20250920_l58t",114,5,4,2,,,,"Berry","Carnegie Mellon",3,5,76,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"3rd and 5 at BERRY24","Andrew Hunter pass incomplete to Brayden Hardy, QB hurry by Amani Tchamwa.","play",15
+"20250920_l58t",115,6,4,2,,,,"Berry","Carnegie Mellon",4,5,76,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 5 at BERRY24","Miles Hamby punt 43 yards to the CMU33, out-of-bounds.","play",15
+"20250920_l58t",116,1,4,2,,,,"Carnegie Mellon","Berry",1,10,67,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at CMU33","Joey McGinnis I pass incomplete to Reece Kolke, dropped pass.","play",16
+"20250920_l58t",117,2,4,2,,,,"Carnegie Mellon","Berry",2,10,67,FALSE,"pass_complete",8,,,,,,,,,,,,,,,,,"2nd and 10 at CMU33","Joey McGinnis I pass complete to Brendan McCullo for 8 yards to the CMU41 (Jaden Melville).","play",16
+"20250920_l58t",118,3,4,2,,,,"Carnegie Mellon","Berry",3,2,59,FALSE,"rush",9,,,,,,,,,,,,,,,,,"3rd and 2 at CMU41","Joey McGinnis I rush for 9 yards to the 50 yardline (Will Johnson).","play",16
+"20250920_l58t",119,4,4,2,,,,"Carnegie Mellon","Berry",1,10,50,FALSE,"rush",-3,,,,,,,,,,,,,,,,,"1st and 10 at CMU50","Willem Bouma rush for loss of 3 yards to the CMU47 (Dawson Livingst; Michael Clark).","play",16
+"20250920_l58t",120,5,4,2,,,,"Carnegie Mellon","Berry",2,13,53,FALSE,"pass_intercepted",,,,,,,,,,,,,,,,,,"2nd and 13 at CMU47","Joey McGinnis I pass intercepted by Chaz Pope at the BERRY36, Chaz Pope return 12 yards to the BERRY48 (Takashi Shaw; Charlie Katarin).","play",16
+"20250920_l58t",121,1,4,2,,,,"Berry","Carnegie Mellon",1,10,52,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at BERRY48","Andrew Hunter pass incomplete (Bennett Grace).","play",17
+"20250920_l58t",122,2,4,2,,,,"Berry","Carnegie Mellon",2,10,52,FALSE,"rush",20,,,,,,,,,,,,,,,,,"2nd and 10 at BERRY48","Andrew Hunter rush for 20 yards to the CMU32 (Victor Ruhland; Ethan Ming).","play",17
+"20250920_l58t",123,3,4,2,,,,"Berry","Carnegie Mellon",1,10,32,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at CMU32","Andrew Hunter pass incomplete to Hunter Coleman (Leighton Tarke).","play",17
+"20250920_l58t",124,4,4,2,,,,"Berry","Carnegie Mellon",2,10,32,FALSE,"rush",3,,,,,,,,,,,,,,,,,"2nd and 10 at CMU32","Andrew Hunter rush for 3 yards to the CMU29 (Jacob Franze; Grayson Metz).","play",17
+"20250920_l58t",125,5,4,2,,,,"Berry","Carnegie Mellon",3,7,29,FALSE,"penalty_no_play",,,,,,,,,,,,,,,,,,"3rd and 7 at CMU29","PENALTY BERRY false start 5 yards to the CMU34.","penalty_no_play",17
+"20250920_l58t",126,6,4,2,,,,"Berry","Carnegie Mellon",3,12,34,FALSE,"rush",6,,,,,,,,,,,,,,,,,"3rd and 12 at CMU34","Andrew Hunter rush for 6 yards to the CMU28 (Bennett Grace; Jack Lawson).","play",17
+"20250920_l58t",127,7,4,2,,,,"Berry","Carnegie Mellon",4,6,28,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"4th and 6 at CMU28","Andrew Hunter pass incomplete to Bryce Herring.","play",17
+"20250920_l58t",128,1,4,2,,,,"Carnegie Mellon","Berry",1,10,72,FALSE,"rush",3,,,,,,,,,,,,,,,,,"1st and 10 at CMU28","Willem Bouma rush for 3 yards to the CMU31 (Alex Mincey), PENALTY CMU holding (Conor Gaul) 10 yards to the CMU18, NO PLAY.","play",18
+"20250920_l58t",129,2,4,2,,,,"Carnegie Mellon","Berry",1,20,82,FALSE,"rush",-2,,,,,,,,,,,,,,,,,"1st and 20 at CMU18","Willem Bouma rush for loss of 2 yards to the CMU16 (Alex Mincey).","play",18
+"20250920_l58t",130,3,4,2,,,,"Carnegie Mellon","Berry",2,22,84,FALSE,"rush",5,,,,,,,,,,,,,,,,,"2nd and 22 at CMU16","Joey McGinnis I rush for 5 yards to the CMU21 (Carver Cole; Cade Petty).","play",18
+"20250920_l58t",131,4,4,2,,,,"Carnegie Mellon","Berry",3,17,79,FALSE,"rush",3,,,,,,,,,,,,,,,,,"3rd and 17 at CMU21","Willem Bouma rush for 3 yards to the CMU24 (Carver Cole).","play",18
+"20250920_l58t",132,5,4,2,,,,"Carnegie Mellon","Berry",4,14,76,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 14 at CMU24","John Norell punt 30 yards to the BERRY46, fair catch by Nate Lyons, PENALTY BERRY personal foul 15 yards to the CMU39, NO PLAY.","play",18
+"20250920_l58t",133,1,4,2,,,,"Carnegie Mellon","Berry",1,10,61,FALSE,"rush",1,,,,,,,,,,,,,,,,,"1st and 10 at CMU39","Willem Bouma rush for 1 yard to the CMU40 (Gian Traverzo; Michael Clark).","play",19
+"20250920_l58t",134,2,4,2,,,,"Carnegie Mellon","Berry",2,9,60,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"2nd and 9 at CMU40","Joey McGinnis I pass incomplete to Reece Kolke (Steven Pickett).","play",19
+"20250920_l58t",135,3,4,2,,,,"Carnegie Mellon","Berry",3,9,60,FALSE,"rush",25,,,,,,,,,,,,,,,,,"3rd and 9 at CMU40","Willem Bouma rush for 25 yards to the BERRY35 (Jack Murray), out-of-bounds.","play",19
+"20250920_l58t",136,4,4,2,,,,"Carnegie Mellon","Berry",1,10,35,FALSE,"rush",-3,,,,,,,,,,,,,,,,,"1st and 10 at BERRY35","Joey McGinnis I rush for loss of 3 yards to the BERRY38 (Brycen Williams; Cade Petty).","play",19
+"20250920_l58t",137,5,4,2,,,,"Carnegie Mellon","Berry",2,13,38,FALSE,"rush",2,,,,,,,,,,,,,,,,,"2nd and 13 at BERRY38","Willem Bouma rush for 2 yards to the BERRY36 (Carver Cole).","play",19
+"20250920_l58t",138,6,4,2,,,,"Carnegie Mellon","Berry",3,11,36,FALSE,"rush",-1,,,,,,,,,,,,,,,,,"3rd and 11 at BERRY36","Willem Bouma rush for loss of 1 yard to the BERRY37 (Will Johnson).","play",19
+"20250920_l58t",139,7,4,2,,,,"Carnegie Mellon","Berry",4,12,37,FALSE,"punt_no_return",,,,,,,,,,,,,,,,,,"4th and 12 at BERRY37","John Norell punt 25 yards to the BERRY12, fair catch by Nate Lyons.","play",19
+"20250920_l58t",140,1,4,2,,,,"Berry","Carnegie Mellon",1,10,88,FALSE,"rush",3,,,,,,,,,,,,,,,,,"1st and 10 at BERRY12","Brayden Hardy rush for 3 yards to the BERRY15 (Amani Tchamwa; Connor Warren).","play",20
+"20250920_l58t",141,2,4,2,,,,"Berry","Carnegie Mellon",2,7,85,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"2nd and 7 at BERRY15","Andrew Hunter pass incomplete to Colby Sikes.","play",20
+"20250920_l58t",142,3,4,2,,,,"Berry","Carnegie Mellon",3,7,85,FALSE,"penalty_no_play",,,,,,,,,,,,,,,,,,"3rd and 7 at BERRY15","PENALTY BERRY false start (Bryson Hill) 5 yards to the BERRY10.","penalty_no_play",20
+"20250920_l58t",143,4,4,2,,,,"Berry","Carnegie Mellon",3,12,90,FALSE,"pass_complete",15,,,,,,,,,,,,,,,,,"3rd and 12 at BERRY10","Andrew Hunter pass complete to Brendan Gray for 15 yards to the BERRY25 (Gabe Bonnet).","play",20
+"20250920_l58t",144,5,4,2,,,,"Berry","Carnegie Mellon",1,10,75,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at BERRY25","Andrew Hunter pass incomplete to Bryce Herring.","play",20
+"20250920_l58t",145,6,4,2,,,,"Berry","Carnegie Mellon",2,10,75,FALSE,"sack",-7,,,,,,,,,,,,,,,,,"2nd and 10 at BERRY25","Andrew Hunter sacked for loss of 7 yards to the BERRY18 (Mitchell Stokey).","play",20
+"20250920_l58t",146,7,4,2,,,,"Berry","Carnegie Mellon",3,17,82,FALSE,"pass_complete",6,,,,,,,,,,,,,,,,,"3rd and 17 at BERRY18","Andrew Hunter pass complete to Brayden Hardy for 6 yards to the BERRY24.","play",20
+"20250920_l58t",147,8,4,2,,,,"Berry","Carnegie Mellon",4,11,76,FALSE,"pass_complete",26,,,,,,,,,,,,,,,,,"4th and 11 at BERRY24","Andrew Hunter pass complete to Brendan Gray for 26 yards to the 50 yardline (Jack Lawson; Bennett Grace).","play",20
+"20250920_l58t",148,9,4,2,,,,"Berry","Carnegie Mellon",1,10,50,FALSE,"pass_incomplete",0,,,,,,,,,,,,,,,,,"1st and 10 at BERRY50","Andrew Hunter pass incomplete to Khamari Smith, PENALTY CMU pass interference (Victor Ruhland) 15 yards to the CMU35, NO PLAY.","play",20
+"20250920_l58t",149,10,4,2,,,,"Berry","Carnegie Mellon",1,10,35,FALSE,"pass_complete",16,,,,,,,,,,,,,,,,,"1st and 10 at CMU35","Andrew Hunter pass complete to Nate Lyons for 16 yards to the CMU19 (Ethan Ming), out-of-bounds.","play",20
+"20250920_l58t",150,11,4,2,,,,"Berry","Carnegie Mellon",1,10,19,FALSE,"pass_complete",19,,,,,,,,,,,,,,,,,"1st and 10 at CMU19","Andrew Hunter pass complete to Brendan Gray for 19 yards to the CMU00, TOUCHDOWN, clock 00:53.","play",20
+"20250920_l58t",151,12,4,2,,,,"Berry","Carnegie Mellon",,,,,"two_point",,,,,,,,,,,,,,,,,,"","Nate Lyons pass attempt to TEAM failed, PENALTY BERRY ineligible man down field declined.","two_point",20
+"20250920_l58t",152,13,4,2,,,,"Berry","Carnegie Mellon",,,,,"kickoff",,,,,,,,,,,,,,,,,,"","Trey Richards kickoff 14 yards to the BERRY49, Nick McCullough return 0 yards to the BERRY49.","kickoff",20
+"20250920_l58t",153,1,4,2,,,,"Carnegie Mellon","Berry",1,10,49,FALSE,"rush",-1,,,,,,,,,,,,,,,,,"1st and 10 at BERRY49","TEAM rush for loss of 1 yard to the 50 yardline.","play",21
+"20250920_l58t",154,2,4,2,,,,"Carnegie Mellon","Berry",2,11,50,FALSE,"rush",-1,,,,,,,,,,,,,,,,,"2nd and 11 at CMU50","TEAM rush for loss of 1 yard to the CMU49.","play",21

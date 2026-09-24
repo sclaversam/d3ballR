@@ -109,6 +109,39 @@ derive_possession <- function(classified) {
   tidyr::fill(classified, "possession", .direction = "down")
 }
 
+#' Number drives from drive-marker and drive-footer rows
+#'
+#' d3's drive markers are noisy: a drive usually opens with a
+#' `drive_header` ("TEAM at MM:SS") plus a `drive_start` ("TEAM drive start
+#' at MM:SS."), but the pair isn't always complete, and `drive_start` is
+#' sometimes restated mid-drive (after a spot correction or penalty). The
+#' reliable boundary is the `drive_footer` ("N plays, N yards, MM:SS
+#' elapsed") that closes every drive. So a new drive begins at the FIRST
+#' drive marker after a footer (or the first marker of the game); later
+#' markers before the next footer are restatements of the same drive.
+#'
+#' Rows between a footer and the next marker -- the kickoff after a score
+#' -- keep the previous drive's id, the same way they keep its possession.
+#' The opening kickoff comes before any drive, so its `drive_id` is NA.
+#'
+#' @param classified A classified tibble, full row set.
+#' @return `classified` with an added integer `drive_id` column.
+#' @keywords internal
+derive_drive_id <- function(classified) {
+  is_marker <- classified$row_type %in% c("drive_header", "drive_start")
+  is_footer <- classified$row_type == "drive_footer"
+  # footers seen before each row; a marker opens a drive if no marker has
+  # appeared since the most recent footer
+  footers_before <- cumsum(is_footer)
+  marker_rows <- which(is_marker)
+  opens <- !duplicated(footers_before[marker_rows])
+  boundary <- logical(nrow(classified))
+  boundary[marker_rows[opens]] <- TRUE
+  drive_id <- cumsum(boundary)
+  classified$drive_id <- ifelse(drive_id == 0L, NA_integer_, drive_id)
+  classified
+}
+
 #' Row types CMU logs as plays -- the set this table keeps
 #' @keywords internal
 kept_row_types <- c("play", "kickoff", "extra_point", "two_point", "penalty_no_play")
@@ -285,24 +318,55 @@ parse_yards_gained <- function(play_text, play_type, row_type) {
   )
 }
 
+#' Placeholder columns for Task 3
+#'
+#' Outcome-flag, penalty, and clock columns in the target schema that aren't
+#' extracted yet. All are NA (of the right type) so an unpopulated value
+#' can't be mistaken for a real FALSE.
+#' @keywords internal
+placeholder_cols <- list(
+  clock_known = NA_character_, clock_prev_known = NA_character_,
+  clock_next_known = NA_character_,
+  rush = NA, pass = NA, completion = NA, sack = NA, int = NA,
+  fumble_vec = NA, turnover = NA, downs_turnover = NA, touchdown = NA,
+  safety = NA, penalty_flag = NA, penalty_yards_signed = NA_integer_,
+  penalized_team = NA_character_, penalty_no_play = NA,
+  penalty_declined = NA, penalty_text = NA_character_
+)
+
+#' Target schema column order (36 columns)
+#'
+#' cfbfastR-aligned. See `analysis/pbp_schema_and_build_plan.md` for the
+#' definition of each column and `analysis/pbp_schema.md` for its data
+#' dictionary.
+#' @keywords internal
+pbp_columns <- c(
+  "game_id", "play_index", "drive_play_number", "period", "half",
+  "clock_known", "clock_prev_known", "clock_next_known",
+  "pos_team", "def_pos_team", "down", "distance", "yards_to_goal",
+  "Goal_To_Go", "play_type", "yards_gained",
+  "rush", "pass", "completion", "sack", "int", "fumble_vec", "turnover",
+  "downs_turnover", "touchdown", "safety",
+  "penalty_flag", "penalty_yards_signed", "penalized_team",
+  "penalty_no_play", "penalty_declined", "penalty_text",
+  "situation", "play_text", "row_type", "drive_id"
+)
+
 #' Build one game's play-by-play table
 #'
-#' Own schema (not CMU's exact columns yet): keeps only the row types CMU
-#' logs (`play`, `kickoff`, `extra_point`, `two_point`, `penalty_no_play`),
-#' after using the dropped administrative rows to derive `quarter` and
-#' `possession`. See `R/classify.R` and `R/parse_play_type.R` for the
-#' upstream row_type/play_type classification this builds on.
-#'
-#' Not built yet (deliberately, per CLAUDE.md's ordering): signed
-#' `field_pos`, penalty columns (`has_penalty`/`penalty_yards`/
-#' `penalty_text`), or CMU's exact column names/values. This pass is about
-#' completeness and row-count correctness.
+#' Keeps only the row types CMU logs (`play`, `kickoff`, `extra_point`,
+#' `two_point`, `penalty_no_play`), after using the dropped administrative
+#' rows to derive `period`, `pos_team`, and `drive_id`. Emits the 36-column
+#' cfbfastR-aligned schema in `pbp_columns`. The outcome-flag, penalty, and
+#' clock columns are NA placeholders until Task 3 populates them. See
+#' `R/classify.R` and `R/parse_play_type.R` for the upstream row_type/
+#' play_type classification this builds on.
 #'
 #' @param game_url Boxscore URL without the `?view=` suffix.
-#' @return A tibble, one row per kept play, columns: `game_id`, `opponent`,
-#'   `play_index`, `quarter`, `possession`, `row_type`, `down`, `distance`,
-#'   `Goal_To_Go`, `yard_side`, `yard_num`, `play_type`, `yards_gained`,
-#'   `situation`, `play`.
+#' @return A tibble, one row per kept play, with the columns in
+#'   `pbp_columns`. The CMU opponent name is attached as
+#'   `attr(, "opponent")` (used by [build_all_pbp()]'s count summary; it's
+#'   not a column, to keep the schema team-agnostic).
 #' @export
 build_pbp <- function(game_url) {
   game <- fetch_game(game_url)
@@ -310,25 +374,35 @@ build_pbp <- function(game_url) {
   classified <- classify_plays(game$plays)
   classified <- derive_quarter(classified)
   classified <- derive_possession(classified)
+  classified <- derive_drive_id(classified)
   classified <- parse_play_type(classified)
 
   kept <- classified[classified$row_type %in% kept_row_types, ]
   kept$play_type <- ifelse(kept$row_type == "play", kept$play_type, kept$row_type)
-  kept <- parse_situation(kept)
   kept$pos_team <- kept$possession
+  kept <- parse_situation(kept)
   kept$yards_to_goal <- compute_yards_to_goal(kept, infer_own_side(kept))
   kept <- derive_goal_to_go(kept)
   kept$yards_gained <- parse_yards_gained(kept$play, kept$play_type, kept$row_type)
 
-  kept$game_id <- game$game_id
-  kept$opponent <- game$opponent
-  kept$play_index <- seq_len(nrow(kept))
+  teams <- unique(stats::na.omit(kept$pos_team))
+  kept$def_pos_team <- ifelse(is.na(kept$pos_team), NA_character_,
+                              ifelse(kept$pos_team == teams[1], teams[2], teams[1]))
 
-  kept[, c(
-    "game_id", "opponent", "play_index", "quarter", "possession", "row_type",
-    "down", "distance", "Goal_To_Go", "yard_side", "yard_num", "play_type",
-    "yards_gained", "situation", "play"
-  )]
+  kept$period <- as.integer(kept$quarter)
+  kept$half <- dplyr::case_when(kept$period %in% 1:2 ~ 1L, kept$period %in% 3:4 ~ 2L,
+                                TRUE ~ NA_integer_)
+  kept$drive_play_number <- ifelse(is.na(kept$drive_id), NA_integer_,
+                                   stats::ave(seq_len(nrow(kept)), kept$drive_id, FUN = seq_along))
+
+  kept$game_id <- game$game_id
+  kept$play_index <- seq_len(nrow(kept))
+  kept$play_text <- kept$play
+  for (col in names(placeholder_cols)) kept[[col]] <- placeholder_cols[[col]]
+
+  out <- kept[, pbp_columns]
+  attr(out, "opponent") <- game$opponent
+  out
 }
 
 #' Build and write every game's play-by-play table
@@ -347,7 +421,7 @@ build_all_pbp <- function(game_urls, out_dir = "analysis/pbp") {
   games <- lapply(game_urls, build_pbp)
 
   counts <- dplyr::bind_rows(lapply(games, function(g) {
-    tibble::tibble(game_id = g$game_id[1], opponent = g$opponent[1], n_rows = nrow(g))
+    tibble::tibble(game_id = g$game_id[1], opponent = attr(g, "opponent"), n_rows = nrow(g))
   }))
 
   for (g in games) {
