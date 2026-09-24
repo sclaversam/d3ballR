@@ -1,4 +1,4 @@
-"game_id","opponent","play_index","quarter","possession","row_type","down","distance","goal_to_go","yard_side","yard_num","play_type","yards_gained","situation","play"
+"game_id","opponent","play_index","quarter","possession","row_type","down","distance","Goal_To_Go","yard_side","yard_num","play_type","yards_gained","situation","play"
 "20251018_uxv5","Gettysburg",1,"1",,"kickoff",,,,,,"kickoff",,"","Nolan Kruse kickoff 37 yards to the CMU28, Brendan McCullo return 5 yards to the CMU33 (Kevin Regula)."
 "20251018_uxv5","Gettysburg",2,"1","Carnegie Mellon","play",1,10,FALSE,"CMU",33,"rush",1,"1st and 10 at CMU33","Giacomo Valente rush for 1 yard to the CMU34 (Brandon Wu)."
 "20251018_uxv5","Gettysburg",3,"1","Carnegie Mellon","play",2,9,FALSE,"CMU",34,"rush",5,"2nd and 9 at CMU34","Giacomo Valente rush for 5 yards to the CMU39 (Zach Chostaka; Danny Breheney)."

@@ -1,4 +1,4 @@
-"game_id","opponent","play_index","quarter","possession","row_type","down","distance","goal_to_go","yard_side","yard_num","play_type","yards_gained","situation","play"
+"game_id","opponent","play_index","quarter","possession","row_type","down","distance","Goal_To_Go","yard_side","yard_num","play_type","yards_gained","situation","play"
 "20251108_3ubg","Franklin and Marshall",1,"1",,"kickoff",,,,,,"kickoff",,"","Noah Godhard kickoff 65 yards to the F&M00, touchback."
 "20251108_3ubg","Franklin and Marshall",2,"1","Franklin & Marshall","play",1,10,FALSE,"F&M",25,"rush",1,"1st and 10 at F&M25","Louis Paris rush for 1 yard to the F&M26 (Lucas Hazard; Leighton Tarke)."
 "20251108_3ubg","Franklin and Marshall",3,"1","Franklin & Marshall","play",2,9,FALSE,"F&M",26,"pass_complete",18,"2nd and 9 at F&M26","Ty Tremba pass complete to Jack Harrison for 18 yards to the F&M44 (Jack Lawson; Barrett Schmitz)."

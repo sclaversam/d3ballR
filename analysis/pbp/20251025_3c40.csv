@@ -1,4 +1,4 @@
-"game_id","opponent","play_index","quarter","possession","row_type","down","distance","goal_to_go","yard_side","yard_num","play_type","yards_gained","situation","play"
+"game_id","opponent","play_index","quarter","possession","row_type","down","distance","Goal_To_Go","yard_side","yard_num","play_type","yards_gained","situation","play"
 "20251025_3c40","Muhlenberg",1,"1",,"kickoff",,,,,,"kickoff",,"","Nicholas D'Amic kickoff 65 yards to the CMU00, DJ Johnson return 23 yards to the CMU23 (Isaac Schaffer-; John Roeder)."
 "20251025_3c40","Muhlenberg",2,"1","Carnegie Mellon","play",1,10,FALSE,"CMU",23,"rush",6,"1st and 10 at CMU23","Giacomo Valente rush for 6 yards to the CMU29 (Jake Saus)."
 "20251025_3c40","Muhlenberg",3,"1","Carnegie Mellon","play",2,4,FALSE,"CMU",29,"rush",0,"2nd and 4 at CMU29","Joey McGinnis I rush for no gain to the CMU29 (Vincent Rispoli)."

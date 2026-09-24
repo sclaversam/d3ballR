@@ -121,15 +121,18 @@ kept_row_types <- c("play", "kickoff", "extra_point", "two_point", "penalty_no_p
 #' @keywords internal
 situation_pattern <- "^([1-4])(?:st|nd|rd|th)\\s+and\\s+(Goal|\\d+)\\s+at\\s+([A-Za-z&]*)\\s*(\\d+)$"
 
-#' Parse down, distance, goal_to_go, yard_side, yard_num from `situation`
+#' Parse down, distance, yard_side, yard_num from `situation`
 #'
-#' Blank `situation` (kickoffs, PATs, two-point tries) yields NA in all five
+#' Blank `situation` (kickoffs, PATs, two-point tries) yields NA in all four
 #' fields, matching how CMU logs those event types with no down/distance/
-#' field position.
+#' field position. `distance` for an "and Goal" situation is filled in later
+#' by [derive_goal_to_go()], once we know which side of the field the
+#' offense is on.
 #'
 #' @param df A tibble with a `situation` column.
-#' @return `df` with `down` (integer), `distance` (integer), `goal_to_go`
-#'   (logical), `yard_side` (character), `yard_num` (integer) added.
+#' @return `df` with `down` (integer), `distance` (integer, NA on "and
+#'   Goal" for now), `distance_is_goal` (logical, the literal "and Goal"
+#'   text), `yard_side` (character), `yard_num` (integer) added.
 #' @keywords internal
 parse_situation <- function(df) {
   m <- stringr::str_match(df$situation, stringr::regex(situation_pattern, ignore_case = TRUE))
@@ -137,19 +140,100 @@ parse_situation <- function(df) {
   distance_raw <- m[, 3]
   yard_side <- m[, 4]
   yard_side <- ifelse(is.na(yard_side) | nchar(trimws(yard_side)) == 0, NA_character_, yard_side)
-  yard_num <- suppressWarnings(as.integer(m[, 5]))
-  goal_to_go <- ifelse(is.na(down), NA, tolower(distance_raw) == "goal")
-  # For "and Goal", distance-to-go is the distance to the goal line, which is
-  # exactly yard_num in every real goal-to-go situation (you can only be
-  # goal-to-go deep in the opponent's territory). Otherwise it's the parsed
-  # digit.
-  distance <- ifelse(goal_to_go %in% TRUE, yard_num, suppressWarnings(as.integer(distance_raw)))
 
   df$down <- down
-  df$distance <- distance
-  df$goal_to_go <- goal_to_go
+  df$distance <- suppressWarnings(as.integer(distance_raw))
+  df$distance_is_goal <- ifelse(is.na(down), NA, tolower(distance_raw) == "goal")
   df$yard_side <- yard_side
-  df$yard_num <- yard_num
+  df$yard_num <- suppressWarnings(as.integer(m[, 5]))
+  df
+}
+
+#' Infer which yardline token is each team's own side of the field
+#'
+#' The situation column writes yardlines with a short team token ("UC 25",
+#' "CMU35"), but possession is a team *name* ("UChicago"), and the page
+#' never states which token belongs to which name. So infer it from the
+#' data: on consecutive snaps by the same offense on the same token, the
+#' yard number goes UP when that token is the offense's own side (moving
+#' away from its own goal) and DOWN when it's the opponent's side. Gains
+#' far outnumber losses, so a vote over the whole game is decisive.
+#'
+#' Scores the two possible pairings (team 1 owns token 1, or team 1 owns
+#' token 2) and keeps the one with more agreeing votes. Stops if the game
+#' doesn't have exactly two teams and two tokens, or if the vote is too
+#' close to trust.
+#'
+#' @param df Kept rows with `pos_team`, `yard_side`, `yard_num`.
+#' @return Named character vector: names are the two `pos_team` values,
+#'   values are that team's own-side token.
+#' @keywords internal
+infer_own_side <- function(df) {
+  teams <- sort(unique(stats::na.omit(df$pos_team)))
+  tokens <- sort(unique(stats::na.omit(df$yard_side)))
+  if (length(teams) != 2 || length(tokens) != 2) {
+    stop("Expected 2 teams and 2 yardline tokens, got teams: ",
+         paste(teams, collapse = " / "), "; tokens: ", paste(tokens, collapse = " / "))
+  }
+
+  n <- nrow(df)
+  same <- df$pos_team[-1] == df$pos_team[-n] & df$yard_side[-1] == df$yard_side[-n]
+  step <- df$yard_num[-1] - df$yard_num[-n]
+  ok <- same %in% TRUE & !is.na(step) & step != 0
+  team <- df$pos_team[-n][ok]
+  token <- df$yard_side[-n][ok]
+  up <- step[ok] > 0
+
+  # votes for pairing A: teams[1] owns tokens[1], teams[2] owns tokens[2]
+  own_a <- ifelse(team == teams[1], tokens[1], tokens[2])
+  agree_a <- sum((token == own_a) == up)
+  agree_b <- sum((token != own_a) == up)
+  if (max(agree_a, agree_b) < 2 * min(agree_a, agree_b)) {
+    stop("Yardline side vote too close to call (", agree_a, " vs ", agree_b, ").")
+  }
+  if (agree_a >= agree_b) stats::setNames(tokens, teams) else stats::setNames(rev(tokens), teams)
+}
+
+#' Compute yards_to_goal from the yardline and the possessing team's side
+#'
+#' Own 25 -> 75, opponent 25 -> 25, bare midfield "at 50" -> 50. NA when
+#' there's no situation or no `pos_team`.
+#'
+#' @param df Kept rows with `pos_team`, `yard_side`, `yard_num`.
+#' @param own_side Output of [infer_own_side()].
+#' @return Integer vector.
+#' @keywords internal
+compute_yards_to_goal <- function(df, own_side) {
+  own_token <- unname(own_side[df$pos_team])
+  ytg <- dplyr::case_when(
+    is.na(df$pos_team) | is.na(df$yard_num) ~ NA_integer_,
+    is.na(df$yard_side) & df$yard_num == 50L ~ 50L,
+    df$yard_side == own_token ~ 100L - df$yard_num,
+    df$yard_side != own_token ~ df$yard_num,
+    TRUE ~ NA_integer_
+  )
+  as.integer(ytg)
+}
+
+#' Flag goal-to-go situations and fill their distance
+#'
+#' Goal-to-go means the line to gain is the goal line. d3's StatCrew text
+#' writes that two ways: literally ("1st and Goal at CMU06"), and as a
+#' number that happens to equal the distance to the goal ("1st and 4 at
+#' UC 4", "1st and 1 at UC 1"). Both are goal-to-go, so `Goal_To_Go` is
+#' TRUE when the text says "Goal" OR `distance == yards_to_goal`. For the
+#' literal "and Goal" rows, `distance` is set to `yards_to_goal`.
+#'
+#' @param df Kept rows after [parse_situation()], with `yards_to_goal`.
+#' @return `df` with `Goal_To_Go` (logical; NA where there's no down) and
+#'   `distance` filled on "and Goal" rows. Drops `distance_is_goal`.
+#' @keywords internal
+derive_goal_to_go <- function(df) {
+  literal <- df$distance_is_goal %in% TRUE
+  df$distance <- ifelse(literal, df$yards_to_goal, df$distance)
+  numeric_goal <- !is.na(df$distance) & !is.na(df$yards_to_goal) & df$distance == df$yards_to_goal
+  df$Goal_To_Go <- ifelse(is.na(df$down), NA, literal | numeric_goal)
+  df$distance_is_goal <- NULL
   df
 }
 
@@ -217,7 +301,7 @@ parse_yards_gained <- function(play_text, play_type, row_type) {
 #' @param game_url Boxscore URL without the `?view=` suffix.
 #' @return A tibble, one row per kept play, columns: `game_id`, `opponent`,
 #'   `play_index`, `quarter`, `possession`, `row_type`, `down`, `distance`,
-#'   `goal_to_go`, `yard_side`, `yard_num`, `play_type`, `yards_gained`,
+#'   `Goal_To_Go`, `yard_side`, `yard_num`, `play_type`, `yards_gained`,
 #'   `situation`, `play`.
 #' @export
 build_pbp <- function(game_url) {
@@ -231,6 +315,9 @@ build_pbp <- function(game_url) {
   kept <- classified[classified$row_type %in% kept_row_types, ]
   kept$play_type <- ifelse(kept$row_type == "play", kept$play_type, kept$row_type)
   kept <- parse_situation(kept)
+  kept$pos_team <- kept$possession
+  kept$yards_to_goal <- compute_yards_to_goal(kept, infer_own_side(kept))
+  kept <- derive_goal_to_go(kept)
   kept$yards_gained <- parse_yards_gained(kept$play, kept$play_type, kept$row_type)
 
   kept$game_id <- game$game_id
@@ -239,7 +326,7 @@ build_pbp <- function(game_url) {
 
   kept[, c(
     "game_id", "opponent", "play_index", "quarter", "possession", "row_type",
-    "down", "distance", "goal_to_go", "yard_side", "yard_num", "play_type",
+    "down", "distance", "Goal_To_Go", "yard_side", "yard_num", "play_type",
     "yards_gained", "situation", "play"
   )]
 }

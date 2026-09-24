@@ -1,4 +1,4 @@
-"game_id","opponent","play_index","quarter","possession","row_type","down","distance","goal_to_go","yard_side","yard_num","play_type","yards_gained","situation","play"
+"game_id","opponent","play_index","quarter","possession","row_type","down","distance","Goal_To_Go","yard_side","yard_num","play_type","yards_gained","situation","play"
 "20251004_gwn0","McDaniel",1,"1",,"kickoff",,,,,,"kickoff",,"","Noah Godhard kickoff 65 yards to the MCD00, touchback."
 "20251004_gwn0","McDaniel",2,"1","McDaniel","play",1,10,FALSE,"MCD",25,"rush",6,"1st and 10 at MCD25","Cordae James rush for 6 yards to the MCD31 (Lucas Hazard; Ethan Ming)."
 "20251004_gwn0","McDaniel",3,"1","McDaniel","play",2,4,FALSE,"MCD",31,"rush",-1,"2nd and 4 at MCD31","Cordae James rush for loss of 1 yard to the MCD30 (Amani Tchamwa; Leighton Tarke)."

@@ -1,4 +1,4 @@
-"game_id","opponent","play_index","quarter","possession","row_type","down","distance","goal_to_go","yard_side","yard_num","play_type","yards_gained","situation","play"
+"game_id","opponent","play_index","quarter","possession","row_type","down","distance","Goal_To_Go","yard_side","yard_num","play_type","yards_gained","situation","play"
 "20251122_xsab","Misericordia",1,"1",,"kickoff",,,,,,"kickoff",,"","Derek Infante kickoff 38 yards to the CMU27, Ty Kadur return 8 yards to the CMU35 (Logan Tierney; Malcolm Roy)."
 "20251122_xsab","Misericordia",2,"1","Carnegie Mellon","play",1,10,FALSE,"CMU",35,"pass_complete",14,"1st and 10 at CMU35","Jackson Salters pass complete to Brendan McCullo for 14 yards to the CMU49 (Keith Henry; Owen Norman)."
 "20251122_xsab","Misericordia",3,"1","Carnegie Mellon","play",1,10,FALSE,"CMU",49,"rush",2,"1st and 10 at CMU49","Giacomo Valente rush for 2 yards to the MIS49 (Owen Norman; Gavin Morris)."

@@ -1,4 +1,4 @@
-"game_id","opponent","play_index","quarter","possession","row_type","down","distance","goal_to_go","yard_side","yard_num","play_type","yards_gained","situation","play"
+"game_id","opponent","play_index","quarter","possession","row_type","down","distance","Goal_To_Go","yard_side","yard_num","play_type","yards_gained","situation","play"
 "20251115_h3wh","Ursinus",1,"1",,"kickoff",,,,,,"kickoff",,"","Godhard,Noah kickoff 65 yards to the UCB00, Touchback."
 "20251115_h3wh","Ursinus",2,"1","Ursinus","play",1,10,FALSE,"UCB",25,"pass_incomplete",0,"1st and 10 at UCB25","No Huddle-Shotgun Machado,Tristan pass incomplete deep middle to Zulkowski,Ryder thrown to CMU40."
 "20251115_h3wh","Ursinus",3,"1","Ursinus","play",2,10,FALSE,"UCB",25,"rush",2,"2nd and 10 at UCB25","No Huddle-Shotgun Louis,Jaden rush middle for 2 yards gain to the UCB27 (Tarke,Leighton; Hazard,Lucas)."

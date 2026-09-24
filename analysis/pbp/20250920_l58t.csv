@@ -1,4 +1,4 @@
-"game_id","opponent","play_index","quarter","possession","row_type","down","distance","goal_to_go","yard_side","yard_num","play_type","yards_gained","situation","play"
+"game_id","opponent","play_index","quarter","possession","row_type","down","distance","Goal_To_Go","yard_side","yard_num","play_type","yards_gained","situation","play"
 "20250920_l58t","Berry",1,"1",,"kickoff",,,,,,"kickoff",,"","Noah Godhard kickoff 65 yards to the BERRY00, touchback."
 "20250920_l58t","Berry",2,"1","Berry","play",1,10,FALSE,"BERRY",25,"rush",2,"1st and 10 at BERRY25","Josh Rogers rush for 2 yards to the BERRY27 (Leighton Tarke; Victor Ruhland)."
 "20250920_l58t","Berry",3,"1","Berry","play",2,8,FALSE,"BERRY",27,"pass_complete",5,"2nd and 8 at BERRY27","Andrew Hunter pass complete to Bryce Herring for 5 yards to the BERRY32 (Victor Ruhland)."
