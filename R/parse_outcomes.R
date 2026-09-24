@@ -31,27 +31,11 @@ infer_text_team <- function(df, own_side) {
   stats::setNames(unname(token_to_team[mapped]), text_tokens)
 }
 
-#' Detect rows whose snap was wiped out by a penalty
-#'
-#' Convention 3 in `analysis/pbp_schema_and_build_plan.md`: when a penalty
-#' nullifies the snap, the page still prints the negated attempt in full, so
-#' no outcome may be credited from that text. A row is no-play if the
-#' classifier already typed it `penalty_no_play`, or its text says "NO
-#' PLAY". Task 3b turns this into the `penalty_no_play` column.
-#'
-#' @param play_text,row_type Character vectors.
-#' @return Logical vector.
-#' @keywords internal
-is_no_play <- function(play_text, row_type) {
-  row_type == "penalty_no_play" |
-    stringr::str_detect(play_text, stringr::regex("\\bno play\\b", ignore_case = TRUE))
-}
-
 #' Populate the outcome-flag columns
 #'
 #' Sets `rush`, `pass`, `completion`, `sack`, `int`, `fumble_vec`,
 #' `turnover`, `downs_turnover`, `touchdown`, `safety`. All are FALSE on
-#' no-play rows (see [is_no_play()]) regardless of what the text says.
+#' no-play rows (see [is_no_play()] in `R/parse_penalties.R`) regardless of what the text says.
 #'
 #' - `rush`: play_type `rush` or `kneel`. A sack is NOT a rush here (it has
 #'   its own flag), even though NCAA stats charge sacks to rushing.
@@ -64,13 +48,16 @@ is_no_play <- function(play_text, row_type) {
 #'   fumble is lost when the LAST "recovered by TEAM" after the fumble is not
 #'   the fumbling team. The fumbling team is the offense (`pos_team`) on a
 #'   rush/pass/sack/kneel, and the receiving/returning side (`def_pos_team`)
-#'   on kickoffs, punts, blocked kicks, and interception returns.
+#'   on kickoffs, punts, blocked kicks, and interception returns. Exception:
+#'   on a blocked kick (`field_goal_blocked`/`punt_blocked`) where the
+#'   kicking team gets the ball back on the fumble, possession ends where
+#'   it started, so it is NOT a turnover (McDaniel 2025 play 147).
 #' - `downs_turnover`: the text says "TURNOVER ON DOWNS", OR it's a 4th-down
 #'   rush/pass/sack/kneel that fell short of the line to gain (by the loose
 #'   `yards_gained`), wasn't a touchdown, interception, or lost fumble, had no
 #'   penalty, and the next row with a down belongs to the other team. Some
 #'   StatCrew formats never print the phrase, so the rule is needed.
-#' - `touchdown`: text says "TOUCHDOWN" and wasn't nullified.
+#' - `touchdown`: text says "TOUCHDOWN" (upper case) and wasn't nullified.
 #' - `safety`: text says "safety". None in the 2025 CMU games.
 #'
 #' @param df Kept rows with `play_text`, `row_type`, `play_type`, `pos_team`,
@@ -91,7 +78,9 @@ parse_outcome_flags <- function(df, text_team) {
   sack <- pt == "sack"
   int <- pt == "pass_intercepted"
   fumble <- stringr::str_detect(txt, ic("\\bfumbled?\\b"))
-  touchdown <- stringr::str_detect(txt, ic("\\btouchdown\\b")) &
+  # upper-case only: scores are always "TOUCHDOWN"; the lower-case word
+  # appears in "Penalty after touchdown before PAT" marker rows
+  touchdown <- stringr::str_detect(txt, "\\bTOUCHDOWN\\b") &
     !stringr::str_detect(txt, ic("touchdown nullified"))
   safety <- stringr::str_detect(txt, ic("\\bsafety\\b"))
 
@@ -119,7 +108,9 @@ parse_outcome_flags <- function(df, text_team) {
     !is.na(next_team) & next_team != df$pos_team
   downs_turnover <- stringr::str_detect(txt, ic("turnover on downs")) | short_on_4th
 
-  turnover <- int | fumble_lost | downs_turnover
+  blocked_kick_regained <- pt %in% c("field_goal_blocked", "punt_blocked") &
+    fumble_lost & recov_team == df$pos_team
+  turnover <- int | (fumble_lost & !blocked_kick_regained) | downs_turnover
 
   flags <- list(rush = rush, pass = pass, completion = completion, sack = sack,
                 int = int, fumble_vec = fumble, turnover = turnover,

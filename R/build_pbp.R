@@ -272,9 +272,12 @@ derive_goal_to_go <- function(df) {
 
 #' Loosely parse yards gained from a play description
 #'
-#' Play yards only, penalty enforcement excluded (enforcement text reads
-#' "N yard(s) from X to Y", never "for N yards", so it doesn't collide with
-#' these patterns). Handles the wording variants seen across the 11-game
+#' Play yards only, penalty enforcement excluded (conventions 1, 4, 5 in
+#' `analysis/pbp_schema_and_build_plan.md`). Only the text BEFORE the
+#' "PENALTY" clause is read, so enforcement yardage ("N yard(s) from X to
+#' Y" / "N yards to the X") can never land here. NA on every no-play row
+#' (convention 3): the wiped-out attempt's "for 54 yards" is not credited.
+#' Handles the wording variants seen across the 11-game
 #' 2025 sweep: "for N yards gain", "for N yards loss", "for loss of N yard(s)"
 #' (sacks, kneels, and an alternate rush phrasing), "for no gain", and a bare
 #' "for N yards" (assumed positive when no gain/loss qualifier is present).
@@ -290,10 +293,12 @@ derive_goal_to_go <- function(df) {
 #' @param play_type Character vector, from [parse_play_type()] (already
 #'   backfilled to `row_type` for non-scrimmage kept rows).
 #' @param row_type Character vector, from [classify_plays()].
+#' @param no_play Logical vector, `penalty_no_play` from [parse_penalties()].
 #' @return Integer vector, `NA` where not confidently parsed.
 #' @keywords internal
-parse_yards_gained <- function(play_text, play_type, row_type) {
+parse_yards_gained <- function(play_text, play_type, row_type, no_play) {
   ic <- function(pattern) stringr::regex(pattern, ignore_case = TRUE)
+  play_text <- stringr::str_remove(play_text, "PENALTY .*$")
 
   no_gain <- stringr::str_detect(play_text, ic("no gain"))
   loss_of <- suppressWarnings(as.integer(stringr::str_match(play_text, ic("(?:for )?loss of (\\d+) yard"))[, 2]))
@@ -311,27 +316,12 @@ parse_yards_gained <- function(play_text, play_type, row_type) {
   )
 
   dplyr::case_when(
-    row_type != "play" ~ NA_integer_,
+    row_type != "play" | no_play ~ NA_integer_,
     play_type %in% c("rush", "pass_complete", "sack", "kneel") ~ generic,
     play_type == "pass_incomplete" ~ 0L,
     TRUE ~ NA_integer_
   )
 }
-
-#' Placeholder columns for Task 3
-#'
-#' Penalty and clock columns in the target schema that aren't extracted
-#' yet (outcome flags are filled by [parse_outcome_flags()]). All are NA
-#' (of the right type) so an unpopulated value
-#' can't be mistaken for a real FALSE.
-#' @keywords internal
-placeholder_cols <- list(
-  clock_known = NA_character_, clock_prev_known = NA_character_,
-  clock_next_known = NA_character_,
-  penalty_flag = NA, penalty_yards_signed = NA_integer_,
-  penalized_team = NA_character_, penalty_no_play = NA,
-  penalty_declined = NA, penalty_text = NA_character_
-)
 
 #' Target schema column order (36 columns)
 #'
@@ -357,7 +347,8 @@ pbp_columns <- c(
 #' `two_point`, `penalty_no_play`), after using the dropped administrative
 #' rows to derive `period`, `pos_team`, and `drive_id`. Emits the 36-column
 #' cfbfastR-aligned schema in `pbp_columns`. The outcome-flag, penalty, and
-#' clock columns are NA placeholders until Tasks 3b/3c populate them. See
+#' clock columns are filled by [parse_outcome_flags()], [parse_penalties()],
+#' and [derive_clock()]. See
 #' `R/classify.R` and `R/parse_play_type.R` for the upstream row_type/
 #' play_type classification this builds on.
 #'
@@ -372,6 +363,7 @@ build_pbp <- function(game_url) {
 
   classified <- classify_plays(game$plays)
   classified <- derive_quarter(classified)
+  classified <- derive_clock(classified)
   classified <- derive_possession(classified)
   classified <- derive_drive_id(classified)
   classified <- parse_play_type(classified)
@@ -383,13 +375,16 @@ build_pbp <- function(game_url) {
   own_side <- infer_own_side(kept)
   kept$yards_to_goal <- compute_yards_to_goal(kept, own_side)
   kept <- derive_goal_to_go(kept)
-  kept$yards_gained <- parse_yards_gained(kept$play, kept$play_type, kept$row_type)
 
   teams <- unique(stats::na.omit(kept$pos_team))
   kept$def_pos_team <- ifelse(is.na(kept$pos_team), NA_character_,
                               ifelse(kept$pos_team == teams[1], teams[2], teams[1]))
   kept$play_text <- kept$play
-  kept <- parse_outcome_flags(kept, infer_text_team(kept, own_side))
+  text_team <- infer_text_team(kept, own_side)
+  kept <- parse_penalties(kept, text_team)
+  kept$yards_gained <- parse_yards_gained(kept$play_text, kept$play_type, kept$row_type,
+                                          kept$penalty_no_play)
+  kept <- parse_outcome_flags(kept, text_team)
 
   kept$period <- as.integer(kept$quarter)
   kept$half <- dplyr::case_when(kept$period %in% 1:2 ~ 1L, kept$period %in% 3:4 ~ 2L,
@@ -399,7 +394,6 @@ build_pbp <- function(game_url) {
 
   kept$game_id <- game$game_id
   kept$play_index <- seq_len(nrow(kept))
-  for (col in names(placeholder_cols)) kept[[col]] <- placeholder_cols[[col]]
 
   out <- kept[, pbp_columns]
   attr(out, "opponent") <- game$opponent
