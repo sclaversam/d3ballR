@@ -320,16 +320,15 @@ parse_yards_gained <- function(play_text, play_type, row_type) {
 
 #' Placeholder columns for Task 3
 #'
-#' Outcome-flag, penalty, and clock columns in the target schema that aren't
-#' extracted yet. All are NA (of the right type) so an unpopulated value
+#' Penalty and clock columns in the target schema that aren't extracted
+#' yet (outcome flags are filled by [parse_outcome_flags()]). All are NA
+#' (of the right type) so an unpopulated value
 #' can't be mistaken for a real FALSE.
 #' @keywords internal
 placeholder_cols <- list(
   clock_known = NA_character_, clock_prev_known = NA_character_,
   clock_next_known = NA_character_,
-  rush = NA, pass = NA, completion = NA, sack = NA, int = NA,
-  fumble_vec = NA, turnover = NA, downs_turnover = NA, touchdown = NA,
-  safety = NA, penalty_flag = NA, penalty_yards_signed = NA_integer_,
+  penalty_flag = NA, penalty_yards_signed = NA_integer_,
   penalized_team = NA_character_, penalty_no_play = NA,
   penalty_declined = NA, penalty_text = NA_character_
 )
@@ -358,7 +357,7 @@ pbp_columns <- c(
 #' `two_point`, `penalty_no_play`), after using the dropped administrative
 #' rows to derive `period`, `pos_team`, and `drive_id`. Emits the 36-column
 #' cfbfastR-aligned schema in `pbp_columns`. The outcome-flag, penalty, and
-#' clock columns are NA placeholders until Task 3 populates them. See
+#' clock columns are NA placeholders until Tasks 3b/3c populate them. See
 #' `R/classify.R` and `R/parse_play_type.R` for the upstream row_type/
 #' play_type classification this builds on.
 #'
@@ -381,13 +380,16 @@ build_pbp <- function(game_url) {
   kept$play_type <- ifelse(kept$row_type == "play", kept$play_type, kept$row_type)
   kept$pos_team <- kept$possession
   kept <- parse_situation(kept)
-  kept$yards_to_goal <- compute_yards_to_goal(kept, infer_own_side(kept))
+  own_side <- infer_own_side(kept)
+  kept$yards_to_goal <- compute_yards_to_goal(kept, own_side)
   kept <- derive_goal_to_go(kept)
   kept$yards_gained <- parse_yards_gained(kept$play, kept$play_type, kept$row_type)
 
   teams <- unique(stats::na.omit(kept$pos_team))
   kept$def_pos_team <- ifelse(is.na(kept$pos_team), NA_character_,
                               ifelse(kept$pos_team == teams[1], teams[2], teams[1]))
+  kept$play_text <- kept$play
+  kept <- parse_outcome_flags(kept, infer_text_team(kept, own_side))
 
   kept$period <- as.integer(kept$quarter)
   kept$half <- dplyr::case_when(kept$period %in% 1:2 ~ 1L, kept$period %in% 3:4 ~ 2L,
@@ -397,7 +399,6 @@ build_pbp <- function(game_url) {
 
   kept$game_id <- game$game_id
   kept$play_index <- seq_len(nrow(kept))
-  kept$play_text <- kept$play
   for (col in names(placeholder_cols)) kept[[col]] <- placeholder_cols[[col]]
 
   out <- kept[, pbp_columns]

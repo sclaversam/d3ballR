@@ -8,7 +8,7 @@ column set and order follow the 36-column cfbfastR-aligned target in
 opponent name is still reported in `analysis/pbp_row_counts.csv`).
 
 Status: columns marked **T3** are placeholders, NA on every row, until Task 3
-populates them. They're NA rather than FALSE so an unfilled flag can't be read
+populates them (3a outcome flags are done). They're NA rather than FALSE so an unfilled flag can't be read
 as a real "no".
 
 | # | column | type | definition | NA / convention notes |
@@ -27,7 +27,7 @@ as a real "no".
 | 14 | `Goal_To_Go` | logical | TRUE when the line to gain is the goal line. d3 writes this two ways: literally ("1st and Goal at CMU06") and as a number equal to the distance to the goal ("1st and 4 at UC 4"). TRUE if the text says "Goal" OR `distance == yards_to_goal`. | NA wherever `down` is NA. |
 | 15 | `play_type` | character | For `row_type == "play"`, the parsed category from `R/parse_play_type.R` (`rush`, `pass_complete`, `pass_incomplete`, `pass_intercepted`, `sack`, `punt_no_return`, `punt_with_return`, `punt_blocked`, `field_goal_good`, `field_goal_missed`, `field_goal_blocked`, `kneel`). For other kept rows, `row_type` itself. | Never NA. |
 | 16 | `yards_gained` | integer | Play yards only, penalty enforcement excluded. | Still the loose pre-Task-3 parse: set only for `rush`/`pass_complete`/`sack`/`kneel` (regex on the description) and `pass_incomplete` (0). Task 3b extends it and applies the no-play rule. |
-| 17-26 | `rush`, `pass`, `completion`, `sack`, `int`, `fumble_vec`, `turnover`, `downs_turnover`, `touchdown`, `safety` | logical | **T3a.** Outcome flags. | All NA for now. |
+| 17-26 | `rush`, `pass`, `completion`, `sack`, `int`, `fumble_vec`, `turnover`, `downs_turnover`, `touchdown`, `safety` | logical | Outcome flags, set by `parse_outcome_flags()` in `R/parse_outcomes.R`. `rush` = play_type `rush`/`kneel` (a sack is NOT a rush; it has its own flag). `pass` = complete/incomplete/intercepted. `fumble_vec` = text mentions a fumble, on any row type. `turnover` = interception, lost fumble, or turnover on downs. A fumble is lost when the last "recovered by TEAM" after it isn't the fumbling team (offense on rush/pass/sack/kneel, the returning side on kickoffs, punts, blocked kicks, interception returns). `downs_turnover` = "TURNOVER ON DOWNS" in text, OR a 4th-down rush/pass/sack/kneel short of the line to gain, no TD/int/lost fumble/penalty, next snap by the other team (some StatCrew formats never print the phrase). `touchdown` = "TOUCHDOWN" not "nullified"; includes defensive return TDs. | Never NA. All FALSE on no-play rows (`row_type == "penalty_no_play"` or text says "NO PLAY"), per convention 3. `two_point` rows get no rush/pass flag. `safety` is FALSE everywhere in 2025 (none occurred). Play-text team tokens ("UCHI", "DSON") are mapped to teams by `infer_text_team()`. |
 | 27-32 | `penalty_flag`, `penalty_yards_signed` (integer), `penalized_team` (character), `penalty_no_play`, `penalty_declined`, `penalty_text` (character) | mixed | **T3b.** Penalty columns. | All NA for now. |
 | 33 | `situation` | character | Raw down-and-distance text, verbatim (audit). | Empty for `kickoff`/`extra_point`/`two_point`. |
 | 34 | `play_text` | character | Raw play description, verbatim (audit). | Never empty. |
