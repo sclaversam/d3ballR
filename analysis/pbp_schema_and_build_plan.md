@@ -1,5 +1,10 @@
 # PBP Schema Target + Build Plan (v2)
 
+> **Superseded by `analysis/pbp_build_plan_v3.md`.** Tasks 1-3 below are
+> done. The v2 36-column schema has been replaced by the v3 53-column schema;
+> see `analysis/pbp_schema.md` and `analysis/CHANGELOG_v3.md`. The penalty
+> conventions (1-5) below still hold. Kept for history.
+
 Hand this to Claude Code. It defines the target schema (cfbfastR-aligned) and the
 exact order to build it. Do the tasks in order; commit after each. Surface
 checks and wait for confirmation where noted — do not finalize rules unsupervised.

@@ -45,30 +45,46 @@ scraper: get accurate, tidy play-by-play out of d3football.
 
 ## Where things are
 
-- `R/scrape_plays.R` — the current working file. Contains **Step 1 only**:
-  `fetch_html`, `default_user_agent`, `tables_on`, `find_plays`, and the
-  exported `scrape_plays(game_url)` wrapper that returns a clean 2-column tibble
-  (`situation`, `play`).
-- `data-raw/cmu_2025_games.R` — CMU 2025 boxscore URLs. Only game 1 (at Chicago,
-  `20250906_e064`) is filled in; the other 10 need to be added from
-  `https://www.d3football.com/teams/Carnegie_Mellon/2025/index`.
-- `analysis/` — notebooks (the coverage audit; the single-game parser
-  walkthrough lives outside the repo as `parse_game.Rmd`).
-- `tests/testthat/` — unit tests. `find_plays` has starter tests.
+- `R/scrape_plays.R` — Step 1: `fetch_html`, `tables_on`, `find_plays`, and
+  the exported `scrape_plays(game_url)` (clean 2-column `situation`/`play`
+  tibble).
+- `R/classify.R` — Step 2 row classifier (`classify_plays`).
+- `R/parse_play_type.R` — play_type within snaps.
+- `R/build_pbp.R` — per-game assembly: `build_pbp()` (one game) and
+  `build_all_pbp()` (writes `analysis/pbp/*.csv`, `analysis/pbp_row_counts.csv`
+  and the validation reports). Also situation parsing, `yards_to_goal`,
+  `Goal_To_Go`, `yards_gained`, and the output column order (`pbp_columns`).
+- `R/teams.R` (header / team-name mapping), `R/kickoffs.R` (kickoff
+  possession), `R/drives.R` (drives, try phase), `R/scores.R` (score lines),
+  `R/parse_penalties.R`, `R/parse_outcomes.R` (outcome flags),
+  `R/game_state.R` (score, first downs, end state, drive_result),
+  `R/parse_clock.R` (clock), `R/validation.R` (`write_pbp_checks()`).
+- `data-raw/cmu_2025_games.R` — the 11 CMU 2025 boxscore URLs.
+- `analysis/pbp/` — the 11 per-game CSVs (53 columns). Data dictionary:
+  `analysis/pbp_schema.md`. Latest change log: `analysis/CHANGELOG_v3.md`.
+  Current build plan: `analysis/pbp_build_plan_v3.md`.
+- `analysis/checks/` — validation reports regenerated on every build
+  (kickoff possession, drive-footer clock, clock bounds, end state).
+- `tests/testthat/` — unit tests.
 
 ## What is built vs. next
 
-Built: **Step 1** (scrape + locate + clean the play table). That's all.
+Built (v3, all 11 CMU 2025 games): scrape -> classify -> play type -> a
+53-column, cfbfastR-aligned per-play table. It has possession (kickoffs =
+receiving team), drives and drive results, score before each play, down /
+distance / yards to goal and the end state after the play, outcome flags,
+first downs, penalties (signed, no-play gated), and the clock as exact
+start/end where known plus always-filled upper/lower bounds. See
+`analysis/pbp_schema.md` for every column and `analysis/CHANGELOG_v3.md` for
+the judgment calls.
 
-Next, in order:
-1. **Step 2 — row classifier.** Label each row as a play or a specific non-play
-   type. THIS IS THE CURRENT TASK. See "Classifier design" below.
-2. Forward-fill quarter and possession from drive headers/quarter markers.
-3. Parse the `situation` column (down, distance, yardline).
-4. Parse the `play` column (play type, yards, outcome, penalties).
-5. Map the parsed output onto CMU's internal schema for validation.
+Known open items: `yards_gained` is undefined for interceptions, punts, field
+goals and kickoffs; UW-La Crosse "Penalty after touchdown before PAT" marker
+rows (plays 106, 161) are still kept; first downs in the 7 games that never
+print "1ST DOWN" are rule-derived. Not built (by design): EPA / win
+probability, player names, drive-level rollups.
 
-## Classifier design (Step 2 — the current task)
+## Classifier design (Step 2, built)
 
 **Approach: positive identification.** A row is a `play` only if its situation
 is a real down-and-distance AND its description contains a snap verb (rush,

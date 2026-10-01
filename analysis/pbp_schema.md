@@ -1,176 +1,212 @@
-# Per-game play-by-play CSV: data dictionary
+# Per-game play-by-play CSV: data dictionary (v3, 53 columns)
 
 Each file `analysis/pbp/{game_id}.csv` is one game's play-by-play, built by
-`build_pbp()` in `R/build_pbp.R` (all games at once by `build_all_pbp()`). It
-has **one row per event CMU logs** for that game, in game order. The source is
-the d3football.com boxscore plays page
+`build_pbp()` in `R/build_pbp.R` (all games at once by `build_all_pbp()`, which
+also writes the validation reports in `analysis/checks/`). It has **one row per
+event CMU logs** for that game, in game order. The source is the d3football.com
+boxscore plays page
 (`https://www.d3football.com/seasons/{year}/boxscores/{game_id}.xml?view=plays`),
 a rendered HTML table of StatCrew output. There is no structured feed. The
-classifier (`R/classify.R`) labels every row of that table. Only five row types
-are **kept**: `play` (a scrimmage snap), `kickoff`, `extra_point`, `two_point`,
-and `penalty_no_play`. Everything else (quarter markers, drive headers/footers,
-timeouts, score lines, coin toss, spot corrections, navigation) is dropped. Some
-of those dropped rows are read first to derive `period`, `pos_team`,
-`drive_id`, and the clock columns. The 36 columns follow cfbfastR / nflfastR
-names and are team-agnostic (`pos_team` / `def_pos_team`, no "opponent"
-column). The raw `situation` and `play_text` are kept on every row, so any
-derived value can be traced back to its source.
+classifier (`R/classify.R`) labels every row of that table, and five kinds of
+row are **kept**: scrimmage snaps (including snaps wiped out by a penalty),
+kickoffs, extra points, two-point tries, and dead-ball penalties with no snap.
+Everything else (quarter markers, drive headers/footers, timeouts, score lines,
+coin toss, spot corrections, navigation) is dropped. Some of those dropped rows
+are read first to derive period, possession, kickoff teams, score, and clock.
+Column names follow cfbfastR / nflfastR and are team-agnostic. The raw
+`situation` and `play_text` are kept on every row, so any derived value can be
+traced back to its source.
 
-2025 CMU coverage: 11 games, 1,861 rows (`play` 1,616, `kickoff` 111,
-`extra_point` 66, `penalty_no_play` 59, `two_point` 9). Per-game row counts
-and opponents are in `analysis/pbp_row_counts.csv`.
+2025 CMU coverage: 11 games, 1,861 rows, 250 drives. By `play_type`: rush 690,
+pass_complete 451, pass_incomplete 294, kickoff 113, punt_no_return 68,
+extra_point 66, penalty_no_play 57, sack 42, punt_with_return 23,
+pass_intercepted 19, field_goal_good 17, two_point 9, field_goal_blocked 5,
+field_goal_missed 3, kneel 2, punt_blocked 2. Per-game counts are in
+`analysis/pbp_row_counts.csv`. What changed from v2 is in
+`analysis/CHANGELOG_v3.md`.
 
 ## Reading the CSV
 
 - Written with `write.csv(..., na = "")`: **NA is an empty field**. Read with
-  `read.csv(f, na.strings = "")`. `situation` is the exception: it's a real
-  empty string on kickoffs/PATs, but reads back as NA the same way.
-- Logical columns are `TRUE`/`FALSE`. Clock columns are `"MM:SS"` strings.
+  `read.csv(f, na.strings = "")`. `situation` is genuinely empty on most
+  kickoffs and tries and reads back as NA the same way.
+- Logical columns are `TRUE`/`FALSE` and are never NA unless noted. Clock
+  columns are zero-padded `"MM:SS"` strings (time remaining in the quarter).
 
 ## Key conventions
 
-**`yards_gained` is play yards only.** It is the play's own "for N yards"
-(rush, catch, sack, kneel), read only from the text *before* the `PENALTY`
-clause. Penalty enforcement yardage ("N yards from X to Y", "N yards to the X")
-never lands here. It's in `penalty_yards_signed`. A counting play with a
-penalty keeps its own yards: a 10-yard catch plus an 11-yard face mask is
-`yards_gained = 10`, `penalty_yards_signed = +11`, never 21.
+**Possession (`pos_team`).** The offense on a snap. On a **kickoff** it is the
+**receiving** team and `def_pos_team` is the kicking team (cfbfastR). Punts and
+field goals keep the kicking team as `pos_team`. Each kickoff's teams come from
+the next drive row ("TEAM at MM:SS"). If the text shows the kicking team
+recovered (onside kick, or a return fumble), the receiving team is the other
+team and the play is a turnover. If no drive row follows (e.g. a kickoff-return
+TD), pre-kick context decides: the scorer kicks, the coin toss names the
+first-half receiver, the first-half receiver kicks in the second half, and a
+re-kick uses the same kicker. Every decision is in
+`analysis/checks/kickoff_possession.csv`. A **try** (PAT, two-point) and any
+penalty row between a score and the next kickoff belong to the **scoring team**.
 
-**`penalty_yards_signed` sign is from the offense's (`pos_team`) point of
-view.** Positive = the defense (`def_pos_team`) was flagged, so the offense
-gains. Negative = the offense was flagged. Offensive delay of game, 5 yards ->
-`-5`; defensive face mask, 11 yards -> `+11`. Only *accepted* infractions count.
-Two accepted infractions are summed. Offsetting penalties are `0`.
+**Drives.** A drive is one team's continuous possession. A kickoff is
+`drive_play_number` 1 of the receiving team's drive. Tries stay on the drive of
+the scoring play, even after a defensive TD. d3's own footer boundaries are not
+used, because StatCrew sometimes splits one possession in two (a re-kick after
+a punt penalty, a penalty on a field goal). There are 250 drives here vs 259 d3
+footers.
 
-**No-play gating.** `penalty_no_play` is TRUE when the text says "NO PLAY", or
-when the row is a dead-ball penalty with no snap at all (text begins
-"PENALTY ...", e.g. a false start in the StatCrew format that doesn't print
-"NO PLAY"). It does not trust the upstream `row_type` label (see Known issues).
-On every `penalty_no_play` row, `yards_gained` is NA and all ten outcome flags
-are FALSE, regardless of the text. The page prints the wiped-out attempt in
-full ("... for 54 yards ... TOUCHDOWN nullified by penalty ... NO PLAY"), and
-none of it is credited.
+**`yards_gained` is play yards only.** It is the play's own "for N yards", read
+only from the text before the `PENALTY` clause. Enforcement yardage never lands
+here. A 10-yard catch plus an 11-yard face mask is `yards_gained = 10`,
+`penalty_yards_signed = +11`, never 21.
 
-**Clock bracket, not a clock.** The clock is stated only on some rows, mostly
-ones that get dropped: quarter starts, drive headers/starts, timeouts, plus
-scores and field goals. So each row carries the nearest stated clock at/before
-it (`clock_prev_known`) and at/after it (`clock_next_known`), within the same
-quarter. The play happened inside that window. The clock is **never
-interpolated**, because it doesn't tick uniformly.
+**Penalty sign.** `penalty_yards_signed` is from `pos_team`'s view. Positive =
+the defense was flagged (the offense gains); negative = the offense was
+flagged. On a kickoff that means positive = the **kicking** team was flagged.
+Only accepted infractions count. Two accepted ones are summed. Offsetting = 0.
 
-**`Goal_To_Go` has a numeric rule.** d3 writes goal-to-go two ways: literally
-("1st and Goal at CMU06"), and as a plain number that equals the distance to
-the goal line ("1st and 4 at UC 4"). Johns Hopkins and Dickinson games only use
-the second form. `Goal_To_Go` is TRUE if the text says "Goal" **or**
+**No-play gating.** `penalty_no_play` is decided from the text alone: the text
+says "NO PLAY", or the row is a dead-ball penalty with no snap (text starts
+"PENALTY ..."). On every such row, `yards_gained` is NA. These are all FALSE:
+`rush`, `pass`, `completion`, `sack`, `int`, `fumble_vec`, `turnover`,
+`downs_turnover`, `touchdown`, `safety`, `field_goal_attempt`,
+`field_goal_made`, `punt`, `scoring_play`, `firstD_by_yards`. `score_pts` is 0.
+d3 prints the wiped-out attempt in full ("... 54 yards ... TOUCHDOWN nullified
+by penalty ... NO PLAY"), and none of it is credited.
+
+**Clock: exact where known, bounds always.** `clock_start` / `clock_end` are
+exact readings or NA. `clock_upper` / `clock_lower` always bracket the snap:
+the play started with at most `clock_upper` and at least `clock_lower` left.
+When `clock_start` is known, all three are equal. Bounds come from every known
+reading in the quarter (drive starts, timeouts, quarter starts, score clocks,
+derived starts and ends), with 15:00 / 00:00 at the quarter's start and end. A
+play's own `clock_end` can be its lower bound (the snap came no later), never
+its upper. A scoring play's bracket therefore runs from the last reading before
+it down to its score clock. Nothing is interpolated.
+
+**End state (`*_end`).** The situation of the next scrimmage snap in the same
+half, from **that** snap's offense view. After a change of possession, it is
+the new offense's down, distance and yards to goal (cfbfastR). NA on scoring
+plays, tries, and the last plays of a half.
+
+**Score before the play.** `pos_team_score` / `def_pos_team_score` are the
+score *before* the play. They are the last printed score line plus any points
+scored on kept rows since. d3 prints the score line after the try, so this
+makes a PAT's "before" score include its touchdown. All 92 score lines in 2025
+match the parsed points exactly.
+
+**`Goal_To_Go` numeric rule.** d3 writes goal-to-go two ways: literally ("1st
+and Goal at CMU06") and as a number equal to the distance to the goal line
+("1st and 4 at UC 4"). `Goal_To_Go` is TRUE if the text says "Goal" **or**
 `distance == yards_to_goal`.
 
-**Team names.** `pos_team`, `def_pos_team`, and `penalized_team` use the
-spelling on d3's drive rows (e.g. `"UChicago"`, `"Wis.-La Crosse"`,
-`"Franklin & Marshall"`). That can differ from the line-score name in
-`pbp_row_counts.csv` ("Chicago", "UW-La Crosse", "Franklin and Marshall").
+**Team names.** `home`, `away`, `pos_team`, `def_pos_team`, and
+`penalized_team` all use one canonical spelling per team: d3's drive-start
+spelling (e.g. `"UChicago"`, `"Wis.-La Crosse"`, `"Franklin & Marshall"`).
+`pbp_row_counts.csv` keeps the line-score spelling ("Chicago").
 
 ## Columns
 
 | # | column | type | definition | NA behavior | notes |
 |---|---|---|---|---|---|
-| 1 | `game_id` | character | d3football boxscore id, e.g. `"20250906_e064"`. Constant per file. | Never NA. | The part of the boxscore URL before `.xml`. |
-| 2 | `play_index` | integer | Row order within the game, 1..N over kept rows. | Never NA. | Counts every kept row (kickoffs, PATs, no-play penalties included), like CMU's `play_idx`. |
-| 3 | `drive_play_number` | integer | Position of the row within its `drive_id`, starting at 1. | NA only where `drive_id` is NA (each game's opening kickoff). | Counts every kept row in the drive, including the PAT and the post-score kickoff that trail it. |
-| 4 | `period` | integer | Quarter, 1-4. | Never NA. | Forward-filled from quarter-marker rows before they're dropped. Overtime has not occurred in the data and isn't handled. |
-| 5 | `half` | integer | 1 for periods 1-2, 2 for periods 3-4. | Never NA in 2025 (NA for any period outside 1-4). | |
-| 6 | `clock_known` | character | The game clock this row itself states, `"MM:SS"`. | NA on rows that don't state one: 1,758 of 1,861. Non-NA on 101 plays (scores, field goals) and 2 kickoffs. | Parsed from "clock M:SS". Zero-padded. A reading that contradicts the readings on either side of it is discarded (only game 1 play 135, a nullified TD printed "clock 00:00" mid-4th). |
-| 7 | `clock_prev_known` | character | Latest stated clock at or before this row, same quarter. | NA only when no clock is stated earlier in the quarter: 1 row (Misericordia's opening kickoff, listed before "Start of 1st quarter"). | Taken from ALL rows, dropped ones included, before the kept-row filter. More time on the clock than (or equal to) `clock_next_known`. |
-| 8 | `clock_next_known` | character | Next stated clock at or after this row, same quarter. | NA when nothing after the row states a clock before the quarter ends: 111 rows, all among the last plays of a quarter ("End of Nth quarter" rows carry no clock). | Same derivation as `clock_prev_known`. Not filled with an implied 00:00. |
-| 9 | `pos_team` | character | Team with the ball (the offense). | NA only on each game's opening kickoff (11 rows), which comes before any drive row. | Forward-filled from drive header/start rows. Kickoffs and PATs have no drive row of their own, so they inherit the previous drive's team. That is normally the scoring / kicking team, but not always (see Known issues). |
-| 10 | `def_pos_team` | character | The other team (the defense). | NA where `pos_team` is NA. | Each game has exactly two `pos_team` values; this is whichever one `pos_team` isn't. |
-| 11 | `down` | integer | Down, 1-4. | NA on `kickoff`, `extra_point`, `two_point` (186 rows). Never NA on `play` or `penalty_no_play`. | Parsed from `situation`. |
-| 12 | `distance` | integer | Yards to go for a first down. | NA wherever `down` is NA. | On a literal "and Goal" situation it's set to `yards_to_goal`. 2025 range 1-37. Two PAT-penalty rows carry a placeholder "1st and 10" (see Source quirks). |
-| 13 | `yards_to_goal` | integer | Yards from the ball to the opponent's end zone: own 25 -> 75, opponent 25 -> 25, "at 50" -> 50. | NA wherever `down` is NA. | Computed from the yardline in `situation` plus which yardline code is `pos_team`'s own side (see "How `yards_to_goal` knows which side is whose"). Replaces raw yard side / yard number. 2025 range 1-98. |
-| 14 | `Goal_To_Go` | logical | TRUE when the line to gain is the goal line. | NA wherever `down` is NA. | TRUE if `situation` says "Goal" OR `distance == yards_to_goal` (see Key conventions). 105 TRUE in 2025. |
-| 15 | `play_type` | character | What happened on the row. For `row_type == "play"`: `rush`, `pass_complete`, `pass_incomplete`, `pass_intercepted`, `sack`, `kneel`, `punt_no_return`, `punt_with_return`, `punt_blocked`, `field_goal_good`, `field_goal_missed`, `field_goal_blocked`. For other rows: the `row_type` itself (`kickoff`, `extra_point`, `two_point`, `penalty_no_play`). | Never NA. | From `R/parse_play_type.R`. A snap wiped out by a penalty keeps its play call here (e.g. `pass_complete`); check `penalty_no_play` to know if it counted. |
-| 16 | `yards_gained` | integer | Yards gained on the play itself, penalty yardage excluded. | NA on every `penalty_no_play` row. Also NA on `pass_intercepted`, punts, field goals, `kickoff`, `extra_point`, `two_point` (not yet defined for those). | Filled for `rush`, `pass_complete`, `sack`, `kneel` (from "for N yards" / "loss of N" / "no gain"). `pass_incomplete` = 0. See Key conventions. 2025 range -21 to 75. |
-| 17 | `rush` | logical | Designed run: `play_type` is `rush` or `kneel`. | Never NA. | A sack is NOT a rush here (NCAA stats count sacks as rushes; this table keeps them separate in `sack`). Two-point runs are FALSE. |
-| 18 | `pass` | logical | Pass attempt: `pass_complete`, `pass_incomplete`, or `pass_intercepted`. | Never NA. | Sacks are not pass attempts (NCAA). Two-point passes are FALSE. |
-| 19 | `completion` | logical | Completed pass (`pass_complete`). | Never NA. | |
-| 20 | `sack` | logical | QB sacked (`sack`). | Never NA. | |
-| 21 | `int` | logical | Pass intercepted (`pass_intercepted`). | Never NA. | Always also `turnover`. |
-| 22 | `fumble_vec` | logical | A fumble happened on the play, whoever recovered. | Never NA. | Text contains "fumble"/"fumbled". Can be TRUE on kickoffs (3 in 2025). |
-| 23 | `turnover` | logical | Possession lost by interception, lost fumble, or turnover on downs. | Never NA. | A fumble is lost when the last "recovered by TEAM" after it isn't the fumbling team. The fumbling team is the offense on rush/pass/sack/kneel, and the returning side on kickoffs, punts, blocked kicks, and interception returns. Exception: a blocked kick where the kicking team recovers the returner's fumble is not a turnover (possession ends where it started; McDaniel play 147). Punts and field goals are not turnovers. |
-| 24 | `downs_turnover` | logical | Turnover on downs. | Never NA. | TRUE if the text says "TURNOVER ON DOWNS", or if a 4th-down rush/pass/sack/kneel fell short of the line to gain, with no TD, interception, lost fumble, or penalty, and the next snap belongs to the other team. Some StatCrew formats never print the phrase. Always also `turnover`. |
-| 25 | `touchdown` | logical | A touchdown that counts was scored on the play. | Never NA. | Upper-case "TOUCHDOWN" in the text, not "TOUCHDOWN nullified". Includes defensive return TDs (interception and fumble returns). |
-| 26 | `safety` | logical | A safety was scored. | Never NA. | Text says "safety". None occurred in 2025, so this rule is unvalidated. |
-| 27 | `penalty_flag` | logical | The row mentions a penalty. | Never NA. | Case-insensitive "penalty". 164 TRUE in 2025. Covers accepted, declined, offsetting, and no-play penalties. |
-| 28 | `penalty_yards_signed` | integer | Net accepted penalty yardage, signed from the offense's view (+ defense flagged, - offense flagged). | NA when `penalty_flag` is FALSE, when every infraction was declined (8 rows), and on the 2 "Penalty after touchdown before PAT" marker rows. | Parsed from "N yards from X to Y" / "N yards to the X", never "for N yards". Offsetting = 0. On kickoffs the sign is relative to `pos_team`, which on kickoffs is usually the kicking team. 2025 range -15 to +15. |
-| 29 | `penalized_team` | character | Team that committed the penalty. | NA when `penalty_flag` is FALSE, and on the 2 marker rows. | The accepted infraction's team. If every infraction was declined, the declined team. Offsetting, or accepted penalties on both teams: both names joined with `"; "` (3 rows, e.g. `"Carnegie Mellon; McDaniel"`). |
-| 30 | `penalty_no_play` | logical | A penalty nullified the snap (or there was no snap). | Never NA. FALSE on rows with no penalty. | See Key conventions ("No-play gating"). 116 TRUE in 2025: 61 wiped-out snaps (`row_type == "play"`) + 55 dead-ball penalties. |
-| 31 | `penalty_declined` | logical | Every infraction on the row was declined. | NA when `penalty_flag` is FALSE. Otherwise TRUE/FALSE. | A row with one declined and one accepted infraction is FALSE (game 1 play 105); the accepted one supplies the yards. |
-| 32 | `penalty_text` | character | The raw penalty clause, from the first upper-case "PENALTY" to the end of the text. | NA when `penalty_flag` is FALSE, and on the 2 marker rows (they say "Penalty", not "PENALTY"). | Starting at upper-case "PENALTY" skips the "TOUCHDOWN nullified by penalty" wording. |
-| 33 | `situation` | character | Raw down-and-distance text, verbatim, e.g. `"1st and 10 at UC 25"`. | Empty (reads as NA) on `kickoff`, `extra_point`, `two_point`. | Audit column. Whitespace squished. Yardlines appear both as `"CMU35"` and `"UC 25"`. |
-| 34 | `play_text` | character | Raw play description, verbatim. | Never NA. | Audit column. Team codes here can differ from `situation`'s ("UCHI" vs "UC", "DSON" vs "DIC"). |
-| 35 | `row_type` | character | Classifier label: `play`, `kickoff`, `extra_point`, `two_point`, `penalty_no_play`. | Never NA. | Audit column. Use `penalty_no_play` (col 30), not this label, to decide if a snap counted. |
-| 36 | `drive_id` | integer | Drive number within the game, 1..N. | NA only on each game's opening kickoff (11 rows), which comes before any drive. | See "How `drive_id` is assigned". 2025 range 1-33 per game. |
+| 1 | `game_id` | character | d3football boxscore id, e.g. `"20250906_e064"`. | Never NA. | Constant per file. |
+| 2 | `home` | character | Home team. | Never NA. | From the header "Away at Home"; `pos_team` spelling. |
+| 3 | `away` | character | Away team. | Never NA. | As `home`. |
+| 4 | `play_index` | integer | Row order within the game, 1..N. | Never NA. | Counts every kept row (like CMU's `play_idx`). |
+| 5 | `drive_number` | integer | Drive number within the game, 1..N. | Never NA. | See Key conventions. The opening kickoff is drive 1. 2025 max 30. |
+| 6 | `drive_play_number` | integer | Position of the row within its drive, from 1. | Never NA. | A kickoff is always 1. Tries and their penalty rows count. |
+| 7 | `period` | integer | Quarter, 1-4. | Never NA. | Forward-filled from quarter markers. Overtime has not occurred and isn't handled. |
+| 8 | `half` | integer | 1 for periods 1-2, 2 for periods 3-4. | Never NA in 2025. | |
+| 9 | `clock_start` | character | Exact game clock at the snap. | NA when not known exactly: 1,320 rows (known on 541). | Known when the clock was stopped at a stated reading and restarts on this snap: first snap of a drive (drive start time), snap after a timeout (timeout clock), first play of a quarter (15:00, so the opening and second-half kickoffs), and tries / kickoff after a score (the score's clock). Untimed rows before that snap (dead-ball penalties, tries) get the same reading. Set on all 113 kickoffs, 66 PATs, 9 two-point tries. |
+| 10 | `clock_end` | character | Exact game clock when the play ended. | NA when not known: 1,513 rows (known on 348). | The play's own "clock M:SS" (scores, field goals, some kickoffs), else for a hand-over play (punt, turnover, downs, missed/blocked FG, kickoff) the next drive's start time. NA on nullified kicks (no hand-over). |
+| 11 | `clock_upper` | character | Most time that could have been on the clock at the snap. | Never NA. | Latest known reading at or before the snap in the quarter (15:00 if none). |
+| 12 | `clock_lower` | character | Least time that could have been on the clock at the snap. | Never NA. | Earliest known reading at or after the snap in the quarter, including the play's own `clock_end` (00:00 if none). Always <= `clock_upper` (`checks/clock_bounds.csv` is empty). |
+| 13 | `pos_team` | character | Team in possession: the offense; on a kickoff the receiving team; on a try the scoring team. | Never NA. | See Key conventions. |
+| 14 | `def_pos_team` | character | The other team. | Never NA. | On a kickoff, the kicking team. |
+| 15 | `pos_team_score` | integer | `pos_team`'s score before the play. | Never NA. | See Key conventions. |
+| 16 | `def_pos_team_score` | integer | `def_pos_team`'s score before the play. | Never NA. | |
+| 17 | `score_diff` | integer | `pos_team_score - def_pos_team_score`. | Never NA. | Before the play. |
+| 18 | `down` | integer | Down, 1-4. | NA on kickoffs, extra points, two-point tries (188 rows). | Parsed from `situation`. Never NA on snaps or dead-ball penalties. |
+| 19 | `distance` | integer | Yards to go. | NA wherever `down` is NA. | On literal "and Goal" it is `yards_to_goal`. Two PAT-penalty rows carry a placeholder "1st and 10" (see Source quirks). |
+| 20 | `yards_to_goal` | integer | Yards from the ball to the opponent's end zone (own 25 -> 75). | NA wherever `down` is NA. | From the yardline code in `situation` plus which code is `pos_team`'s own side (`infer_own_side()`, a per-game vote on yardline movement). |
+| 21 | `Goal_To_Go` | logical | Line to gain is the goal line. | NA wherever `down` is NA. | Numeric rule, see Key conventions. 105 TRUE. |
+| 22 | `down_end` | integer | Down of the next scrimmage snap in the half. | NA on scoring plays, tries and try-phase penalty rows, and when no snap follows in the half (196 rows). | That snap's offense view (see Key conventions). On a kickoff: the receiving team's first snap. |
+| 23 | `distance_end` | integer | Distance of that next snap. | As `down_end`. | |
+| 24 | `yards_to_goal_end` | integer | Yards to goal of that next snap. | As `down_end`. | After a punt, `yards_to_goal + yards_to_goal_end - 100` is the net punt. |
+| 25 | `play_type` | character | What happened. Snaps: `rush`, `pass_complete`, `pass_incomplete`, `pass_intercepted`, `sack`, `kneel`, `punt_no_return`, `punt_with_return`, `punt_blocked`, `field_goal_good`, `field_goal_missed`, `field_goal_blocked`. Others: `kickoff`, `extra_point`, `two_point`, `penalty_no_play` (a dead-ball penalty with no snap). | Never NA. | A snap wiped out by a penalty keeps its call here (e.g. `pass_complete`); check `penalty_no_play`. Replaces v2's `row_type`. |
+| 26 | `scrimmage_play` | logical | Down-and-distance row: has a `down`. | Never NA. | TRUE for every snap and every `penalty_no_play` row (1,673); FALSE for kickoffs, extra points, two-point tries. |
+| 27 | `yards_gained` | integer | Yards gained on the play itself, penalty yardage excluded. | NA on every no-play row, and on interceptions, punts, field goals, kickoffs, tries (not defined for those yet). | Filled for `rush`, `pass_complete`, `sack`, `kneel`; `pass_incomplete` = 0. Range -21 to 75. |
+| 28 | `rush` | logical | Designed run: `rush` or `kneel`. | Never NA. | A sack is not a rush here (NCAA counts it as one; this table keeps `sack` separate). Two-point runs FALSE. |
+| 29 | `pass` | logical | Pass attempt: complete, incomplete, or intercepted. | Never NA. | Sacks and two-point passes FALSE. |
+| 30 | `completion` | logical | Completed pass. | Never NA. | |
+| 31 | `sack` | logical | QB sacked. | Never NA. | |
+| 32 | `int` | logical | Interception. | Never NA. | Always also `turnover`. |
+| 33 | `fumble_vec` | logical | A fumble or muff happened, whoever recovered. | Never NA. | |
+| 34 | `turnover` | logical | Possession lost by interception, lost fumble, turnover on downs, or a kickoff the kicking team recovers. | Never NA. | A fumble is lost when the last "recovered by TEAM" after it isn't the fumbling team (the offense on snaps, the receiving team on kickoffs, the returner on punts / blocked kicks / interceptions). A blocked kick the kicking team gets back is not a turnover (McDaniel play 147). Punts and field goals are not turnovers. |
+| 35 | `downs_turnover` | logical | Turnover on downs. | Never NA. | "TURNOVER ON DOWNS" in the text, or a 4th-down run/pass/sack/kneel short of the line, with no TD/int/lost fumble/penalty, and the next snap by the other team. |
+| 36 | `touchdown` | logical | A touchdown that counts. | Never NA. | Upper-case "TOUCHDOWN", not "nullified". Includes defensive return TDs. |
+| 37 | `safety` | logical | A safety. | Never NA. | None in 2025 (unvalidated). |
+| 38 | `field_goal_attempt` | logical | Field goal attempted (good, missed, or blocked). | Never NA. | 24 TRUE. |
+| 39 | `field_goal_made` | logical | Field goal good. | Never NA. | 17 TRUE. |
+| 40 | `punt` | logical | Any punt. | Never NA. | 90 TRUE. |
+| 41 | `scoring_play` | logical | Points were scored on the row (TD, FG, safety, good PAT or two-point). | Never NA. | `score_pts != 0`. A failed PAT is FALSE. 159 TRUE. |
+| 42 | `score_pts` | integer | Points scored on the row, from `pos_team`'s view. | Never NA. | TD +6, FG +3, PAT +1, two-point +2; defensive TD -6; safety conceded -2; else 0. |
+| 43 | `firstD_by_yards` | logical | The play gained a first down. | Never NA. | "1ST DOWN" in the play clause, or a run/completion/sack/kneel with `yards_gained >= distance` outside goal-to-go. Only 4 of 11 games print "1ST DOWN"; the rule matches it on every snap in those 4. A goal-to-go TD is not a first down (StatCrew). FALSE on turnovers and no-plays. 373 TRUE. |
+| 44 | `firstD_by_penalty` | logical | A penalty awarded a first down. | Never NA. | "1ST DOWN" in the penalty clause with an accepted penalty, or an accepted defensive penalty after which the same offense starts a new series (not just the same 1st down moved). Can be TRUE on a no-play. 39 TRUE. |
+| 45 | `penalty_flag` | logical | The row mentions a penalty. | Never NA. | 164 TRUE. |
+| 46 | `penalty_yards_signed` | integer | Net accepted penalty yards, from `pos_team`'s view. | NA with no penalty, when all infractions were declined, and on 2 marker rows. | See Key conventions. Range -15 to +15. |
+| 47 | `penalized_team` | character | Team that committed the penalty. | NA with no penalty, and on 2 marker rows. | Offsetting or accepted on both teams: both names joined with `"; "` (3 rows). All declined: the declined team. |
+| 48 | `penalty_no_play` | logical | A penalty nullified the snap, or there was no snap. | Never NA. | Text-only rule (Key conventions). 116 TRUE: 61 wiped-out snaps + 55 dead-ball penalties. The 2 other `play_type == "penalty_no_play"` rows are the UW-La Crosse marker rows (Known issues), which are FALSE. |
+| 49 | `penalty_declined` | logical | Every infraction on the row was declined. | NA when `penalty_flag` is FALSE. | One declined + one accepted is FALSE. |
+| 50 | `penalty_text` | character | Raw penalty clause, from the first upper-case "PENALTY" on. | NA with no penalty clause. | |
+| 51 | `drive_result` | character | How the row's drive ended, on every row of the drive. | Never NA. | `TD`, `FG`, `MISSED FG`, `BLOCKED FG`, `PUNT`, `BLOCKED PUNT`, `INT`, `FUMBLE`, `DOWNS`, `SAFETY`, `END OF HALF`, `END OF GAME`, plus `ONSIDE` (a one-play drive ended by an onside kick the kicking team recovered). A defensive TD is labelled by how the offense lost the ball (`INT`, `FUMBLE`, ...). 2025 drives: PUNT 88, TD 69, INT 19, DOWNS 19, FG 17, FUMBLE 11, END OF GAME 10, END OF HALF 8, BLOCKED FG 3, MISSED FG 3, BLOCKED PUNT 2, ONSIDE 1. |
+| 52 | `situation` | character | Raw down-and-distance text, verbatim. | Empty (NA on read) on 111 kickoffs and all tries. | Audit column. Two kickoffs with a return penalty carry a stale down-and-distance here (Dickinson 191, Ursinus 73); their `down` is still NA. |
+| 53 | `play_text` | character | Raw play description, verbatim. | Never NA. | Audit column. |
 
-## How `drive_id` is assigned
+## Validation reports (`analysis/checks/`)
 
-d3's drive markers are noisy. A drive normally opens with a header row
-("TEAM at MM:SS") and a start row ("TEAM drive start at MM:SS."), but the pair
-isn't always complete, and the start row is sometimes repeated mid-drive after
-a spot correction or penalty. The reliable boundary is the footer row ("N
-plays, N yards, MM:SS elapsed") that closes each drive. So a new drive begins
-at the first drive marker after a footer, and later markers before the next
-footer restate the same drive.
+Rewritten on every `build_all_pbp()` run:
+- **`kickoff_possession.csv`:** every kickoff's kicking and receiving team, the
+  rule that decided it, and any disagreement between header, recovery text and
+  pre-kick context.
+- **`drive_footer_clock.csv`:** each d3 drive's start clock plus its footer's
+  "MM:SS elapsed", compared with the drive's end (score clock, next drive
+  start, or end of half).
+- **`clock_bounds.csv`:** rows whose bounds are missing or inverted. It should
+  be empty.
+- **`end_state.csv`:** every change-of-possession row with `yards_to_goal`, the
+  end state, and the next snap.
 
-Rows between a footer and the next drive's marker (the kickoff after a score)
-keep the previous drive's `drive_id`, the same way they keep its `pos_team`.
-This follows the source layout. cfbfastR/CFBD instead put a kickoff on the
-receiving team's drive. StatCrew also opens a new "drive" for a re-kick after a
-penalty on a punt (a 0-play footer, e.g. the Berry game) and for some
-penalty-on-field-goal sequences. Those count as separate drives here.
+Current results are summarized in `analysis/CHANGELOG_v3.md`.
 
-## How `yards_to_goal` knows which side is whose
+## Known issues
 
-`situation` writes yardlines with a short code ("UC 25", "CMU35"), but d3 never
-states which code belongs to which team. `infer_own_side()` works it out per
-game. On consecutive snaps by the same offense on the same side of the field,
-the yard number rises when that side is the offense's own and falls when it's
-the opponent's. Gains far outnumber losses, so a whole-game vote is decisive.
-It stops with an error if a game doesn't have exactly two teams and two codes,
-or if the vote is close. The play text uses its own codes ("UCHI", "DSON");
-`infer_text_team()` maps them to teams (one always matches a `situation` code,
-the other by elimination). Those mappings are used for fumble recoveries and
-`penalized_team`.
-
-## Known issues (to fix later)
-
-- **Kickoff `pos_team` is sometimes the receiving team.** Kickoffs inherit
-  `pos_team` from the previous drive. That's right after a normal score, but
-  wrong for the **second-half opening kickoff** (it inherits the first half's
-  last drive). In 2025 six second-half openers have the receiving team as
-  `pos_team`: Chicago 93, Berry 77, Johns Hopkins 87, Muhlenberg 88, Dickinson
-  101, F&M 86. It's also wrong after the **Ursinus pick-six** (Ursinus play 49):
-  the extra point (50) and kickoff (51) carry Ursinus instead of CMU, because
-  d3 prints no drive row for the scoring team there. The other five defensive
-  TDs are correct. On affected rows `def_pos_team` and the sign of any
-  `penalty_yards_signed` are flipped too.
-- **Classifier labels two return-penalty kickoffs `penalty_no_play`.** Dickinson
-  (`20251101_dlys`) play 191 and Ursinus (`20251115_h3wh`) play 73 are
-  kickoffs with holding on the return. They should be `row_type` / `play_type`
-  `kickoff`. Worked around: `penalty_no_play` is FALSE on both because it's
-  based on the text, not the label. The classifier (`R/classify.R`) is not
-  fixed yet.
 - **"Penalty after touchdown before PAT" marker rows are kept.** UW-La Crosse
-  plays 106 and 161 are admin markers. The real penalty is the row before. They
-  have `penalty_flag` TRUE, `penalty_no_play` FALSE, and the other penalty fields
-  NA. They should probably be dropped.
+  (`20250913_6i95`) plays 106 and 161 are admin markers. The real penalty is
+  the row before. They have `penalty_flag` TRUE, the other penalty fields NA,
+  and `penalty_no_play` FALSE. They should probably be dropped.
+- **`yards_gained` is not defined for interceptions, punts, field goals,
+  kickoffs or tries.** It stays NA there until a convention is chosen
+  (return yards, kick distance, net).
+- **First downs in 7 games are rule-derived.** Those formats never print "1ST
+  DOWN". The rule matches the printed flag exactly where it exists, but it is
+  unverified where it doesn't.
 
 ## Source quirks
 
 - **Placeholder situation on PAT penalties.** A penalty before an extra point
-  shows as a `penalty_no_play` row with a made-up situation like "1st and 10 at
-  JHU3", so `distance` (10) exceeds `yards_to_goal` (3). Two rows in 2025
-  (Johns Hopkins play 12, Dickinson play 176). `Goal_To_Go` is FALSE there.
-- **Bad clock readings.** A nullified TD in game 1 (play 135) prints "clock
-  00:00" mid-4th. It's discarded. The Berry game prints a "clock 15:00" spot
-  correction just before "End of half, clock 00:00". It affects no kept row.
-- **End-of-half row wording.** The first half sometimes ends with "End of game,
-  clock 00:00" (game 1). The period is still read correctly from the markers.
+  shows a made-up situation like "1st and 10 at JHU3", so `distance` (10)
+  exceeds `yards_to_goal` (3). This happens on Johns Hopkins play 12 and
+  Dickinson play 176. These rows are try-phase (`pos_team` = scoring team, end
+  state NA).
+- **Bad clock readings (discarded).** Game 1 play 135, a nullified TD, prints
+  "clock 00:00" mid-4th. The Berry game prints "BERRY ball on BERRY35, clock
+  15:00" and "clock 15:00" just before "End of half, clock 00:00". All three
+  are dropped.
+- **0-play drive footers.** d3 sometimes prints "0 plays, 0 yards, 00:00
+  elapsed" for a drive that did take 5-24 seconds. These are the 3 flagged rows
+  in `drive_footer_clock.csv`.
+- **End-of-half wording.** The first half sometimes ends with "End of game,
+  clock 00:00" (game 1). The period is still read correctly.
+- **Two StatCrew formats.** Most outcomes are read from either, but only the
+  "Last,First" format (Chicago, Johns Hopkins, Dickinson, Ursinus games) prints
+  "1ST DOWN" and "TURNOVER ON DOWNS".
