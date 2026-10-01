@@ -1,0 +1,260 @@
+"game_id","footer_row","team","start_quarter","start_clock","elapsed","reference","ref_quarter","ref_clock","diff_seconds","footer_text","flag"
+"20250906_e064",13,"Chicago",1,"15:00","02:01","next drive start",1,"12:59",0,"3 plays, 5 yards, 02:01 elapsed",FALSE
+"20250906_e064",25,"Carnegie Mellon",1,"12:59","02:49","score clock",1,"10:10",0,"7 plays, 58 yards, 02:49 elapsed",FALSE
+"20250906_e064",34,"Chicago",1,"10:10","02:24","next drive start",1,"07:46",0,"3 plays, 1 yards, 02:24 elapsed",FALSE
+"20250906_e064",41,"Carnegie Mellon",1,"07:46","01:42","next drive start",1,"06:04",0,"3 plays, 2 yards, 01:42 elapsed",FALSE
+"20250906_e064",49,"Chicago",1,"06:04","01:41","next drive start",1,"04:23",0,"3 plays, -2 yards, 01:41 elapsed",FALSE
+"20250906_e064",71,"Carnegie Mellon",1,"04:23","04:32","score clock",2,"14:51",0,"11 plays, 45 yards, 04:32 elapsed",FALSE
+"20250906_e064",83,"Chicago",2,"14:51","03:59","next drive start",2,"10:52",0,"6 plays, 21 yards, 03:59 elapsed",FALSE
+"20250906_e064",94,"Carnegie Mellon",2,"10:52","02:43","score clock",2,"08:09",0,"6 plays, 72 yards, 02:43 elapsed",FALSE
+"20250906_e064",102,"Chicago",2,"08:09","01:40","next drive start",2,"06:29",0,"3 plays, 1 yards, 01:40 elapsed",FALSE
+"20250906_e064",108,"Carnegie Mellon",2,"06:29","00:46","next drive start",2,"05:43",0,"3 plays, 9 yards, 00:46 elapsed",FALSE
+"20250906_e064",115,"Chicago",2,"05:43","00:29","next drive start",2,"05:14",0,"3 plays, -5 yards, 00:29 elapsed",FALSE
+"20250906_e064",126,"Carnegie Mellon",2,"05:14","03:20","next drive start",2,"01:54",0,"7 plays, 28 yards, 03:20 elapsed",FALSE
+"20250906_e064",136,"Chicago",2,"01:54","00:28","next drive start",2,"01:26",0,"3 plays, 9 yards, 00:28 elapsed",FALSE
+"20250906_e064",152,"Carnegie Mellon",2,"01:26","01:26","end of half",2,"00:00",0,"9 plays, 32 yards, 01:26 elapsed",FALSE
+"20250906_e064",168,"Carnegie Mellon",3,"14:53","04:03","next drive start",3,"10:50",0,"8 plays, 31 yards, 04:03 elapsed",FALSE
+"20250906_e064",180,"Chicago",3,"10:50","04:11","next drive start",3,"06:39",0,"6 plays, 8 yards, 04:11 elapsed",FALSE
+"20250906_e064",201,"Carnegie Mellon",3,"06:39","07:45","next drive start",4,"13:54",0,"14 plays, 65 yards, 07:45 elapsed",FALSE
+"20250906_e064",209,"Chicago",4,"13:54","01:11","next drive start",4,"12:43",0,"3 plays, 16 yards, 01:11 elapsed",FALSE
+"20250906_e064",220,"Carnegie Mellon",4,"12:43","04:43","next drive start",4,"08:00",0,"5 plays, 16 yards, 04:43 elapsed",FALSE
+"20250906_e064",229,"Chicago",4,"08:00","02:27","next drive start",4,"05:33",0,"5 plays, 9 yards, 02:27 elapsed",FALSE
+"20250906_e064",237,"Carnegie Mellon",4,"05:33","01:23","score clock",4,"04:10",0,"4 plays, 2 yards, 01:23 elapsed",FALSE
+"20250906_e064",245,"Chicago",4,"04:05","02:10","next drive start",4,"01:55",0,"3 plays, -2 yards, 02:10 elapsed",FALSE
+"20250906_e064",255,"Carnegie Mellon",4,"01:55","01:55","end of half",4,"00:00",0,"4 plays, 31 yards, 01:55 elapsed",FALSE
+"20250913_6i95",21,"UW-La Crosse",1,"15:00","05:23","score clock",1,"09:37",0,"11 plays, 75 yards, 05:23 elapsed",FALSE
+"20250913_6i95",30,"Carnegie Mellon",1,"09:37","02:06","next drive start",1,"07:31",0,"4 plays, 24 yards, 02:06 elapsed",FALSE
+"20250913_6i95",41,"UW-La Crosse",1,"07:31","03:59","next drive start",1,"03:32",0,"6 plays, 18 yards, 03:59 elapsed",FALSE
+"20250913_6i95",56,"Carnegie Mellon",1,"03:32","04:26","next drive start",2,"14:06",0,"8 plays, 40 yards, 04:26 elapsed",FALSE
+"20250913_6i95",64,"UW-La Crosse",2,"14:06","02:09","next drive start",2,"11:57",0,"4 plays, 30 yards, 02:09 elapsed",FALSE
+"20250913_6i95",73,"Carnegie Mellon",2,"11:57","01:21","next drive start",2,"10:36",0,"3 plays, -10 yards, 01:21 elapsed",FALSE
+"20250913_6i95",89,"UW-La Crosse",2,"10:36","05:36","next drive start",2,"05:00",0,"10 plays, 53 yards, 05:36 elapsed",FALSE
+"20250913_6i95",95,"Carnegie Mellon",2,"05:00","00:31","score clock",2,"04:29",0,"2 plays, 80 yards, 00:31 elapsed",FALSE
+"20250913_6i95",113,"UW-La Crosse",2,"04:29","04:02","score clock",2,"00:27",0,"11 plays, 75 yards, 04:02 elapsed",FALSE
+"20250913_6i95",124,"Carnegie Mellon",2,"00:21","00:21","next drive start",2,"00:00",0,"4 plays, 45 yards, 00:21 elapsed",FALSE
+"20250913_6i95",127,"UW-La Crosse",2,"00:00","00:00","end of half",2,"00:00",0,"0 plays, 0 yards, 00:00 elapsed",FALSE
+"20250913_6i95",140,"Carnegie Mellon",3,"14:52","01:07","next drive start",3,"13:45",0,"3 plays, 1 yards, 01:07 elapsed",FALSE
+"20250913_6i95",157,"UW-La Crosse",3,"13:45","06:19","score clock",3,"07:26",0,"13 plays, 72 yards, 06:19 elapsed",FALSE
+"20250913_6i95",163,"Carnegie Mellon",3,"07:21","00:49","score clock",3,"06:32",0,"2 plays, 3 yards, 00:49 elapsed",FALSE
+"20250913_6i95",170,"UW-La Crosse",3,"06:32","00:00","next drive start",3,"06:32",0,"0 plays, 15 yards, 00:00 elapsed",FALSE
+"20250913_6i95",183,"Carnegie Mellon",3,"06:32","03:35","next drive start",3,"02:57",0,"8 plays, 62 yards, 03:35 elapsed",FALSE
+"20250913_6i95",200,"UW-La Crosse",3,"02:57","04:24","score clock",4,"13:33",0,"9 plays, 94 yards, 04:24 elapsed",FALSE
+"20250913_6i95",216,"Carnegie Mellon",4,"13:33","03:50","next drive start",4,"09:43",0,"10 plays, 29 yards, 03:50 elapsed",FALSE
+"20250913_6i95",223,"UW-La Crosse",4,"09:43","01:35","next drive start",4,"08:08",0,"3 plays, 4 yards, 01:35 elapsed",FALSE
+"20250913_6i95",233,"Carnegie Mellon",4,"08:08","02:04","score clock",4,"06:04",0,"5 plays, 45 yards, 02:04 elapsed",FALSE
+"20250913_6i95",242,"UW-La Crosse",4,"06:04","02:22","next drive start",4,"03:42",0,"3 plays, 9 yards, 02:22 elapsed",FALSE
+"20250913_6i95",246,"Carnegie Mellon",4,"03:42","00:08","next drive start",4,"03:34",0,"1 plays, 0 yards, 00:08 elapsed",FALSE
+"20250913_6i95",256,"UW-La Crosse",4,"03:34","01:40","score clock",4,"01:54",0,"3 plays, 9 yards, 01:40 elapsed",FALSE
+"20250913_6i95",261,"Carnegie Mellon",4,"01:54","00:09","next drive start",4,"01:45",0,"1 plays, -5 yards, 00:09 elapsed",FALSE
+"20250913_6i95",267,"UW-La Crosse",4,"01:45","01:45","end of half",4,"00:00",0,"3 plays, -5 yards, 01:45 elapsed",FALSE
+"20250920_l58t",17,"Berry",1,"15:00","05:57","next drive start",1,"09:03",0,"8 plays, 35 yards, 05:57 elapsed",FALSE
+"20250920_l58t",28,"Carnegie Mellon",1,"09:03","02:45","score clock",1,"06:18",0,"7 plays, 79 yards, 02:45 elapsed",FALSE
+"20250920_l58t",51,"Berry",1,"06:18","07:02","score clock",2,"14:16",0,"13 plays, 65 yards, 07:02 elapsed",FALSE
+"20250920_l58t",60,"Carnegie Mellon",2,"14:11","02:31","next drive start",2,"11:40",0,"3 plays, 4 yards, 02:31 elapsed",FALSE
+"20250920_l58t",67,"Berry",2,"11:40","00:00","next drive start",2,"11:40",0,"3 plays, -8 yards, 00:00 elapsed",FALSE
+"20250920_l58t",70,"Berry",2,"11:40","01:09","next drive start",2,"10:31",0,"0 plays, 0 yards, 01:09 elapsed",FALSE
+"20250920_l58t",77,"Carnegie Mellon",2,"10:31","00:57","next drive start",2,"09:34",0,"3 plays, 0 yards, 00:57 elapsed",FALSE
+"20250920_l58t",84,"Berry",2,"09:34","02:19","next drive start",2,"07:15",0,"3 plays, 1 yards, 02:19 elapsed",FALSE
+"20250920_l58t",93,"Carnegie Mellon",2,"07:15","02:03","score clock",2,"05:12",0,"4 plays, 50 yards, 02:03 elapsed",FALSE
+"20250920_l58t",103,"Berry",2,"05:12","02:19","next drive start",2,"02:53",0,"5 plays, 27 yards, 02:19 elapsed",FALSE
+"20250920_l58t",127,"Carnegie Mellon",2,"02:53","02:53","end of half",2,"00:00",0,"10 plays, 37 yards, 02:53 elapsed",FALSE
+"20250920_l58t",142,"Carnegie Mellon",3,"14:54","02:15","score clock",3,"12:39",0,"5 plays, 73 yards, 02:15 elapsed",FALSE
+"20250920_l58t",161,"Berry",3,"12:39","07:45","next drive start",3,"04:54",0,"11 plays, 31 yards, 07:45 elapsed",FALSE
+"20250920_l58t",175,"Carnegie Mellon",3,"04:54","04:16","next drive start",3,"00:38",0,"8 plays, 38 yards, 04:16 elapsed",FALSE
+"20250920_l58t",187,"Berry",3,"00:38","02:05","next drive start",4,"13:33",0,"5 plays, 20 yards, 02:05 elapsed",FALSE
+"20250920_l58t",195,"Carnegie Mellon",4,"13:33","02:13","next drive start",4,"11:20",0,"5 plays, 14 yards, 02:13 elapsed",FALSE
+"20250920_l58t",205,"Berry",4,"11:20","02:20","next drive start",4,"09:00",0,"6 plays, 24 yards, 02:20 elapsed",FALSE
+"20250920_l58t",213,"Carnegie Mellon",4,"09:00","00:00","next drive start",4,"09:00",0,"3 plays, 11 yards, 00:00 elapsed",FALSE
+"20250920_l58t",223,"Carnegie Mellon",4,"09:00","06:21","next drive start",4,"02:39",0,"6 plays, 24 yards, 06:21 elapsed",FALSE
+"20250920_l58t",242,"Berry",4,"02:39","01:46","score clock",4,"00:53",0,"9 plays, 88 yards, 01:46 elapsed",FALSE
+"20250920_l58t",248,"Carnegie Mellon",4,"00:52","00:52","end of half",4,"00:00",0,"2 plays, -2 yards, 00:52 elapsed",FALSE
+"20251004_gwn0",14,"McDaniel",1,"15:00","04:14","next drive start",1,"10:46",0,"6 plays, 23 yards, 04:14 elapsed",FALSE
+"20251004_gwn0",22,"Carnegie Mellon",1,"10:46","01:58","next drive start",1,"08:48",0,"4 plays, 46 yards, 01:58 elapsed",FALSE
+"20251004_gwn0",30,"McDaniel",1,"08:48","01:27","next drive start",1,"07:21",0,"3 plays, -3 yards, 01:27 elapsed",FALSE
+"20251004_gwn0",43,"Carnegie Mellon",1,"07:21","03:59","score clock",1,"03:22",0,"7 plays, 57 yards, 03:59 elapsed",FALSE
+"20251004_gwn0",51,"McDaniel",1,"03:22","02:20","next drive start",1,"01:02",0,"3 plays, 9 yards, 02:20 elapsed",FALSE
+"20251004_gwn0",67,"Carnegie Mellon",1,"01:02","01:49","score clock",2,"14:13",0,"6 plays, 35 yards, 01:49 elapsed",FALSE
+"20251004_gwn0",74,"McDaniel",2,"14:13","01:04","next drive start",2,"13:09",0,"3 plays, 19 yards, 01:04 elapsed",FALSE
+"20251004_gwn0",83,"Carnegie Mellon",2,"13:09","02:02","next drive start",2,"11:07",0,"5 plays, 18 yards, 02:02 elapsed",FALSE
+"20251004_gwn0",92,"McDaniel",2,"11:07","00:56","next drive start",2,"10:11",0,"3 plays, -9 yards, 00:56 elapsed",FALSE
+"20251004_gwn0",100,"Carnegie Mellon",2,"10:11","01:11","score clock",2,"09:00",0,"3 plays, 44 yards, 01:11 elapsed",FALSE
+"20251004_gwn0",106,"McDaniel",2,"09:00","00:48","score clock",2,"08:12",0,"2 plays, 4 yards, 00:48 elapsed",FALSE
+"20251004_gwn0",111,"Carnegie Mellon",2,"08:12","00:00","next drive start",2,"08:12",0,"0 plays, 0 yards, 00:00 elapsed",FALSE
+"20251004_gwn0",121,"Carnegie Mellon",2,"08:12","02:37","next drive start",2,"05:35",0,"3 plays, 6 yards, 02:37 elapsed",FALSE
+"20251004_gwn0",129,"McDaniel",2,"05:35","01:36","next drive start",2,"03:59",0,"3 plays, -9 yards, 01:36 elapsed",FALSE
+"20251004_gwn0",140,"Carnegie Mellon",2,"03:59","01:45","score clock",2,"02:14",0,"4 plays, 59 yards, 01:45 elapsed",FALSE
+"20251004_gwn0",150,"McDaniel",2,"02:14","01:06","next drive start",2,"01:08",0,"4 plays, 18 yards, 01:06 elapsed",FALSE
+"20251004_gwn0",157,"Carnegie Mellon",2,"01:08","00:20","score clock",2,"00:48",0,"2 plays, 63 yards, 00:20 elapsed",FALSE
+"20251004_gwn0",164,"McDaniel",2,"00:48","00:48","end of half",2,"00:00",0,"2 plays, -16 yards, 00:48 elapsed",FALSE
+"20251004_gwn0",179,"Carnegie Mellon",3,"15:00","02:41","score clock",3,"12:19",0,"4 plays, 20 yards, 02:41 elapsed",FALSE
+"20251004_gwn0",184,"McDaniel",3,"12:19","00:15","score clock",3,"12:04",0,"1 plays, -20 yards, 00:15 elapsed",FALSE
+"20251004_gwn0",189,"Carnegie Mellon",3,"12:04","00:00","next drive start",3,"12:04",0,"0 plays, 0 yards, 00:00 elapsed",FALSE
+"20251004_gwn0",197,"McDaniel",3,"12:04","02:27","next drive start",3,"09:37",0,"3 plays, -8 yards, 02:27 elapsed",FALSE
+"20251004_gwn0",204,"Carnegie Mellon",3,"09:37","02:07","next drive start",3,"07:30",0,"4 plays, 7 yards, 02:07 elapsed",FALSE
+"20251004_gwn0",212,"McDaniel",3,"07:30","02:32","next drive start",3,"04:58",0,"4 plays, 24 yards, 02:32 elapsed",FALSE
+"20251004_gwn0",222,"Carnegie Mellon",3,"04:58","03:20","next drive start",3,"01:38",0,"6 plays, 26 yards, 03:20 elapsed",FALSE
+"20251004_gwn0",229,"McDaniel",3,"01:38","01:08","next drive start",3,"00:30",0,"3 plays, -5 yards, 01:08 elapsed",FALSE
+"20251004_gwn0",240,"Carnegie Mellon",3,"00:30","02:00","next drive start",4,"13:30",0,"4 plays, 16 yards, 02:00 elapsed",FALSE
+"20251004_gwn0",259,"McDaniel",4,"13:30","04:29","next drive start",4,"09:01",0,"12 plays, 52 yards, 04:29 elapsed",FALSE
+"20251004_gwn0",263,"McDaniel",4,"09:01","02:01","next drive start",4,"07:00",0,"1 plays, -5 yards, 02:01 elapsed",FALSE
+"20251004_gwn0",275,"McDaniel",4,"07:00","03:29","next drive start",4,"03:31",0,"7 plays, 16 yards, 03:29 elapsed",FALSE
+"20251004_gwn0",282,"Carnegie Mellon",4,"03:31","01:43","next drive start",4,"01:48",0,"3 plays, -7 yards, 01:43 elapsed",FALSE
+"20251004_gwn0",295,"McDaniel",4,"01:48","01:38","score clock",4,"00:10",0,"6 plays, 84 yards, 01:38 elapsed",FALSE
+"20251004_gwn0",300,"Carnegie Mellon",4,"00:10","00:10","end of half",4,"00:00",0,"1 plays, -1 yards, 00:10 elapsed",FALSE
+"20251011_t8bp",21,"Carnegie Mellon",1,"14:55","04:11","score clock",1,"10:44",0,"10 plays, 76 yards, 04:11 elapsed",FALSE
+"20251011_t8bp",32,"Johns Hopkins",1,"10:39","03:13","next drive start",1,"07:26",0,"6 plays, 30 yards, 03:13 elapsed",FALSE
+"20251011_t8bp",41,"Carnegie Mellon",1,"07:26","01:28","score clock",1,"05:58",0,"5 plays, 12 yards, 01:28 elapsed",FALSE
+"20251011_t8bp",63,"Johns Hopkins",1,"05:49","06:43","next drive start",2,"14:06",0,"13 plays, 54 yards, 06:43 elapsed",FALSE
+"20251011_t8bp",78,"Carnegie Mellon",2,"14:06","05:44","score clock",2,"08:22",0,"10 plays, 96 yards, 05:44 elapsed",FALSE
+"20251011_t8bp",94,"Johns Hopkins",2,"08:15","04:16","score clock",2,"03:59",0,"9 plays, 75 yards, 04:16 elapsed",FALSE
+"20251011_t8bp",107,"Carnegie Mellon",2,"03:50","01:57","score clock",2,"01:53",0,"5 plays, 72 yards, 01:57 elapsed",FALSE
+"20251011_t8bp",127,"Johns Hopkins",2,"01:45","01:45","end of half",2,"00:00",0,"9 plays, 18 yards, 01:45 elapsed",FALSE
+"20251011_t8bp",147,"Johns Hopkins",3,"15:00","04:57","score clock",3,"10:03",0,"10 plays, 75 yards, 04:57 elapsed",FALSE
+"20251011_t8bp",167,"Carnegie Mellon",3,"09:57","08:35","score clock",3,"01:22",0,"14 plays, 73 yards, 08:35 elapsed",FALSE
+"20251011_t8bp",183,"Johns Hopkins",3,"01:09","03:20","next drive start",4,"12:49",0,"8 plays, 14 yards, 03:20 elapsed",FALSE
+"20251011_t8bp",192,"Carnegie Mellon",4,"12:49","02:49","next drive start",4,"10:00",0,"5 plays, 15 yards, 02:49 elapsed",FALSE
+"20251011_t8bp",204,"Johns Hopkins",4,"10:00","02:01","score clock",4,"07:59",0,"4 plays, 23 yards, 02:01 elapsed",FALSE
+"20251011_t8bp",213,"Carnegie Mellon",4,"07:51","01:07","next drive start",4,"06:44",0,"3 plays, 5 yards, 01:07 elapsed",FALSE
+"20251011_t8bp",223,"Johns Hopkins",4,"06:44","02:07","score clock",4,"04:37",0,"5 plays, 74 yards, 02:07 elapsed",FALSE
+"20251011_t8bp",234,"Carnegie Mellon",4,"04:29","01:57","next drive start",4,"02:32",0,"5 plays, 0 yards, 01:57 elapsed",FALSE
+"20251011_t8bp",246,"Johns Hopkins",4,"02:32","02:32","end of half",4,"00:00",0,"5 plays, 11 yards, 02:32 elapsed",FALSE
+"20251018_uxv5",15,"Carnegie Mellon",1,"14:56","02:43","next drive start",1,"12:13",0,"6 plays, 29 yards, 02:43 elapsed",FALSE
+"20251018_uxv5",22,"Gettysburg",1,"12:13","01:01","next drive start",1,"11:12",0,"4 plays, -14 yards, 01:01 elapsed",FALSE
+"20251018_uxv5",28,"Carnegie Mellon",1,"11:12","00:02","score clock",1,"11:10",0,"1 plays, 1 yards, 00:02 elapsed",FALSE
+"20251018_uxv5",36,"Gettysburg",1,"11:04","02:04","next drive start",1,"09:00",0,"3 plays, 5 yards, 02:04 elapsed",FALSE
+"20251018_uxv5",49,"Carnegie Mellon",1,"09:00","03:48","next drive start",1,"05:12",0,"8 plays, 48 yards, 03:48 elapsed",FALSE
+"20251018_uxv5",72,"Gettysburg",1,"05:12","07:32","next drive start",2,"12:40",0,"16 plays, 66 yards, 07:32 elapsed",FALSE
+"20251018_uxv5",88,"Carnegie Mellon",2,"12:40","04:22","score clock",2,"08:18",0,"11 plays, 90 yards, 04:22 elapsed",FALSE
+"20251018_uxv5",97,"Gettysburg",2,"08:18","01:44","next drive start",2,"06:34",0,"4 plays, 21 yards, 01:44 elapsed",FALSE
+"20251018_uxv5",104,"Carnegie Mellon",2,"06:34","00:43","score clock",2,"05:51",0,"2 plays, 84 yards, 00:43 elapsed",FALSE
+"20251018_uxv5",112,"Gettysburg",2,"05:51","00:58","next drive start",2,"04:53",0,"3 plays, 1 yards, 00:58 elapsed",FALSE
+"20251018_uxv5",125,"Carnegie Mellon",2,"04:53","03:34","score clock",2,"01:19",0,"8 plays, 55 yards, 03:34 elapsed",FALSE
+"20251018_uxv5",135,"Gettysburg",2,"01:12","01:00","next drive start",2,"00:12",0,"4 plays, 31 yards, 01:00 elapsed",FALSE
+"20251018_uxv5",143,"Carnegie Mellon",2,"00:12","00:12","score clock",2,"00:00",0,"3 plays, 24 yards, 00:12 elapsed",FALSE
+"20251018_uxv5",166,"Gettysburg",3,"15:00","03:52","next drive start",3,"11:08",0,"11 plays, 46 yards, 03:52 elapsed",FALSE
+"20251018_uxv5",171,"Carnegie Mellon",3,"11:08","00:35","next drive start",3,"10:33",0,"2 plays, 19 yards, 00:35 elapsed",FALSE
+"20251018_uxv5",179,"Gettysburg",3,"10:33","01:35","next drive start",3,"08:58",0,"4 plays, 5 yards, 01:35 elapsed",FALSE
+"20251018_uxv5",188,"Carnegie Mellon",3,"08:58","00:34","score clock",3,"08:24",0,"2 plays, 56 yards, 00:34 elapsed",FALSE
+"20251018_uxv5",201,"Gettysburg",3,"08:24","03:20","score clock",3,"05:04",0,"6 plays, 75 yards, 03:20 elapsed",FALSE
+"20251018_uxv5",215,"Carnegie Mellon",3,"04:56","03:42","score clock",3,"01:14",0,"9 plays, 58 yards, 03:42 elapsed",FALSE
+"20251018_uxv5",235,"Gettysburg",3,"01:14","04:49","score clock",4,"11:25",0,"10 plays, 75 yards, 04:49 elapsed",FALSE
+"20251018_uxv5",254,"Carnegie Mellon",4,"11:25","05:03","score clock",4,"06:22",0,"11 plays, 62 yards, 05:03 elapsed",FALSE
+"20251018_uxv5",276,"Gettysburg",4,"06:22","05:20","score clock",4,"01:02",0,"13 plays, 75 yards, 05:20 elapsed",FALSE
+"20251018_uxv5",282,"Carnegie Mellon",4,"01:01","01:01","end of half",4,"00:00",0,"2 plays, -2 yards, 01:01 elapsed",FALSE
+"20251025_3c40",13,"Carnegie Mellon",1,"15:00","02:05","next drive start",1,"12:55",0,"3 plays, 8 yards, 02:05 elapsed",FALSE
+"20251025_3c40",21,"Muhlenberg",1,"12:55","02:31","next drive start",1,"10:24",0,"3 plays, -11 yards, 02:31 elapsed",FALSE
+"20251025_3c40",40,"Carnegie Mellon",1,"10:24","07:12","score clock",1,"03:12",0,"11 plays, 77 yards, 07:12 elapsed",FALSE
+"20251025_3c40",48,"Muhlenberg",1,"03:12","01:22","next drive start",1,"01:50",0,"3 plays, -1 yards, 01:22 elapsed",FALSE
+"20251025_3c40",61,"Carnegie Mellon",1,"01:50","02:43","next drive start",2,"14:07",0,"6 plays, 14 yards, 02:43 elapsed",FALSE
+"20251025_3c40",79,"Muhlenberg",2,"14:07","04:50","score clock",2,"09:17",0,"12 plays, 98 yards, 04:50 elapsed",FALSE
+"20251025_3c40",87,"Carnegie Mellon",2,"09:17","01:41","next drive start",2,"07:36",0,"3 plays, 4 yards, 01:41 elapsed",FALSE
+"20251025_3c40",94,"Muhlenberg",2,"07:36","00:21","next drive start",2,"07:15",0,"3 plays, 0 yards, 00:21 elapsed",FALSE
+"20251025_3c40",107,"Carnegie Mellon",2,"07:15","03:22","score clock",2,"03:53",0,"8 plays, 48 yards, 03:22 elapsed",FALSE
+"20251025_3c40",122,"Muhlenberg",2,"03:53","02:19","next drive start",2,"01:34",0,"6 plays, 2 yards, 02:19 elapsed",FALSE
+"20251025_3c40",133,"Carnegie Mellon",2,"01:34","00:30","score clock",2,"01:04",0,"5 plays, 51 yards, 00:30 elapsed",FALSE
+"20251025_3c40",141,"Muhlenberg",2,"01:04","01:04","end of half",2,"00:00",0,"3 plays, 3 yards, 01:04 elapsed",FALSE
+"20251025_3c40",163,"Muhlenberg",3,"15:00","05:21","next drive start",3,"09:39",0,"12 plays, 31 yards, 05:21 elapsed",FALSE
+"20251025_3c40",171,"Carnegie Mellon",3,"09:39","01:27","next drive start",3,"08:12",0,"4 plays, 2 yards, 01:27 elapsed",FALSE
+"20251025_3c40",186,"Muhlenberg",3,"08:12","04:22","next drive start",3,"03:50",0,"11 plays, 35 yards, 04:22 elapsed",FALSE
+"20251025_3c40",198,"Carnegie Mellon",3,"03:50","02:49","score clock",3,"01:01",0,"7 plays, 76 yards, 02:49 elapsed",FALSE
+"20251025_3c40",213,"Muhlenberg",3,"01:01","01:59","score clock",4,"14:02",0,"6 plays, 66 yards, 01:59 elapsed",FALSE
+"20251025_3c40",222,"Carnegie Mellon",4,"14:02","02:13","next drive start",4,"11:49",0,"3 plays, -5 yards, 02:13 elapsed",FALSE
+"20251025_3c40",236,"Muhlenberg",4,"11:49","04:12","score clock",4,"07:37",0,"9 plays, 39 yards, 04:12 elapsed",FALSE
+"20251025_3c40",244,"Carnegie Mellon",4,"07:37","01:06","next drive start",4,"06:31",0,"3 plays, 3 yards, 01:06 elapsed",FALSE
+"20251025_3c40",258,"Muhlenberg",4,"06:31","04:34","score clock",4,"01:57",0,"8 plays, 64 yards, 04:34 elapsed",FALSE
+"20251025_3c40",283,"Carnegie Mellon",4,"01:57","01:57","next drive start",4,"00:00",0,"16 plays, 57 yards, 01:57 elapsed",FALSE
+"20251025_3c40",286,"Muhlenberg",4,"00:00","00:00","end of half",4,"00:00",0,"0 plays, 0 yards, 00:00 elapsed",FALSE
+"20251101_dlys",22,"Carnegie Mellon",1,"15:00","04:44","score clock",1,"10:16",0,"11 plays, 65 yards, 04:44 elapsed",FALSE
+"20251101_dlys",40,"Dickinson",1,"10:16","05:17","score clock",1,"04:59",0,"12 plays, 75 yards, 05:17 elapsed",FALSE
+"20251101_dlys",57,"Carnegie Mellon",1,"04:52","04:24","score clock",1,"00:28",0,"11 plays, 62 yards, 04:24 elapsed",FALSE
+"20251101_dlys",69,"Dickinson",1,"00:28","01:45","next drive start",2,"13:43",0,"4 plays, 19 yards, 01:45 elapsed",FALSE
+"20251101_dlys",86,"Carnegie Mellon",2,"13:43","04:57","score clock",2,"08:46",0,"11 plays, 83 yards, 04:57 elapsed",FALSE
+"20251101_dlys",94,"Dickinson",2,"08:46","00:49","next drive start",2,"07:57",0,"3 plays, 6 yards, 00:49 elapsed",FALSE
+"20251101_dlys",108,"Carnegie Mellon",2,"07:57","04:07","score clock",2,"03:50",0,"9 plays, 67 yards, 04:07 elapsed",FALSE
+"20251101_dlys",123,"Dickinson",2,"03:50","02:26","score clock",2,"01:24",0,"9 plays, 75 yards, 02:26 elapsed",FALSE
+"20251101_dlys",141,"Carnegie Mellon",2,"01:20","01:07","score clock",2,"00:13",0,"9 plays, 78 yards, 01:07 elapsed",FALSE
+"20251101_dlys",149,"Dickinson",2,"00:13","00:13","end of half",2,"00:00",0,"2 plays, 8 yards, 00:13 elapsed",FALSE
+"20251101_dlys",164,"Dickinson",3,"15:00","01:19","score clock",3,"13:41",0,"5 plays, 75 yards, 01:19 elapsed",FALSE
+"20251101_dlys",185,"Carnegie Mellon",3,"13:36","05:41","score clock",3,"07:55",0,"15 plays, 76 yards, 05:41 elapsed",FALSE
+"20251101_dlys",199,"Dickinson",3,"07:47","03:20","next drive start",3,"04:27",0,"9 plays, 45 yards, 03:20 elapsed",FALSE
+"20251101_dlys",211,"Carnegie Mellon",3,"04:27","02:54","score clock",3,"01:33",0,"5 plays, 80 yards, 02:54 elapsed",FALSE
+"20251101_dlys",223,"Dickinson",3,"01:33","01:42","next drive start",4,"14:51",0,"4 plays, 30 yards, 01:42 elapsed",FALSE
+"20251101_dlys",233,"Carnegie Mellon",4,"14:51","02:23","score clock",4,"12:28",0,"5 plays, 55 yards, 02:23 elapsed",FALSE
+"20251101_dlys",243,"Dickinson",4,"12:19","01:31","score clock",4,"10:48",0,"4 plays, 50 yards, 01:31 elapsed",FALSE
+"20251101_dlys",264,"Carnegie Mellon",4,"10:41","06:06","score clock",4,"04:35",0,"12 plays, 65 yards, 06:06 elapsed",FALSE
+"20251101_dlys",273,"Dickinson",4,"04:35","02:05","next drive start",4,"02:30",0,"3 plays, 4 yards, 02:05 elapsed",FALSE
+"20251101_dlys",284,"Carnegie Mellon",4,"02:30","01:58","score clock",4,"00:32",0,"6 plays, 63 yards, 01:58 elapsed",FALSE
+"20251101_dlys",291,"Dickinson",4,"00:24","00:24","end of half",4,"00:00",0,"1 plays, 6 yards, 00:24 elapsed",FALSE
+"20251108_3ubg",13,"Franklin and Marshall",1,"15:00","02:39","next drive start",1,"12:21",0,"5 plays, 28 yards, 02:39 elapsed",FALSE
+"20251108_3ubg",23,"Carnegie Mellon",1,"12:21","02:26","score clock",1,"09:55",0,"7 plays, -11 yards, 02:26 elapsed",FALSE
+"20251108_3ubg",28,"Franklin and Marshall",1,"09:55","00:00","next drive start",1,"09:47",8,"0 plays, 0 yards, 00:00 elapsed",TRUE
+"20251108_3ubg",39,"Carnegie Mellon",1,"09:47","02:42","next drive start",1,"07:05",0,"5 plays, 18 yards, 02:42 elapsed",FALSE
+"20251108_3ubg",46,"Franklin and Marshall",1,"07:05","01:58","next drive start",1,"05:07",0,"3 plays, 8 yards, 01:58 elapsed",FALSE
+"20251108_3ubg",54,"Carnegie Mellon",1,"05:07","01:28","next drive start",1,"03:39",0,"3 plays, -1 yards, 01:28 elapsed",FALSE
+"20251108_3ubg",68,"Franklin and Marshall",1,"03:39","03:32","score clock",1,"00:07",0,"8 plays, 54 yards, 03:32 elapsed",FALSE
+"20251108_3ubg",79,"Carnegie Mellon",1,"00:02","00:31","next drive start",2,"14:31",0,"3 plays, 0 yards, 00:31 elapsed",FALSE
+"20251108_3ubg",92,"Franklin and Marshall",2,"14:31","05:31","next drive start",2,"09:00",0,"10 plays, 37 yards, 05:31 elapsed",FALSE
+"20251108_3ubg",103,"Carnegie Mellon",2,"09:00","02:46","score clock",2,"06:14",0,"6 plays, 77 yards, 02:46 elapsed",FALSE
+"20251108_3ubg",112,"Franklin and Marshall",2,"06:07","02:15","next drive start",2,"03:52",0,"3 plays, 6 yards, 02:15 elapsed",FALSE
+"20251108_3ubg",122,"Carnegie Mellon",2,"03:52","02:28","next drive start",2,"01:24",0,"6 plays, 31 yards, 02:28 elapsed",FALSE
+"20251108_3ubg",133,"Franklin and Marshall",2,"01:24","01:21","next drive start",2,"00:03",0,"7 plays, 22 yards, 01:21 elapsed",FALSE
+"20251108_3ubg",137,"Carnegie Mellon",2,"00:03","00:03","end of half",2,"00:00",0,"1 plays, 6 yards, 00:03 elapsed",FALSE
+"20251108_3ubg",148,"Carnegie Mellon",3,"14:56","01:16","next drive start",3,"13:40",0,"3 plays, 3 yards, 01:16 elapsed",FALSE
+"20251108_3ubg",158,"Franklin and Marshall",3,"13:40","01:57","score clock",3,"11:43",0,"4 plays, 54 yards, 01:57 elapsed",FALSE
+"20251108_3ubg",171,"Carnegie Mellon",3,"11:39","02:39","score clock",3,"09:00",0,"7 plays, 70 yards, 02:39 elapsed",FALSE
+"20251108_3ubg",187,"Franklin and Marshall",3,"09:00","05:50","score clock",3,"03:10",0,"11 plays, 68 yards, 05:50 elapsed",FALSE
+"20251108_3ubg",192,"Franklin and Marshall",3,"03:05","00:03","next drive start",3,"03:02",0,"1 plays, 0 yards, 00:03 elapsed",FALSE
+"20251108_3ubg",204,"Carnegie Mellon",3,"03:02","01:56","score clock",3,"01:06",0,"6 plays, 77 yards, 01:56 elapsed",FALSE
+"20251108_3ubg",218,"Franklin and Marshall",3,"01:06","02:06","next drive start",4,"14:00",0,"6 plays, 11 yards, 02:06 elapsed",FALSE
+"20251108_3ubg",225,"Carnegie Mellon",4,"14:00","01:30","next drive start",4,"12:30",0,"3 plays, 4 yards, 01:30 elapsed",FALSE
+"20251108_3ubg",233,"Franklin and Marshall",4,"12:30","01:48","next drive start",4,"10:42",0,"4 plays, 23 yards, 01:48 elapsed",FALSE
+"20251108_3ubg",240,"Carnegie Mellon",4,"10:42","00:48","next drive start",4,"09:54",0,"3 plays, -9 yards, 00:48 elapsed",FALSE
+"20251108_3ubg",247,"Franklin and Marshall",4,"09:54","01:36","next drive start",4,"08:18",0,"3 plays, 11 yards, 01:36 elapsed",FALSE
+"20251108_3ubg",259,"Carnegie Mellon",4,"08:18","03:42","score clock",4,"04:36",0,"8 plays, 7 yards, 03:42 elapsed",FALSE
+"20251108_3ubg",270,"Franklin and Marshall",4,"04:36","02:41","score clock",4,"01:55",0,"5 plays, 75 yards, 02:41 elapsed",FALSE
+"20251108_3ubg",278,"Carnegie Mellon",4,"01:44","00:53","next drive start",4,"00:51",0,"3 plays, -3 yards, 00:53 elapsed",FALSE
+"20251108_3ubg",286,"Franklin and Marshall",4,"00:51","00:51","end of half",4,"00:00",0,"3 plays, -8 yards, 00:51 elapsed",FALSE
+"20251115_h3wh",23,"Ursinus",1,"15:00","07:34","next drive start",1,"07:26",0,"14 plays, 70 yards, 07:34 elapsed",FALSE
+"20251115_h3wh",34,"Carnegie Mellon",1,"07:26","03:14","next drive start",1,"04:12",0,"7 plays, 27 yards, 03:14 elapsed",FALSE
+"20251115_h3wh",46,"Ursinus",1,"04:12","02:17","score clock",1,"01:55",0,"5 plays, 67 yards, 02:17 elapsed",FALSE
+"20251115_h3wh",67,"Carnegie Mellon",1,"01:47","05:24","score clock",2,"11:23",0,"13 plays, 61 yards, 05:24 elapsed",FALSE
+"20251115_h3wh",75,"Ursinus",2,"11:23","00:37","score clock",2,"10:46",0,"2 plays, 2 yards, 00:37 elapsed",FALSE
+"20251115_h3wh",83,"Ursinus",2,"10:46","01:40","next drive start",2,"09:06",0,"3 plays, 8 yards, 01:40 elapsed",FALSE
+"20251115_h3wh",94,"Carnegie Mellon",2,"09:06","03:17","next drive start",2,"05:49",0,"6 plays, 17 yards, 03:17 elapsed",FALSE
+"20251115_h3wh",110,"Ursinus",2,"05:49","03:58","score clock",2,"01:51",0,"8 plays, 68 yards, 03:58 elapsed",FALSE
+"20251115_h3wh",130,"Carnegie Mellon",2,"01:44","01:20","score clock",2,"00:24",0,"10 plays, 85 yards, 01:20 elapsed",FALSE
+"20251115_h3wh",136,"Ursinus",2,"00:24","00:00","end of half",2,"00:00",24,"1 plays, -2 yards, 00:00 elapsed",TRUE
+"20251115_h3wh",154,"Carnegie Mellon",3,"15:00","04:36","next drive start",3,"10:24",0,"8 plays, 27 yards, 04:36 elapsed",FALSE
+"20251115_h3wh",171,"Ursinus",3,"10:24","05:08","score clock",3,"05:16",0,"11 plays, 80 yards, 05:08 elapsed",FALSE
+"20251115_h3wh",186,"Carnegie Mellon",3,"05:16","04:15","score clock",3,"01:01",0,"9 plays, 46 yards, 04:15 elapsed",FALSE
+"20251115_h3wh",207,"Ursinus",3,"01:01","04:40","score clock",4,"11:21",0,"12 plays, 75 yards, 04:40 elapsed",FALSE
+"20251115_h3wh",215,"Carnegie Mellon",4,"11:14","00:37","next drive start",4,"10:37",0,"3 plays, 0 yards, 00:37 elapsed",FALSE
+"20251115_h3wh",222,"Ursinus",4,"10:37","01:33","next drive start",4,"09:04",0,"3 plays, 0 yards, 01:33 elapsed",FALSE
+"20251115_h3wh",229,"Carnegie Mellon",4,"09:04","02:25","next drive start",4,"06:39",0,"3 plays, 8 yards, 02:25 elapsed",FALSE
+"20251115_h3wh",249,"Ursinus",4,"06:39","05:55","next drive start",4,"00:44",0,"12 plays, 70 yards, 05:55 elapsed",FALSE
+"20251115_h3wh",258,"Carnegie Mellon",4,"00:44","00:44","end of half",4,"00:00",0,"3 plays, 4 yards, 00:44 elapsed",FALSE
+"20251122_xsab",19,"Carnegie Mellon",1,"14:55","04:27","score clock",1,"10:28",0,"10 plays, 65 yards, 04:27 elapsed",FALSE
+"20251122_xsab",27,"Misericordia",1,"10:24","01:21","next drive start",1,"09:03",0,"3 plays, -7 yards, 01:21 elapsed",FALSE
+"20251122_xsab",37,"Carnegie Mellon",1,"09:03","02:33","next drive start",1,"06:30",0,"7 plays, 21 yards, 02:33 elapsed",FALSE
+"20251122_xsab",44,"Misericordia",1,"06:30","01:21","next drive start",1,"05:09",0,"4 plays, 7 yards, 01:21 elapsed",FALSE
+"20251122_xsab",51,"Carnegie Mellon",1,"05:09","01:20","next drive start",1,"03:49",0,"4 plays, 9 yards, 01:20 elapsed",FALSE
+"20251122_xsab",70,"Misericordia",1,"03:49","05:18","next drive start",2,"13:31",0,"11 plays, 64 yards, 05:18 elapsed",FALSE
+"20251122_xsab",80,"Carnegie Mellon",2,"13:31","02:25","next drive start",2,"11:06",0,"7 plays, 51 yards, 02:25 elapsed",FALSE
+"20251122_xsab",89,"Misericordia",2,"11:06","02:57","next drive start",2,"08:09",0,"5 plays, 34 yards, 02:57 elapsed",FALSE
+"20251122_xsab",96,"Carnegie Mellon",2,"08:09","01:30","next drive start",2,"06:39",0,"3 plays, 0 yards, 01:30 elapsed",FALSE
+"20251122_xsab",115,"Misericordia",2,"06:39","05:06","score clock",2,"01:33",0,"13 plays, 73 yards, 05:06 elapsed",FALSE
+"20251122_xsab",123,"Carnegie Mellon",2,"01:28","00:24","next drive start",2,"01:04",0,"3 plays, -6 yards, 00:24 elapsed",FALSE
+"20251122_xsab",139,"Misericordia",2,"01:04","01:03","score clock",2,"00:01",0,"9 plays, 60 yards, 01:03 elapsed",FALSE
+"20251122_xsab",143,"Carnegie Mellon",2,"00:00","00:00","end of half",2,"00:00",0,"0 plays, 0 yards, 00:00 elapsed",FALSE
+"20251122_xsab",156,"Misericordia",3,"14:57","02:34","score clock",3,"12:23",0,"5 plays, 10 yards, 02:34 elapsed",FALSE
+"20251122_xsab",161,"Carnegie Mellon",3,"12:23","00:00","next drive start",3,"12:18",5,"0 plays, 0 yards, 00:00 elapsed",TRUE
+"20251122_xsab",177,"Misericordia",3,"12:18","05:51","score clock",3,"06:27",0,"11 plays, 65 yards, 05:51 elapsed",FALSE
+"20251122_xsab",188,"Carnegie Mellon",3,"06:20","02:50","next drive start",3,"03:30",0,"5 plays, 4 yards, 02:50 elapsed",FALSE
+"20251122_xsab",194,"Misericordia",3,"03:30","00:49","next drive start",3,"02:41",0,"3 plays, 12 yards, 00:49 elapsed",FALSE
+"20251122_xsab",203,"Carnegie Mellon",3,"02:41","00:50","score clock",3,"01:51",0,"3 plays, 44 yards, 00:50 elapsed",FALSE
+"20251122_xsab",222,"Misericordia",3,"01:51","06:23","next drive start",4,"10:28",0,"12 plays, 58 yards, 06:23 elapsed",FALSE
+"20251122_xsab",233,"Carnegie Mellon",4,"10:28","03:47","next drive start",4,"06:41",0,"8 plays, 68 yards, 03:47 elapsed",FALSE
+"20251122_xsab",240,"Misericordia",4,"06:41","01:47","next drive start",4,"04:54",0,"3 plays, -6 yards, 01:47 elapsed",FALSE
+"20251122_xsab",249,"Carnegie Mellon",4,"04:54","01:53","score clock",4,"03:01",0,"4 plays, 4 yards, 01:53 elapsed",FALSE
+"20251122_xsab",254,"Misericordia",4,"02:56","00:10","next drive start",4,"02:46",0,"1 plays, 0 yards, 00:10 elapsed",FALSE
+"20251122_xsab",267,"Carnegie Mellon",4,"02:46","02:46","end of half",4,"00:00",0,"7 plays, 21 yards, 02:46 elapsed",FALSE

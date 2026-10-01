@@ -304,7 +304,7 @@ parse_yards_gained <- function(play_text, play_type, no_play) {
 #' @keywords internal
 pbp_columns <- c(
   "game_id", "home", "away", "play_index", "drive_number", "drive_play_number",
-  "period", "half", "clock_known", "clock_prev_known", "clock_next_known",
+  "period", "half", "clock_start", "clock_end", "clock_upper", "clock_lower",
   "pos_team", "def_pos_team", "pos_team_score", "def_pos_team_score", "score_diff",
   "down", "distance", "yards_to_goal", "Goal_To_Go",
   "down_end", "distance_end", "yards_to_goal_end",
@@ -363,7 +363,9 @@ try_phase_team <- function(kept, scores, teams) {
 #'   per-kickoff possession decisions from [assign_kickoffs()]),
 #'   `score_checks` (each score line vs the parsed points),
 #'   `first_down_text` (the text-only first-down flags), and `next_snap`
-#'   (row index of the next scrimmage snap in the half).
+#'   (row index of the next scrimmage snap in the half), `clock_discards`
+#'   (stated clocks dropped as inconsistent), `footer_clock` (drive-footer
+#'   elapsed time vs the clock anchors).
 #' @export
 build_pbp <- function(game_url) {
   game <- fetch_game(game_url)
@@ -371,7 +373,6 @@ build_pbp <- function(game_url) {
   classified <- classify_plays(game$plays)
   classified$row <- seq_len(nrow(classified))
   classified <- derive_quarter(classified)
-  classified <- derive_clock(classified)
   team_map <- build_team_map(classified, c(game$teams, unname(game$matchup)))
   teams <- sort(unique(unname(team_map)))
   classified <- derive_possession(classified, team_map)
@@ -425,6 +426,8 @@ build_pbp <- function(game_url) {
   kept <- derive_end_state(kept, nxt)
   kept <- derive_first_downs(kept, nxt)
   kept$drive_result <- derive_drive_result(kept)
+  clk <- derive_clock(classified, kept)
+  kept <- clk$kept
   kept$home <- unname(team_map[game$matchup[["home"]]])
   kept$away <- unname(team_map[game$matchup[["away"]]])
 
@@ -441,6 +444,10 @@ build_pbp <- function(game_url) {
   attr(out, "score_checks") <- rs$checks
   attr(out, "first_down_text") <- kept[, c("fd_yards_text", "fd_penalty_text")]
   attr(out, "next_snap") <- nxt
+  clk$discarded$game_id <- rep(game$game_id, nrow(clk$discarded))
+  clk$discarded$play_index <- kept$play_index[match(clk$discarded$row, kept$row)]
+  attr(out, "clock_discards") <- clk$discarded
+  attr(out, "footer_clock") <- footer_clock_check(classified, clk, kept, game$game_id)
   out
 }
 
