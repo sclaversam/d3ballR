@@ -28,16 +28,16 @@ find_line_score_teams <- function(tbls) {
   stop("No line-score table found. Open the page and check the layout.")
 }
 
-#' Fetch one game's play table plus its opponent
+#' Fetch one game's play table plus its team names
 #'
-#' Fetches the plays view page once and pulls both the play-by-play table
-#' (via [find_plays()]) and the two team names off the line-score table on
-#' the same page, so each game only costs one HTTP request.
+#' Fetches the plays view page once and pulls the play-by-play table (via
+#' [find_plays()]), the two line-score team names, and the "Away at Home"
+#' header (via [parse_matchup()]), so each game only costs one HTTP request.
 #'
 #' @param game_url Boxscore URL without the `?view=` suffix.
-#' @return A list with `game_id` (character), `opponent` (character, CMU's
-#'   opponent), and `plays` (tibble with `situation`/`play`, from
-#'   [find_plays()]).
+#' @return A list with `game_id`, `opponent` (CMU's opponent, line-score
+#'   spelling), `teams` (both line-score names), `matchup` (`c(away, home)`,
+#'   header spelling), and `plays` (tibble with `situation`/`play`).
 #' @keywords internal
 fetch_game <- function(game_url) {
   html <- fetch_html(paste0(game_url, "?view=plays"))
@@ -51,6 +51,8 @@ fetch_game <- function(game_url) {
   list(
     game_id  = extract_game_id(game_url),
     opponent = teams[!is_cmu],
+    teams    = teams,
+    matchup  = parse_matchup(tbls),
     plays    = find_plays(tbls)
   )
 }
@@ -85,19 +87,18 @@ derive_quarter <- function(classified) {
 #'
 #' Both row shapes name the possessing team: `drive_header` is
 #' "TEAM at MM:SS" (situation == play), `drive_start` is
-#' "TEAM drive start at MM:SS." The two rows come back to back for the same
-#' drive; when both are present, `drive_start`'s spelling of the team name
-#' wins for the rows that follow, since it's checked second and overwrites.
-#' The very first kickoff of the game (before any drive_header/drive_start
-#' has appeared) is a known gap -- there's nothing earlier to forward-fill
-#' from, so `possession` is NA there.
+#' "TEAM drive start at MM:SS." The two can spell the team differently
+#' ("Chicago" / "UChicago"), so both are mapped to one canonical name with
+#' `team_map` (see [build_team_map()]). Kickoff rows get their possession
+#' later, from [assign_kickoffs()]; forward-fill only covers the rows in
+#' between drive rows.
 #'
-#' @param classified A classified tibble (from [classify_plays()]), full row
-#'   set (not yet filtered to kept row types), with `quarter` already added.
+#' @param classified A classified tibble, full row set.
+#' @param team_map Output of [build_team_map()].
 #' @return `classified` with an added `possession` column (character,
-#'   forward filled).
+#'   forward filled, canonical names).
 #' @keywords internal
-derive_possession <- function(classified) {
+derive_possession <- function(classified, team_map) {
   header_team <- stringr::str_match(classified$play, "^(.*?) at \\d{1,2}:\\d{2}$")[, 2]
   start_team <- stringr::str_match(classified$play, stringr::regex("^(.*?) drive start at", ignore_case = TRUE))[, 2]
   possession_here <- dplyr::case_when(
@@ -105,41 +106,8 @@ derive_possession <- function(classified) {
     classified$row_type == "drive_start" ~ start_team,
     TRUE ~ NA_character_
   )
-  classified$possession <- possession_here
+  classified$possession <- unname(team_map[possession_here])
   tidyr::fill(classified, "possession", .direction = "down")
-}
-
-#' Number drives from drive-marker and drive-footer rows
-#'
-#' d3's drive markers are noisy: a drive usually opens with a
-#' `drive_header` ("TEAM at MM:SS") plus a `drive_start` ("TEAM drive start
-#' at MM:SS."), but the pair isn't always complete, and `drive_start` is
-#' sometimes restated mid-drive (after a spot correction or penalty). The
-#' reliable boundary is the `drive_footer` ("N plays, N yards, MM:SS
-#' elapsed") that closes every drive. So a new drive begins at the FIRST
-#' drive marker after a footer (or the first marker of the game); later
-#' markers before the next footer are restatements of the same drive.
-#'
-#' Rows between a footer and the next marker -- the kickoff after a score
-#' -- keep the previous drive's id, the same way they keep its possession.
-#' The opening kickoff comes before any drive, so its `drive_id` is NA.
-#'
-#' @param classified A classified tibble, full row set.
-#' @return `classified` with an added integer `drive_id` column.
-#' @keywords internal
-derive_drive_id <- function(classified) {
-  is_marker <- classified$row_type %in% c("drive_header", "drive_start")
-  is_footer <- classified$row_type == "drive_footer"
-  # footers seen before each row; a marker opens a drive if no marker has
-  # appeared since the most recent footer
-  footers_before <- cumsum(is_footer)
-  marker_rows <- which(is_marker)
-  opens <- !duplicated(footers_before[marker_rows])
-  boundary <- logical(nrow(classified))
-  boundary[marker_rows[opens]] <- TRUE
-  drive_id <- cumsum(boundary)
-  classified$drive_id <- ifelse(drive_id == 0L, NA_integer_, drive_id)
-  classified
 }
 
 #' Row types CMU logs as plays -- the set this table keeps
@@ -162,7 +130,7 @@ situation_pattern <- "^([1-4])(?:st|nd|rd|th)\\s+and\\s+(Goal|\\d+)\\s+at\\s+([A
 #' by [derive_goal_to_go()], once we know which side of the field the
 #' offense is on.
 #'
-#' @param df A tibble with a `situation` column.
+#' @param df A tibble with `situation` and `play_type` columns.
 #' @return `df` with `down` (integer), `distance` (integer, NA on "and
 #'   Goal" for now), `distance_is_goal` (logical, the literal "and Goal"
 #'   text), `yard_side` (character), `yard_num` (integer) added.
@@ -179,6 +147,13 @@ parse_situation <- function(df) {
   df$distance_is_goal <- ifelse(is.na(down), NA, tolower(distance_raw) == "goal")
   df$yard_side <- yard_side
   df$yard_num <- suppressWarnings(as.integer(m[, 5]))
+  # kickoffs and tries have no down, even when StatCrew leaves a stale
+  # down-and-distance in the situation column (a kickoff with a return
+  # penalty does)
+  no_down <- df$play_type %in% c("kickoff", "extra_point", "two_point")
+  for (col in c("down", "distance", "distance_is_goal", "yard_side", "yard_num")) {
+    df[[col]][no_down] <- NA
+  }
   df
 }
 
@@ -323,14 +298,12 @@ parse_yards_gained <- function(play_text, play_type, row_type, no_play) {
   )
 }
 
-#' Target schema column order (36 columns)
+#' Output column order
 #'
-#' cfbfastR-aligned. See `analysis/pbp_schema_and_build_plan.md` for the
-#' definition of each column and `analysis/pbp_schema.md` for its data
-#' dictionary.
+#' cfbfastR-aligned. See `analysis/pbp_schema.md` for the data dictionary.
 #' @keywords internal
 pbp_columns <- c(
-  "game_id", "play_index", "drive_play_number", "period", "half",
+  "game_id", "play_index", "drive_number", "drive_play_number", "period", "half",
   "clock_known", "clock_prev_known", "clock_next_known",
   "pos_team", "def_pos_team", "down", "distance", "yards_to_goal",
   "Goal_To_Go", "play_type", "yards_gained",
@@ -338,79 +311,123 @@ pbp_columns <- c(
   "downs_turnover", "touchdown", "safety",
   "penalty_flag", "penalty_yards_signed", "penalized_team",
   "penalty_no_play", "penalty_declined", "penalty_text",
-  "situation", "play_text", "row_type", "drive_id"
+  "situation", "play_text", "row_type"
 )
+
+#' Possession on try-phase rows: the team that just scored
+#'
+#' A PAT / two-point try (and any penalty row between a score and the next
+#' kickoff) belongs to the scoring team, which is about to kick. The scorer
+#' is read off the first score line after the scoring play (after a safety,
+#' the team that conceded kicks instead). This fixes the try after a
+#' defensive touchdown, which otherwise inherits the team that was scored
+#' on.
+#'
+#' @param kept Kept rows with `row`, `try_phase`, `play_type`, `play_text`,
+#'   `penalty_no_play`, `pos_team`.
+#' @param scores Output of [parse_score_rows()].
+#' @param teams The two canonical team names.
+#' @return Character vector: the corrected `pos_team`.
+#' @keywords internal
+try_phase_team <- function(kept, scores, teams) {
+  scoring <- which(is_scoring_snap(kept))
+  out <- kept$pos_team
+  for (i in which(kept$try_phase)) {
+    s <- scoring[scoring < i]
+    if (!length(s)) next
+    s <- s[length(s)]
+    sr <- scores[scores$row > kept$row[s], ]
+    if (!nrow(sr) || is.na(sr$scorer[1])) next
+    safety <- stringr::str_detect(kept$play_text[s], stringr::regex("\\bsafety\\b", ignore_case = TRUE))
+    out[i] <- if (safety) other_team(sr$scorer[1], teams) else sr$scorer[1]
+  }
+  out
+}
 
 #' Build one game's play-by-play table
 #'
 #' Keeps only the row types CMU logs (`play`, `kickoff`, `extra_point`,
 #' `two_point`, `penalty_no_play`), after using the dropped administrative
-#' rows to derive `period`, `pos_team`, and `drive_id`. Emits the 36-column
-#' cfbfastR-aligned schema in `pbp_columns`. The outcome-flag, penalty, and
-#' clock columns are filled by [parse_outcome_flags()], [parse_penalties()],
-#' and [derive_clock()]. See
-#' `R/classify.R` and `R/parse_play_type.R` for the upstream row_type/
+#' rows to derive `period`, `pos_team`, the kickoff teams, and the clock.
+#' See `R/classify.R` and `R/parse_play_type.R` for the upstream row_type /
 #' play_type classification this builds on.
 #'
 #' @param game_url Boxscore URL without the `?view=` suffix.
 #' @return A tibble, one row per kept play, with the columns in
-#'   `pbp_columns`. The CMU opponent name is attached as
-#'   `attr(, "opponent")` (used by [build_all_pbp()]'s count summary; it's
-#'   not a column, to keep the schema team-agnostic).
+#'   `pbp_columns`. Attributes: `opponent` (CMU's opponent, for the count
+#'   summary) and `kickoffs` (the per-kickoff possession decisions from
+#'   [assign_kickoffs()], for the validation report).
 #' @export
 build_pbp <- function(game_url) {
   game <- fetch_game(game_url)
 
   classified <- classify_plays(game$plays)
+  classified$row <- seq_len(nrow(classified))
   classified <- derive_quarter(classified)
   classified <- derive_clock(classified)
-  classified <- derive_possession(classified)
-  classified <- derive_drive_id(classified)
+  team_map <- build_team_map(classified, c(game$teams, unname(game$matchup)))
+  teams <- sort(unique(unname(team_map)))
+  classified <- derive_possession(classified, team_map)
   classified <- parse_play_type(classified)
 
   kept <- classified[classified$row_type %in% kept_row_types, ]
   kept$play_type <- ifelse(kept$row_type == "play", kept$play_type, kept$row_type)
+  kept$play_text <- kept$play
   kept$pos_team <- kept$possession
+  kept$period <- as.integer(kept$quarter)
+  kept$half <- dplyr::case_when(kept$period %in% 1:2 ~ 1L, kept$period %in% 3:4 ~ 2L,
+                                TRUE ~ NA_integer_)
   kept <- parse_situation(kept)
   own_side <- infer_own_side(kept)
+  text_team <- infer_text_team(kept, own_side)
+  kept$penalty_no_play <- is_no_play(kept$play_text)
+
+  # kickoffs: pos_team is the receiving team
+  scores <- parse_score_rows(classified, team_map, teams)
+  kickoffs <- assign_kickoffs(classified, teams, team_map, own_side, text_team, scores)
+  ko <- match(kickoffs$row, kept$row)
+  kept$pos_team[ko] <- kickoffs$receiving_team
+  kept$kicker_recovered <- FALSE
+  kept$kicker_recovered[ko] <- kickoffs$kicker_recovered
+
+  # tries belong to the scoring team
+  kept$try_phase <- flag_try_phase(kept)
+  kept$pos_team <- try_phase_team(kept, scores, teams)
+  kept$def_pos_team <- other_team(kept$pos_team, teams)
+
   kept$yards_to_goal <- compute_yards_to_goal(kept, own_side)
   kept <- derive_goal_to_go(kept)
-
-  teams <- unique(stats::na.omit(kept$pos_team))
-  kept$def_pos_team <- ifelse(is.na(kept$pos_team), NA_character_,
-                              ifelse(kept$pos_team == teams[1], teams[2], teams[1]))
-  kept$play_text <- kept$play
-  text_team <- infer_text_team(kept, own_side)
   kept <- parse_penalties(kept, text_team)
   kept$yards_gained <- parse_yards_gained(kept$play_text, kept$play_type, kept$row_type,
                                           kept$penalty_no_play)
   kept <- parse_outcome_flags(kept, text_team)
-
-  kept$period <- as.integer(kept$quarter)
-  kept$half <- dplyr::case_when(kept$period %in% 1:2 ~ 1L, kept$period %in% 3:4 ~ 2L,
-                                TRUE ~ NA_integer_)
-  kept$drive_play_number <- ifelse(is.na(kept$drive_id), NA_integer_,
-                                   stats::ave(seq_len(nrow(kept)), kept$drive_id, FUN = seq_along))
+  kept <- assign_drives(kept)
 
   kept$game_id <- game$game_id
   kept$play_index <- seq_len(nrow(kept))
 
   out <- kept[, pbp_columns]
   attr(out, "opponent") <- game$opponent
+  kickoffs$play_index <- kept$play_index[ko]
+  kickoffs$period <- kept$period[ko]
+  kickoffs$game_id <- game$game_id
+  attr(out, "kickoffs") <- kickoffs
   out
 }
 
 #' Build and write every game's play-by-play table
 #'
-#' Writes one CSV per game to `{out_dir}/{game_id}.csv`, plus a summary of
-#' kept-row counts to `{out_dir}/../pbp_row_counts.csv`. Prints the per-game
+#' Writes one CSV per game to `{out_dir}/{game_id}.csv`, a summary of
+#' kept-row counts to `{out_dir}/../pbp_row_counts.csv`, and the validation
+#' reports to `check_dir` (see [write_pbp_checks()]). Prints the per-game
 #' counts to the console.
 #'
 #' @param game_urls Character vector of boxscore URLs.
 #' @param out_dir Directory to write per-game CSVs into.
+#' @param check_dir Directory for the validation reports.
 #' @return Invisibly, a named list of the per-game tibbles (by `game_id`).
 #' @export
-build_all_pbp <- function(game_urls, out_dir = "analysis/pbp") {
+build_all_pbp <- function(game_urls, out_dir = "analysis/pbp", check_dir = "analysis/checks") {
   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
   games <- lapply(game_urls, build_pbp)
@@ -423,6 +440,7 @@ build_all_pbp <- function(game_urls, out_dir = "analysis/pbp") {
     utils::write.csv(g, file.path(out_dir, paste0(g$game_id[1], ".csv")), row.names = FALSE, na = "")
   }
   utils::write.csv(counts, file.path(out_dir, "..", "pbp_row_counts.csv"), row.names = FALSE, na = "")
+  write_pbp_checks(games, check_dir)
 
   print(as.data.frame(counts))
 

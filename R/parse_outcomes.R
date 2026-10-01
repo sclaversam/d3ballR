@@ -35,7 +35,8 @@ infer_text_team <- function(df, own_side) {
 #'
 #' Sets `rush`, `pass`, `completion`, `sack`, `int`, `fumble_vec`,
 #' `turnover`, `downs_turnover`, `touchdown`, `safety`. All are FALSE on
-#' no-play rows (see [is_no_play()] in `R/parse_penalties.R`) regardless of what the text says.
+#' rows with `penalty_no_play` TRUE (see [is_no_play()]), regardless of
+#' what the text says.
 #'
 #' - `rush`: play_type `rush` or `kneel`. A sack is NOT a rush here (it has
 #'   its own flag), even though NCAA stats charge sacks to rushing.
@@ -43,12 +44,14 @@ infer_text_team <- function(df, own_side) {
 #' - `completion`, `int`, `sack`: the matching play_type.
 #' - Two-point tries (`two_point`) get no rush/pass flag; they aren't
 #'   scrimmage plays in cfbfastR's counting.
-#' - `fumble_vec`: text mentions "fumble"/"fumbled", on any row type.
+#' - `fumble_vec`: text mentions "fumble"/"fumbled"/"muff", on any row.
 #' - `turnover`: an interception, a lost fumble, or a turnover on downs. A
 #'   fumble is lost when the LAST "recovered by TEAM" after the fumble is not
 #'   the fumbling team. The fumbling team is the offense (`pos_team`) on a
-#'   rush/pass/sack/kneel, and the receiving/returning side (`def_pos_team`)
-#'   on kickoffs, punts, blocked kicks, and interception returns. Exception:
+#'   rush/pass/sack/kneel and on kickoffs (where `pos_team` is the receiving
+#'   team), and the returning side (`def_pos_team`) on punts, blocked kicks,
+#'   and interception returns. A kickoff the kicking team recovers (onside
+#'   or a return fumble; `kicker_recovered`) is always a turnover. Exception:
 #'   on a blocked kick (`field_goal_blocked`/`punt_blocked`) where the
 #'   kicking team gets the ball back on the fumble, possession ends where
 #'   it started, so it is NOT a turnover (McDaniel 2025 play 147).
@@ -60,8 +63,9 @@ infer_text_team <- function(df, own_side) {
 #' - `touchdown`: text says "TOUCHDOWN" (upper case) and wasn't nullified.
 #' - `safety`: text says "safety". None in the 2025 CMU games.
 #'
-#' @param df Kept rows with `play_text`, `row_type`, `play_type`, `pos_team`,
-#'   `def_pos_team`, `down`, `distance`, `yards_gained`.
+#' @param df Kept rows with `play_text`, `play_type`, `pos_team`,
+#'   `def_pos_team`, `down`, `distance`, `yards_gained`, `penalty_no_play`,
+#'   `kicker_recovered`.
 #' @param text_team Output of [infer_text_team()].
 #' @return `df` with the ten flag columns set (logical, never NA).
 #' @keywords internal
@@ -69,7 +73,7 @@ parse_outcome_flags <- function(df, text_team) {
   ic <- function(pattern) stringr::regex(pattern, ignore_case = TRUE)
   txt <- df$play_text
   pt <- df$play_type
-  no_play <- is_no_play(txt, df$row_type)
+  no_play <- df$penalty_no_play
   scrimmage <- pt %in% c("rush", "kneel", "pass_complete", "pass_incomplete", "sack")
 
   rush <- pt %in% c("rush", "kneel")
@@ -77,7 +81,7 @@ parse_outcome_flags <- function(df, text_team) {
   completion <- pt == "pass_complete"
   sack <- pt == "sack"
   int <- pt == "pass_intercepted"
-  fumble <- stringr::str_detect(txt, ic("\\bfumbled?\\b"))
+  fumble <- stringr::str_detect(txt, ic("\\b(fumbled?|muffed|muff)\\b"))
   # upper-case only: scores are always "TOUCHDOWN"; the lower-case word
   # appears in "Penalty after touchdown before PAT" marker rows
   touchdown <- stringr::str_detect(txt, "\\bTOUCHDOWN\\b") &
@@ -85,13 +89,14 @@ parse_outcome_flags <- function(df, text_team) {
   safety <- stringr::str_detect(txt, ic("\\bsafety\\b"))
 
   # last recovery after the last mention of a fumble
-  after_fumble <- stringr::str_replace(txt, ic("^.*\\bfumbled?\\b"), "")
+  after_fumble <- stringr::str_replace(txt, ic("^.*\\b(fumbled?|muffed|muff)\\b"), "")
   recov_token <- vapply(
     stringr::str_match_all(after_fumble, "recovered by ([A-Z&]{2,6})\\b"),
     function(m) if (nrow(m)) m[nrow(m), 2] else NA_character_, character(1)
   )
   recov_team <- unname(text_team[recov_token])
-  fumbling_team <- ifelse(scrimmage, df$pos_team, df$def_pos_team)
+  # on a kickoff pos_team is the receiving (returning) team
+  fumbling_team <- ifelse(scrimmage | pt == "kickoff", df$pos_team, df$def_pos_team)
   fumble_lost <- fumble & !is.na(recov_team) & !is.na(fumbling_team) & recov_team != fumbling_team
 
   # next row with a down (skips PATs/kickoffs); does it belong to the other team?
@@ -110,7 +115,8 @@ parse_outcome_flags <- function(df, text_team) {
 
   blocked_kick_regained <- pt %in% c("field_goal_blocked", "punt_blocked") &
     fumble_lost & recov_team == df$pos_team
-  turnover <- int | (fumble_lost & !blocked_kick_regained) | downs_turnover
+  turnover <- int | (fumble_lost & !blocked_kick_regained) | downs_turnover |
+    df$kicker_recovered
 
   flags <- list(rush = rush, pass = pass, completion = completion, sack = sack,
                 int = int, fumble_vec = fumble, turnover = turnover,

@@ -3,18 +3,15 @@
 #' `penalty_no_play` is TRUE when the play text says "NO PLAY", or the row is
 #' a dead-ball penalty with no snap at all (its text starts with "PENALTY";
 #' e.g. a false start in the StatCrew format that doesn't print "NO PLAY").
-#' It deliberately does NOT trust the upstream `row_type ==
-#' "penalty_no_play"` label on its own. That label is wrong on two kickoffs
-#' with a return penalty (Dickinson 191, Ursinus 73), where the kickoff still
-#' counts, and on "Penalty after touchdown before PAT" marker rows. See
-#' "Known bugs" in `analysis/pbp_schema.md`.
+#' Decided from the text alone, never from the classifier's `row_type`
+#' label.
 #'
-#' @param play_text,row_type Character vectors.
+#' @param play_text Character vector.
 #' @return Logical vector.
 #' @keywords internal
-is_no_play <- function(play_text, row_type) {
+is_no_play <- function(play_text) {
   stringr::str_detect(play_text, stringr::regex("\\bno play\\b", ignore_case = TRUE)) |
-    (row_type == "penalty_no_play" & stringr::str_detect(play_text, "^PENALTY "))
+    stringr::str_detect(play_text, "^PENALTY ")
 }
 
 #' Split a play's penalty clause into individual infractions
@@ -69,15 +66,14 @@ split_infractions <- function(clause, tokens) {
 #' - `penalty_yards_signed`: sum of the accepted infractions' yards, each
 #'   positive if the defense (`def_pos_team`) was flagged and negative if the
 #'   offense (`pos_team`) was. Offsetting -> 0. All declined -> NA. On a
-#'   kickoff, `pos_team` is the kicking team, so the sign is relative to the
-#'   kicking team.
+#'   kickoff `pos_team` is the receiving team, so a positive value means the
+#'   kicking team was flagged.
 #' - `penalty_declined`: TRUE when there are infractions and every one was
 #'   declined. A row with one declined and one accepted infraction is FALSE,
 #'   and the accepted one supplies the yards.
 #' - `penalty_no_play`: see [is_no_play()].
 #'
-#' @param df Kept rows with `play_text`, `row_type`, `pos_team`,
-#'   `def_pos_team`.
+#' @param df Kept rows with `play_text`, `pos_team`, `def_pos_team`.
 #' @param text_team Output of [infer_text_team()].
 #' @return `df` with the six penalty columns set.
 #' @keywords internal
@@ -114,7 +110,7 @@ parse_penalties <- function(df, text_team) {
   df$penalty_flag <- flag
   df$penalty_yards_signed <- yards
   df$penalized_team <- team
-  df$penalty_no_play <- is_no_play(txt, df$row_type)
+  df$penalty_no_play <- is_no_play(txt)
   df$penalty_declined <- ifelse(flag, declined %in% TRUE, NA)
   df$penalty_text <- clause
   df

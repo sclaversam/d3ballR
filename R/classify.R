@@ -43,6 +43,8 @@ verb_pattern <- "\\b(rush|pass (complete|incomplete|intercepted|attempt)|sacked|
 #' Ordering matters, per CLAUDE.md:
 #' - `play` is checked first, so a nullified snap (has a verb, also has a
 #'   `PENALTY ... NO PLAY` clause) is still counted as `play`.
+#' - `kickoff` comes next, before `penalty_no_play`, so a kickoff with a
+#'   return penalty (and a stale situation) is still a kickoff.
 #' - `penalty_no_play` is checked right after, so only dead-down penalties
 #'   with no snap verb land there.
 #' - `quarter` (which also matches the combined
@@ -62,15 +64,21 @@ classify_plays <- function(plays) {
   blank_sit <- plays$situation == ""
   same <- plays$situation == plays$play
 
+  is_kickoff <- stringr::str_detect(plays$play, stringr::regex("\\bkickoff\\b", ignore_case = TRUE))
+
   row_type <- dplyr::case_when(
     is_dd & has_verb ~ "play",
+    # A kickoff is a kickoff even when it carries a return penalty: StatCrew
+    # then prints a stale down-and-distance in the situation column, which
+    # used to send these rows to `penalty_no_play` (Dickinson 2025 play
+    # 191, Ursinus play 73).
+    is_kickoff ~ "kickoff",
     is_dd & !has_verb & stringr::str_detect(plays$play, stringr::regex("penalty", ignore_case = TRUE)) ~ "penalty_no_play",
     stringr::str_detect(plays$play, stringr::regex("drive start", ignore_case = TRUE)) ~ "drive_start",
     same & stringr::str_detect(plays$play, " at \\d{1,2}:\\d{2}$") ~ "drive_header",
     same & stringr::str_detect(plays$play, "^\\d+ plays, -?\\d+ yards, \\d{2}:\\d{2} elapsed$") ~ "drive_footer",
     (same & stringr::str_detect(plays$play, "^[1-4](st|nd|rd|th)$")) |
       stringr::str_detect(plays$play, stringr::regex("^Start of|^End of (game|half)", ignore_case = TRUE)) ~ "quarter",
-    blank_sit & stringr::str_detect(plays$play, stringr::regex("kickoff", ignore_case = TRUE)) ~ "kickoff",
     blank_sit & stringr::str_detect(plays$play, stringr::regex("kick attempt", ignore_case = TRUE)) ~ "extra_point",
     # Validated on real data: 9 two-point tries across games 3, 6, 7, 8, 9, 11
     # of the 11-game 2025 sweep (none in game 1, which is what CLAUDE.md's
