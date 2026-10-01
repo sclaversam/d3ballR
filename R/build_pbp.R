@@ -256,7 +256,8 @@ derive_goal_to_go <- function(df) {
 #' 2025 sweep: "for N yards gain", "for N yards loss", "for loss of N yard(s)"
 #' (sacks, kneels, and an alternate rush phrasing), "for no gain", and a bare
 #' "for N yards" (assumed positive when no gain/loss qualifier is present).
-#' Only computed for `row_type == "play"`, and only for the play types where
+#' Only computed for snaps (a `play_type` in [play_type_categories]), and
+#' only for the play types where
 #' "yards gained" is unambiguous (rush, pass_complete, sack, kneel; incomplete
 #' passes are always 0). Left NA for kickoff/extra_point/two_point/
 #' penalty_no_play (no snap, or not a rush/pass yardage stat), and for
@@ -267,11 +268,10 @@ derive_goal_to_go <- function(df) {
 #' @param play_text Character vector, the raw `play` description.
 #' @param play_type Character vector, from [parse_play_type()] (already
 #'   backfilled to `row_type` for non-scrimmage kept rows).
-#' @param row_type Character vector, from [classify_plays()].
 #' @param no_play Logical vector, `penalty_no_play` from [parse_penalties()].
 #' @return Integer vector, `NA` where not confidently parsed.
 #' @keywords internal
-parse_yards_gained <- function(play_text, play_type, row_type, no_play) {
+parse_yards_gained <- function(play_text, play_type, no_play) {
   ic <- function(pattern) stringr::regex(pattern, ignore_case = TRUE)
   play_text <- stringr::str_remove(play_text, "PENALTY .*$")
 
@@ -291,7 +291,7 @@ parse_yards_gained <- function(play_text, play_type, row_type, no_play) {
   )
 
   dplyr::case_when(
-    row_type != "play" | no_play ~ NA_integer_,
+    !play_type %in% play_type_categories | no_play ~ NA_integer_,
     play_type %in% c("rush", "pass_complete", "sack", "kneel") ~ generic,
     play_type == "pass_incomplete" ~ 0L,
     TRUE ~ NA_integer_
@@ -303,15 +303,19 @@ parse_yards_gained <- function(play_text, play_type, row_type, no_play) {
 #' cfbfastR-aligned. See `analysis/pbp_schema.md` for the data dictionary.
 #' @keywords internal
 pbp_columns <- c(
-  "game_id", "play_index", "drive_number", "drive_play_number", "period", "half",
-  "clock_known", "clock_prev_known", "clock_next_known",
-  "pos_team", "def_pos_team", "down", "distance", "yards_to_goal",
-  "Goal_To_Go", "play_type", "yards_gained",
-  "rush", "pass", "completion", "sack", "int", "fumble_vec", "turnover",
-  "downs_turnover", "touchdown", "safety",
-  "penalty_flag", "penalty_yards_signed", "penalized_team",
-  "penalty_no_play", "penalty_declined", "penalty_text",
-  "situation", "play_text", "row_type"
+  "game_id", "home", "away", "play_index", "drive_number", "drive_play_number",
+  "period", "half", "clock_known", "clock_prev_known", "clock_next_known",
+  "pos_team", "def_pos_team", "pos_team_score", "def_pos_team_score", "score_diff",
+  "down", "distance", "yards_to_goal", "Goal_To_Go",
+  "down_end", "distance_end", "yards_to_goal_end",
+  "play_type", "scrimmage_play", "yards_gained",
+  "rush", "pass", "completion", "sack", "int", "fumble_vec", "turnover", "downs_turnover",
+  "touchdown", "safety",
+  "field_goal_attempt", "field_goal_made", "punt",
+  "scoring_play", "score_pts", "firstD_by_yards", "firstD_by_penalty",
+  "penalty_flag", "penalty_yards_signed", "penalized_team", "penalty_no_play",
+  "penalty_declined", "penalty_text",
+  "drive_result", "situation", "play_text"
 )
 
 #' Possession on try-phase rows: the team that just scored
@@ -354,9 +358,12 @@ try_phase_team <- function(kept, scores, teams) {
 #'
 #' @param game_url Boxscore URL without the `?view=` suffix.
 #' @return A tibble, one row per kept play, with the columns in
-#'   `pbp_columns`. Attributes: `opponent` (CMU's opponent, for the count
-#'   summary) and `kickoffs` (the per-kickoff possession decisions from
-#'   [assign_kickoffs()], for the validation report).
+#'   `pbp_columns`. Attributes, for the validation reports and change log:
+#'   `opponent` (CMU's opponent, for the count summary), `kickoffs` (the
+#'   per-kickoff possession decisions from [assign_kickoffs()]),
+#'   `score_checks` (each score line vs the parsed points),
+#'   `first_down_text` (the text-only first-down flags), and `next_snap`
+#'   (row index of the next scrimmage snap in the half).
 #' @export
 build_pbp <- function(game_url) {
   game <- fetch_game(game_url)
@@ -398,10 +405,28 @@ build_pbp <- function(game_url) {
   kept$yards_to_goal <- compute_yards_to_goal(kept, own_side)
   kept <- derive_goal_to_go(kept)
   kept <- parse_penalties(kept, text_team)
-  kept$yards_gained <- parse_yards_gained(kept$play_text, kept$play_type, kept$row_type,
-                                          kept$penalty_no_play)
+  kept$yards_gained <- parse_yards_gained(kept$play_text, kept$play_type, kept$penalty_no_play)
   kept <- parse_outcome_flags(kept, text_team)
   kept <- assign_drives(kept)
+
+  # Tier 1 columns
+  kept$scrimmage_play <- !is.na(kept$down)
+  live <- !kept$penalty_no_play
+  kept$field_goal_attempt <- kept$play_type %in% c("field_goal_good", "field_goal_missed", "field_goal_blocked") & live
+  kept$field_goal_made <- kept$play_type == "field_goal_good" & live
+  kept$punt <- kept$play_type %in% c("punt_no_return", "punt_with_return", "punt_blocked") & live
+  kept$score_pts <- score_points(kept)
+  kept$scoring_play <- kept$score_pts != 0L
+  rs <- running_score(kept, scores, teams)
+  kept$pos_team_score <- rs$pos_team_score
+  kept$def_pos_team_score <- rs$def_pos_team_score
+  kept$score_diff <- kept$pos_team_score - kept$def_pos_team_score
+  nxt <- next_snap_index(kept)
+  kept <- derive_end_state(kept, nxt)
+  kept <- derive_first_downs(kept, nxt)
+  kept$drive_result <- derive_drive_result(kept)
+  kept$home <- unname(team_map[game$matchup[["home"]]])
+  kept$away <- unname(team_map[game$matchup[["away"]]])
 
   kept$game_id <- game$game_id
   kept$play_index <- seq_len(nrow(kept))
@@ -412,6 +437,10 @@ build_pbp <- function(game_url) {
   kickoffs$period <- kept$period[ko]
   kickoffs$game_id <- game$game_id
   attr(out, "kickoffs") <- kickoffs
+  rs$checks$game_id <- game$game_id
+  attr(out, "score_checks") <- rs$checks
+  attr(out, "first_down_text") <- kept[, c("fd_yards_text", "fd_penalty_text")]
+  attr(out, "next_snap") <- nxt
   out
 }
 
