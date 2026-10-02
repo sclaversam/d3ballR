@@ -28,33 +28,73 @@ find_line_score_teams <- function(tbls) {
   stop("No line-score table found. Open the page and check the layout.")
 }
 
+#' Extract the season from a boxscore URL path
+#'
+#' Always the `/seasons/{year}/` path segment, never the game date: a
+#' January championship and the 2020 season (played in spring 2021) belong
+#' to the season in the path.
+#'
+#' @param game_url Boxscore URL.
+#' @return Integer.
+#' @keywords internal
+extract_season <- function(game_url) {
+  as.integer(stringr::str_match(game_url, "/seasons/(\\d{4})/")[, 2])
+}
+
 #' Fetch one game's play table plus its team names
 #'
 #' Fetches the plays view page once and pulls the play-by-play table (via
-#' [find_plays()]), the two line-score team names, and the "Away at Home"
-#' header (via [parse_matchup()]), so each game only costs one HTTP request.
+#' [find_plays()]), the two line-score team names, the "Away at Home"
+#' header (via [parse_matchup()]) and the header date, so each game only
+#' costs one HTTP request. Works for any game: nothing assumes a team.
 #'
 #' @param game_url Boxscore URL without the `?view=` suffix.
-#' @return A list with `game_id`, `opponent` (CMU's opponent, line-score
-#'   spelling), `teams` (both line-score names), `matchup` (`c(away, home)`,
-#'   header spelling), and `plays` (tibble with `situation`/`play`).
+#' @return A list with `game_id`, `season` (from the URL path), `teams`
+#'   (both line-score names), `matchup` (`c(away, home)`, header spelling),
+#'   `header_date` (Date from the header, used only if the game isn't in
+#'   the season index), and `plays` (tibble with `situation`/`play`).
 #' @keywords internal
 fetch_game <- function(game_url) {
   html <- fetch_html(paste0(game_url, "?view=plays"))
   tbls <- tables_on(html)
-  teams <- find_line_score_teams(tbls)
-  is_cmu <- stringr::str_detect(teams, stringr::regex("carnegie mellon", ignore_case = TRUE))
-  if (sum(is_cmu) != 1) {
-    stop("Could not uniquely identify Carnegie Mellon in team names: ",
-         paste(teams, collapse = " / "))
-  }
+  header <- stringr::str_squish(as.character(tbls[[1]][[1]][1]))
   list(
-    game_id  = extract_game_id(game_url),
-    opponent = teams[!is_cmu],
-    teams    = teams,
-    matchup  = parse_matchup(tbls),
-    plays    = find_plays(tbls)
+    game_id     = extract_game_id(game_url),
+    season      = extract_season(game_url),
+    teams       = find_line_score_teams(tbls),
+    matchup     = parse_matchup(tbls),
+    header_date = as.Date(stringr::str_match(header, "(\\d{1,2}/\\d{1,2}/\\d{4})")[, 2], format = "%m/%d/%Y"),
+    plays       = find_plays(tbls)
   )
+}
+
+#' Look a game up in its season index
+#'
+#' Returns `season`, `game_date` (ISO), `week`, `season_type` for the game.
+#' If the game isn't in the index (or no index is available), falls back to
+#' the boxscore id's date (else the header date), [classify_season_type()],
+#' and a date-based Sunday-to-Saturday week ([date_based_week()]), and logs
+#' a message saying so.
+#'
+#' @param game A list from [fetch_game()].
+#' @param index A season index from [build_season_index()], or NULL.
+#' @param season_dates Output of [read_season_dates()].
+#' @return A list: `season`, `game_date`, `week`, `season_type`,
+#'   `week_source` ("index" or "date fallback").
+#' @keywords internal
+game_calendar <- function(game, index, season_dates) {
+  hit <- if (!is.null(index)) index[!is.na(index$game_id) & index$game_id == game$game_id, ] else NULL
+  if (!is.null(hit) && nrow(hit) == 1) {
+    return(list(season = as.integer(hit$season), game_date = as.character(hit$game_date),
+                week = as.integer(hit$week), season_type = hit$season_type, week_source = "index"))
+  }
+  d <- dplyr::coalesce(as.Date(substr(game$game_id, 1, 8), format = "%Y%m%d"), game$header_date)
+  st <- classify_season_type(d, game$season, season_dates)
+  wk <- date_based_week(d, game$season, st, season_dates)
+  message("Game ", game$game_id, " not found in the ", game$season,
+          " season index; using a date-based week (", wk, ", ", st, ").")
+  list(season = game$season, game_date = format(d, "%Y-%m-%d"), week = wk,
+       season_type = st, week_source = "date fallback")
 }
 
 #' Forward-fill quarter from quarter-marker rows
@@ -110,7 +150,7 @@ derive_possession <- function(classified, team_map) {
   tidyr::fill(classified, "possession", .direction = "down")
 }
 
-#' Row types CMU logs as plays -- the set this table keeps
+#' Event types kept in the play-by-play table
 #' @keywords internal
 kept_row_types <- c("play", "kickoff", "extra_point", "two_point", "penalty_no_play")
 
@@ -303,7 +343,8 @@ parse_yards_gained <- function(play_text, play_type, no_play) {
 #' cfbfastR-aligned. See `analysis/pbp_schema.md` for the data dictionary.
 #' @keywords internal
 pbp_columns <- c(
-  "game_id", "home", "away", "play_index", "drive_number", "drive_play_number",
+  "game_id", "season", "game_date", "week", "season_type",
+  "home", "away", "play_index", "drive_number", "drive_play_number",
   "period", "half", "clock_start", "clock_end", "clock_upper", "clock_lower",
   "pos_team", "def_pos_team", "pos_team_score", "def_pos_team_score", "score_diff",
   "down", "distance", "yards_to_goal", "Goal_To_Go",
@@ -350,16 +391,22 @@ try_phase_team <- function(kept, scores, teams) {
 
 #' Build one game's play-by-play table
 #'
-#' Keeps only the row types CMU logs (`play`, `kickoff`, `extra_point`,
-#' `two_point`, `penalty_no_play`), after using the dropped administrative
-#' rows to derive `period`, `pos_team`, the kickoff teams, and the clock.
+#' Works for any d3football game. Keeps the five event types (`play`,
+#' `kickoff`, `extra_point`, `two_point`, `penalty_no_play`), after using
+#' the dropped administrative rows to derive `period`, `pos_team`, the
+#' kickoff teams, and the clock. `season`, `game_date`, `week` and
+#' `season_type` come from the season index (see [build_season_index()]).
 #' See `R/classify.R` and `R/parse_play_type.R` for the upstream row_type /
 #' play_type classification this builds on.
 #'
 #' @param game_url Boxscore URL without the `?view=` suffix.
+#' @param index Season index for the game's season. If NULL, the cached
+#'   `data-raw/index/{season}.csv` is used when present (no network);
+#'   otherwise a date-based week is used and logged (see [game_calendar()]).
+#' @param season_dates Output of [read_season_dates()].
 #' @return A tibble, one row per kept play, with the columns in
 #'   `pbp_columns`. Attributes, for the validation reports and change log:
-#'   `opponent` (CMU's opponent, for the count summary), `kickoffs` (the
+#'   `week_source` ("index" or "date fallback"), `kickoffs` (the
 #'   per-kickoff possession decisions from [assign_kickoffs()]),
 #'   `score_checks` (each score line vs the parsed points),
 #'   `first_down_text` (the text-only first-down flags), and `next_snap`
@@ -367,8 +414,10 @@ try_phase_team <- function(kept, scores, teams) {
 #'   (stated clocks dropped as inconsistent), `footer_clock` (drive-footer
 #'   elapsed time vs the clock anchors).
 #' @export
-build_pbp <- function(game_url) {
+build_pbp <- function(game_url, index = NULL, season_dates = read_season_dates()) {
   game <- fetch_game(game_url)
+  if (is.null(index)) index <- load_cached_index(game$season)
+  cal <- game_calendar(game, index, season_dates)
 
   classified <- classify_plays(game$plays)
   classified$row <- seq_len(nrow(classified))
@@ -432,10 +481,14 @@ build_pbp <- function(game_url) {
   kept$away <- unname(team_map[game$matchup[["away"]]])
 
   kept$game_id <- game$game_id
+  kept$season <- cal$season
+  kept$game_date <- cal$game_date
+  kept$week <- cal$week
+  kept$season_type <- cal$season_type
   kept$play_index <- seq_len(nrow(kept))
 
   out <- kept[, pbp_columns]
-  attr(out, "opponent") <- game$opponent
+  attr(out, "week_source") <- cal$week_source
   kickoffs$play_index <- kept$play_index[ko]
   kickoffs$period <- kept$period[ko]
   kickoffs$game_id <- game$game_id
@@ -451,14 +504,28 @@ build_pbp <- function(game_url) {
   out
 }
 
+#' Read a cached season index without touching the network
+#'
+#' @param season Season year.
+#' @param cache_dir Cache directory used by [build_season_index()].
+#' @return The index, or NULL if no cache exists.
+#' @keywords internal
+load_cached_index <- function(season, cache_dir = "data-raw/index") {
+  f <- file.path(cache_dir, paste0(season, ".csv"))
+  if (is.na(season) || !file.exists(f)) return(NULL)
+  utils::read.csv(f, na.strings = "", colClasses = c(game_id = "character"))
+}
+
 #' Build and write every game's play-by-play table
 #'
 #' Writes one CSV per game to `{out_dir}/{game_id}.csv`, a summary of
 #' kept-row counts to `{out_dir}/../pbp_row_counts.csv`, and the validation
-#' reports to `check_dir` (see [write_pbp_checks()]). Prints the per-game
-#' counts to the console.
+#' reports to `check_dir` (see [write_pbp_checks()]). Each game's season
+#' index is loaded once per season, via [build_season_index()] (cached;
+#' scraped only if no cache exists). Prints the per-game counts.
 #'
-#' @param game_urls Character vector of boxscore URLs.
+#' @param game_urls Character vector of boxscore URLs (any teams, any
+#'   seasons).
 #' @param out_dir Directory to write per-game CSVs into.
 #' @param check_dir Directory for the validation reports.
 #' @return Invisibly, a named list of the per-game tibbles (by `game_id`).
@@ -466,10 +533,20 @@ build_pbp <- function(game_url) {
 build_all_pbp <- function(game_urls, out_dir = "analysis/pbp", check_dir = "analysis/checks") {
   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
-  games <- lapply(game_urls, build_pbp)
+  seasons <- unique(stats::na.omit(extract_season(game_urls)))
+  indexes <- lapply(seasons, build_season_index)
+  names(indexes) <- seasons
+  season_dates <- read_season_dates()
+
+  games <- lapply(game_urls, function(u) {
+    build_pbp(u, index = indexes[[as.character(extract_season(u))]], season_dates = season_dates)
+  })
 
   counts <- dplyr::bind_rows(lapply(games, function(g) {
-    tibble::tibble(game_id = g$game_id[1], opponent = attr(g, "opponent"), n_rows = nrow(g))
+    tibble::tibble(game_id = g$game_id[1], season = g$season[1], game_date = g$game_date[1],
+                   week = g$week[1], season_type = g$season_type[1],
+                   away = g$away[1], home = g$home[1], n_rows = nrow(g),
+                   week_source = attr(g, "week_source"))
   }))
 
   for (g in games) {

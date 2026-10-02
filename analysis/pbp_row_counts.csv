@@ -1,12 +1,12 @@
-"game_id","opponent","n_rows"
-"20250906_e064","Chicago",158
-"20250913_6i95","UW-La Crosse",166
-"20250920_l58t","Berry",154
-"20251004_gwn0","McDaniel",168
-"20251011_t8bp","Johns Hopkins",160
-"20251018_uxv5","Gettysburg",181
-"20251025_3c40","Muhlenberg",182
-"20251101_dlys","Dickinson",192
-"20251108_3ubg","Franklin and Marshall",172
-"20251115_h3wh","Ursinus",162
-"20251122_xsab","Misericordia",166
+"game_id","season","game_date","week","season_type","away","home","n_rows","week_source"
+"20250906_e064",2025,"2025-09-06",1,"regular","Carnegie Mellon","UChicago",158,"index"
+"20250913_6i95",2025,"2025-09-13",2,"regular","Wis.-La Crosse","Carnegie Mellon",166,"index"
+"20250920_l58t",2025,"2025-09-20",3,"regular","Berry","Carnegie Mellon",154,"index"
+"20251004_gwn0",2025,"2025-10-04",5,"regular","McDaniel","Carnegie Mellon",168,"index"
+"20251011_t8bp",2025,"2025-10-11",6,"regular","Carnegie Mellon","Johns Hopkins",160,"index"
+"20251018_uxv5",2025,"2025-10-18",7,"regular","Gettysburg","Carnegie Mellon",181,"index"
+"20251025_3c40",2025,"2025-10-25",8,"regular","Carnegie Mellon","Muhlenberg",182,"index"
+"20251101_dlys",2025,"2025-11-01",9,"regular","Carnegie Mellon","Dickinson",192,"index"
+"20251108_3ubg",2025,"2025-11-08",10,"regular","Franklin & Marshall","Carnegie Mellon",172,"index"
+"20251115_h3wh",2025,"2025-11-15",11,"regular","Carnegie Mellon","Ursinus",162,"index"
+"20251122_xsab",2025,"2025-11-22",1,"postseason","Misericordia","Carnegie Mellon",166,"index"
