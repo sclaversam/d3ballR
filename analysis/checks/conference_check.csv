@@ -1,0 +1,12 @@
+"game_id","game_date","season_type","away","home","away_team_conference","home_team_conference","conference_game","shared_conference","agree"
+"20250906_e064","2025-09-06","regular","Carnegie Mellon","UChicago","Centennial Conference","Midwest Conference",FALSE,FALSE,TRUE
+"20250913_6i95","2025-09-13","regular","Wis.-La Crosse","Carnegie Mellon",,"Centennial Conference",FALSE,FALSE,TRUE
+"20250920_l58t","2025-09-20","regular","Berry","Carnegie Mellon",,"Centennial Conference",FALSE,FALSE,TRUE
+"20251004_gwn0","2025-10-04","regular","McDaniel","Carnegie Mellon","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251011_t8bp","2025-10-11","regular","Carnegie Mellon","Johns Hopkins","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251018_uxv5","2025-10-18","regular","Gettysburg","Carnegie Mellon","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251025_3c40","2025-10-25","regular","Carnegie Mellon","Muhlenberg","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251101_dlys","2025-11-01","regular","Carnegie Mellon","Dickinson","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251108_3ubg","2025-11-08","regular","Franklin & Marshall","Carnegie Mellon","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251115_h3wh","2025-11-15","regular","Carnegie Mellon","Ursinus","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251122_xsab","2025-11-22","postseason","Misericordia","Carnegie Mellon",,"Centennial Conference",FALSE,FALSE,TRUE

@@ -1,12 +1,12 @@
-"game_id","season","game_date","week","season_type","away","home","n_rows","week_source"
-"20250906_e064",2025,"2025-09-06",1,"regular","Carnegie Mellon","UChicago",158,"index"
-"20250913_6i95",2025,"2025-09-13",2,"regular","Wis.-La Crosse","Carnegie Mellon",166,"index"
-"20250920_l58t",2025,"2025-09-20",3,"regular","Berry","Carnegie Mellon",154,"index"
-"20251004_gwn0",2025,"2025-10-04",5,"regular","McDaniel","Carnegie Mellon",168,"index"
-"20251011_t8bp",2025,"2025-10-11",6,"regular","Carnegie Mellon","Johns Hopkins",160,"index"
-"20251018_uxv5",2025,"2025-10-18",7,"regular","Gettysburg","Carnegie Mellon",181,"index"
-"20251025_3c40",2025,"2025-10-25",8,"regular","Carnegie Mellon","Muhlenberg",182,"index"
-"20251101_dlys",2025,"2025-11-01",9,"regular","Carnegie Mellon","Dickinson",192,"index"
-"20251108_3ubg",2025,"2025-11-08",10,"regular","Franklin & Marshall","Carnegie Mellon",172,"index"
-"20251115_h3wh",2025,"2025-11-15",11,"regular","Carnegie Mellon","Ursinus",162,"index"
-"20251122_xsab",2025,"2025-11-22",1,"postseason","Misericordia","Carnegie Mellon",166,"index"
+"game_id","season","game_date","week","season_type","away","home","n_rows","away_final","home_final","away_pts_parsed","home_pts_parsed","week_source","score_reconciled"
+"20250906_e064",2025,"2025-09-06",1,"regular","Carnegie Mellon","UChicago",158,20,0,20,0,"index",TRUE
+"20250913_6i95",2025,"2025-09-13",2,"regular","Wis.-La Crosse","Carnegie Mellon",166,38,14,38,14,"index",TRUE
+"20250920_l58t",2025,"2025-09-20",3,"regular","Berry","Carnegie Mellon",154,9,17,9,17,"index",TRUE
+"20251004_gwn0",2025,"2025-10-04",5,"regular","McDaniel","Carnegie Mellon",168,7,56,7,56,"index",TRUE
+"20251011_t8bp",2025,"2025-10-11",6,"regular","Carnegie Mellon","Johns Hopkins",160,27,28,27,28,"index",TRUE
+"20251018_uxv5",2025,"2025-10-18",7,"regular","Gettysburg","Carnegie Mellon",181,20,44,20,44,"index",TRUE
+"20251025_3c40",2025,"2025-10-25",8,"regular","Carnegie Mellon","Muhlenberg",182,23,27,23,27,"index",TRUE
+"20251101_dlys",2025,"2025-11-01",9,"regular","Carnegie Mellon","Dickinson",192,70,29,70,29,"index",TRUE
+"20251108_3ubg",2025,"2025-11-08",10,"regular","Franklin & Marshall","Carnegie Mellon",172,31,24,31,24,"index",TRUE
+"20251115_h3wh",2025,"2025-11-15",11,"regular","Carnegie Mellon","Ursinus",162,20,27,20,27,"index",TRUE
+"20251122_xsab",2025,"2025-11-22",1,"postseason","Misericordia","Carnegie Mellon",166,17,24,17,24,"index",TRUE

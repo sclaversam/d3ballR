@@ -330,12 +330,13 @@ build_season_index <- function(season, refresh = FALSE, cache_dir = "data-raw/in
   if (!refresh && file.exists(cache)) {
     return(utils::read.csv(cache, na.strings = "", colClasses = c(game_id = "character")))
   }
+  old <- options(d3ballR.delay = delay)
+  on.exit(options(old), add = TRUE)
   pages <- list()
   empties <- 0L
   for (v in seq_len(max_views)) {
     url <- sprintf("https://www.d3football.com/scoreboard/%d/composite?view=%d", season, v)
-    html <- tryCatch(fetch_html(url), error = function(e) NULL)
-    Sys.sleep(delay)
+    html <- tryCatch(fetch_html(url, refresh = refresh), error = function(e) NULL)
     rows <- if (is.null(html)) NULL else parse_scoreboard_page(html, season, v)
     if (is.null(rows) || !nrow(rows)) {
       empties <- empties + 1L

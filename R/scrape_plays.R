@@ -1,19 +1,65 @@
-#' Fetch a d3football page as parsed HTML
+#' Fetch a d3football page as parsed HTML (cached, throttled)
 #'
 #' Sends a browser-like request (d3football blocks default agents) and returns
 #' the parsed HTML document for rvest to query.
 #'
+#' Every page is cached on disk (`getOption("d3ballR.cache_dir")`, default
+#' `data-raw/cache/`, which is gitignored) and served from the cache on
+#' later calls, so a page is never requested twice. Network requests are
+#' throttled package-wide to at least `getOption("d3ballR.delay")` seconds
+#' apart (default 3). Set `refresh = TRUE` to bypass the cache, or the cache
+#' option to `NULL` to disable caching. Empty or failed responses are not
+#' cached. With `options(d3ballR.offline = TRUE)` nothing is requested: an
+#' uncached page is an error (useful when d3football is refusing requests).
+#'
 #' @param url Full page URL, including the `?view=...` suffix when needed.
 #' @param user_agent Browser User-Agent string.
+#' @param refresh Re-fetch even if cached.
 #' @return A parsed HTML document (`xml_document`).
 #' @keywords internal
-fetch_html <- function(url, user_agent = default_user_agent()) {
-  httr2::request(url) |>
+fetch_html <- function(url, user_agent = default_user_agent(), refresh = FALSE) {
+  cache_dir <- getOption("d3ballR.cache_dir", "data-raw/cache")
+  path <- if (!is.null(cache_dir)) file.path(cache_dir, cache_key(url)) else NULL
+  if (!refresh && !is.null(path) && file.exists(path)) {
+    return(xml2::read_html(path, encoding = "UTF-8"))
+  }
+  if (isTRUE(getOption("d3ballR.offline", FALSE))) {
+    stop("Offline (option d3ballR.offline = TRUE) and not cached: ", url, call. = FALSE)
+  }
+  throttle()
+  html <- httr2::request(url) |>
     httr2::req_user_agent(user_agent) |>
     httr2::req_retry(max_tries = 3) |>
     httr2::req_timeout(30) |>
     httr2::req_perform() |>
-    httr2::resp_body_html()
+    httr2::resp_body_string()
+  if (!is.null(path) && nchar(html) > 0) {
+    dir.create(cache_dir, showWarnings = FALSE, recursive = TRUE)
+    writeLines(html, path, useBytes = TRUE)
+  }
+  xml2::read_html(html)
+}
+
+#' File name for a cached URL
+#' @param url URL.
+#' @keywords internal
+cache_key <- function(url) {
+  key <- sub("^https?://(www\\.)?d3football\\.com/", "", url)
+  paste0(gsub("[^A-Za-z0-9._-]+", "_", key), ".html")
+}
+
+.d3_state <- new.env(parent = emptyenv())
+
+#' Wait so network requests are at least `d3ballR.delay` seconds apart
+#' @keywords internal
+throttle <- function() {
+  delay <- getOption("d3ballR.delay", 3)
+  last <- .d3_state$last_request
+  if (!is.null(last)) {
+    wait <- delay - as.numeric(difftime(Sys.time(), last, units = "secs"))
+    if (wait > 0) Sys.sleep(wait)
+  }
+  .d3_state$last_request <- Sys.time()
 }
 
 #' Default browser User-Agent

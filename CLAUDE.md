@@ -63,6 +63,23 @@ scraper: get accurate, tidy play-by-play out of d3football.
   Nov 12 is the known, harmless exception). Season always comes from the `/seasons/{year}/` URL path,
   never the date; postseason weeks restart at 1. d3 has no round or bowl
   labels.
+- `R/conferences.R` — season-specific conference data for a given set of
+  teams: `build_conference_table(season, teams)` reads each team's page once
+  for its conference that season and d3's "*" conference-game markers;
+  cached to `data-raw/conferences/{season}.csv` and
+  `{season}_schedule_markers.csv`. `conference_members(season, code)`,
+  `index_games_for_teams(index, teams)`. Only fetch the teams in scope (for
+  2025: Centennial teams + their opponents), never every conference.
+- `analysis/build_centennial_2025.R` — builds every Centennial 2025 game and
+  writes `analysis/checks/centennial_2025.md` (score reconciliation +
+  conference-marker cross-check). Resumable: cached pages are reused, and
+  `OFFLINE=1` builds from the cache only.
+- **Fetching:** `fetch_html()` caches every page in `data-raw/cache/`
+  (gitignored) and throttles requests 3 s apart package-wide; a page is
+  never requested twice. d3football starts returning empty pages after a
+  burst of requests, so keep runs small and resumable. When it does, stop and
+  retry later rather than hammering it (`options(d3ballR.offline = TRUE)`
+  makes any uncached request fail instead).
 - `R/scrape_plays.R` — Step 1: `fetch_html`, `tables_on`, `find_plays`, and
   the exported `scrape_plays(game_url)` (clean 2-column `situation`/`play`
   tibble).
@@ -82,7 +99,7 @@ scraper: get accurate, tidy play-by-play out of d3football.
   "Carnegie Mellon")`).
 - `data-raw/index/{season}.csv` — cached season indexes (2025 built).
 - `data-raw/season_dates.csv` — regular-season end date per season.
-- `analysis/pbp/` — the 11 per-game CSVs (57 columns). Data dictionary:
+- `analysis/pbp/` — the built per-game CSVs (60 columns). Data dictionary:
   `analysis/pbp_schema.md`. Latest change log: `analysis/CHANGELOG_v3.md`.
   Current build plan: `analysis/pbp_build_plan_v3.md`.
 - `analysis/checks/` — validation reports regenerated on every build
@@ -95,7 +112,10 @@ scraper: get accurate, tidy play-by-play out of d3football.
 Built (validated on all 11 CMU 2025 games, but generic): season index ->
 scrape -> classify -> play type -> a 57-column, cfbfastR-aligned per-play
 table. It starts with `season`, `game_date`, `week`, `season_type` from the
-season index. It has possession (kickoffs =
+season index, then `home`, `away`, `home_team_conference`,
+`away_team_conference`, `conference_game` (d3's "*" marker). Each game's
+points by team must match the boxscore final
+(`tests/testthat/test-score-reconciliation.R`). It has possession (kickoffs =
 receiving team), drives and drive results, score before each play, down /
 distance / yards to goal and the end state after the play, outcome flags,
 first downs, penalties (signed, no-play gated), and the clock as exact

@@ -1,0 +1,210 @@
+"season","team","game_id","conference_marker"
+2025,"Franklin and Marshall","20250904_hz19",FALSE
+2025,"Franklin and Marshall","20250913_mc0u",FALSE
+2025,"Franklin and Marshall","20250920_puiy",FALSE
+2025,"Franklin and Marshall","20251004_s1ak",TRUE
+2025,"Franklin and Marshall","20251011_kqku",TRUE
+2025,"Franklin and Marshall","20251018_q4jr",TRUE
+2025,"Franklin and Marshall","20251025_htre",TRUE
+2025,"Franklin and Marshall","20251101_k2em",TRUE
+2025,"Franklin and Marshall","20251108_3ubg",TRUE
+2025,"Franklin and Marshall","20251115_2lnx",TRUE
+2025,"Franklin and Marshall","20251129_h79x",FALSE
+2025,"Johns Hopkins","20250906_5qby",FALSE
+2025,"Johns Hopkins","20250913_8770",FALSE
+2025,"Johns Hopkins","20250920_dyvl",FALSE
+2025,"Johns Hopkins","20251003_tcdm",TRUE
+2025,"Johns Hopkins","20251011_t8bp",TRUE
+2025,"Johns Hopkins","20251018_rd3r",TRUE
+2025,"Johns Hopkins","20251025_yvrv",TRUE
+2025,"Johns Hopkins","20251101_bikc",TRUE
+2025,"Johns Hopkins","20251108_x77w",TRUE
+2025,"Johns Hopkins","20251115_2lnx",TRUE
+2025,"Johns Hopkins","20251129_zeoo",FALSE
+2025,"Johns Hopkins","20251206_u8yr",FALSE
+2025,"Johns Hopkins","20251213_862g",FALSE
+2025,"Johns Hopkins","20251220_vlfc",FALSE
+2025,"Muhlenberg","20250905_8wt2",FALSE
+2025,"Muhlenberg","20250913_jqge",FALSE
+2025,"Muhlenberg","20250920_6638",FALSE
+2025,"Muhlenberg","20251004_k167",TRUE
+2025,"Muhlenberg","20251011_kqku",TRUE
+2025,"Muhlenberg","20251018_mhk5",TRUE
+2025,"Muhlenberg","20251025_3c40",TRUE
+2025,"Muhlenberg","20251101_bikc",TRUE
+2025,"Muhlenberg","20251108_xaqb",TRUE
+2025,"Muhlenberg","20251115_bpex",TRUE
+2025,"Muhlenberg","20251122_6ygb",FALSE
+2025,"Muhlenberg","20251129_1h8l",FALSE
+2025,"Ursinus","20250905_j032",FALSE
+2025,"Ursinus","20250913_v6wh",FALSE
+2025,"Ursinus","20250920_s44c",FALSE
+2025,"Ursinus","20251004_k167",TRUE
+2025,"Ursinus","20251011_ew1x",TRUE
+2025,"Ursinus","20251018_rd3r",TRUE
+2025,"Ursinus","20251025_htre",TRUE
+2025,"Ursinus","20251101_l1ok",TRUE
+2025,"Ursinus","20251108_wc79",TRUE
+2025,"Ursinus","20251115_h3wh",TRUE
+2025,"Ursinus","20251122_6buh",FALSE
+2025,"Carnegie Mellon","20250906_e064",FALSE
+2025,"Carnegie Mellon","20250913_6i95",FALSE
+2025,"Carnegie Mellon","20250920_l58t",FALSE
+2025,"Carnegie Mellon","20251004_gwn0",TRUE
+2025,"Carnegie Mellon","20251011_t8bp",TRUE
+2025,"Carnegie Mellon","20251018_uxv5",TRUE
+2025,"Carnegie Mellon","20251025_3c40",TRUE
+2025,"Carnegie Mellon","20251101_dlys",TRUE
+2025,"Carnegie Mellon","20251108_3ubg",TRUE
+2025,"Carnegie Mellon","20251115_h3wh",TRUE
+2025,"Carnegie Mellon","20251122_xsab",FALSE
+2025,"Dickinson","20250905_jdn4",FALSE
+2025,"Dickinson","20250913_f947",FALSE
+2025,"Dickinson","20250920_evn8",FALSE
+2025,"Dickinson","20251003_tcdm",TRUE
+2025,"Dickinson","20251011_98xu",TRUE
+2025,"Dickinson","20251018_q4jr",TRUE
+2025,"Dickinson","20251025_mepx",TRUE
+2025,"Dickinson","20251101_dlys",TRUE
+2025,"Dickinson","20251108_wc79",TRUE
+2025,"Dickinson","20251115_bpex",TRUE
+2025,"Dickinson","20251122_a800",FALSE
+2025,"Gettysburg","20250905_wr9m",FALSE
+2025,"Gettysburg","20250913_8wif",FALSE
+2025,"Gettysburg","20250920_ed92",FALSE
+2025,"Gettysburg","20251004_s1ak",TRUE
+2025,"Gettysburg","20251011_98xu",TRUE
+2025,"Gettysburg","20251018_uxv5",TRUE
+2025,"Gettysburg","20251025_yvrv",TRUE
+2025,"Gettysburg","20251101_l1ok",TRUE
+2025,"Gettysburg","20251108_xaqb",TRUE
+2025,"Gettysburg","20251115_1cr9",TRUE
+2025,"McDaniel","20250905_9opj",FALSE
+2025,"McDaniel","20250913_yo3z",FALSE
+2025,"McDaniel","20250920_6c77",FALSE
+2025,"McDaniel","20251004_gwn0",TRUE
+2025,"McDaniel","20251011_ew1x",TRUE
+2025,"McDaniel","20251018_mhk5",TRUE
+2025,"McDaniel","20251025_mepx",TRUE
+2025,"McDaniel","20251101_k2em",TRUE
+2025,"McDaniel","20251108_x77w",TRUE
+2025,"McDaniel","20251115_1cr9",TRUE
+2025,"Lebanon Valley","20250904_hz19",FALSE
+2025,"Lebanon Valley","20250913_wncr",TRUE
+2025,"Lebanon Valley","20250920_36p6",TRUE
+2025,"Lebanon Valley","20250927_4kd8",TRUE
+2025,"Lebanon Valley","20251011_ned8",TRUE
+2025,"Lebanon Valley","20251018_lsni",TRUE
+2025,"Lebanon Valley","20251025_71yd",TRUE
+2025,"Lebanon Valley","20251101_wd8w",TRUE
+2025,"Lebanon Valley","20251108_c14j",TRUE
+2025,"Lebanon Valley","20251115_be4a",TRUE
+2025,"Lebanon Valley","20251122_6buh",FALSE
+2025,"Catholic","20250905_9opj",FALSE
+2025,"Catholic","20250913_6b2l",FALSE
+2025,"Catholic","20250920_puiy",FALSE
+2025,"Catholic","20250927_ar7z",FALSE
+2025,"Catholic","20251004_4cgc",TRUE
+2025,"Catholic","20251011_fs81",TRUE
+2025,"Catholic","20251018_g4pd",TRUE
+2025,"Catholic","20251025_5v7u",TRUE
+2025,"Catholic","20251101_aftt",TRUE
+2025,"Catholic","20251108_58k8",TRUE
+2025,"Alvernia","20250905_j032",FALSE
+2025,"Alvernia","20250913_36jd",TRUE
+2025,"Alvernia","20250920_hm9s",TRUE
+2025,"Alvernia","20250927_vlh0",TRUE
+2025,"Alvernia","20251011_mqjy",TRUE
+2025,"Alvernia","20251018_qtoo",TRUE
+2025,"Alvernia","20251025_xd6l",TRUE
+2025,"Alvernia","20251101_r7fu",TRUE
+2025,"Alvernia","20251108_c14j",TRUE
+2025,"Alvernia","20251115_rei3",TRUE
+2025,"Randolph-Macon","20250905_jdn4",FALSE
+2025,"Randolph-Macon","20250913_fyam",FALSE
+2025,"Randolph-Macon","20250920_6gbq",TRUE
+2025,"Randolph-Macon","20250927_swcu",TRUE
+2025,"Randolph-Macon","20251004_7p7e",TRUE
+2025,"Randolph-Macon","20251011_q8vo",TRUE
+2025,"Randolph-Macon","20251018_pb88",TRUE
+2025,"Randolph-Macon","20251025_iu6d",TRUE
+2025,"Randolph-Macon","20251101_y8ak",TRUE
+2025,"Randolph-Macon","20251115_mhk5",TRUE
+2025,"Randolph-Macon","20251129_s26k",FALSE
+2025,"Ithaca","20250906_5qby",FALSE
+2025,"Ithaca","20250913_6y5g",FALSE
+2025,"Ithaca","20250920_yf1s",TRUE
+2025,"Ithaca","20250927_mzk1",TRUE
+2025,"Ithaca","20251004_iwy5",TRUE
+2025,"Ithaca","20251011_js9f",TRUE
+2025,"Ithaca","20251025_kb9b",TRUE
+2025,"Ithaca","20251101_hyn8",TRUE
+2025,"Ithaca","20251108_9l42",TRUE
+2025,"Ithaca","20251115_zrqc",FALSE
+2025,"Chicago","20250906_e064",FALSE
+2025,"Chicago","20250913_r1hn",TRUE
+2025,"Chicago","20250920_hxdx",TRUE
+2025,"Chicago","20251004_64vz",TRUE
+2025,"Chicago","20251011_p8pa",TRUE
+2025,"Chicago","20251018_euje",TRUE
+2025,"Chicago","20251025_z541",TRUE
+2025,"Chicago","20251101_q7h5",TRUE
+2025,"Chicago","20251108_8kin",TRUE
+2025,"Chicago","20251115_0f1a",TRUE
+2025,"Endicott","20250906_616y",FALSE
+2025,"Endicott","20250913_jqge",FALSE
+2025,"Endicott","20250920_xcy2",FALSE
+2025,"Endicott","20250927_6app",TRUE
+2025,"Endicott","20251004_9jc0",TRUE
+2025,"Endicott","20251018_xb3t",TRUE
+2025,"Endicott","20251025_slz4",TRUE
+2025,"Endicott","20251101_yqo8",TRUE
+2025,"Endicott","20251108_b23s",TRUE
+2025,"Endicott","20251115_1xn6",TRUE
+2025,"Endicott","20251129_4bix",FALSE
+2025,"Wilkes","20250906_t2lv",FALSE
+2025,"Wilkes","20250913_whti",FALSE
+2025,"Wilkes","20250920_6638",FALSE
+2025,"Wilkes","20250927_fjhh",FALSE
+2025,"Wilkes","20251004_4cgc",TRUE
+2025,"Wilkes","20251011_36q6",TRUE
+2025,"Wilkes","20251025_x38p",TRUE
+2025,"Wilkes","20251101_cp5f",TRUE
+2025,"Wilkes","20251108_wfal",TRUE
+2025,"Wilkes","20251115_b72n",TRUE
+2025,"Wilkes","20251122_ii7v",FALSE
+2025,"Susquehanna","20250906_j3h2",FALSE
+2025,"Susquehanna","20250913_rryo",FALSE
+2025,"Susquehanna","20250920_dyvl",FALSE
+2025,"Susquehanna","20250927_6zcv",FALSE
+2025,"Susquehanna","20251011_n6nc",TRUE
+2025,"Susquehanna","20251018_8qq8",TRUE
+2025,"Susquehanna","20251025_5v7u",TRUE
+2025,"Susquehanna","20251101_oiog",TRUE
+2025,"Susquehanna","20251108_wfal",TRUE
+2025,"Susquehanna","20251115_7z71",TRUE
+2025,"Susquehanna","20251122_p9ff",FALSE
+2025,"Susquehanna","20251129_b9kr",FALSE
+2025,"Susquehanna","20251206_rxq5",FALSE
+2025,"Susquehanna","20251213_862g",FALSE
+2025,"Western Connecticut","20250906_1c8m",FALSE
+2025,"Western Connecticut","20250920_ed92",FALSE
+2025,"Western Connecticut","20250927_wr0w",FALSE
+2025,"Western Connecticut","20251004_8kxj",TRUE
+2025,"Western Connecticut","20251011_lfb3",FALSE
+2025,"Western Connecticut","20251018_trap",TRUE
+2025,"Western Connecticut","20251025_tjsi",TRUE
+2025,"Western Connecticut","20251101_oiog",TRUE
+2025,"Western Connecticut","20251108_58k8",TRUE
+2025,"Western Connecticut","20251115_b72n",TRUE
+2025,"Lycoming","20250906_due6",FALSE
+2025,"Lycoming","20250913_e4ar",FALSE
+2025,"Lycoming","20250920_evn8",FALSE
+2025,"Lycoming","20250927_y56g",FALSE
+2025,"Lycoming","20251004_f375",TRUE
+2025,"Lycoming","20251011_n6nc",TRUE
+2025,"Lycoming","20251018_trap",TRUE
+2025,"Lycoming","20251025_x38p",TRUE
+2025,"Lycoming","20251101_aftt",TRUE
+2025,"Lycoming","20251115_cdd0",TRUE
+2025,"Lycoming","20251122_7wwr",FALSE
