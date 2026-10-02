@@ -119,10 +119,22 @@ d3football's weekly composite scoreboard pages
   Postseason weeks continue the same numbering. d3 has no round or bowl
   labels: NCAA playoff and bowl games share one table.
 - **`season`:** taken from the boxscore URL path `/seasons/{year}/`, **never
-  from the date**. So a January game, or a "2020" game played in spring 2021,
-  gets the right season.
+  from the date**. So a January game (the 2024 Stagg Bowl was played Jan 5,
+  2025), or a "2020" game played in spring 2021, gets the right season.
 - **`season_type`:** `"postseason"` if `game_date > regular_season_end` (from
-  `data-raw/season_dates.csv`), else `"regular"`. 2020 has no end date, so
+  `data-raw/season_dates.csv`), else `"regular"`.
+  - **Where the dates come from:** the table has `season`,
+    `regular_season_end`, `source`. 2019-2025 are seeded from each season's
+    Wikipedia infobox ("{season} NCAA Division III football season"),
+    verified against the NCAA championship selection announcements
+    (`source = "wikipedia (verified vs NCAA)"`).
+  - **Missing seasons:** a season not in the table is fetched from its
+    Wikipedia infobox by `ensure_season_dates()`, appended with
+    `source = "wikipedia"`, and logged for a human check.
+  - **Sanity check:** `check_season_dates()` compares every date with "two
+    Saturdays before Thanksgiving" and warns on any disagreement. The only one
+    is 2023: the infobox lists Sunday Nov 12, the last game day was Saturday
+    Nov 11, and it's harmless. 2020 has no end date, so
   every 2020 game is regular (spring 2021 season, no playoffs). Bowls and
   NCAA playoff games are both "postseason"; d3 gives nothing to tell them
   apart.

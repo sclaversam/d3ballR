@@ -1,8 +1,8 @@
-season,regular_season_end
-2019,2019-11-16
-2020,
-2021,2021-11-13
-2022,2022-11-12
-2023,2023-11-12
-2024,2024-11-16
-2025,2025-11-15
+season,regular_season_end,source
+2019,2019-11-16,wikipedia (verified vs NCAA)
+2020,,wikipedia (verified vs NCAA)
+2021,2021-11-13,wikipedia (verified vs NCAA)
+2022,2022-11-12,wikipedia (verified vs NCAA)
+2023,2023-11-12,wikipedia (verified vs NCAA)
+2024,2024-11-16,wikipedia (verified vs NCAA)
+2025,2025-11-15,wikipedia (verified vs NCAA)

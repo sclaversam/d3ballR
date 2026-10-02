@@ -403,7 +403,8 @@ try_phase_team <- function(kept, scores, teams) {
 #' @param index Season index for the game's season. If NULL, the cached
 #'   `data-raw/index/{season}.csv` is used when present (no network);
 #'   otherwise a date-based week is used and logged (see [game_calendar()]).
-#' @param season_dates Output of [read_season_dates()].
+#' @param season_dates Season-dates table; if NULL, [ensure_season_dates()]
+#'   for the game's season (adds it from Wikipedia if missing).
 #' @return A tibble, one row per kept play, with the columns in
 #'   `pbp_columns`. Attributes, for the validation reports and change log:
 #'   `week_source` ("index" or "date fallback"), `kickoffs` (the
@@ -414,9 +415,10 @@ try_phase_team <- function(kept, scores, teams) {
 #'   (stated clocks dropped as inconsistent), `footer_clock` (drive-footer
 #'   elapsed time vs the clock anchors).
 #' @export
-build_pbp <- function(game_url, index = NULL, season_dates = read_season_dates()) {
+build_pbp <- function(game_url, index = NULL, season_dates = NULL) {
   game <- fetch_game(game_url)
   if (is.null(index)) index <- load_cached_index(game$season)
+  if (is.null(season_dates)) season_dates <- ensure_season_dates(game$season)
   cal <- game_calendar(game, index, season_dates)
 
   classified <- classify_plays(game$plays)
@@ -536,7 +538,7 @@ build_all_pbp <- function(game_urls, out_dir = "analysis/pbp", check_dir = "anal
   seasons <- unique(stats::na.omit(extract_season(game_urls)))
   indexes <- lapply(seasons, build_season_index)
   names(indexes) <- seasons
-  season_dates <- read_season_dates()
+  season_dates <- ensure_season_dates(seasons)
 
   games <- lapply(game_urls, function(u) {
     build_pbp(u, index = indexes[[as.character(extract_season(u))]], season_dates = season_dates)

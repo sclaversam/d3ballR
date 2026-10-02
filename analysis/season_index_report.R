@@ -57,6 +57,21 @@ add("")
 add("Regular season end for ", season, ": ", format(sd$regular_season_end[sd$season == season]), ".")
 add("")
 
+# 1b. season dates --------------------------------------------------------------
+add("## Regular-season end dates (`data-raw/season_dates.csv`)")
+add("")
+add("Each date compared with the rule \"two Saturdays before Thanksgiving\" (`check_season_dates()`). ",
+    "Seasons missing from the table are added from their Wikipedia infobox by `ensure_season_dates()` ",
+    "with `source = \"wikipedia\"` and a log message, so they can be verified.")
+add("")
+chk <- suppressWarnings(check_season_dates(sd))
+chk$source <- sd$source[match(chk$season, sd$season)]
+out <- c(out, md_table(chk[, c("season", "regular_season_end", "rule_date", "agrees", "source", "note")]))
+add("")
+add("The only disagreement is 2023: the infobox lists Sunday Nov 12, while the last game day (and the rule) ",
+    "is Saturday Nov 11. That's harmless: no game is played on that Sunday, so every game gets the same `season_type`.")
+add("")
+
 # 2. team games ---------------------------------------------------------------
 tg <- index_team_games(idx, team)
 add("## All ", team, " games in the index")

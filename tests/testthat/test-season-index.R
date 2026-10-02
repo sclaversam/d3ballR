@@ -39,3 +39,28 @@ test_that("parse_scoreboard_page reads game rows and attaches neutral-site notes
   expect_equal(idx$season_type, "postseason")
   expect_equal(idx$week, 1L)
 })
+
+test_that("the Wikipedia infobox regular_season line parses to its end date", {
+  w <- "{{Infobox college football season\n| type = NCAA Division III\n| year = 2024\n| regular_season = {{nowrap|September 1 – November 16, 2024}}\n| playoffs = {{nowrap|November 23 – January 5, 2025}}\n}}"
+  expect_equal(parse_infobox_regular_season_end(w, 2024), as.Date("2024-11-16"))
+  expect_equal(parse_infobox_regular_season_end("| regular_season = September 6 – November 15", 2025), as.Date("2025-11-15"))
+  expect_true(is.na(parse_infobox_regular_season_end("{{Infobox}}", 2025)))
+})
+
+test_that("seeded dates match two Saturdays before Thanksgiving, except 2023 (harmless)", {
+  chk <- suppressWarnings(check_season_dates(read_season_dates(test_path("../../data-raw/season_dates.csv"))))
+  expect_equal(chk$season[!chk$agrees], 2023L)
+  expect_match(chk$note[chk$season == 2023], "Sunday after")
+  expect_warning(check_season_dates(read_season_dates(test_path("../../data-raw/season_dates.csv"))), "2023")
+  expect_equal(two_saturdays_before_thanksgiving(c(2019L, 2023L, 2025L)), as.Date(c("2019-11-16", "2023-11-11", "2025-11-15")))
+})
+
+test_that("ensure_season_dates appends a missing season from Wikipedia and logs it", {
+  path <- withr::local_tempfile(fileext = ".csv")
+  file.copy(test_path("../../data-raw/season_dates.csv"), path)
+  local_mocked_bindings(fetch_wikipedia_regular_season_end = function(season) as.Date("2018-11-10"))
+  expect_message(d <- suppressWarnings(ensure_season_dates(2018L, path)), "Added season 2018")
+  expect_equal(d$source[d$season == 2018], "wikipedia")
+  expect_equal(read_season_dates(path)$regular_season_end[read_season_dates(path)$season == 2018], as.Date("2018-11-10"))
+  expect_silent(ensure_season_dates(2025L, path))  # present: no fetch, no write
+})

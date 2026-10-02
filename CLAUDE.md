@@ -55,8 +55,12 @@ scraper: get accurate, tidy play-by-play out of d3football.
   cached to `data-raw/index/{season}.csv` (reused unless `refresh = TRUE`).
   `index_team_games(index, team)` filters it to one team: this is how to list
   any team's games (e.g. the Centennial teams next). `season_type` uses
-  `data-raw/season_dates.csv` (`regular_season_end` per season; 2020 = NA,
-  all regular). Season always comes from the `/seasons/{year}/` URL path,
+  `data-raw/season_dates.csv` (`season, regular_season_end, source`; 2020 =
+  NA, all regular; 2019-2025 from Wikipedia infoboxes verified vs NCAA).
+  `ensure_season_dates()` adds a missing season from its Wikipedia infobox
+  (`source = "wikipedia"`, logged: verify it), and `check_season_dates()`
+  warns when a date isn't two Saturdays before Thanksgiving (2023's Sunday
+  Nov 12 is the known, harmless exception). Season always comes from the `/seasons/{year}/` URL path,
   never the date; postseason weeks restart at 1. d3 has no round or bowl
   labels.
 - `R/scrape_plays.R` — Step 1: `fetch_html`, `tables_on`, `find_plays`, and
