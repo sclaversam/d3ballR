@@ -11,9 +11,12 @@ division codes 11 and 12); D2 and D3 are absent from every published dataset.
 That gap is documented and verified in
 `analysis/cfbfastr_d2_d3_coverage_audit.Rmd`.
 
-Near-term focus: Carnegie Mellon and the Centennial Conference. The immediate
-milestone is parsing CMU's 2025 games and validating the output against CMU's
-internal coaching data (see "CMU schema" below).
+**Roadmap (in order):** CMU 2025 (done, the validation set) -> Centennial
+Conference 2025 -> all of D3 2025 -> other seasons. Everything in `R/` must
+stay generic: no code may assume a team (CMU) or a season (2025). CMU 2025 is
+only the data the rules are validated on. CMU's internal coaching data was the
+original validation target (see "CMU schema" below); it turned out to be
+hand-charted with errors, so d3's StatCrew feed is now the reference.
 
 The author (Sam) is a CMU statistics and machine learning student. Long-term he
 may extend this into projections work, but the current scope is strictly the
@@ -45,6 +48,17 @@ scraper: get accurate, tidy play-by-play out of d3football.
 
 ## Where things are
 
+- `R/season_index.R` — `build_season_index(season)`: one row per game in a
+  season (game_id, season, game_date, week, season_type, home, away,
+  boxscore_url, plus provenance), scraped from the weekly composite
+  scoreboard (`/scoreboard/{season}/composite?view=N`, throttled 3 s) and
+  cached to `data-raw/index/{season}.csv` (reused unless `refresh = TRUE`).
+  `index_team_games(index, team)` filters it to one team: this is how to list
+  any team's games (e.g. the Centennial teams next). `season_type` uses
+  `data-raw/season_dates.csv` (`regular_season_end` per season; 2020 = NA,
+  all regular). Season always comes from the `/seasons/{year}/` URL path,
+  never the date; postseason weeks restart at 1. d3 has no round or bowl
+  labels.
 - `R/scrape_plays.R` — Step 1: `fetch_html`, `tables_on`, `find_plays`, and
   the exported `scrape_plays(game_url)` (clean 2-column `situation`/`play`
   tibble).
@@ -59,18 +73,25 @@ scraper: get accurate, tidy play-by-play out of d3football.
   `R/parse_penalties.R`, `R/parse_outcomes.R` (outcome flags),
   `R/game_state.R` (score, first downs, end state, drive_result),
   `R/parse_clock.R` (clock), `R/validation.R` (`write_pbp_checks()`).
-- `data-raw/cmu_2025_games.R` — the 11 CMU 2025 boxscore URLs.
-- `analysis/pbp/` — the 11 per-game CSVs (53 columns). Data dictionary:
+- `data-raw/cmu_2025_games.R` — the 11 CMU 2025 boxscore URLs (the
+  validation set; the same list is `index_team_games(build_season_index(2025),
+  "Carnegie Mellon")`).
+- `data-raw/index/{season}.csv` — cached season indexes (2025 built).
+- `data-raw/season_dates.csv` — regular-season end date per season.
+- `analysis/pbp/` — the 11 per-game CSVs (57 columns). Data dictionary:
   `analysis/pbp_schema.md`. Latest change log: `analysis/CHANGELOG_v3.md`.
   Current build plan: `analysis/pbp_build_plan_v3.md`.
 - `analysis/checks/` — validation reports regenerated on every build
-  (kickoff possession, drive-footer clock, clock bounds, end state).
+  (kickoff possession, drive-footer clock, clock bounds, end state), plus
+  `season_index_{season}.md` from `analysis/season_index_report.R`.
 - `tests/testthat/` — unit tests.
 
 ## What is built vs. next
 
-Built (v3, all 11 CMU 2025 games): scrape -> classify -> play type -> a
-53-column, cfbfastR-aligned per-play table. It has possession (kickoffs =
+Built (validated on all 11 CMU 2025 games, but generic): season index ->
+scrape -> classify -> play type -> a 57-column, cfbfastR-aligned per-play
+table. It starts with `season`, `game_date`, `week`, `season_type` from the
+season index. It has possession (kickoffs =
 receiving team), drives and drive results, score before each play, down /
 distance / yards to goal and the end state after the play, outcome flags,
 first downs, penalties (signed, no-play gated), and the clock as exact
@@ -81,7 +102,10 @@ the judgment calls.
 Known open items: `yards_gained` is undefined for interceptions, punts, field
 goals and kickoffs; UW-La Crosse "Penalty after touchdown before PAT" marker
 rows (plays 106, 161) are still kept; first downs in the 7 games that never
-print "1ST DOWN" are rule-derived. Not built (by design): EPA / win
+print "1ST DOWN" are rule-derived; only the 2025 season index is built
+(other seasons' week pages may differ; check them when indexing). Next on the
+roadmap: Centennial 2025, built by listing each team's games from the 2025
+index. Not built (by design): EPA / win
 probability, player names, drive-level rollups.
 
 ## Classifier design (Step 2, built)
