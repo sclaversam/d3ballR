@@ -1,5 +1,6 @@
-# Precedence of the four new-series flags (kickoff > poss > yards > penalty)
-# and their exclusions. Built on small synthetic sequences of kept rows.
+# New-series flags sit on the FIRST SNAP of the new series, are mutually
+# exclusive by cause (kickoff > poss > yards > penalty), and are FALSE on
+# every other row. Built on small synthetic sequences of kept rows.
 
 series_rows <- function(...) {
   d <- data.frame(...)
@@ -16,71 +17,72 @@ flags_of <- function(d) {
   vapply(seq_len(nrow(out)), function(i) {
     f <- c("kickoff", "poss", "yards", "penalty")[c(out$firstD_by_kickoff[i], out$firstD_by_poss[i],
                                                      out$firstD_by_yards[i], out$firstD_by_penalty[i])]
-    if (length(f)) paste(f, collapse = "+") else "-"
+    stopifnot(out$new_series[i] == (length(f) == 1), length(f) <= 1)
+    if (length(f)) f else "-"
   }, character(1))
 }
 
-test_that("yards outranks penalty (a catch past the line plus a face mask)", {
-  d <- series_rows(play_type = c("pass_complete", "rush"), pos_team = "A",
-                   firstD_by_yards = c(TRUE, FALSE), firstD_by_penalty = c(TRUE, FALSE),
-                   yards_to_goal = c(75L, 54L), down = c(1L, 1L))
-  expect_equal(flags_of(d)[1], "yards")
+test_that("yards outranks penalty, on the next snap (catch past the line + face mask)", {
+  d <- series_rows(play_type = c("pass_complete", "pass_incomplete"), pos_team = "A",
+                   firstD_by_yards = c(TRUE, FALSE), firstD_by_penalty = c(TRUE, FALSE))
+  expect_equal(flags_of(d), c("-", "yards"))
 })
 
-test_that("kickoff outranks possession, including an onside kick the kicking team recovers", {
-  d <- series_rows(play_type = c("kickoff", "rush", "kickoff", "rush"), pos_team = c("B", "B", "A", "B"))
-  expect_equal(flags_of(d)[c(1, 3)], c("kickoff", "kickoff"))
+test_that("kickoff: the kickoff row carries nothing; the first snap after it is firstD_by_kickoff, whoever recovered", {
+  d <- series_rows(play_type = c("kickoff", "rush", "rush", "kickoff", "rush"),
+                   pos_team = c("B", "B", "B", "B", "A"), down = c(NA, 1L, 2L, NA, 1L))
+  # row 4: B's onside kick recovered by A (A snaps next) -- still kickoff
+  expect_equal(flags_of(d), c("-", "kickoff", "-", "-", "kickoff"))
 })
 
-test_that("possession: punt, and a punt the kicking team regains after a muff", {
+test_that("possession: after a punt, and after a punt the kicking team regains after a muff", {
   d <- series_rows(play_type = c("punt_no_return", "rush", "punt_with_return", "rush"),
                    pos_team = c("A", "B", "B", "B"), fumble_vec = c(FALSE, FALSE, TRUE, FALSE),
                    down = c(4L, 1L, 4L, 1L))
-  expect_equal(flags_of(d)[c(1, 3)], c("poss", "poss"))
+  expect_equal(flags_of(d), c("-", "poss", "-", "poss"))
 })
 
-test_that("penalty only when the play didn't reach the line; it can be a no-play", {
-  d <- series_rows(play_type = c("pass_incomplete", "rush"), pos_team = "A",
-                   penalty_no_play = c(TRUE, FALSE), firstD_by_penalty = c(TRUE, FALSE), down = c(3L, 1L))
-  expect_equal(flags_of(d)[1], "penalty")
+test_that("penalty: a no-play penalty awarding a first down flags the next real snap, skipping dead-ball rows", {
+  d <- series_rows(play_type = c("pass_incomplete", "penalty_no_play", "rush"), pos_team = "A",
+                   penalty_no_play = c(TRUE, TRUE, FALSE), firstD_by_penalty = c(TRUE, FALSE, FALSE),
+                   down = c(3L, 1L, 1L))
+  expect_equal(flags_of(d), c("-", "-", "penalty"))
 })
 
-test_that("no flag on scoring plays, tries, or the last play of a half", {
-  d <- series_rows(play_type = c("rush", "extra_point", "kickoff", "rush", "rush"),
-                   pos_team = c("A", "A", "B", "B", "B"), scoring_play = c(TRUE, FALSE, FALSE, FALSE, FALSE),
-                   try_phase = c(FALSE, TRUE, FALSE, FALSE, FALSE), firstD_by_yards = c(TRUE, FALSE, FALSE, FALSE, TRUE),
-                   half = c(1L, 1L, 1L, 1L, 1L))
-  expect_equal(flags_of(d), c("-", "-", "kickoff", "-", "-"))
+test_that("no flag from a scoring play or a try; the next series starts at the kickoff", {
+  d <- series_rows(play_type = c("rush", "extra_point", "kickoff", "rush"),
+                   pos_team = c("A", "A", "B", "B"), scoring_play = c(TRUE, FALSE, FALSE, FALSE),
+                   try_phase = c(FALSE, TRUE, FALSE, FALSE), firstD_by_yards = c(TRUE, FALSE, FALSE, FALSE))
+  expect_equal(flags_of(d), c("-", "-", "-", "kickoff"))
 })
 
-test_that("overtime: the first team's possession ending without a score is a hand-over; the play before OT gets nothing", {
+test_that("overtime: the first snap of each OT possession is firstD_by_poss (including the hand-over)", {
   d <- series_rows(play_type = c("field_goal_blocked", "rush", "pass_incomplete", "rush", "pass_complete"),
                    pos_team = c("A", "A", "A", "B", "B"), period = c(4L, 5L, 5L, 5L, 5L), half = 2L,
                    down = c(4L, 1L, 4L, 1L, 2L))
-  f <- flags_of(d)
-  expect_equal(f[1], "-")       # regulation doesn't lead into OT
-  expect_equal(f[3], "poss")    # OT hand-over
-  expect_equal(f[5], "-")       # end of the OT period
+  expect_equal(flags_of(d), c("-", "poss", "-", "poss", "-"))
 })
 
-test_that("built games: game 1 play 11, exclusivity, and new_series = any flag", {
+test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {
   dir <- test_path("../../analysis/pbp")
   files <- list.files(dir, pattern = "\\.csv$", recursive = TRUE, full.names = TRUE)
   skip_if(!length(files), "no built games")
   g1 <- files[basename(files) == "20250906_e064.csv"]
   if (length(g1)) {
     g <- utils::read.csv(g1, na.strings = "")
-    r <- g[g$play_index == 11, ]
-    expect_true(r$firstD_by_yards)        # 10-yard catch reached the line ...
-    expect_false(r$firstD_by_penalty)     # ... so the face mask doesn't also count
-    expect_true(r$new_series)
+    # play 11 (10-yard catch + face mask) causes a new series; play 12 starts
+    # it. (Play 11 is itself flagged: play 10 reached the line to gain.)
+    r <- g[g$play_index == 12, ]
+    expect_true(r$firstD_by_yards)
+    expect_false(r$firstD_by_penalty)
+    expect_equal(r$down, 1L)
   }
   for (f in files) {
     g <- utils::read.csv(f, na.strings = "")
     k <- g[, c("firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards", "firstD_by_penalty")]
-    expect_true(all(rowSums(k) <= 1), label = paste(basename(f), "at most one flag per row"))
-    expect_identical(g$new_series, rowSums(k) == 1, label = paste(basename(f), "new_series"))
-    expect_false(any(g$new_series[g$scoring_play | g$play_type %in% c("extra_point", "two_point")]),
-                 label = paste(basename(f), "no flag on scoring plays or tries"))
+    expect_identical(g$new_series, rowSums(k) == 1, label = paste(basename(f), "exactly one flag when new_series"))
+    expect_true(all(rowSums(k) <= 1), label = paste(basename(f), "at most one flag"))
+    expect_false(any(g$new_series[!g$play_type %in% play_type_categories]),
+                 label = paste(basename(f), "no flag on kickoffs, tries, dead-ball penalty rows"))
   }
 })

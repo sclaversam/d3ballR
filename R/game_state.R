@@ -267,38 +267,45 @@ series_next_snap <- function(kept, nxt) {
   ifelse(ok, nxt, NA_integer_)
 }
 
-#' Why the next snap starts a new series: four mutually exclusive flags
+#' First-down / new-series flags, on the snap that starts the new series
 #'
-#' cfbfastR column names, set on the row that CAUSES the new series (see
-#' the change log for how this differs from cfbfastR, which puts most of
-#' them on the next snap). In precedence order, at most one is TRUE:
-#' 1. `firstD_by_kickoff`: the row is a kickoff (including an onside kick
-#'    or a return fumble the kicking team recovers).
-#' 2. `firstD_by_poss`: the ball changed hands: the next snap belongs to
-#'    the other team (punt, interception, lost fumble, downs, missed or
-#'    blocked field goal); or a punt / field goal where the kicking team got
-#'    the ball back after a muff or return fumble; or the last live play of
-#'    the first team's overtime possession.
-#' 3. `firstD_by_yards`: same offense, the play reached the line to gain
-#'    ([derive_first_downs()]: d3's "1ST DOWN" text, or the yardage rule).
-#' 4. `firstD_by_penalty`: same offense, the play didn't reach the line,
-#'    and an accepted penalty awarded the first down (can be a no-play).
+#' cfbfastR column names. Each flag sits on the FIRST SNAP of a new series
+#' (the 1st-and-10 or 1st-and-goal snap), never on the play that caused it.
+#' At most one is TRUE, chosen by the cause of the new series:
+#' - `firstD_by_kickoff`: the first snap after a kickoff (including an onside
+#'   kick, whichever team recovered).
+#' - `firstD_by_poss`: the first snap after a change of possession (punt,
+#'   interception, lost fumble, turnover on downs, missed or blocked field
+#'   goal, or a punt / field goal the kicking team regains after a muff or
+#'   return fumble), and the first snap of each overtime possession.
+#' - `firstD_by_yards`: same offense, and the previous play reached the line
+#'   to gain ([derive_first_downs()], including the offensive-penalty
+#'   correction).
+#' - `firstD_by_penalty`: same offense, the previous play didn't reach the
+#'   line, and an accepted penalty awarded the first down (a declined penalty
+#'   never counts).
 #'
-#' `new_series` is any of the four. All are FALSE on scoring plays, tries
-#' (PAT, two-point, try-phase rows), rows with no connected next snap (end
-#' of a half, of the game, or of an OT period; see [series_next_snap()]),
-#' and no-play rows except for `firstD_by_penalty`.
+#' `new_series` is any of the four. Every other row (mid-series snaps,
+#' kickoffs, tries, dead-ball penalty rows) is FALSE in all five.
+#'
+#' How it works: the cause is read on each causing row (a kickoff; a play
+#' after which the next snap belongs to the other team, or a regained kick;
+#' the yards / penalty first-down flags), excluding scoring plays, tries and
+#' rows with no connected next snap. It is then moved to the next real snap
+#' (a play from [play_type_categories], skipping dead-ball penalty rows) in
+#' the same half and, in overtime, the same period. If two causes point at
+#' one snap, precedence kickoff > poss > yards > penalty decides. Finally,
+#' the first snap of each overtime possession is `firstD_by_poss`.
 #'
 #' @param kept Kept rows after [derive_first_downs()], with `play_type`,
 #'   `pos_team`, `penalty_no_play`, `scoring_play`, `try_phase`,
-#'   `fumble_vec`, `down`, `distance`, `yards_to_goal`, `period`.
+#'   `fumble_vec`, `down`, `half`, `period`.
 #' @param nxt Output of [next_snap_index()].
-#' @return `kept` with the four flags (overwriting the raw yards / penalty
-#'   flags) and `new_series`, plus `raw_*` candidate columns,
-#'   `series_edge`, and `observed_new_series` (what the next snap's situation
-#'   says; NA on rows that can't carry a flag) for the report.
+#' @return `kept` with the five flags (replacing the raw yards / penalty
+#'   flags) and `series_cause_row` / `series_causes` for the report.
 #' @keywords internal
 derive_series_flags <- function(kept, nxt) {
+  n <- nrow(kept)
   sn <- series_next_snap(kept, nxt)
   has_next <- !is.na(sn)
   live <- !kept$penalty_no_play
@@ -310,46 +317,54 @@ derive_series_flags <- function(kept, nxt) {
   kicked <- kept$play_type %in% c("punt_no_return", "punt_with_return", "punt_blocked",
                                   "field_goal_missed", "field_goal_blocked")
   regained_kick <- kicked & live & kept$fumble_vec & same_team & kept$down[sn] %in% 1L
-  ot_handover <- kept$period > 4L & other_team & live & kept$play_type != "kickoff"
 
-  raw_kickoff <- kept$play_type == "kickoff" & live
-  raw_poss <- live & kept$play_type != "kickoff" & (other_team | regained_kick)
-  raw_yards <- kept$firstD_by_yards & live & same_team
-  raw_penalty <- kept$firstD_by_penalty & same_team
+  # causes, on the causing row
+  cause <- rep(NA_character_, n)
+  cause[!excluded & kept$firstD_by_penalty & same_team] <- "penalty"
+  cause[!excluded & kept$firstD_by_yards & live & same_team] <- "yards"
+  cause[!excluded & live & kept$play_type != "kickoff" & (other_team | regained_kick)] <- "poss"
+  cause[!excluded & live & kept$play_type == "kickoff"] <- "kickoff"
 
-  ok <- !excluded
-  k <- raw_kickoff & ok
-  p <- raw_poss & ok & !k
-  y <- raw_yards & ok & !k & !p
-  pen <- raw_penalty & ok & !k & !p & !y
+  # target: the next real snap (not a dead-ball penalty row, not a try),
+  # same half; in overtime, same period
+  is_snap <- kept$play_type %in% play_type_categories & !kept$try_phase
+  snaps <- which(is_snap)
+  target <- vapply(seq_len(n), function(i) {
+    if (is.na(cause[i])) return(NA_integer_)
+    j <- snaps[snaps > i & kept$half[snaps] == kept$half[i]]
+    j <- j[(kept$period[i] <= 4L & kept$period[j] <= 4L) | kept$period[j] == kept$period[i]]
+    if (length(j)) j[1] else NA_integer_
+  }, integer(1))
 
-  kept$raw_kickoff <- raw_kickoff
-  kept$raw_poss <- raw_poss
-  kept$raw_yards <- raw_yards
-  kept$raw_penalty <- raw_penalty
-  kept$series_edge <- ifelse(regained_kick & ok, "kick regained by kicking team",
-                             ifelse(ot_handover & ok, "overtime hand-over", NA_character_))
-  kept$firstD_by_kickoff <- k
-  kept$firstD_by_poss <- p
-  kept$firstD_by_yards <- y
-  kept$firstD_by_penalty <- pen
-  kept$new_series <- k | p | y | pen
+  rank <- c(kickoff = 1L, poss = 2L, yards = 3L, penalty = 4L)
+  best <- rep(NA_character_, n)
+  causes_at <- rep(NA_character_, n)
+  cause_row <- rep(NA_integer_, n)
+  for (i in which(!is.na(target))) {
+    t <- target[i]
+    causes_at[t] <- if (is.na(causes_at[t])) cause[i] else paste(causes_at[t], cause[i], sep = " + ")
+    if (is.na(best[t]) || rank[cause[i]] < rank[best[t]]) {
+      best[t] <- cause[i]
+      cause_row[t] <- i
+    }
+  }
 
-  # what the next snap's situation says, for the consistency check: a new
-  # series starts if the next snap is 1st down and (the ball changed hands,
-  # or this wasn't a 1st down, or the distance was reset rather than just
-  # moved by the net gain)
-  net <- kept$yards_to_goal - kept$yards_to_goal[sn]
-  moved <- kept$distance - net                                  # same series, ball moved
-  fresh <- pmin(10L, kept$yards_to_goal[sn])                    # a new 1st & 10 / & goal
-  reset <- has_next & kept$down[sn] %in% 1L &
-    (other_team | !(kept$down %in% 1L) | kept$distance[sn] != moved)
-  # 1st down -> 1st down where "moved" and "fresh" give the same distance
-  # (e.g. 1st & 25 -> 1st & 10 at the 10): the situation can't tell them apart
-  ambiguous <- same_team & kept$down %in% 1L & kept$down[sn] %in% 1L &
-    kept$distance[sn] %in% moved & kept$distance[sn] == moved & kept$distance[sn] == fresh
-  obs <- ifelse(kept$play_type == "kickoff", live, reset %in% TRUE)  # a nullified kickoff is re-kicked
-  obs[ambiguous %in% TRUE] <- NA
-  kept$observed_new_series <- ifelse(excluded, NA, obs)
+  # first snap of each overtime possession
+  for (t in snaps[kept$period[snaps] > 4L]) {
+    prev <- snaps[snaps < t & kept$period[snaps] == kept$period[t]]
+    first_of_possession <- !length(prev) || !identical(kept$pos_team[prev[length(prev)]], kept$pos_team[t])
+    if (first_of_possession && (is.na(best[t]) || rank[best[t]] > rank["poss"])) {
+      best[t] <- "poss"
+      if (is.na(causes_at[t])) causes_at[t] <- "overtime possession"
+    }
+  }
+
+  kept$firstD_by_kickoff <- best %in% "kickoff"
+  kept$firstD_by_poss <- best %in% "poss"
+  kept$firstD_by_yards <- best %in% "yards"
+  kept$firstD_by_penalty <- best %in% "penalty"
+  kept$new_series <- !is.na(best)
+  kept$series_cause_row <- cause_row
+  kept$series_causes <- causes_at
   kept
 }

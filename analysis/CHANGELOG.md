@@ -3,7 +3,55 @@
 Earlier history: `analysis/CHANGELOG_v3.md` (the v3 schema batch) and the git
 log.
 
-## First-down / new-series flags (60 -> 63 columns)
+## First-down flags moved to the snap that starts the series
+
+The five columns keep their cfbfastR names (63 columns total) but now sit on
+the **first snap of the new series** (the 1st-and-10 / 1st-and-goal snap), not
+on the play that caused it. This replaces the earlier causing-row placement
+described in the next section.
+- **`firstD_by_kickoff`:** first snap after a kickoff, whichever team
+  recovered.
+- **`firstD_by_poss`:** first snap after a change of possession or a regained
+  punt / FG, and the first snap of every overtime possession.
+- **`firstD_by_yards` / `firstD_by_penalty`:** same offense, from the previous
+  play.
+- **Exclusivity:** mutually exclusive, with precedence kickoff > poss >
+  yards > penalty when two causes point at one snap. `new_series` is any of
+  them.
+- **Other rows:** kickoffs, tries, dead-ball penalty rows and mid-series
+  snaps are FALSE in all five.
+
+### Divergences from cfbfastR (3.0.0)
+
+1. **Kickoff flag moved off the kickoff row.** cfbfastR sets
+   `firstD_by_kickoff` on the kickoff row (`kickoff_play == 1 & down == 1`)
+   and also flags the first snap after it `firstD_by_poss`
+   (`drive_event_number == 2` after a kickoff). Here the kickoff row has no
+   flag and the first snap after it is `firstD_by_kickoff`. The other three
+   flags are on the same row as cfbfastR (the snap that starts the series).
+2. **Mutually exclusive.** cfbfastR computes the four independently, so they
+   can overlap. Here exactly one is TRUE per new series (2 snaps in 2025 had
+   two different causes; precedence applied).
+3. **Declined penalties.** cfbfastR's `first_by_penalty` includes a
+   penalty-type play with a declined penalty whose yardage reached the line.
+   Here a declined penalty never counts; that series start is
+   `firstD_by_yards`.
+
+### Validation (2025, 62 games, cache only)
+
+- **Totals:** 3,534 series starts, each a snap with exactly one flag. No
+  kickoff, try or dead-ball penalty row is flagged.
+- **Every flagged snap is a 1st down:** all but 1. The exception is a d3
+  quirk: after a lost fumble, d3 printed "3rd and 1" for the new offense.
+- **Every 1st-down snap is flagged:** 3,533 of 3,623. Of the rest, 89 are
+  replays of the same 1st down (76 after a no-play penalty, 13 after an
+  accepted penalty on a live play). The 1 real exception follows the lateral
+  play whose `yards_gained` reads only the first yardage segment (known
+  issue).
+- **Reconciliation and tests:** all 62 games reconcile with their boxscore
+  finals; 377 tests pass.
+
+## First-down / new-series flags (60 -> 63 columns): superseded placement
 
 **New columns:** `firstD_by_kickoff`, `firstD_by_poss`, `new_series`, next to
 `firstD_by_yards` and `firstD_by_penalty` (cfbfastR names). Built from the

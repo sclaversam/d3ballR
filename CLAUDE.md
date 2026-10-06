@@ -132,8 +132,9 @@ season index, then `home`, `away`, `home_team_conference`,
 points by team must match the boxscore final
 (`tests/testthat/test-score-reconciliation.R`). New-series flags
 (`firstD_by_kickoff`, `firstD_by_poss`, `firstD_by_yards`,
-`firstD_by_penalty`, `new_series`) sit on the causing row and are mutually
-exclusive (kickoff > poss > yards > penalty); how and why that differs from
+`firstD_by_penalty`, `new_series`) sit on the first snap of each new series
+(never the causing play or a kickoff row) and are mutually exclusive by cause
+(kickoff > poss > yards > penalty); how and why that differs from
 cfbfastR is in `analysis/CHANGELOG.md`, and `analysis/checks/{season}/first_downs.md`
 checks them against the next snap's situation. Known open item: `yards_gained`
 on plays with a lateral reads only the first yardage segment. It has possession (kickoffs =

@@ -556,8 +556,11 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
   attr(out, "score_checks") <- rs$checks
   attr(out, "first_down_text") <- kept[, c("fd_yards_text", "fd_penalty_text")]
   attr(out, "next_snap") <- nxt
-  attr(out, "series_detail") <- kept[, c("raw_kickoff", "raw_poss", "raw_yards", "raw_penalty",
-                                         "series_edge", "observed_new_series")]
+  attr(out, "series_detail") <- data.frame(
+    series_causes = kept$series_causes,
+    cause_play_index = kept$play_index[kept$series_cause_row],
+    try_phase = kept$try_phase
+  )
   clk$discarded$game_id <- rep(game$game_id, nrow(clk$discarded))
   clk$discarded$play_index <- kept$play_index[match(clk$discarded$row, kept$row)]
   attr(out, "clock_discards") <- clk$discarded
