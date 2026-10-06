@@ -104,7 +104,8 @@ clean_clock_anchors <- function(anchors) {
 #' **`clock_end`** (exact clock when the play ended, else NA): the play's
 #' own stated clock (scores, field goals, some kickoffs), else, for a play
 #' that hands the ball over (punt, turnover, downs, missed / blocked field
-#' goal, kickoff), the next drive's start time.
+#' goal, kickoff), the next drive's start time if that is in the same
+#' quarter (a hand-over that ends a quarter is left NA).
 #'
 #' **`clock_upper` / `clock_lower`** (always filled): the latest known
 #' reading at or before the snap and the earliest at or after it, within the
@@ -179,7 +180,10 @@ derive_clock <- function(full, kept) {
   }, numeric(1))
   open_good <- good[good$row %in% opening_rows, ]
   for (i in which(hand_over & is.na(end))) {
-    o <- open_good[open_good$pos > kept$row[i] & open_good$pos < next_timed[i], ]
+    # same quarter only: a hand-over on the last play of a quarter is followed
+    # by the next quarter's 15:00 drive start, which is not this play's end
+    o <- open_good[open_good$pos > kept$row[i] & open_good$pos < next_timed[i] &
+                     open_good$quarter == kept$period[i], ]
     if (nrow(o)) end[i] <- o$secs[1]
   }
 

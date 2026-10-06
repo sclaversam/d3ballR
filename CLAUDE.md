@@ -12,7 +12,8 @@ That gap is documented and verified in
 `analysis/cfbfastr_d2_d3_coverage_audit.Rmd`.
 
 **Roadmap (in order):** CMU 2025 (done, the validation set) -> Centennial
-Conference 2025 -> all of D3 2025 -> other seasons. Everything in `R/` must
+Conference 2025 (done: 62 games, all reconcile) -> all of D3 2025 -> other
+seasons. Everything in `R/` must
 stay generic: no code may assume a team (CMU) or a season (2025). CMU 2025 is
 only the data the rules are validated on. CMU's internal coaching data was the
 original validation target (see "CMU schema" below); it turned out to be
@@ -128,8 +129,11 @@ goals and kickoffs; UW-La Crosse "Penalty after touchdown before PAT" marker
 rows (plays 106, 161) are still kept; first downs in the 7 games that never
 print "1ST DOWN" are rule-derived; only the 2025 season index is built
 (other seasons' week pages may differ; check them when indexing). Next on the
-roadmap: Centennial 2025, built by listing each team's games from the 2025
-index. Not built (by design): EPA / win
+roadmap: all of D3 2025. Building more games keeps surfacing new StatCrew
+formats (different team codes, overtime); the score-reconciliation test is
+the main guard. Fetch in small batches (about 10 pages, 6 s apart):
+d3football rate-limits (HTTP 459 / empty pages) after a few dozen
+requests. Not built (by design): EPA / win
 probability, player names, drive-level rollups.
 
 ## Classifier design (Step 2, built)

@@ -17,11 +17,11 @@ Column names follow cfbfastR / nflfastR and are team-agnostic. The raw
 `situation` and `play_text` are kept on every row, so any derived value can be
 traced back to its source.
 
-2025 CMU coverage: 11 games, 1,861 rows, 250 drives. By `play_type`: rush 690,
-pass_complete 451, pass_incomplete 294, kickoff 113, punt_no_return 68,
-extra_point 66, penalty_no_play 57, sack 42, punt_with_return 23,
-pass_intercepted 19, field_goal_good 17, two_point 9, field_goal_blocked 5,
-field_goal_missed 3, kneel 2, punt_blocked 2. Per-game counts are in
+Built so far: every 2025 game involving a Centennial Conference team, 62
+games (including 10 postseason games and 1 overtime game), 10,149 rows,
+1,400 drives. This includes CMU's 11 games, the original validation set. All
+62 reconcile with their boxscore final scores
+(`analysis/checks/centennial_2025.md`). Per-game counts are in
 `analysis/pbp_row_counts.csv`. What changed from v2 is in
 `analysis/CHANGELOG_v3.md`. Nothing in the build assumes a team or a season: any
 d3football boxscore URL can be built.
