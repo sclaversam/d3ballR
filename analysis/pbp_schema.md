@@ -102,28 +102,29 @@ d3 prints the wiped-out attempt in full ("... 54 yards ... TOUCHDOWN nullified
 by penalty ... NO PLAY"), and none of it is credited.
 
 **New series (first-down flags).** `firstD_by_kickoff`, `firstD_by_poss`,
-`firstD_by_yards`, `firstD_by_penalty` sit on the **first snap of each new
-series** (the 1st-and-10 or 1st-and-goal snap), never on the play that caused
-it. At most one is TRUE, chosen by the cause of the new series:
-- `firstD_by_kickoff`: the first snap after a kickoff.
-- `firstD_by_poss`: the first snap after a change of possession, or of an
+`firstD_by_yards`, `firstD_by_penalty` sit on the **first snap row of each new
+series**, never on the play that caused it. The first snap row is the first row
+with a down for the new series, and it can be a penalty_no_play row: a
+dead-ball penalty like a false start, or a snap nullified by a penalty. A snap
+that replays the same down after a no-play penalty is never a series start.
+
+At most one flag is TRUE, chosen by the cause of the new series:
+- `firstD_by_kickoff`: after a kickoff.
+- `firstD_by_poss`: after a change of possession, or the first snap row of an
   overtime possession.
 - `firstD_by_yards`: the previous play reached the line to gain.
 - `firstD_by_penalty`: an accepted penalty awarded it.
 
-If two causes point at one snap, precedence kickoff > poss > yards > penalty
-decides. `new_series` is TRUE when one of them is. Every other row (mid-series
-snaps, kickoffs, tries, dead-ball penalty rows) is FALSE in all five.
+Precedence kickoff > poss > yards > penalty decides if two causes point at one
+row. `new_series` is TRUE when one of them is. Every other row is FALSE in all
+five.
 
-The cause is read on the causing play and carried to the next real snap,
-skipping dead-ball penalty rows. Scoring plays and tries cause nothing; the
-next series starts at the kickoff.
-
-Validation (`analysis/checks/{season}/first_downs.md`): every flagged snap is a
-1st down, and every 1st-down snap is flagged except replays of the same 1st
-down after a penalty. For how this differs from cfbfastR (kickoff flag moved
-off the kickoff row, mutual exclusivity, declined penalties), see
-`analysis/CHANGELOG.md`.
+Validation (`analysis/checks/{season}/first_downs.md`) forms series from the
+situation alone. A series is the consecutive snap rows of one offense,
+starting at the first snap row of a half or OT period, after a kickoff, at a
+change of offense, or at a fresh 1st down. Each series must have exactly one
+`new_series` row, on its first snap row. For how this differs from cfbfastR,
+see `analysis/CHANGELOG.md`.
 
 **Overtime.** College overtime is untimed, so in periods 5+ all four clock
 columns are NA. Each overtime period starts a new drive (each team's OT
@@ -265,11 +266,11 @@ d3football's weekly composite scoreboard pages
 | 47 | `punt` | logical | Any punt. | Never NA. | 90 TRUE. |
 | 48 | `scoring_play` | logical | Points were scored on the row (TD, FG, safety, good PAT or two-point). | Never NA. | `score_pts != 0`. A failed PAT is FALSE. 159 TRUE. |
 | 49 | `score_pts` | integer | Points scored on the row, from `pos_team`'s view. | Never NA. | TD +6, FG +3, PAT +1, two-point +2; defensive TD -6; safety conceded -2; else 0. |
-| 50 | `firstD_by_kickoff` | logical | First snap after a kickoff. | Never NA. | On the first snap of the receiving team's series, not on the kickoff row (kickoff rows are always FALSE). Includes after an onside kick, whichever team recovered. cfbfastR name. |
+| 50 | `firstD_by_kickoff` | logical | First snap row after a kickoff. | Never NA. | On the first snap row of the receiving team's series (kickoff rows are always FALSE). Includes after an onside kick, whichever team recovered. cfbfastR name. |
 | 51 | `firstD_by_poss` | logical | First snap after a change of possession, or the first snap of an overtime possession. | Never NA. | After a punt, interception, lost fumble, turnover on downs, or missed / blocked FG, and after a punt / FG the kicking team regained after a muff or return fumble. Also every overtime possession's first snap. cfbfastR name. |
 | 52 | `firstD_by_yards` | logical | First snap of a new series earned by the previous play's yardage (same offense). | Never NA. | The previous play reached the line to gain: d3's "1ST DOWN" text, or a run / completion / sack / kneel with `yards_gained >= distance` outside goal-to-go. Not if an accepted offensive penalty on that play took it away. cfbfastR name. |
 | 53 | `firstD_by_penalty` | logical | First snap of a new series awarded by a penalty (same offense). | Never NA. | The previous play didn't reach the line, and an accepted penalty awarded the first down (the penalty can be on a no-play). A declined penalty never counts. cfbfastR name. |
-| 54 | `new_series` | logical | The snap starts a new series: any of the four flags. | Never NA. | Exactly one of the four is TRUE when this is. FALSE on kickoffs, tries, dead-ball penalty rows, and every mid-series snap (including a 1st down replayed after a penalty). |
+| 54 | `new_series` | logical | The row is the first snap row of a new series: any of the four flags. | Never NA. | Exactly one of the four is TRUE when this is. The first snap row can be a penalty_no_play row (a dead-ball penalty or a nullified snap). FALSE on kickoffs, tries, mid-series snaps, and a snap that replays the same down after a no-play penalty. |
 | 55 | `penalty_flag` | logical | The row mentions a penalty. | Never NA. | 164 TRUE. |
 | 56 | `penalty_yards_signed` | integer | Net accepted penalty yards, from `pos_team`'s view. | NA with no penalty, when all infractions were declined, and on 2 marker rows. | See Key conventions. Range -15 to +15. |
 | 57 | `penalized_team` | character | Team that committed the penalty. | NA with no penalty, and on 2 marker rows. | Offsetting or accepted on both teams: both names joined with `"; "` (3 rows). All declined: the declined team. |

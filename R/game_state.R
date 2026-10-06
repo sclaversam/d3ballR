@@ -286,14 +286,16 @@ series_next_snap <- function(kept, nxt) {
 #'   never counts).
 #'
 #' `new_series` is any of the four. Every other row (mid-series snaps,
-#' kickoffs, tries, dead-ball penalty rows) is FALSE in all five.
+#' replays after a no-play penalty, kickoffs, tries) is FALSE in all five.
 #'
 #' How it works: the cause is read on each causing row (a kickoff; a play
 #' after which the next snap belongs to the other team, or a regained kick;
 #' the yards / penalty first-down flags), excluding scoring plays, tries and
-#' rows with no connected next snap. It is then moved to the next real snap
-#' (a play from [play_type_categories], skipping dead-ball penalty rows) in
-#' the same half and, in overtime, the same period. If two causes point at
+#' rows with no connected next snap. It is then moved to the next snap row
+#' (a snap, or a penalty_no_play row: a dead-ball penalty or a nullified snap)
+#' in the same half and, in overtime, the same period: that row is the first
+#' snap of the new series. A snap that replays the same down after a no-play
+#' penalty is never a series start. If two causes point at
 #' one snap, precedence kickoff > poss > yards > penalty decides. Finally,
 #' the first snap of each overtime possession is `firstD_by_poss`.
 #'
@@ -325,9 +327,12 @@ derive_series_flags <- function(kept, nxt) {
   cause[!excluded & live & kept$play_type != "kickoff" & (other_team | regained_kick)] <- "poss"
   cause[!excluded & live & kept$play_type == "kickoff"] <- "kickoff"
 
-  # target: the next real snap (not a dead-ball penalty row, not a try),
-  # same half; in overtime, same period
-  is_snap <- kept$play_type %in% play_type_categories & !kept$try_phase
+  # target: the next snap row -- a snap or a penalty_no_play row (dead-ball
+  # or nullified snap), not a try -- in the same half; in overtime, the same
+  # period. The series starts on that row; a replay of the same down after a
+  # no-play penalty comes later and is never a series start.
+  is_snap <- (kept$play_type %in% play_type_categories | kept$play_type == "penalty_no_play") &
+    !kept$try_phase & !is.na(kept$down)
   snaps <- which(is_snap)
   target <- vapply(seq_len(n), function(i) {
     if (is.na(cause[i])) return(NA_integer_)

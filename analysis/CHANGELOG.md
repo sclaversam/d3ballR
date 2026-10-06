@@ -3,6 +3,40 @@
 Earlier history: `analysis/CHANGELOG_v3.md` (the v3 schema batch) and the git
 log.
 
+## Fix: a series can start on a penalty_no_play row
+
+**Bug:** after a change of possession (and likewise for the other three
+causes), when the new series' first row was a penalty_no_play row (a
+dead-ball penalty or a nullified snap), that row got no flag, and the snap
+replaying the same down after it got the flag. Example: game 20250904_hz19,
+play 15 F&M punt, play 16 Lebanon Valley false start (NO PLAY), play 17 the
+replayed 1st down. 67 series starts across the 62 games were misplaced this
+way: poss 16, yards 34, kickoff 9, penalty 8.
+
+**Fix:** the flag and `new_series` now go on the first snap row of the series,
+penalty_no_play rows included. A snap that replays the same down after a
+no-play penalty is never a series start; all five columns are FALSE there.
+This applies to all four causes.
+
+**New validation:** series are formed from the situation alone
+(`segment_series()`): consecutive snap rows of one offense, starting at the
+first snap row of a half / OT period, after a kickoff, at a change of
+offense, or at a fresh 1st down. Replays of the same down after a no-play
+penalty stay in their series. Every series must have exactly one
+`new_series` row, on its first snap row.
+
+**2025 results:**
+- **Series:** 3,541; 3,538 pass.
+- **Violations:** 3, all with known causes.
+  - Two follow a dead-ball penalty on the offense that started the series:
+    d3 printed "1st and 10" after it instead of a longer distance, so the
+    replay looks like a fresh series. Source quirk; the flag is right.
+  - One follows the lateral play whose `yards_gained` reads only the first
+    yardage segment (known issue).
+- **Other checks:** no kickoff, try or non-snap row is flagged; 352 replays
+  after a no-play penalty are correctly unflagged; all 62 games still
+  reconcile; 443 tests pass.
+
 ## First-down flags moved to the snap that starts the series
 
 The five columns keep their cfbfastR names (63 columns total) but now sit on

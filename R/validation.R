@@ -130,16 +130,62 @@ footer_clock_check <- function(full, clk, kept, game_id) {
   res
 }
 
+#' Split a game's snap rows into series, independently of the flags
+#'
+#' Snap rows are rows with a down that aren't part of a try: snaps and
+#' penalty_no_play rows (dead-ball penalties, nullified snaps). A new series
+#' begins at a snap row when it is the first of its half (or overtime
+#' period), a kickoff came since the previous snap row, the offense changed,
+#' or the situation shows a fresh 1st down: 1st down after a later down, or
+#' 1st down again with a distance that isn't just the old one moved by the
+#' net yardage (a replay of the same 1st down after a penalty, e.g. 1st & 10
+#' -> false start -> 1st & 15, stays in the series). When "moved" and "fresh"
+#' give the same distance (1st & 25 -> 1st & 10 at the 10), the situation
+#' can't tell; the row's own `new_series` decides, so that case can't create
+#' a violation.
+#'
+#' @param g One built game (data frame).
+#' @param try_phase Logical, per row.
+#' @return Integer series id per row (NA on rows that aren't snap rows).
+#' @keywords internal
+segment_series <- function(g, try_phase) {
+  snap <- !is.na(g$down) & !try_phase
+  rows <- which(snap)
+  id <- rep(NA_integer_, nrow(g))
+  cur <- 0L
+  prev <- NA_integer_
+  for (j in rows) {
+    start <- is.na(prev) || g$half[j] != g$half[prev] ||
+      (g$period[j] > 4L | g$period[prev] > 4L) && g$period[j] != g$period[prev] ||
+      any(g$play_type[seq_len(j - 1)][seq_len(j - 1) > prev] == "kickoff") ||
+      !identical(g$pos_team[j], g$pos_team[prev])
+    if (!start && g$down[j] %in% 1L) {
+      moved <- g$distance[prev] - (g$yards_to_goal[prev] - g$yards_to_goal[j])
+      fresh <- min(10L, g$yards_to_goal[j])
+      if (!(g$down[prev] %in% 1L)) {
+        start <- TRUE
+      } else if (!isTRUE(g$distance[j] == moved)) {
+        start <- TRUE
+      } else if (isTRUE(moved == fresh)) {
+        start <- isTRUE(g$new_series[j])  # ambiguous: defer to the flag
+      }
+    }
+    if (start) cur <- cur + 1L
+    id[j] <- cur
+    prev <- j
+  }
+  id
+}
+
 #' Write the first-down / new-series report
 #'
-#' `{check_dir}/first_downs.md`: cfbfastR's rules and where this package
-#' diverges, per-flag counts, and the validation:
-#' - every snap with `new_series = TRUE` is a 1st down in its situation;
-#' - every 1st-down snap has `new_series = TRUE`, except replays of the same
-#'   1st down (after a no-play penalty, or after an accepted penalty on a
-#'   live play that replays the down);
-#' plus snaps where more than one cause pointed (precedence applied) and the
-#' edge-case snaps (regained kicks, overtime possessions).
+#' `{check_dir}/first_downs.md`: the flag definitions, cfbfastR's rules and
+#' where this package diverges, per-flag counts, and the validation: series
+#' are formed independently of the flags ([segment_series()]); every series
+#' must have exactly one row with `new_series = TRUE`, on its first snap row,
+#' and no row outside a series may be flagged. Every violation is listed.
+#' Also: snaps where different causes pointed (precedence applied) and the
+#' edge-case series starts (regained kicks, overtime possessions).
 #'
 #' @param built List of games from [build_all_pbp()].
 #' @param check_dir Report directory.
@@ -153,98 +199,94 @@ write_first_down_report <- function(built, check_dir) {
       apply(df, 1, function(r) paste0("| ", paste(r, collapse = " | "), " |")))
   }
   flags <- c("firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards", "firstD_by_penalty", "new_series")
-  a <- do.call(rbind, lapply(built, function(g) {
+  series_rows <- list()
+  violations <- list()
+  outside <- list()
+  all_rows <- list()
+  for (g in built) {
     d <- attr(g, "series_detail")
-    x <- as.data.frame(g[, c("game_id", "play_index", "period", "half", "pos_team", "play_type", "down", "distance",
-                             "penalty_no_play", "penalty_flag", "penalty_yards_signed", "penalty_declined",
-                             flags, "play_text")])
-    # previous kept row (not a try), same half: what came right before this one
-    is_try <- g$play_type %in% c("extra_point", "two_point")
-    prev <- vapply(seq_len(nrow(g)), function(i) {
-      j <- which(seq_len(nrow(g)) < i & !is_try & g$half == g$half[i])
-      if (length(j)) j[length(j)] else NA_integer_
-    }, integer(1))
-    x$prev_down <- g$down[prev]
-    x$prev_same_team <- !is.na(prev) & g$pos_team[prev] == g$pos_team
-    x$prev_no_play <- g$penalty_no_play[prev] %in% TRUE
-    x$prev_accepted_penalty <- !is.na(g$penalty_yards_signed[prev]) & !(g$penalty_declined[prev] %in% TRUE)
-    x$prev_play_type <- g$play_type[prev]
-    x$prev_yard_segments <- stringr::str_count(stringr::str_remove(g$play_text[prev], "PENALTY .*$"),
-                                               "\\bfor (loss of )?\\d+ yards?")
-    x$prev_other_team <- !is.na(prev) & g$pos_team[prev] != g$pos_team
-    cbind(x, d)
-  }))
-  a$play_text <- substr(a$play_text, 1, 110)
+    g <- as.data.frame(g)
+    sid <- segment_series(g, d$try_phase)
+    x <- cbind(g[, c("game_id", "play_index", "period", "pos_team", "play_type", "down", "distance",
+                     "penalty_no_play", flags, "play_text")], d, series_id = sid)
+    x$play_text <- substr(x$play_text, 1, 110)
+    all_rows[[length(all_rows) + 1]] <- x
+    outside[[length(outside) + 1]] <- x[is.na(sid) & x$new_series, ]
+    for (k in unique(stats::na.omit(sid))) {
+      r <- x[which(sid == k), ]
+      flagged <- which(r$new_series)
+      ok <- length(flagged) == 1 && flagged == 1
+      series_rows[[length(series_rows) + 1]] <- data.frame(ok = ok)
+      if (!ok) {
+        p_i <- r$play_index[1] - 1
+        prev_text <- if (p_i >= 1) g$play_text[p_i] else ""
+        prev_deadball_off_pen <- p_i >= 1 && g$play_type[p_i] == "penalty_no_play" && isTRUE(g$new_series[p_i]) &&
+          identical(g$pos_team[p_i], r$pos_team[1]) && isTRUE(g$penalized_team[p_i] == g$pos_team[p_i]) &&
+          r$down[1] %in% 1L && r$distance[1] %in% 10L
+        n_seg <- stringr::str_count(stringr::str_remove(prev_text, "PENALTY .*$"), "\\bfor (loss of )?\\d+ yards?")
+        violations[[length(violations) + 1]] <- data.frame(
+          game_id = r$game_id[1], first_play_index = r$play_index[1],
+          last_play_index = r$play_index[nrow(r)], offense = r$pos_team[1],
+          first_situation = paste0(r$down[1], " & ", r$distance[1]),
+          flagged_rows = if (length(flagged)) paste(r$play_index[flagged], collapse = ", ") else "none",
+          problem = if (!length(flagged)) "no new_series row" else if (length(flagged) > 1) "more than one new_series row" else "new_series not on the first snap row",
+          likely_cause = dplyr::case_when(
+            !length(flagged) & n_seg > 1 ~ "previous play has more than one yardage segment (a lateral): yards_gained reads only the first, so its first down is missed",
+            !length(flagged) & prev_deadball_off_pen ~ "previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk)",
+            length(flagged) == 1 & r$down[1] != 1L ~ "series starts with a down other than 1st: d3 kept the old down for the new offense after a change of possession (source quirk)",
+            TRUE ~ "unexplained"),
+          first_row_text = r$play_text[1]
+        )
+      }
+    }
+  }
+  a <- do.call(rbind, all_rows)
+  viol <- if (length(violations)) do.call(rbind, violations) else data.frame()
+  out_flagged <- do.call(rbind, outside)
+  n_series <- length(series_rows)
+
   counts <- data.frame(flag = flags, rows = vapply(flags, function(f) sum(a[[f]]), integer(1)))
   exclusive <- all(rowSums(a[, flags[1:4]]) == a$new_series)
-  snap <- a$play_type %in% play_type_categories & !a$try_phase  # a snap in a try (e.g. a nullified two-point run) isn't a series snap
-  non_snap_flagged <- a[!snap & a$new_series, ]
-
-  bad_flag <- a[snap & a$new_series & !(a$down %in% 1L), ]
-  bad_flag$likely_cause <- ifelse(bad_flag$firstD_by_poss,
-                                  "d3 kept the old down for the new offense after the change of possession (source quirk)",
-                                  "unexplained")
-  missing <- a[snap & a$down %in% 1L & !a$new_series, ]
-  same_first <- missing$prev_same_team & missing$prev_down %in% 1L
-  missing$category <- dplyr::case_when(
-    same_first & missing$prev_no_play ~ "replay after a no-play penalty (same 1st down)",
-    same_first & missing$prev_accepted_penalty ~ "replay after an accepted penalty on a live play (same 1st down)",
-    TRUE ~ "EXCEPTION"
-  )
-  missing$likely_cause <- ifelse(missing$category != "EXCEPTION", "",
-    ifelse(missing$prev_yard_segments > 1,
-           "previous play has more than one yardage segment (a lateral): yards_gained reads only the first, so its first down is missed",
-           "unexplained"))
-  expected <- missing[missing$category != "EXCEPTION", ]
-  exceptions <- missing[missing$category == "EXCEPTION", ]
-
   n_distinct_causes <- vapply(strsplit(ifelse(is.na(a$series_causes), "", a$series_causes), " \\+ "),
                               function(x) length(unique(x)), integer(1))
-  multi <- a[n_distinct_causes > 1, ]  # e.g. "kickoff + kickoff" after a re-kick is one cause, not a conflict
+  multi <- a[n_distinct_causes > 1, ]
   ot <- a[a$firstD_by_poss & a$period > 4L, ]
-  regained <- a[a$firstD_by_poss & a$prev_play_type %in% c("punt_no_return", "punt_with_return", "punt_blocked",
-                                                            "field_goal_missed", "field_goal_blocked") &
-                  a$prev_same_team & a$period <= 4L, ]
+  replays <- sum(!is.na(a$series_id) & !a$new_series &
+                   c(FALSE, a$penalty_no_play[-nrow(a)]) & c(FALSE, a$series_id[-1] == a$series_id[-nrow(a)])[seq_len(nrow(a))],
+                 na.rm = TRUE)
 
   out <- c(
     "# First downs and new series", "",
     "Generated by `build_season()` from every game in this season's folder.", "",
     "## The flags", "",
-    "Each flag is on the **first snap of a new series** (the 1st-and-10 or 1st-and-goal snap), never on the play that caused it. At most one is TRUE; `new_series` is any of them. Kickoffs, tries, dead-ball penalty rows and mid-series snaps are FALSE in all five.", "",
-    "- **`firstD_by_kickoff`:** first snap after a kickoff (including an onside kick, whichever team recovered).",
-    "- **`firstD_by_poss`:** first snap after a change of possession (punt, interception, lost fumble, downs, missed / blocked FG, or a punt / FG the kicking team regains after a muff or return fumble), and the first snap of each overtime possession.",
+    "Each flag is on the **first snap row of a new series**: the first row with a down for the new series, which can be a penalty_no_play row (a dead-ball penalty or a nullified snap). A snap that replays the same down after a no-play penalty is never a series start. At most one flag is TRUE; `new_series` is any of them. Kickoffs, tries and every other row are FALSE in all five.", "",
+    "- **`firstD_by_kickoff`:** first snap row after a kickoff (including an onside kick, whichever team recovered).",
+    "- **`firstD_by_poss`:** first snap row after a change of possession (punt, interception, lost fumble, downs, missed / blocked FG, or a punt / FG the kicking team regains after a muff or return fumble), and the first snap row of each overtime possession.",
     "- **`firstD_by_yards`:** same offense; the previous play reached the line to gain.",
     "- **`firstD_by_penalty`:** same offense; the previous play didn't, and an accepted penalty awarded the first down (a declined penalty never counts).",
     "",
     "## cfbfastR (3.0.0, `prep_epa_df_after()`) and how this differs", "",
-    "cfbfastR also puts `firstD_by_poss`, `firstD_by_yards`, `firstD_by_penalty` on the snap that starts the series, computed from the previous row's values. Differences:", "",
-    "- **Kickoff flag moved off the kickoff row:** cfbfastR sets `firstD_by_kickoff` on the kickoff row itself (`kickoff_play == 1 & down == 1`) and then also flags the first snap after it `firstD_by_poss` (`drive_event_number == 2` after a kickoff). Here the kickoff row has no flag, and the first snap after it is `firstD_by_kickoff`.",
+    "cfbfastR also puts `firstD_by_poss`, `firstD_by_yards`, `firstD_by_penalty` on the row that starts the series, computed from the previous row's values. Differences:", "",
+    "- **Kickoff flag moved off the kickoff row:** cfbfastR sets `firstD_by_kickoff` on the kickoff row itself (`kickoff_play == 1 & down == 1`) and also flags the first snap after it `firstD_by_poss` (`drive_event_number == 2` after a kickoff). Here the kickoff row has no flag, and the first snap row after it is `firstD_by_kickoff`.",
     "- **Mutually exclusive:** cfbfastR computes the four independently, so they can overlap. Here precedence kickoff > poss > yards > penalty leaves exactly one.",
     "- **Declined penalties:** cfbfastR's `first_by_penalty` includes a penalty-type play whose penalty was declined but whose yardage reached the line. Here a declined penalty never counts; that play is `firstD_by_yards`.",
     "",
     "## Counts", "",
     md_table(counts), "",
-    paste0("Exactly one of the four whenever `new_series` is TRUE: **", if (exclusive) "yes" else "NO", "**. ",
-           "Non-snap rows (kickoffs, tries, dead-ball penalties) flagged: **", nrow(non_snap_flagged), "**."), "",
-    "## Validation", "",
-    paste0("**Every `new_series` snap is a 1st down:** ", sum(snap & a$new_series), " flagged snaps, ",
-           nrow(bad_flag), " not a 1st down in their situation."), "",
-    md_table(bad_flag[, c("game_id", "play_index", "play_type", "down", "distance", "series_causes", "cause_play_index", "likely_cause", "play_text")]), "",
-    paste0("**Every 1st-down snap has `new_series`, except replays:** ", sum(snap & a$down %in% 1L), " 1st-down snaps; ",
-           sum(snap & a$down %in% 1L & a$new_series), " flagged, ", nrow(expected), " replays of the same 1st down (expected), ",
-           nrow(exceptions), " exceptions."), "",
-    "Replays by kind:", "",
-    md_table(as.data.frame(table(category = expected$category), responseName = "snaps")), "",
-    "Exceptions:", "",
-    md_table(exceptions[, c("game_id", "play_index", "play_type", "down", "distance", "prev_play_type", "prev_down", "likely_cause", "play_text")]), "",
+    paste0("Exactly one of the four whenever `new_series` is TRUE: **", if (exclusive) "yes" else "NO", "**."), "",
+    "## Validation: one `new_series` row per series, on its first snap row", "",
+    "Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.", "",
+    paste0("**", n_series, " series; ", n_series - nrow(viol), " have exactly one `new_series` row on their first snap row; ",
+           nrow(viol), " violations.** Flagged rows outside any series (kickoffs, tries): **", nrow(out_flagged), "**. ",
+           "Replays after a no-play penalty inside a series (correctly unflagged): ", replays, "."), "",
+    md_table(viol), "",
+    if (nrow(out_flagged)) md_table(out_flagged[, c("game_id", "play_index", "play_type", flags, "play_text")]) else NULL,
     "## Snaps where different causes pointed (precedence applied)", "",
     md_table(multi[, c("game_id", "play_index", "series_causes", flags[1:4], "play_text")]), "",
     "## Edge cases", "",
-    paste0("First snap after a punt / field goal the kicking team regained (`firstD_by_poss`): ", nrow(regained), "."), "",
-    md_table(regained[, c("game_id", "play_index", "pos_team", "prev_play_type", "play_text")]), "",
-    paste0("First snap of an overtime possession (`firstD_by_poss`): ", nrow(ot), "."), "",
-    md_table(ot[, c("game_id", "play_index", "period", "pos_team", "play_text")]), ""
+    paste0("First snap row of an overtime possession (`firstD_by_poss`): ", nrow(ot), "."), "",
+    md_table(ot[, c("game_id", "play_index", "period", "pos_team", "play_type", "play_text")]), ""
   )
   writeLines(out, file.path(check_dir, "first_downs.md"))
-  invisible(list(counts = counts, bad_flag = bad_flag, exceptions = exceptions, multi = multi))
+  invisible(list(counts = counts, violations = viol, outside = out_flagged, multi = multi))
 }

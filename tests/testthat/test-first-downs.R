@@ -42,11 +42,18 @@ test_that("possession: after a punt, and after a punt the kicking team regains a
   expect_equal(flags_of(d), c("-", "poss", "-", "poss"))
 })
 
-test_that("penalty: a no-play penalty awarding a first down flags the next real snap, skipping dead-ball rows", {
+test_that("penalty: a no-play penalty awarding a first down flags the next snap row; the replay after a dead-ball penalty gets nothing", {
   d <- series_rows(play_type = c("pass_incomplete", "penalty_no_play", "rush"), pos_team = "A",
                    penalty_no_play = c(TRUE, TRUE, FALSE), firstD_by_penalty = c(TRUE, FALSE, FALSE),
                    down = c(3L, 1L, 1L))
-  expect_equal(flags_of(d), c("-", "-", "penalty"))
+  expect_equal(flags_of(d), c("-", "penalty", "-"))
+})
+
+test_that("a series can start on a penalty_no_play row: punt, then a dead-ball false start, then the replayed 1st down", {
+  d <- series_rows(play_type = c("punt_with_return", "penalty_no_play", "pass_complete", "rush"),
+                   pos_team = c("A", "B", "B", "B"), penalty_no_play = c(FALSE, TRUE, FALSE, FALSE),
+                   down = c(4L, 1L, 1L, 2L))
+  expect_equal(flags_of(d), c("-", "poss", "-", "-"))
 })
 
 test_that("no flag from a scoring play or a try; the next series starts at the kickoff", {
@@ -77,12 +84,23 @@ test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {
     expect_false(r$firstD_by_penalty)
     expect_equal(r$down, 1L)
   }
+  hz <- files[basename(files) == "20250904_hz19.csv"]
+  if (length(hz)) {
+    g <- utils::read.csv(hz, na.strings = "")
+    # play 15: F&M punt; play 16: LVC false start (NO PLAY) = first snap row of
+    # LVC's series; play 17: the replayed 1st down
+    expect_true(g$firstD_by_poss[g$play_index == 16])
+    expect_true(g$new_series[g$play_index == 16])
+    r17 <- g[g$play_index == 17, c("firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards", "firstD_by_penalty", "new_series")]
+    expect_false(any(unlist(r17)))
+  }
   for (f in files) {
     g <- utils::read.csv(f, na.strings = "")
     k <- g[, c("firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards", "firstD_by_penalty")]
     expect_identical(g$new_series, rowSums(k) == 1, label = paste(basename(f), "exactly one flag when new_series"))
     expect_true(all(rowSums(k) <= 1), label = paste(basename(f), "at most one flag"))
-    expect_false(any(g$new_series[!g$play_type %in% play_type_categories]),
-                 label = paste(basename(f), "no flag on kickoffs, tries, dead-ball penalty rows"))
+    expect_false(any(g$new_series[g$play_type %in% c("kickoff", "extra_point", "two_point")]),
+                 label = paste(basename(f), "no flag on kickoffs or tries"))
+    expect_false(any(g$new_series[is.na(g$down)]), label = paste(basename(f), "flags only on snap rows"))
   }
 })
