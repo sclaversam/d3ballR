@@ -13,8 +13,9 @@
 #' - `drive_footer_clock.csv`: every d3 drive's start clock + footer
 #'   "MM:SS elapsed" vs the drive's end reference (see
 #'   [footer_clock_check()]); `flag` marks mismatches.
-#' - `clock_bounds.csv`: any regulation row whose `clock_upper` /
-#'   `clock_lower` is NA or upper < lower in time remaining (should be
+#' - `clock_bounds.csv`: any regulation row whose `clock_start_max` /
+#'   `clock_start_min` is NA, max < min, or `clock_start` (when known) falls
+#'   outside them (should be
 #'   empty; overtime is untimed, so its clock columns are NA by design).
 #'
 #' @param games List of tibbles from [build_pbp()].
@@ -57,10 +58,12 @@ write_pbp_checks <- function(games, check_dir = "analysis/checks") {
 
   b <- dplyr::bind_rows(games)
   reg <- b$period <= 4L  # overtime is untimed: clock columns NA by design
-  bad <- reg & (is.na(b$clock_upper) | is.na(b$clock_lower) |
-                  clock_secs(b$clock_upper) < clock_secs(b$clock_lower))
+  mx <- clock_secs(b$clock_start_max)
+  mn <- clock_secs(b$clock_start_min)
+  st <- clock_secs(b$clock_start)
+  bad <- reg & (is.na(mx) | is.na(mn) | mx < mn | (!is.na(st) & (st > mx | st < mn)))
   reports$clock_bounds <- as.data.frame(b[bad, c("game_id", "play_index", "period", "clock_start", "clock_end",
-                                                 "clock_upper", "clock_lower", "play_text")])
+                                                 "clock_start_max", "clock_start_min", "play_text")])
 
   for (nm in names(reports)) {
     utils::write.csv(reports[[nm]], file.path(check_dir, paste0(nm, ".csv")), row.names = FALSE, na = "")
@@ -88,7 +91,7 @@ footer_clock_check <- function(full, clk, kept, game_id) {
   rt <- full$row_type
   q <- dplyr::coalesce(as.integer(full$quarter), 1L)
   half <- ifelse(q <= 2, 1L, 2L)
-  good <- clk$anchors
+  good <- clk$anchors[clk$anchors$kind != "printed", ]  # official readings only, one per row
   val <- stats::setNames(good$secs, good$row)
   game_secs <- function(quarter, secs) (quarter - 1L) * 900L + (900L - secs)
   opening <- clk$opening_rows

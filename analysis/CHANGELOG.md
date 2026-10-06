@@ -3,6 +3,37 @@
 Earlier history: `analysis/CHANGELOG_v3.md` (the v3 schema batch) and the git
 log.
 
+## Clock columns: clearer names, printed per-play clocks, seconds remaining (63 -> 67 columns)
+
+- **Renamed:** `clock_upper` -> `clock_start_max` and `clock_lower` ->
+  `clock_start_min`. They are the range of the snap clock (the most and the
+  least time that could have been left). "Upper" was easy to read backwards.
+- **Printed per-play clocks:** some stat crews print a clock at the start of
+  each play ("(11:25) Shotgun ..."). In 2025 that's 377 plays: 2 McDaniel
+  home games on essentially every play, 1 game on 29%, 9 on a handful.
+  - **What it means:** checked against every other reading, it always falls
+    between the play's snap and its end. It equals the snap about half the
+    time; otherwise it's a few seconds later (likely the time the play was
+    logged). So it is used as a bound, never as the exact snap time: a
+    minimum for that snap and a maximum for every later snap.
+  - **Cleaning:** printed clocks go through the same out-of-order cleaning as
+    other readings, weighted lower than official readings. One source typo,
+    "(09:09)" between 02:32 and 01:59 (game 20251025_mepx, play 162), is
+    discarded.
+- **Pinning:** when a snap's range closes to a single value, `clock_start` is
+  set to it. That gives 63 more exact snap clocks (3,033 -> 3,096).
+- **Effect on the ranges:** the median range narrows from 94 to 11 seconds
+  (Dickinson at McDaniel), 88 to 20 (Muhlenberg at McDaniel), 144 to 94
+  (Dickinson at Delaware Valley), and 108 to 100 over all 62 games.
+- **Checked against the previous version:** no range got wider, no previous
+  exact clock changed, and every new range sits inside the old one.
+- **New columns:** `secs_remaining_start`, `secs_remaining_end`,
+  `secs_remaining_start_max`, `secs_remaining_start_min`. They mirror the four
+  clock columns as integer seconds remaining in the game (regulation),
+  `(4 - period) * 900 +` quarter clock seconds, and are NA in overtime.
+- **Other checks:** `clock_bounds.csv` now also flags a `clock_start` outside
+  its range; it is empty. All 62 games reconcile, and 1,005 tests pass.
+
 ## Fix: a series can start on a penalty_no_play row
 
 **Bug:** after a change of possession (and likewise for the other three

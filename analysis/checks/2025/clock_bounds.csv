@@ -1,1 +1,1 @@
-"game_id","play_index","period","clock_start","clock_end","clock_upper","clock_lower","play_text"
+"game_id","play_index","period","clock_start","clock_end","clock_start_max","clock_start_min","play_text"

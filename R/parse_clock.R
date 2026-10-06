@@ -22,9 +22,17 @@ fmt_clock <- function(s) {
 #' when that play ENDED, so it is placed just after the row (`pos = row +
 #' 0.5`); every other reading is a moment between plays (`pos = row`).
 #'
+#' Some stat crews also print a clock at the start of each play's text
+#' ("(11:25) Shotgun ..."). Checked against the other readings, it always
+#' falls between the play's snap and its end (often equal to the snap,
+#' sometimes a few seconds later), so it is placed between them (`pos = row +
+#' 0.25`, kind "printed") and used as a bound: a minimum for that snap and a
+#' maximum for every later one.
+#'
 #' @param full Classified rows with `row`, `row_type`, `play`, `quarter`.
 #' @return Data frame: `row`, `pos`, `quarter`, `secs`, `kind` ("end" for
-#'   a kept play's own reading, else the source row_type).
+#'   a kept play's own reading, "printed" for a per-play printed clock, else
+#'   the source row_type).
 #' @keywords internal
 stated_clock_anchors <- function(full) {
   txt <- full$play
@@ -35,11 +43,21 @@ stated_clock_anchors <- function(full) {
   )
   r <- which(!is.na(val))
   kept <- full$row_type[r] %in% kept_row_types
-  data.frame(
+  stated <- data.frame(
     row = full$row[r], pos = full$row[r] + ifelse(kept, 0.5, 0), quarter = full$quarter_num[r],
     secs = clock_secs(val[r]), kind = ifelse(kept, "end", full$row_type[r]),
     text = txt[r]
   )
+  # per-play printed clocks "(MM:SS) ..." (some stat crews log one with every
+  # play): a time between the play's snap and its end, so placed between
+  # them (pos = row + 0.25)
+  pre <- stringr::str_match(txt, "^\\((\\d{1,2}:\\d{2})\\)")[, 2]
+  rp <- which(!is.na(pre) & full$row_type %in% kept_row_types)
+  printed <- data.frame(
+    row = full$row[rp], pos = full$row[rp] + 0.25, quarter = full$quarter_num[rp],
+    secs = clock_secs(pre[rp]), kind = rep("printed", length(rp)), text = txt[rp]
+  )
+  rbind(stated, printed)
 }
 
 #' Keep the largest set of clock readings consistent with a running clock
@@ -48,10 +66,12 @@ stated_clock_anchors <- function(full) {
 #' should never go up. Some printed readings are wrong (game 1 play 135, a
 #' nullified TD printed "clock 00:00" mid-4th; the Berry game prints
 #' "clock 15:00" twice right before "End of half, clock 00:00"). Per
-#' quarter, this keeps the longest non-increasing subsequence of readings
-#' (with 15:00 / 00:00 pinned at the quarter's start / end) and discards the
-#' rest. It removes as few readings as possible, which a neighbor-only check
-#' can't do when two bad readings sit next to each other.
+#' quarter, this keeps the non-increasing subsequence of readings with the
+#' most weight (15:00 / 00:00 pinned at the quarter's start / end; an
+#' official reading counts 5, a per-play printed clock 1) and discards the
+#' rest. It removes as little as possible, which a neighbor-only check can't
+#' do when two bad readings sit next to each other, and prefers dropping a
+#' printed clock over an official reading.
 #'
 #' @param anchors Output of [stated_clock_anchors()].
 #' @return `anchors` with a logical `keep` column.
@@ -62,13 +82,16 @@ clean_clock_anchors <- function(anchors) {
   for (q in unique(anchors$quarter)) {
     i <- which(anchors$quarter == q)
     s <- c(900L, anchors$secs[i], 0L)
+    # official readings (drive starts, timeouts, scores, ...) outweigh the
+    # per-play printed clocks, which are scorer-entered and sometimes typos
+    w <- c(1e6, ifelse(anchors$kind[i] == "printed", 1, 5), 1e6)
     n <- length(s)
-    best <- rep(1L, n)
+    best <- w
     prev <- rep(NA_integer_, n)
     for (j in seq_len(n)[-1]) {
       for (k in seq_len(j - 1)) {
-        if (s[k] >= s[j] && best[k] + 1L > best[j]) {
-          best[j] <- best[k] + 1L
+        if (s[k] >= s[j] && best[k] + w[j] > best[j]) {
+          best[j] <- best[k] + w[j]
           prev[j] <- k
         }
       }
@@ -107,12 +130,19 @@ clean_clock_anchors <- function(anchors) {
 #' goal, kickoff), the next drive's start time if that is in the same
 #' quarter (a hand-over that ends a quarter is left NA).
 #'
-#' **`clock_upper` / `clock_lower`** (always filled): the latest known
-#' reading at or before the snap and the earliest at or after it, within the
-#' quarter, with 15:00 at the quarter's start and 00:00 at its end. A play's
-#' own `clock_end` is after its snap, so it can be its `clock_lower` but
-#' never its `clock_upper`. When `clock_start` is known, upper == lower ==
-#' clock_start. Never interpolated.
+#' **`clock_start_max` / `clock_start_min`** (always filled in regulation):
+#' the range the snap clock must lie in: the latest known reading at or
+#' before the snap (most time it could be) and the earliest at or after it
+#' (least time), within the quarter, with 15:00 at the quarter's start and
+#' 00:00 at its end. Readings include the per-play printed clocks. A play's
+#' own printed clock and `clock_end` are after its snap, so they can be its
+#' `clock_start_min` but never its `clock_start_max`. When the two meet,
+#' `clock_start` is set to that value; when `clock_start` is known, all three
+#' are equal. Never interpolated.
+#'
+#' **`secs_remaining_start` / `_end` / `_start_max` / `_start_min`**: the
+#' same four as integer seconds remaining in the game (regulation):
+#' `(4 - period) * 900 + quarter clock seconds`.
 #'
 #' Overtime (period 5+) is untimed in college football, so all four columns
 #' are NA there.
@@ -121,8 +151,9 @@ clean_clock_anchors <- function(anchors) {
 #' @param kept Kept rows with `row`, `period`, `play_type`, `try_phase`,
 #'   `penalty_no_play`, `touchdown`, `turnover`, `downs_turnover`,
 #'   `field_goal_made`, `safety`.
-#' @return A list: `kept` with `clock_start`, `clock_end`, `clock_upper`,
-#'   `clock_lower` ("MM:SS"), and `discarded` (readings dropped as
+#' @return A list: `kept` with `clock_start`, `clock_end`,
+#'   `clock_start_max`, `clock_start_min` ("MM:SS") and the four
+#'   `secs_remaining_*` (integer), and `discarded` (readings dropped as
 #'   inconsistent).
 #' @keywords internal
 derive_clock <- function(full, kept) {
@@ -206,17 +237,28 @@ derive_clock <- function(full, kept) {
     upper[i] <- before$secs[nrow(before)]
     lower[i] <- after$secs[1]
   }
+  # when the bounds meet, the snap clock is known exactly
+  pinned <- is.na(start) & upper == lower
+  start[pinned] <- upper[pinned]
 
   # college overtime is untimed: no game clock in periods 5+
   ot <- kept$period > 4L
+  pinned[ot] <- FALSE
   start[ot] <- NA
   end[ot] <- NA
   upper[ot] <- NA
   lower[ot] <- NA
   kept$clock_start <- fmt_clock(start)
   kept$clock_end <- fmt_clock(end)
-  kept$clock_upper <- fmt_clock(upper)
-  kept$clock_lower <- fmt_clock(lower)
+  kept$clock_start_max <- fmt_clock(upper)
+  kept$clock_start_min <- fmt_clock(lower)
+  # the same four as seconds remaining in the game (regulation): later
+  # quarters' full 15:00 plus the quarter clock
+  game_secs <- function(x) ifelse(is.na(x), NA_integer_, (4L - kept$period) * 900L + x)
+  kept$secs_remaining_start <- game_secs(start)
+  kept$secs_remaining_end <- game_secs(end)
+  kept$secs_remaining_start_max <- game_secs(upper)
+  kept$secs_remaining_start_min <- game_secs(lower)
   discarded$value <- fmt_clock(discarded$secs)
   list(kept = kept, discarded = discarded[, c("row", "quarter", "value", "kind", "text")],
        anchors = good, opening_rows = opening_rows)
