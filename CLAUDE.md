@@ -110,7 +110,7 @@ scraper: get accurate, tidy play-by-play out of d3football.
   "Carnegie Mellon")`).
 - `data-raw/index/{season}.csv` — cached season indexes (2025 built).
 - `data-raw/season_dates.csv` — regular-season end date per season.
-- `analysis/pbp/{season}/` — the built per-game CSVs (60 columns), one
+- `analysis/pbp/{season}/` — the built per-game CSVs (63 columns), one
   folder per season. `analysis/pbp/2025/` will hold every 2025 game; it
   currently has the 62 Centennial games. Data dictionary:
   `analysis/pbp_schema.md`. Latest change log: `analysis/CHANGELOG_v3.md`.
@@ -130,7 +130,13 @@ table. It starts with `season`, `game_date`, `week`, `season_type` from the
 season index, then `home`, `away`, `home_team_conference`,
 `away_team_conference`, `conference_game` (d3's "*" marker). Each game's
 points by team must match the boxscore final
-(`tests/testthat/test-score-reconciliation.R`). It has possession (kickoffs =
+(`tests/testthat/test-score-reconciliation.R`). New-series flags
+(`firstD_by_kickoff`, `firstD_by_poss`, `firstD_by_yards`,
+`firstD_by_penalty`, `new_series`) sit on the causing row and are mutually
+exclusive (kickoff > poss > yards > penalty); how and why that differs from
+cfbfastR is in `analysis/CHANGELOG.md`, and `analysis/checks/{season}/first_downs.md`
+checks them against the next snap's situation. Known open item: `yards_gained`
+on plays with a lateral reads only the first yardage segment. It has possession (kickoffs =
 receiving team), drives and drive results, score before each play, down /
 distance / yards to goal and the end state after the play, outcome flags,
 first downs, penalties (signed, no-play gated), and the clock as exact

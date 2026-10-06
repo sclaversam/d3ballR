@@ -187,9 +187,11 @@ kept_row_types <- c("play", "kickoff", "extra_point", "two_point", "penalty_no_p
 #'
 #' e.g. "1st and 10 at CMU35" or "1st and Goal at CMU06" or "4th and 3 at UC 25".
 #' The yardline's team-letters group is optional so a bare midfield number
-#' ("at 50") still parses down/distance/yard_num, with `yard_side` NA.
+#' ("at 50") still parses down/distance/yard_num, with `yard_side` NA. A
+#' negative distance (d3 printed "4th and -2" once in 2025) is kept as
+#' printed rather than dropping the down.
 #' @keywords internal
-situation_pattern <- "^([1-4])(?:st|nd|rd|th)\\s+and\\s+(Goal|\\d+)\\s+at\\s+([A-Za-z&]*)\\s*(\\d+)$"
+situation_pattern <- "^([1-4])(?:st|nd|rd|th)\\s+and\\s+(Goal|-?\\d+)\\s+at\\s+([A-Za-z&]*)\\s*(\\d+)$"
 
 #' Parse down, distance, yard_side, yard_num from `situation`
 #'
@@ -383,7 +385,8 @@ pbp_columns <- c(
   "rush", "pass", "completion", "sack", "int", "fumble_vec", "turnover", "downs_turnover",
   "touchdown", "safety",
   "field_goal_attempt", "field_goal_made", "punt",
-  "scoring_play", "score_pts", "firstD_by_yards", "firstD_by_penalty",
+  "scoring_play", "score_pts",
+  "firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards", "firstD_by_penalty", "new_series",
   "penalty_flag", "penalty_yards_signed", "penalized_team", "penalty_no_play",
   "penalty_declined", "penalty_text",
   "drive_result", "situation", "play_text"
@@ -522,6 +525,7 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
   nxt <- next_snap_index(kept)
   kept <- derive_end_state(kept, nxt)
   kept <- derive_first_downs(kept, nxt)
+  kept <- derive_series_flags(kept, nxt)
   kept$drive_result <- derive_drive_result(kept)
   clk <- derive_clock(classified, kept)
   kept <- clk$kept
@@ -552,6 +556,8 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
   attr(out, "score_checks") <- rs$checks
   attr(out, "first_down_text") <- kept[, c("fd_yards_text", "fd_penalty_text")]
   attr(out, "next_snap") <- nxt
+  attr(out, "series_detail") <- kept[, c("raw_kickoff", "raw_poss", "raw_yards", "raw_penalty",
+                                         "series_edge", "observed_new_series")]
   clk$discarded$game_id <- rep(game$game_id, nrow(clk$discarded))
   clk$discarded$play_index <- kept$play_index[match(clk$discarded$row, kept$row)]
   attr(out, "clock_discards") <- clk$discarded

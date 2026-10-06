@@ -43,6 +43,7 @@ build_season <- function(season, teams = NULL, max_requests = Inf, delay = 6,
   conf <- build_conference_table(season, unique(c(games$home, games$away)))
   built <- build_all_pbp(games$boxscore_url, out_dir = out_dir, check_dir = check_dir, conf = conf)
   write_build_report(season, teams, games, built, conf, check_dir)
+  write_first_down_report(built, check_dir)
   if (fetch_refused()) message("d3football refused a request; the rest of this run used the cache only. Rerun later to continue.")
   invisible(built)
 }

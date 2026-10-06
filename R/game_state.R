@@ -132,7 +132,9 @@ derive_end_state <- function(kept, nxt) {
 #' - `firstD_by_yards`: "1ST DOWN" in the play clause (before any PENALTY),
 #'   or a rush / completion / sack / kneel whose `yards_gained` reaches
 #'   `distance`, outside goal-to-go (a goal-to-go TD is not credited as a
-#'   first down, matching StatCrew). Never on a turnover or a no-play.
+#'   first down, matching StatCrew). Never on a turnover or a no-play. If the
+#'   offense also committed an accepted penalty on the play (e.g. holding),
+#'   the first down only stands if the same offense snaps a 1st down next.
 #' - `firstD_by_penalty`: "1ST DOWN" in the penalty clause with an accepted
 #'   penalty, or an accepted penalty on the defense after which the same
 #'   offense starts a NEW series (next snap is 1st down, and not just the
@@ -159,9 +161,21 @@ derive_first_downs <- function(kept, nxt) {
   # reaching it is a touchdown, and StatCrew does not credit a first down
   fd_yards_rule <- gain_play & !is.na(kept$yards_gained) & !is.na(kept$distance) &
     kept$yards_gained >= kept$distance & !(kept$Goal_To_Go %in% TRUE)
+  # an accepted penalty on the offense during the play (holding, etc.) can
+  # take the first down away even when the yardage reached the line, and
+  # even when d3 printed "1ST DOWN" before the penalty clause: then the first
+  # down only stands if the same offense really snaps a 1st down next
+  off_penalty <- accepted & !is.na(kept$penalized_team) & kept$penalized_team == kept$pos_team
+  # "really" = a new series, not the same 1st down moved back by the
+  # enforcement (1st & 15, 10-yd holding -> 1st & 5 is not a first down)
+  net_nxt <- kept$yards_to_goal - kept$yards_to_goal[nxt]
+  next_new_series <- !is.na(nxt) & kept$pos_team[nxt] %in% kept$pos_team &
+    kept$pos_team[nxt] == kept$pos_team & kept$down[nxt] %in% 1L &
+    (!(kept$down %in% 1L) | !(kept$distance[nxt] %in% (kept$distance - net_nxt)))
+  stands <- !off_penalty | next_new_series
   kept$fd_yards_text <- fd_yards_text & kept$scrimmage_play & !kept$penalty_no_play & !kept$turnover
   kept$firstD_by_yards <- (fd_yards_text | fd_yards_rule) & kept$scrimmage_play &
-    !kept$penalty_no_play & !kept$turnover
+    !kept$penalty_no_play & !kept$turnover & stands
 
   fd_pen_text <- !is.na(pen_clause) & stringr::str_detect(pen_clause, "1ST DOWN") & accepted
   # a NEW series: the next snap is 1st down by the same offense, and either
@@ -234,4 +248,108 @@ derive_drive_result <- function(kept) {
     res[rows] <- label
   }
   res
+}
+
+#' Next snap that can start a new series for this row
+#'
+#' The next scrimmage snap in the same half ([next_snap_index()]), except
+#' that overtime periods don't connect to anything else: the last
+#' regulation play doesn't lead into overtime, and one OT period doesn't
+#' lead into the next. Each OT period is its own unit.
+#'
+#' @param kept Kept rows with `period`.
+#' @param nxt Output of [next_snap_index()].
+#' @return Integer vector (NA when no connected snap follows).
+#' @keywords internal
+series_next_snap <- function(kept, nxt) {
+  ok <- !is.na(nxt)
+  ok[ok] <- (kept$period[ok] <= 4L & kept$period[nxt[ok]] <= 4L) | kept$period[ok] == kept$period[nxt[ok]]
+  ifelse(ok, nxt, NA_integer_)
+}
+
+#' Why the next snap starts a new series: four mutually exclusive flags
+#'
+#' cfbfastR column names, set on the row that CAUSES the new series (see
+#' the change log for how this differs from cfbfastR, which puts most of
+#' them on the next snap). In precedence order, at most one is TRUE:
+#' 1. `firstD_by_kickoff`: the row is a kickoff (including an onside kick
+#'    or a return fumble the kicking team recovers).
+#' 2. `firstD_by_poss`: the ball changed hands: the next snap belongs to
+#'    the other team (punt, interception, lost fumble, downs, missed or
+#'    blocked field goal); or a punt / field goal where the kicking team got
+#'    the ball back after a muff or return fumble; or the last live play of
+#'    the first team's overtime possession.
+#' 3. `firstD_by_yards`: same offense, the play reached the line to gain
+#'    ([derive_first_downs()]: d3's "1ST DOWN" text, or the yardage rule).
+#' 4. `firstD_by_penalty`: same offense, the play didn't reach the line,
+#'    and an accepted penalty awarded the first down (can be a no-play).
+#'
+#' `new_series` is any of the four. All are FALSE on scoring plays, tries
+#' (PAT, two-point, try-phase rows), rows with no connected next snap (end
+#' of a half, of the game, or of an OT period; see [series_next_snap()]),
+#' and no-play rows except for `firstD_by_penalty`.
+#'
+#' @param kept Kept rows after [derive_first_downs()], with `play_type`,
+#'   `pos_team`, `penalty_no_play`, `scoring_play`, `try_phase`,
+#'   `fumble_vec`, `down`, `distance`, `yards_to_goal`, `period`.
+#' @param nxt Output of [next_snap_index()].
+#' @return `kept` with the four flags (overwriting the raw yards / penalty
+#'   flags) and `new_series`, plus `raw_*` candidate columns,
+#'   `series_edge`, and `observed_new_series` (what the next snap's situation
+#'   says; NA on rows that can't carry a flag) for the report.
+#' @keywords internal
+derive_series_flags <- function(kept, nxt) {
+  sn <- series_next_snap(kept, nxt)
+  has_next <- !is.na(sn)
+  live <- !kept$penalty_no_play
+  next_team <- kept$pos_team[sn]
+  same_team <- has_next & !is.na(next_team) & !is.na(kept$pos_team) & next_team == kept$pos_team
+  other_team <- has_next & !same_team
+  excluded <- kept$scoring_play | kept$try_phase | kept$play_type %in% c("extra_point", "two_point") | !has_next
+
+  kicked <- kept$play_type %in% c("punt_no_return", "punt_with_return", "punt_blocked",
+                                  "field_goal_missed", "field_goal_blocked")
+  regained_kick <- kicked & live & kept$fumble_vec & same_team & kept$down[sn] %in% 1L
+  ot_handover <- kept$period > 4L & other_team & live & kept$play_type != "kickoff"
+
+  raw_kickoff <- kept$play_type == "kickoff" & live
+  raw_poss <- live & kept$play_type != "kickoff" & (other_team | regained_kick)
+  raw_yards <- kept$firstD_by_yards & live & same_team
+  raw_penalty <- kept$firstD_by_penalty & same_team
+
+  ok <- !excluded
+  k <- raw_kickoff & ok
+  p <- raw_poss & ok & !k
+  y <- raw_yards & ok & !k & !p
+  pen <- raw_penalty & ok & !k & !p & !y
+
+  kept$raw_kickoff <- raw_kickoff
+  kept$raw_poss <- raw_poss
+  kept$raw_yards <- raw_yards
+  kept$raw_penalty <- raw_penalty
+  kept$series_edge <- ifelse(regained_kick & ok, "kick regained by kicking team",
+                             ifelse(ot_handover & ok, "overtime hand-over", NA_character_))
+  kept$firstD_by_kickoff <- k
+  kept$firstD_by_poss <- p
+  kept$firstD_by_yards <- y
+  kept$firstD_by_penalty <- pen
+  kept$new_series <- k | p | y | pen
+
+  # what the next snap's situation says, for the consistency check: a new
+  # series starts if the next snap is 1st down and (the ball changed hands,
+  # or this wasn't a 1st down, or the distance was reset rather than just
+  # moved by the net gain)
+  net <- kept$yards_to_goal - kept$yards_to_goal[sn]
+  moved <- kept$distance - net                                  # same series, ball moved
+  fresh <- pmin(10L, kept$yards_to_goal[sn])                    # a new 1st & 10 / & goal
+  reset <- has_next & kept$down[sn] %in% 1L &
+    (other_team | !(kept$down %in% 1L) | kept$distance[sn] != moved)
+  # 1st down -> 1st down where "moved" and "fresh" give the same distance
+  # (e.g. 1st & 25 -> 1st & 10 at the 10): the situation can't tell them apart
+  ambiguous <- same_team & kept$down %in% 1L & kept$down[sn] %in% 1L &
+    kept$distance[sn] %in% moved & kept$distance[sn] == moved & kept$distance[sn] == fresh
+  obs <- ifelse(kept$play_type == "kickoff", live, reset %in% TRUE)  # a nullified kickoff is re-kicked
+  obs[ambiguous %in% TRUE] <- NA
+  kept$observed_new_series <- ifelse(excluded, NA, obs)
+  kept
 }

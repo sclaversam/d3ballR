@@ -20,7 +20,9 @@ is_no_play <- function(play_text) {
 #' ("PENALTY CMU Holding declined CMU Running Into The Kicker (...) 5 yards
 #' from UCHI47 to CMU48"). Each infraction is a team token, a name, an
 #' optional (player), then one of: "N yard(s) from X to Y", "N yard(s) to
-#' the X", "declined", or "off-setting"/"offsetting". Team tokens match
+#' the X", "declined", "off-setting"/"offsetting", or nothing but ", 1ST
+#' DOWN" (a foul with no yardage printed, e.g. "PENALTY FMC Pass
+#' Interference, 1ST DOWN. NO PLAY."; accepted, 0 yards). Team tokens match
 #' case-sensitively so a lower-case word in a name can't pass as one.
 #' Enforcement yards come
 #' only from "N yard(s) from/to", never from the play's "for N yards"
@@ -36,14 +38,14 @@ is_no_play <- function(play_text) {
 split_infractions <- function(clause, tokens) {
   pattern <- paste0(
     "\\b", token_regex(tokens), " .*?",
-    "(?:(\\d+) yards? (?:from|to)|(?i:(declined)|(off-?setting)))"
+    "(?:(\\d+) yards? (?:from|to)|(?i:(declined)|(off-?setting))|(?=, 1ST DOWN))"
   )
   lapply(clause, function(cl) {
     if (is.na(cl)) return(data.frame(token = character(), yards = integer(), status = character()))
     m <- stringr::str_match_all(cl, pattern)[[1]]
     data.frame(
       token = m[, 2],
-      yards = suppressWarnings(as.integer(m[, 3])),
+      yards = ifelse(is.na(m[, 3]) & is.na(m[, 4]) & is.na(m[, 5]), 0L, suppressWarnings(as.integer(m[, 3]))),
       status = ifelse(!is.na(m[, 4]), "declined", ifelse(!is.na(m[, 5]), "offsetting", "accepted"))
     )
   })

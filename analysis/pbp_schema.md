@@ -1,4 +1,4 @@
-# Per-game play-by-play CSV: data dictionary (60 columns)
+# Per-game play-by-play CSV: data dictionary (63 columns)
 
 Each file `analysis/pbp/{season}/{game_id}.csv` is one game's play-by-play,
 built by `build_pbp()` in `R/build_pbp.R`. A season's games are built by
@@ -100,6 +100,30 @@ says "NO PLAY", or the row is a dead-ball penalty with no snap (text starts
 `field_goal_made`, `punt`, `scoring_play`, `firstD_by_yards`. `score_pts` is 0.
 d3 prints the wiped-out attempt in full ("... 54 yards ... TOUCHDOWN nullified
 by penalty ... NO PLAY"), and none of it is credited.
+
+**New series (first-down flags).** `firstD_by_kickoff`, `firstD_by_poss`,
+`firstD_by_yards`, `firstD_by_penalty` say why the next snap starts a new
+series. They sit on the row that **causes** it, and at most one is TRUE, in
+precedence order kickoff > poss > yards > penalty. `new_series` is TRUE when
+one of them is.
+- **All four are FALSE on:** scoring plays; tries; plays with no connected
+  next snap (end of a half, the game, or an overtime period: the last
+  regulation play doesn't lead into OT); and no-play rows, except for
+  `firstD_by_penalty`.
+- **Edge cases:**
+  - a punt or field goal regained by the kicking team after a muff or return
+    fumble is `firstD_by_poss`;
+  - an onside kick or kickoff fumble the kicking team recovers stays
+    `firstD_by_kickoff`;
+  - the first team's OT possession ending without a score is a hand-over
+    (`firstD_by_poss`).
+- **cfbfastR differences:** cfbfastR computes the same flags independently
+  from the previous row, so they sit on the snap that starts the series,
+  except `firstD_by_kickoff`, which is on the kickoff row. It can flag a
+  kickoff and the next snap both. The differences are listed in
+  `analysis/CHANGELOG.md`.
+- **Check:** `analysis/checks/{season}/first_downs.md` compares `new_series`
+  with the next snap's situation (a fresh 1st down).
 
 **Overtime.** College overtime is untimed, so in periods 5+ all four clock
 columns are NA. Each overtime period starts a new drive (each team's OT
@@ -241,17 +265,20 @@ d3football's weekly composite scoreboard pages
 | 47 | `punt` | logical | Any punt. | Never NA. | 90 TRUE. |
 | 48 | `scoring_play` | logical | Points were scored on the row (TD, FG, safety, good PAT or two-point). | Never NA. | `score_pts != 0`. A failed PAT is FALSE. 159 TRUE. |
 | 49 | `score_pts` | integer | Points scored on the row, from `pos_team`'s view. | Never NA. | TD +6, FG +3, PAT +1, two-point +2; defensive TD -6; safety conceded -2; else 0. |
-| 50 | `firstD_by_yards` | logical | The play gained a first down. | Never NA. | "1ST DOWN" in the play clause, or a run/completion/sack/kneel with `yards_gained >= distance` outside goal-to-go. Only 4 of 11 games print "1ST DOWN"; the rule matches it on every snap in those 4. A goal-to-go TD is not a first down (StatCrew). FALSE on turnovers and no-plays. 373 TRUE. |
-| 51 | `firstD_by_penalty` | logical | A penalty awarded a first down. | Never NA. | "1ST DOWN" in the penalty clause with an accepted penalty, or an accepted defensive penalty after which the same offense starts a new series (not just the same 1st down moved). Can be TRUE on a no-play. 39 TRUE. |
-| 52 | `penalty_flag` | logical | The row mentions a penalty. | Never NA. | 164 TRUE. |
-| 53 | `penalty_yards_signed` | integer | Net accepted penalty yards, from `pos_team`'s view. | NA with no penalty, when all infractions were declined, and on 2 marker rows. | See Key conventions. Range -15 to +15. |
-| 54 | `penalized_team` | character | Team that committed the penalty. | NA with no penalty, and on 2 marker rows. | Offsetting or accepted on both teams: both names joined with `"; "` (3 rows). All declined: the declined team. |
-| 55 | `penalty_no_play` | logical | A penalty nullified the snap, or there was no snap. | Never NA. | Text-only rule (Key conventions). 116 TRUE: 61 wiped-out snaps + 55 dead-ball penalties. The 2 other `play_type == "penalty_no_play"` rows are the UW-La Crosse marker rows (Known issues), which are FALSE. |
-| 56 | `penalty_declined` | logical | Every infraction on the row was declined. | NA when `penalty_flag` is FALSE. | One declined + one accepted is FALSE. |
-| 57 | `penalty_text` | character | Raw penalty clause, from the first upper-case "PENALTY" on. | NA with no penalty clause. | |
-| 58 | `drive_result` | character | How the row's drive ended, on every row of the drive. | Never NA. | `TD`, `FG`, `MISSED FG`, `BLOCKED FG`, `PUNT`, `BLOCKED PUNT`, `INT`, `FUMBLE`, `DOWNS`, `SAFETY`, `END OF HALF`, `END OF GAME`, plus `ONSIDE` (a one-play drive ended by an onside kick the kicking team recovered). A defensive TD is labelled by how the offense lost the ball (`INT`, `FUMBLE`, ...). 2025 drives: PUNT 88, TD 69, INT 19, DOWNS 19, FG 17, FUMBLE 11, END OF GAME 10, END OF HALF 8, BLOCKED FG 3, MISSED FG 3, BLOCKED PUNT 2, ONSIDE 1. |
-| 59 | `situation` | character | Raw down-and-distance text, verbatim. | Empty (NA on read) on 111 kickoffs and all tries. | Audit column. Two kickoffs with a return penalty carry a stale down-and-distance here (Dickinson 191, Ursinus 73); their `down` is still NA. |
-| 60 | `play_text` | character | Raw play description, verbatim. | Never NA. | Audit column. |
+| 50 | `firstD_by_kickoff` | logical | The row is a kickoff that starts the receiving team's series. | Never NA. | Precedence 1. Includes an onside kick or return fumble the kicking team recovers. FALSE on a kickoff-return TD (scoring), a nullified (re-kicked) kickoff, or a kickoff with no snap after it in the half. cfbfastR name. |
+| 51 | `firstD_by_poss` | logical | The ball changed hands, so the next snap starts the other team's series. | Never NA. | Precedence 2: punt, interception, lost fumble, downs, missed / blocked FG. Also a punt or FG the kicking team regains after a muff / return fumble, and the last live play of the first team's overtime possession. cfbfastR name (cfbfastR puts it on the next snap; see Key conventions). |
+| 52 | `firstD_by_yards` | logical | The play reached the line to gain (same offense keeps the ball). | Never NA. | Precedence 3. d3's "1ST DOWN" text in the play clause, or a run / completion / sack / kneel with `yards_gained >= distance` outside goal-to-go. Not if an accepted offensive penalty on the play takes it away (it only stands if the next snap is a new series). FALSE on scoring plays and turnovers. |
+| 53 | `firstD_by_penalty` | logical | An accepted penalty awarded the first down (the play didn't reach the line). | Never NA. | Precedence 4. Can be TRUE on a no-play row. d3's "1ST DOWN" in the penalty clause, or an accepted defensive penalty followed by a new series for the same offense. |
+| 54 | `new_series` | logical | The next snap starts a new series: any of the four flags. | Never NA. | Exactly one of the four is TRUE when this is. FALSE on scoring plays, tries, and plays with no connected next snap (end of half / game / OT period). |
+| 55 | `penalty_flag` | logical | The row mentions a penalty. | Never NA. | 164 TRUE. |
+| 56 | `penalty_yards_signed` | integer | Net accepted penalty yards, from `pos_team`'s view. | NA with no penalty, when all infractions were declined, and on 2 marker rows. | See Key conventions. Range -15 to +15. |
+| 57 | `penalized_team` | character | Team that committed the penalty. | NA with no penalty, and on 2 marker rows. | Offsetting or accepted on both teams: both names joined with `"; "` (3 rows). All declined: the declined team. |
+| 58 | `penalty_no_play` | logical | A penalty nullified the snap, or there was no snap. | Never NA. | Text-only rule (Key conventions). 116 TRUE: 61 wiped-out snaps + 55 dead-ball penalties. The 2 other `play_type == "penalty_no_play"` rows are the UW-La Crosse marker rows (Known issues), which are FALSE. |
+| 59 | `penalty_declined` | logical | Every infraction on the row was declined. | NA when `penalty_flag` is FALSE. | One declined + one accepted is FALSE. |
+| 60 | `penalty_text` | character | Raw penalty clause, from the first upper-case "PENALTY" on. | NA with no penalty clause. | |
+| 61 | `drive_result` | character | How the row's drive ended, on every row of the drive. | Never NA. | `TD`, `FG`, `MISSED FG`, `BLOCKED FG`, `PUNT`, `BLOCKED PUNT`, `INT`, `FUMBLE`, `DOWNS`, `SAFETY`, `END OF HALF`, `END OF GAME`, plus `ONSIDE` (a one-play drive ended by an onside kick the kicking team recovered). A defensive TD is labelled by how the offense lost the ball (`INT`, `FUMBLE`, ...). 2025 drives: PUNT 88, TD 69, INT 19, DOWNS 19, FG 17, FUMBLE 11, END OF GAME 10, END OF HALF 8, BLOCKED FG 3, MISSED FG 3, BLOCKED PUNT 2, ONSIDE 1. |
+| 62 | `situation` | character | Raw down-and-distance text, verbatim. | Empty (NA on read) on 111 kickoffs and all tries. | Audit column. Two kickoffs with a return penalty carry a stale down-and-distance here (Dickinson 191, Ursinus 73); their `down` is still NA. |
+| 63 | `play_text` | character | Raw play description, verbatim. | Never NA. | Audit column. |
 
 ## Validation reports (`analysis/checks/{season}/`)
 
