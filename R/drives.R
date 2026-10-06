@@ -1,12 +1,14 @@
 #' Flag the "try phase" between a score and the next kickoff
 #'
-#' Rows after a touchdown, field goal or safety and before the next kickoff
-#' in the same half: the extra point / two-point try, plus any penalty or
-#' marker rows d3 prints around it. They are untimed and belong to the
-#' scoring sequence, not to a new possession.
+#' Rows after a touchdown, field goal or safety and before the next kickoff,
+#' the next live (not nullified) snap, or a period change: the extra point / two-point try,
+#' plus any penalty or marker rows d3 prints around it. (In overtime no
+#' kickoff follows a score, so the other team's first snap closes it.)
+#' They are untimed and belong to the scoring sequence, not to a new
+#' possession.
 #'
 #' @param kept Kept rows in game order, with `play_type`, `play_text`,
-#'   `penalty_no_play`, `half`.
+#'   `penalty_no_play`, `period`.
 #' @return Logical vector.
 #' @keywords internal
 flag_try_phase <- function(kept) {
@@ -15,8 +17,12 @@ flag_try_phase <- function(kept) {
   out <- logical(n)
   open <- FALSE
   for (i in seq_len(n)) {
-    if (i > 1 && kept$half[i] != kept$half[i - 1]) open <- FALSE
+    if (i > 1 && kept$period[i] != kept$period[i - 1]) open <- FALSE
     if (kept$play_type[i] == "kickoff") open <- FALSE
+    # a live snap ends it too: in overtime no kickoff follows a score. A
+    # snap wiped out by a penalty doesn't (e.g. a two-point try nullified by
+    # offside, then re-tried as a kick)
+    if (kept$play_type[i] %in% play_type_categories && !kept$penalty_no_play[i]) open <- FALSE
     if (open) out[i] <- TRUE
     if (scoring[i]) open <- TRUE
   }
@@ -48,6 +54,7 @@ is_scoring_snap <- function(kept) {
 #'   `drive_play_number` 1 (a re-kick, i.e. a kickoff right after another
 #'   kickoff, stays on the same drive);
 #' - otherwise a new drive opens whenever `pos_team` changes;
+#' - each overtime period starts a new drive;
 #' - try-phase rows (PAT, two-point try, and penalties between a score and
 #'   the next kickoff) stay on the drive of the scoring play, even after a
 #'   defensive touchdown where the try is by the other team.
@@ -57,7 +64,8 @@ is_scoring_snap <- function(kept) {
 #' penalty on a field goal), and those are merged here because the same
 #' team keeps the ball. The opening kickoff is drive 1; no NAs.
 #'
-#' @param kept Kept rows with `play_type`, `pos_team`, `half`, `try_phase`.
+#' @param kept Kept rows with `play_type`, `pos_team`, `half`, `period`,
+#'   `try_phase`.
 #' @return `kept` with integer `drive_number` and `drive_play_number`.
 #' @keywords internal
 assign_drives <- function(kept) {
@@ -68,7 +76,8 @@ assign_drives <- function(kept) {
   for (i in seq_len(n)) {
     is_ko <- kept$play_type[i] == "kickoff"
     rekick <- is_ko && i > 1 && kept$play_type[i - 1] == "kickoff" && kept$half[i] == kept$half[i - 1]
-    new_half <- i == 1 || kept$half[i] != kept$half[i - 1]
+    new_half <- i == 1 || kept$half[i] != kept$half[i - 1] ||
+      (kept$period[i] > 4L && kept$period[i] != kept$period[i - 1])  # each OT period opens a drive
     if (cur == 0L || (is_ko && !rekick) || (new_half && !kept$try_phase[i])) {
       cur <- cur + 1L
       team <- kept$pos_team[i]

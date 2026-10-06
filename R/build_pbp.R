@@ -124,7 +124,8 @@ game_calendar <- function(game, index, season_dates) {
 #'
 #' Reads the quarter number off two row shapes typed `quarter` by
 #' [classify_plays()]: the bare "1st"/"2nd"/"3rd"/"4th" marker, and
-#' "Start of Nth quarter, clock M:SS[, ...]." "End of half"/"End of game"
+#' "Start of Nth quarter, clock M:SS[, ...]." Overtime markers ("OT",
+#' "Start of OT quarter", "2OT") give periods 5, 6, ... "End of half"/"End of game"
 #' rows carry no digit and are left NA here, which is correct -- forward-fill
 #' carries the still-current quarter through them.
 #'
@@ -140,7 +141,12 @@ derive_quarter <- function(classified) {
     classified$play,
     stringr::regex("^Start of ([1-4])(?:st|nd|rd|th) quarter", ignore_case = TRUE)
   )[, 2]
-  quarter_here <- dplyr::coalesce(bare, started)
+  # overtime: "OT" / "2OT" marker rows and "Start of OT quarter" / "Start of
+  # 2OT ..." -> period 5, 6, ...
+  ot <- stringr::str_match(classified$play, stringr::regex("^(?:Start of )?(\\d?)OT\\b", ignore_case = TRUE))
+  ot_period <- ifelse(is.na(ot[, 1]), NA_character_,
+                      as.character(4L + ifelse(ot[, 2] == "", 1L, suppressWarnings(as.integer(ot[, 2])))))
+  quarter_here <- dplyr::coalesce(bare, started, ot_period)
   quarter_here <- ifelse(is_quarter, quarter_here, NA_character_)
   classified$quarter <- quarter_here
   tidyr::fill(classified, "quarter", .direction = "down")
@@ -396,9 +402,12 @@ pbp_columns <- c(
 #'   `penalty_no_play`, `pos_team`.
 #' @param scores Output of [parse_score_rows()].
 #' @param teams The two canonical team names.
+#' @param kickoffs Output of [assign_kickoffs()]. Fallback when the score
+#'   line after the score is missing or covers two scores (d3 sometimes skips
+#'   one): the team that kicks off next is the scoring team.
 #' @return Character vector: the corrected `pos_team`.
 #' @keywords internal
-try_phase_team <- function(kept, scores, teams) {
+try_phase_team <- function(kept, scores, teams, kickoffs = NULL) {
   scoring <- which(is_scoring_snap(kept))
   out <- kept$pos_team
   for (i in which(kept$try_phase)) {
@@ -406,9 +415,15 @@ try_phase_team <- function(kept, scores, teams) {
     if (!length(s)) next
     s <- s[length(s)]
     sr <- scores[scores$row > kept$row[s], ]
-    if (!nrow(sr) || is.na(sr$scorer[1])) next
     safety <- stringr::str_detect(kept$play_text[s], stringr::regex("\\bsafety\\b", ignore_case = TRUE))
-    out[i] <- if (safety) other_team(sr$scorer[1], teams) else sr$scorer[1]
+    if (nrow(sr) && !is.na(sr$scorer[1])) {
+      out[i] <- if (safety) other_team(sr$scorer[1], teams) else sr$scorer[1]
+    } else if (!is.null(kickoffs)) {
+      # score line missing or covering two scores: the team that kicks off
+      # next is the team that just scored (or conceded a safety)
+      k <- kickoffs[kickoffs$row > kept$row[i], ]
+      if (nrow(k) && !is.na(k$kicking_team[1])) out[i] <- k$kicking_team[1]
+    }
   }
   out
 }
@@ -465,7 +480,7 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
   kept$play_text <- kept$play
   kept$pos_team <- kept$possession
   kept$period <- as.integer(kept$quarter)
-  kept$half <- dplyr::case_when(kept$period %in% 1:2 ~ 1L, kept$period %in% 3:4 ~ 2L,
+  kept$half <- dplyr::case_when(kept$period %in% 1:2 ~ 1L, kept$period >= 3L ~ 2L,  # OT is in half 2
                                 TRUE ~ NA_integer_)
   kept <- parse_situation(kept)
   own_side <- infer_own_side(kept)
@@ -482,7 +497,7 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
 
   # tries belong to the scoring team
   kept$try_phase <- flag_try_phase(kept)
-  kept$pos_team <- try_phase_team(kept, scores, teams)
+  kept$pos_team <- try_phase_team(kept, scores, teams, kickoffs)
   kept$def_pos_team <- other_team(kept$pos_team, teams)
 
   kept$yards_to_goal <- compute_yards_to_goal(kept, own_side)

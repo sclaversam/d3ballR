@@ -100,6 +100,11 @@ says "NO PLAY", or the row is a dead-ball penalty with no snap (text starts
 d3 prints the wiped-out attempt in full ("... 54 yards ... TOUCHDOWN nullified
 by penalty ... NO PLAY"), and none of it is credited.
 
+**Overtime.** College overtime is untimed, so in periods 5+ all four clock
+columns are NA. Each overtime period starts a new drive (each team's OT
+possession is its own drive). No kickoff follows an OT score; a try phase
+ends at the next live snap.
+
 **Clock: exact where known, bounds always.** `clock_start` / `clock_end` are
 exact readings or NA. `clock_upper` / `clock_lower` always bracket the snap:
 the play started with at most `clock_upper` and at least `clock_lower` left.
@@ -125,6 +130,13 @@ match the parsed points exactly.
 and Goal at CMU06") and as a number equal to the distance to the goal line
 ("1st and 4 at UC 4"). `Goal_To_Go` is TRUE if the text says "Goal" **or**
 `distance == yards_to_goal`.
+
+**Play-text team codes.** The play text names field sides with its own codes
+("to the UCHI45", "DCFB32", "McD28", even nicknames like "Wolves05"), which
+often differ from the down-and-distance codes ("UC 25", "DCC32", "ALV05").
+`infer_text_team()` pairs them by vote: when a play ends "to the WU34" and the
+next row reads "at WAY34", the same yard number links WU to WAY. These codes
+are used for fumble recoveries and `penalized_team`.
 
 **Team names.** `home`, `away`, `pos_team`, `def_pos_team`, and
 `penalized_team` all use one canonical spelling per team: d3's drive-start
@@ -192,12 +204,12 @@ d3football's weekly composite scoreboard pages
 | 11 | `play_index` | integer | Row order within the game, 1..N. | Never NA. | Counts every kept row (like CMU's `play_idx`). |
 | 12 | `drive_number` | integer | Drive number within the game, 1..N. | Never NA. | See Key conventions. The opening kickoff is drive 1. 2025 max 30. |
 | 13 | `drive_play_number` | integer | Position of the row within its drive, from 1. | Never NA. | A kickoff is always 1. Tries and their penalty rows count. |
-| 14 | `period` | integer | Quarter, 1-4. | Never NA. | Forward-filled from quarter markers. Overtime has not occurred and isn't handled. |
-| 15 | `half` | integer | 1 for periods 1-2, 2 for periods 3-4. | Never NA in 2025. | |
+| 14 | `period` | integer | Quarter 1-4; overtime periods are 5, 6, ... | Never NA. | Forward-filled from quarter markers, including d3's "OT" / "Start of OT quarter" rows. 2025 example: Johns Hopkins at F&M (20251115_2lnx) went to overtime. |
+| 15 | `half` | integer | 1 for periods 1-2, 2 for periods 3+ (overtime counts as the second half). | Never NA. | |
 | 16 | `clock_start` | character | Exact game clock at the snap. | NA when not known exactly: 1,320 rows (known on 541). | Known when the clock was stopped at a stated reading and restarts on this snap: first snap of a drive (drive start time), snap after a timeout (timeout clock), first play of a quarter (15:00, so the opening and second-half kickoffs), and tries / kickoff after a score (the score's clock). Untimed rows before that snap (dead-ball penalties, tries) get the same reading. Set on all 113 kickoffs, 66 PATs, 9 two-point tries. |
 | 17 | `clock_end` | character | Exact game clock when the play ended. | NA when not known: 1,513 rows (known on 348). | The play's own "clock M:SS" (scores, field goals, some kickoffs), else for a hand-over play (punt, turnover, downs, missed/blocked FG, kickoff) the next drive's start time. NA on nullified kicks (no hand-over). |
-| 18 | `clock_upper` | character | Most time that could have been on the clock at the snap. | Never NA. | Latest known reading at or before the snap in the quarter (15:00 if none). |
-| 19 | `clock_lower` | character | Least time that could have been on the clock at the snap. | Never NA. | Earliest known reading at or after the snap in the quarter, including the play's own `clock_end` (00:00 if none). Always <= `clock_upper` (`checks/clock_bounds.csv` is empty). |
+| 18 | `clock_upper` | character | Most time that could have been on the clock at the snap. | Never NA in regulation; NA in overtime (untimed). | Latest known reading at or before the snap in the quarter (15:00 if none). |
+| 19 | `clock_lower` | character | Least time that could have been on the clock at the snap. | Never NA in regulation; NA in overtime (untimed). | Earliest known reading at or after the snap in the quarter, including the play's own `clock_end` (00:00 if none). Always <= `clock_upper` (`checks/clock_bounds.csv` is empty). |
 | 20 | `pos_team` | character | Team in possession: the offense; on a kickoff the receiving team; on a try the scoring team. | Never NA. | See Key conventions. |
 | 21 | `def_pos_team` | character | The other team. | Never NA. | On a kickoff, the kicking team. |
 | 22 | `pos_team_score` | integer | `pos_team`'s score before the play. | Never NA. | See Key conventions. |

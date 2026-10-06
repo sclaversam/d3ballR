@@ -34,9 +34,8 @@ is_no_play <- function(play_text) {
 #'   "offsetting").
 #' @keywords internal
 split_infractions <- function(clause, tokens) {
-  tok <- paste(stringr::str_replace_all(tokens, "([&])", "\\\\\\1"), collapse = "|")
   pattern <- paste0(
-    "\\b(", tok, ") .*?",
+    "\\b", token_regex(tokens), " .*?",
     "(?:(\\d+) yards? (?:from|to)|(?i:(declined)|(off-?setting)))"
   )
   lapply(clause, function(cl) {

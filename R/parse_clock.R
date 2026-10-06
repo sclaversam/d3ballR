@@ -113,6 +113,9 @@ clean_clock_anchors <- function(anchors) {
 #' never its `clock_upper`. When `clock_start` is known, upper == lower ==
 #' clock_start. Never interpolated.
 #'
+#' Overtime (period 5+) is untimed in college football, so all four columns
+#' are NA there.
+#'
 #' @param full Classified rows with `row`, `row_type`, `play`, `quarter`.
 #' @param kept Kept rows with `row`, `period`, `play_type`, `try_phase`,
 #'   `penalty_no_play`, `touchdown`, `turnover`, `downs_turnover`,
@@ -193,12 +196,19 @@ derive_clock <- function(full, kept) {
   upper <- lower <- integer(n)
   for (i in seq_len(n)) {
     q <- pts[pts$quarter == kept$period[i], ]
+    if (!nrow(q)) next
     before <- q[q$pos <= kept$row[i], ]
     after <- q[q$pos >= kept$row[i], ]
     upper[i] <- before$secs[nrow(before)]
     lower[i] <- after$secs[1]
   }
 
+  # college overtime is untimed: no game clock in periods 5+
+  ot <- kept$period > 4L
+  start[ot] <- NA
+  end[ot] <- NA
+  upper[ot] <- NA
+  lower[ot] <- NA
   kept$clock_start <- fmt_clock(start)
   kept$clock_end <- fmt_clock(end)
   kept$clock_upper <- fmt_clock(upper)

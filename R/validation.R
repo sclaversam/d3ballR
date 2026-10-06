@@ -13,8 +13,9 @@
 #' - `drive_footer_clock.csv`: every d3 drive's start clock + footer
 #'   "MM:SS elapsed" vs the drive's end reference (see
 #'   [footer_clock_check()]); `flag` marks mismatches.
-#' - `clock_bounds.csv`: any row whose `clock_upper` / `clock_lower` is NA
-#'   or upper < lower in time remaining (should be empty).
+#' - `clock_bounds.csv`: any regulation row whose `clock_upper` /
+#'   `clock_lower` is NA or upper < lower in time remaining (should be
+#'   empty; overtime is untimed, so its clock columns are NA by design).
 #'
 #' @param games List of tibbles from [build_pbp()].
 #' @param check_dir Output directory.
@@ -55,7 +56,9 @@ write_pbp_checks <- function(games, check_dir = "analysis/checks") {
   reports$drive_footer_clock <- do.call(rbind, lapply(games, attr, "footer_clock"))
 
   b <- dplyr::bind_rows(games)
-  bad <- is.na(b$clock_upper) | is.na(b$clock_lower) | clock_secs(b$clock_upper) < clock_secs(b$clock_lower)
+  reg <- b$period <= 4L  # overtime is untimed: clock columns NA by design
+  bad <- reg & (is.na(b$clock_upper) | is.na(b$clock_lower) |
+                  clock_secs(b$clock_upper) < clock_secs(b$clock_lower))
   reports$clock_bounds <- as.data.frame(b[bad, c("game_id", "play_index", "period", "clock_start", "clock_end",
                                                  "clock_upper", "clock_lower", "play_text")])
 
@@ -120,6 +123,9 @@ footer_clock_check <- function(full, clk, kept, game_id) {
     )
   })
   res <- do.call(rbind, out)
-  res$flag <- is.na(res$diff_seconds) | res$diff_seconds != 0
+  ot <- !is.na(res$start_quarter) & res$start_quarter > 4L
+  res$reference[ot] <- "overtime (untimed)"
+  res$diff_seconds[ot] <- NA
+  res$flag <- !ot & (is.na(res$diff_seconds) | res$diff_seconds != 0)
   res
 }

@@ -61,10 +61,38 @@ test_that("assign_drives starts a drive at each kickoff and keeps tries on the s
   kept <- data.frame(
     play_type = c("kickoff", "rush", "pass_complete", "extra_point", "kickoff", "kickoff", "rush"),
     pos_team = c("A", "A", "A", "A", "B", "B", "B"),
-    half = 1L,
+    half = 1L, period = 1L,
     try_phase = c(FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE)
   )
   out <- assign_drives(kept)
   expect_equal(out$drive_number, c(1L, 1L, 1L, 1L, 2L, 2L, 2L))  # second kickoff is a re-kick
   expect_equal(out$drive_play_number, c(1L, 2L, 3L, 4L, 1L, 2L, 3L))
+})
+
+test_that("overtime: each OT period starts a drive, and the try phase ends at the next live snap", {
+  kept <- data.frame(
+    play_type = c("field_goal_blocked", "rush", "pass_complete", "extra_point", "rush", "pass_complete", "two_point"),
+    pos_team = c("JHU", "JHU", "JHU", "JHU", "FM", "FM", "FM"),
+    play_text = c("FG BLOCKED", "rush", "pass complete TOUCHDOWN", "kick attempt good", "rush", "pass TOUCHDOWN", "pass attempt Successful"),
+    penalty_no_play = FALSE,
+    half = 2L, period = c(4L, 5L, 5L, 5L, 5L, 5L, 5L)
+  )
+  kept$try_phase <- flag_try_phase(kept)
+  expect_equal(kept$try_phase, c(FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE))
+  expect_equal(assign_drives(kept)$drive_number, c(1L, 2L, 2L, 2L, 3L, 3L, 3L))
+})
+
+test_that("derive_quarter numbers overtime periods 5, 6", {
+  cl <- data.frame(row_type = c("quarter", "play", "quarter", "quarter", "play", "quarter", "play"),
+                   play = c("4th", "x", "OT", "Start of OT quarter, clock 15:00.", "y", "2OT", "z"))
+  expect_equal(derive_quarter(cl)$quarter, c("4", "4", "5", "5", "5", "6", "6"))
+})
+
+test_that("play-text tokens map by yardline vote when no spelling matches", {
+  df <- data.frame(
+    play_text = c("rush for 9 yards to the WU34", "rush for 4 yards to the WU30", "punt 40 yards to the DSON20", "rush for 5 yards to the DSON25"),
+    situation = c("1st and 10 at WAY43", "2nd and 1 at WAY34", "1st and 10 at WAY30", "1st and 10 at DIC20")
+  )
+  own <- c(Waynesburg = "WAY", Dickinson = "DIC")
+  expect_equal(infer_text_team(df, own), c(WU = "Waynesburg", DSON = "Dickinson")[names(infer_text_team(df, own))])
 })

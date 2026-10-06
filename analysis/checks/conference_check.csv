@@ -1,12 +1,41 @@
 "game_id","game_date","season_type","away","home","away_team_conference","home_team_conference","conference_game","shared_conference","agree"
+"20250904_hz19","2025-09-04","regular","Franklin & Marshall","Lebanon Valley","Centennial Conference","Middle Atlantic Conference",FALSE,FALSE,TRUE
+"20250905_8wt2","2025-09-05","regular","Moravian","Muhlenberg","Landmark Conference","Centennial Conference",FALSE,FALSE,TRUE
+"20250905_9opj","2025-09-05","regular","McDaniel","Catholic","Centennial Conference","Landmark Conference",FALSE,FALSE,TRUE
+"20250905_j032","2025-09-05","regular","Ursinus","Alvernia","Centennial Conference","Middle Atlantic Conference",FALSE,FALSE,TRUE
+"20250905_jdn4","2025-09-05","regular","Dickinson","Randolph-Macon","Centennial Conference","ODAC",FALSE,FALSE,TRUE
+"20250905_wr9m","2025-09-05","regular","Juniata","Gettysburg","Landmark Conference","Centennial Conference",FALSE,FALSE,TRUE
+"20250906_5qby","2025-09-06","regular","Johns Hopkins","Ithaca","Centennial Conference","Liberty League",FALSE,FALSE,TRUE
 "20250906_e064","2025-09-06","regular","Carnegie Mellon","UChicago","Centennial Conference","Midwest Conference",FALSE,FALSE,TRUE
-"20250913_6i95","2025-09-13","regular","Wis.-La Crosse","Carnegie Mellon",,"Centennial Conference",FALSE,FALSE,TRUE
-"20250920_l58t","2025-09-20","regular","Berry","Carnegie Mellon",,"Centennial Conference",FALSE,FALSE,TRUE
+"20250913_6i95","2025-09-13","regular","Wis.-La Crosse","Carnegie Mellon","WIAC","Centennial Conference",FALSE,FALSE,TRUE
+"20250913_8770","2025-09-13","regular","John Carroll","Johns Hopkins","NCAC","Centennial Conference",FALSE,FALSE,TRUE
+"20250913_8wif","2025-09-13","regular","Chris. Newport","Gettysburg",,"Centennial Conference",FALSE,FALSE,TRUE
+"20250913_f947","2025-09-13","regular","Waynesburg","Dickinson","Presidents' Athletic Conference","Centennial Conference",FALSE,FALSE,TRUE
+"20250913_jqge","2025-09-13","regular","Muhlenberg","Endicott","Centennial Conference","Conference of New England",FALSE,FALSE,TRUE
+"20250913_mc0u","2025-09-13","regular","Westminster (PA)","Franklin & Marshall","Presidents' Athletic Conference","Centennial Conference",FALSE,FALSE,TRUE
+"20250913_v6wh","2025-09-13","regular","Kean","Ursinus",,"Centennial Conference",FALSE,FALSE,TRUE
+"20250913_yo3z","2025-09-13","regular","Salisbury","McDaniel",,"Centennial Conference",FALSE,FALSE,TRUE
+"20250920_6638","2025-09-20","regular","Muhlenberg","Wilkes","Centennial Conference","Landmark Conference",FALSE,FALSE,TRUE
+"20250920_6c77","2025-09-20","regular","Juniata","McDaniel","Landmark Conference","Centennial Conference",FALSE,FALSE,TRUE
+"20250920_dyvl","2025-09-20","regular","Johns Hopkins","Susquehanna","Centennial Conference","Landmark Conference",FALSE,FALSE,TRUE
+"20250920_ed92","2025-09-20","regular","Gettysburg","WestConn","Centennial Conference","Landmark Conference",FALSE,FALSE,TRUE
+"20250920_evn8","2025-09-20","regular","Dickinson","Lycoming","Centennial Conference","Landmark Conference",FALSE,FALSE,TRUE
+"20250920_l58t","2025-09-20","regular","Berry","Carnegie Mellon","Southern Athletic Association","Centennial Conference",FALSE,FALSE,TRUE
+"20250920_puiy","2025-09-20","regular","Catholic","Franklin & Marshall","Landmark Conference","Centennial Conference",FALSE,FALSE,TRUE
+"20250920_s44c","2025-09-20","regular","URSINUS COLLEGE","MORAVIAN UNIVERSITY","Centennial Conference","Landmark Conference",FALSE,FALSE,TRUE
 "20251004_gwn0","2025-10-04","regular","McDaniel","Carnegie Mellon","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251011_ew1x","2025-10-11","regular","McDaniel","Ursinus","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
 "20251011_t8bp","2025-10-11","regular","Carnegie Mellon","Johns Hopkins","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251018_mhk5","2025-10-18","regular","Muhlenberg","McDaniel","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
 "20251018_uxv5","2025-10-18","regular","Gettysburg","Carnegie Mellon","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
 "20251025_3c40","2025-10-25","regular","Carnegie Mellon","Muhlenberg","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
 "20251101_dlys","2025-11-01","regular","Carnegie Mellon","Dickinson","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
 "20251108_3ubg","2025-11-08","regular","Franklin & Marshall","Carnegie Mellon","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251108_wc79","2025-11-08","regular","Ursinus","Dickinson","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251108_x77w","2025-11-08","regular","McDaniel","Johns Hopkins","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251108_xaqb","2025-11-08","regular","MUHLENBERG","GETTYSBURG","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251115_1cr9","2025-11-15","regular","GETTYSBURG","MCDANIEL","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251115_2lnx","2025-11-15","regular","Johns Hopkins","Franklin & Marshall","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
+"20251115_bpex","2025-11-15","regular","Dickinson","Muhlenberg","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
 "20251115_h3wh","2025-11-15","regular","Carnegie Mellon","Ursinus","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE
-"20251122_xsab","2025-11-22","postseason","Misericordia","Carnegie Mellon",,"Centennial Conference",FALSE,FALSE,TRUE
+"20251122_xsab","2025-11-22","postseason","Misericordia","Carnegie Mellon","Middle Atlantic Conference","Centennial Conference",FALSE,FALSE,TRUE

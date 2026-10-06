@@ -109,7 +109,7 @@ assign_kickoffs <- function(full, teams, team_map, own_side, text_team, scores) 
     }
 
     # recovery by the kicking team?
-    rec <- stringr::str_match_all(full$play[k], "recovered by ([A-Z&]{2,6})\\b")[[1]]
+    rec <- stringr::str_match_all(full$play[k], paste0("recovered by ", token_regex(names(text_team)), "\\b"))[[1]]
     recovered_by <- if (nrow(rec)) unname(text_team[rec[nrow(rec), 2]]) else NA_character_
     kicker_recovered <- !is.na(recovered_by) && !is.na(context_kicker) && recovered_by == context_kicker
 
