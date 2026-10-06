@@ -1,8 +1,9 @@
 # Per-game play-by-play CSV: data dictionary (60 columns)
 
-Each file `analysis/pbp/{game_id}.csv` is one game's play-by-play, built by
-`build_pbp()` in `R/build_pbp.R` (all games at once by `build_all_pbp()`, which
-also writes the validation reports in `analysis/checks/`). It has **one row per
+Each file `analysis/pbp/{season}/{game_id}.csv` is one game's play-by-play,
+built by `build_pbp()` in `R/build_pbp.R`. A season's games are built by
+`build_season()` (`R/build_season.R`), which also writes the validation
+reports in `analysis/checks/{season}/`. It has **one row per
 event CMU logs** for that game, in game order. The source is the d3football.com
 boxscore plays page
 (`https://www.d3football.com/seasons/{year}/boxscores/{game_id}.xml?view=plays`),
@@ -21,8 +22,8 @@ Built so far: every 2025 game involving a Centennial Conference team, 62
 games (including 10 postseason games and 1 overtime game), 10,149 rows,
 1,400 drives. This includes CMU's 11 games, the original validation set. All
 62 reconcile with their boxscore final scores
-(`analysis/checks/centennial_2025.md`). Per-game counts are in
-`analysis/pbp_row_counts.csv`. What changed from v2 is in
+(`analysis/checks/2025/build_report.md`). Per-game counts are in
+`analysis/checks/2025/pbp_row_counts.csv`. What changed from v2 is in
 `analysis/CHANGELOG_v3.md`. Nothing in the build assumes a team or a season: any
 d3football boxscore URL can be built.
 
@@ -42,15 +43,15 @@ d3football boxscore URL can be built.
   they played.
 - **`conference_game`** comes from the "*" marker, not from shared membership,
   so playoff and bowl games between conference members aren't counted.
-  `analysis/checks/conference_check.csv` cross-checks the marker against
+  `analysis/checks/{season}/conference_check.csv` cross-checks the marker against
   shared membership.
 - **Score reconciliation:** `build_all_pbp()` records each game's boxscore
   line-score final next to the points parsed per team from `score_pts`
   (positive to `pos_team`, negative to `def_pos_team`; `team_points()`), in
-  `analysis/pbp_row_counts.csv` and `analysis/checks/score_reconciliation.csv`.
+  `analysis/checks/{season}/pbp_row_counts.csv` and `score_reconciliation.csv`.
   `tests/testthat/test-score-reconciliation.R` fails if any built game doesn't
   match. A game that fails to build is listed in
-  `analysis/checks/build_failures.csv` instead of stopping the batch.
+  `analysis/checks/{season}/build_failures.csv` instead of stopping the batch.
 
 ## Reading the CSV
 
@@ -71,7 +72,7 @@ team and the play is a turnover. If no drive row follows (e.g. a kickoff-return
 TD), pre-kick context decides: the scorer kicks, the coin toss names the
 first-half receiver, the first-half receiver kicks in the second half, and a
 re-kick uses the same kicker. Every decision is in
-`analysis/checks/kickoff_possession.csv`. A **try** (PAT, two-point) and any
+`analysis/checks/{season}/kickoff_possession.csv`. A **try** (PAT, two-point) and any
 penalty row between a score and the next kickoff belong to the **scoring team**.
 
 **Drives.** A drive is one team's continuous possession. A kickoff is
@@ -185,7 +186,7 @@ d3football's weekly composite scoreboard pages
   Saturday after `regular_season_end`. `pbp_row_counts.csv` records
   `week_source` (`index` / `date fallback`). In 2025 the date-based week
   agrees with the scoreboard week for all 1,260 games
-  (`analysis/checks/season_index_2025.md`).
+  (`analysis/checks/2025/season_index.md`).
 
 ## Columns
 
@@ -252,9 +253,9 @@ d3football's weekly composite scoreboard pages
 | 59 | `situation` | character | Raw down-and-distance text, verbatim. | Empty (NA on read) on 111 kickoffs and all tries. | Audit column. Two kickoffs with a return penalty carry a stale down-and-distance here (Dickinson 191, Ursinus 73); their `down` is still NA. |
 | 60 | `play_text` | character | Raw play description, verbatim. | Never NA. | Audit column. |
 
-## Validation reports (`analysis/checks/`)
+## Validation reports (`analysis/checks/{season}/`)
 
-Rewritten on every `build_all_pbp()` run:
+Rewritten on every `build_season()` run:
 - **`kickoff_possession.csv`:** every kickoff's kicking and receiving team, the
   rule that decided it, and any disagreement between header, recovery text and
   pre-kick context.

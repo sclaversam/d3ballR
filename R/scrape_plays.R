@@ -10,7 +10,14 @@
 #' apart (default 3). Set `refresh = TRUE` to bypass the cache, or the cache
 #' option to `NULL` to disable caching. Empty or failed responses are not
 #' cached. With `options(d3ballR.offline = TRUE)` nothing is requested: an
-#' uncached page is an error (useful when d3football is refusing requests).
+#' uncached page is an error.
+#'
+#' Two guards keep a long run polite: `options(d3ballR.max_requests = N)`
+#' caps the number of network requests (see [reset_fetch_state()]), and
+#' once d3football refuses a request (HTTP 459 / 429 or an empty page, its
+#' rate limiting), every later uncached request in the run fails
+#' immediately instead of asking again. Errors from these guards start with
+#' "Not fetched:".
 #'
 #' @param url Full page URL, including the `?view=...` suffix when needed.
 #' @param user_agent Browser User-Agent string.
@@ -24,16 +31,35 @@ fetch_html <- function(url, user_agent = default_user_agent(), refresh = FALSE) 
     return(xml2::read_html(path, encoding = "UTF-8"))
   }
   if (isTRUE(getOption("d3ballR.offline", FALSE))) {
-    stop("Offline (option d3ballR.offline = TRUE) and not cached: ", url, call. = FALSE)
+    stop("Not fetched: offline (option d3ballR.offline = TRUE): ", url, call. = FALSE)
+  }
+  if (isTRUE(.d3_state$refused)) {
+    stop("Not fetched: d3football refused an earlier request this run: ", url, call. = FALSE)
+  }
+  budget <- getOption("d3ballR.max_requests", Inf)
+  if (n_requests() >= budget) {
+    stop("Not fetched: request budget (", budget, ") reached: ", url, call. = FALSE)
   }
   throttle()
-  html <- httr2::request(url) |>
-    httr2::req_user_agent(user_agent) |>
-    httr2::req_retry(max_tries = 3) |>
-    httr2::req_timeout(30) |>
-    httr2::req_perform() |>
-    httr2::resp_body_string()
-  if (!is.null(path) && nchar(html) > 0) {
+  .d3_state$n_requests <- n_requests() + 1L
+  html <- tryCatch(
+    httr2::request(url) |>
+      httr2::req_user_agent(user_agent) |>
+      httr2::req_retry(max_tries = 3) |>
+      httr2::req_timeout(30) |>
+      httr2::req_perform() |>
+      httr2::resp_body_string(),
+    error = function(e) {
+      # rate limiting shows up as HTTP 459 or an empty body: stop asking
+      if (grepl("459|429|empty body", conditionMessage(e))) .d3_state$refused <- TRUE
+      stop(e)
+    }
+  )
+  if (!nchar(html)) {
+    .d3_state$refused <- TRUE
+    stop("Not fetched: d3football returned an empty page: ", url, call. = FALSE)
+  }
+  if (!is.null(path)) {
     dir.create(cache_dir, showWarnings = FALSE, recursive = TRUE)
     writeLines(html, path, useBytes = TRUE)
   }
@@ -49,6 +75,22 @@ cache_key <- function(url) {
 }
 
 .d3_state <- new.env(parent = emptyenv())
+
+#' Number of network requests made since the last [reset_fetch_state()]
+#' @keywords internal
+n_requests <- function() if (is.null(.d3_state$n_requests)) 0L else .d3_state$n_requests
+
+#' Reset the request counter and the "refused" flag (start of a run)
+#' @export
+reset_fetch_state <- function() {
+  .d3_state$n_requests <- 0L
+  .d3_state$refused <- FALSE
+  invisible(NULL)
+}
+
+#' Has d3football refused a request since the last [reset_fetch_state()]?
+#' @keywords internal
+fetch_refused <- function() isTRUE(.d3_state$refused)
 
 #' Wait so network requests are at least `d3ballR.delay` seconds apart
 #' @keywords internal

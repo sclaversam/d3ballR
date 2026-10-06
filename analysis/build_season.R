@@ -1,0 +1,28 @@
+# Build a season's play-by-play into analysis/pbp/{season}/ with reports in
+# analysis/checks/{season}/. Thin wrapper around build_season().
+#
+#   Rscript analysis/build_season.R 2025                      # every game
+#   Rscript analysis/build_season.R 2025 --conference CC      # games involving Centennial teams
+#   Rscript analysis/build_season.R 2025 --max-requests 20    # cap new requests this run
+#   OFFLINE=1 Rscript analysis/build_season.R 2025            # cache only, no requests
+#
+# Every call rebuilds all games already in analysis/pbp/{season}/ as well, and
+# anything not fetched (budget reached, or d3football rate-limiting) is listed
+# as pending in the report, so rerunning continues where the last run stopped.
+
+devtools::load_all(quiet = TRUE)
+
+args <- commandArgs(trailingOnly = TRUE)
+season <- as.integer(args[1])
+opt <- function(name) {
+  i <- match(name, args)
+  if (is.na(i)) NULL else args[i + 1]
+}
+if (nzchar(Sys.getenv("OFFLINE"))) options(d3ballR.offline = TRUE)
+
+code <- opt("--conference")
+teams <- if (is.null(code)) NULL else conference_members(season, code)$team
+max_requests <- if (is.null(opt("--max-requests"))) Inf else as.numeric(opt("--max-requests"))
+
+build_season(season, teams = teams, max_requests = max_requests)
+cat(readLines(file.path("analysis/checks", season, "build_report.md")), sep = "\n")

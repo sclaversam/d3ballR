@@ -23,14 +23,16 @@ Carnegie Mellon 2025 games:
 - **Index** (`build_season_index()`): every game in a season (date, week,
   regular/postseason, teams, boxscore URL) from d3football's weekly
   scoreboard, cached in `data-raw/index/`.
-- **Build** (`build_pbp()` / `build_all_pbp()`): classify rows, parse them,
+- **Build** (`build_season(season, teams = NULL)`; one game: `build_pbp()`):
+  classify rows, parse them,
   and assemble one 57-column, cfbfastR-aligned row per play. It covers
   possession, drives, score, down / distance / yards to goal, outcome flags,
-  first downs, penalties, and clock. Output is in `analysis/pbp/`, with the
+  first downs, penalties, and clock. Output is in `analysis/pbp/{season}/`, with the
   data dictionary in `analysis/pbp_schema.md` and validation reports in
-  `analysis/checks/`.
+  `analysis/checks/{season}/`.
 
-Roadmap: Centennial Conference 2025, then all of D3 2025, then other seasons.
+Roadmap: all of D3 2025 (Centennial 2025 done), then other seasons: the same
+`build_season()` call with a different filter or season.
 
 ## Source notes
 

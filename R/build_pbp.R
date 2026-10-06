@@ -602,8 +602,9 @@ team_points <- function(g, team) {
 
 #' Build and write every game's play-by-play table
 #'
-#' Writes one CSV per game to `{out_dir}/{game_id}.csv`, a per-game summary
-#' to `{out_dir}/../pbp_row_counts.csv` (row count, boxscore final score,
+#' Usually called by [build_season()]. Writes one CSV per game to
+#' `{out_dir}/{game_id}.csv`, a per-game summary to
+#' `{check_dir}/pbp_row_counts.csv` (row count, boxscore final score,
 #' parsed points per team, `score_reconciled`), and the validation reports
 #' to `check_dir` (see [write_pbp_checks()]), plus `score_reconciliation.csv`
 #' and `build_failures.csv`. A game that fails to build is logged in
@@ -615,9 +616,11 @@ team_points <- function(g, team) {
 #'   seasons).
 #' @param out_dir Directory to write per-game CSVs into.
 #' @param check_dir Directory for the validation reports.
+#' @param conf Conference data from [build_conference_table()] (else the
+#'   cached files are used).
 #' @return Invisibly, a named list of the per-game tibbles (by `game_id`).
 #' @export
-build_all_pbp <- function(game_urls, out_dir = "analysis/pbp", check_dir = "analysis/checks") {
+build_all_pbp <- function(game_urls, out_dir, check_dir, conf = NULL) {
   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
   seasons <- unique(stats::na.omit(extract_season(game_urls)))
@@ -628,7 +631,7 @@ build_all_pbp <- function(game_urls, out_dir = "analysis/pbp", check_dir = "anal
   failures <- list()
   games <- lapply(game_urls, function(u) {
     tryCatch(
-      build_pbp(u, index = indexes[[as.character(extract_season(u))]], season_dates = season_dates),
+      build_pbp(u, index = indexes[[as.character(extract_season(u))]], season_dates = season_dates, conf = conf),
       error = function(e) {
         failures[[length(failures) + 1]] <<- data.frame(game_url = u, error = conditionMessage(e))
         message("FAILED ", u, ": ", conditionMessage(e))
@@ -655,7 +658,8 @@ build_all_pbp <- function(game_urls, out_dir = "analysis/pbp", check_dir = "anal
   for (g in games) {
     utils::write.csv(g, file.path(out_dir, paste0(g$game_id[1], ".csv")), row.names = FALSE, na = "")
   }
-  utils::write.csv(counts, file.path(out_dir, "..", "pbp_row_counts.csv"), row.names = FALSE, na = "")
+  dir.create(check_dir, showWarnings = FALSE, recursive = TRUE)
+  utils::write.csv(counts, file.path(check_dir, "pbp_row_counts.csv"), row.names = FALSE, na = "")
   write_pbp_checks(games, check_dir)
   dir.create(check_dir, showWarnings = FALSE, recursive = TRUE)
   utils::write.csv(do.call(rbind, c(list(data.frame(game_url = character(), error = character())), failures)),
@@ -664,7 +668,8 @@ build_all_pbp <- function(game_urls, out_dir = "analysis/pbp", check_dir = "anal
                               "away_pts_parsed", "home_pts_parsed", "score_reconciled")],
                    file.path(check_dir, "score_reconciliation.csv"), row.names = FALSE, na = "")
 
-  print(as.data.frame(counts))
+  message(nrow(counts), " games built (", sum(counts$score_reconciled), " reconcile with the boxscore final); ",
+          length(failures), " not built")
 
   names(games) <- counts$game_id
   invisible(games)

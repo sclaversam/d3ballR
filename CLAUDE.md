@@ -71,13 +71,23 @@ scraper: get accurate, tidy play-by-play out of d3football.
   `{season}_schedule_markers.csv`. `conference_members(season, code)`,
   `index_games_for_teams(index, teams)`. Only fetch the teams in scope (for
   2025: Centennial teams + their opponents), never every conference.
-- `analysis/build_centennial_2025.R` — builds every Centennial 2025 game and
-  writes `analysis/checks/centennial_2025.md` (score reconciliation +
-  conference-marker cross-check). Resumable: cached pages are reused, and
-  `OFFLINE=1` builds from the cache only.
+- `R/build_season.R` — **the one pipeline**: `build_season(season, teams =
+  NULL, max_requests = Inf)`. It takes the season index, filtered to games
+  involving `teams` (e.g. a conference's members) or every game when NULL,
+  builds the conference table and every game into `analysis/pbp/{season}/`,
+  and writes `analysis/checks/{season}/build_report.md`. Each call also
+  rebuilds every game already in the season folder, so the folder and
+  reports always cover all games built so far. Resumable: cached pages are
+  reused; pages not fetched (budget, rate limit) are listed as pending.
+  CLI: `Rscript analysis/build_season.R 2025 [--conference CC]
+  [--max-requests N]`, with `OFFLINE=1` for cache only. The roadmap stages
+  (Centennial, all D3, other seasons) are just different `teams` /
+  `season` arguments, not separate pipelines.
 - **Fetching:** `fetch_html()` caches every page in `data-raw/cache/`
-  (gitignored) and throttles requests 3 s apart package-wide; a page is
-  never requested twice. d3football starts returning empty pages after a
+  (gitignored) and throttles requests package-wide (`build_season()` uses
+  6 s); a page is never requested twice. `options(d3ballR.max_requests = N)`
+  caps requests per run, and after the first refusal (HTTP 459 / empty page)
+  the rest of the run uses the cache only. d3football starts returning empty pages after a
   burst of requests, so keep runs small and resumable. When it does, stop and
   retry later rather than hammering it (`options(d3ballR.offline = TRUE)`
   makes any uncached request fail instead).
@@ -87,8 +97,8 @@ scraper: get accurate, tidy play-by-play out of d3football.
 - `R/classify.R` — Step 2 row classifier (`classify_plays`).
 - `R/parse_play_type.R` — play_type within snaps.
 - `R/build_pbp.R` — per-game assembly: `build_pbp()` (one game) and
-  `build_all_pbp()` (writes `analysis/pbp/*.csv`, `analysis/pbp_row_counts.csv`
-  and the validation reports). Also situation parsing, `yards_to_goal`,
+  `build_all_pbp()` (called by `build_season()`; writes the per-game CSVs,
+  `pbp_row_counts.csv` and the validation reports). Also situation parsing, `yards_to_goal`,
   `Goal_To_Go`, `yards_gained`, and the output column order (`pbp_columns`).
 - `R/teams.R` (header / team-name mapping), `R/kickoffs.R` (kickoff
   possession), `R/drives.R` (drives, try phase), `R/scores.R` (score lines),
@@ -100,12 +110,16 @@ scraper: get accurate, tidy play-by-play out of d3football.
   "Carnegie Mellon")`).
 - `data-raw/index/{season}.csv` — cached season indexes (2025 built).
 - `data-raw/season_dates.csv` — regular-season end date per season.
-- `analysis/pbp/` — the built per-game CSVs (60 columns). Data dictionary:
+- `analysis/pbp/{season}/` — the built per-game CSVs (60 columns), one
+  folder per season. `analysis/pbp/2025/` will hold every 2025 game; it
+  currently has the 62 Centennial games. Data dictionary:
   `analysis/pbp_schema.md`. Latest change log: `analysis/CHANGELOG_v3.md`.
   Current build plan: `analysis/pbp_build_plan_v3.md`.
-- `analysis/checks/` — validation reports regenerated on every build
+- `analysis/checks/{season}/` — that season's reports, regenerated on every build
+  (`build_report.md`, `pbp_row_counts.csv`, `score_reconciliation.csv`,
+  `conference_check.csv`, `build_failures.csv`, and those below)
   (kickoff possession, drive-footer clock, clock bounds, end state), plus
-  `season_index_{season}.md` from `analysis/season_index_report.R`.
+  `season_index.md` from `analysis/season_index_report.R`.
 - `tests/testthat/` — unit tests.
 
 ## What is built vs. next
