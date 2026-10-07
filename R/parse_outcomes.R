@@ -164,6 +164,11 @@ parse_outcome_flags <- function(df, text_team) {
   turnover <- int | (fumble_lost & !blocked_kick_regained) | downs_turnover |
     df$kicker_recovered
 
+  # the team that last recovered a loose ball (NA if none): lets
+  # score_points() credit a punt / kick touchdown to the kicking team when it
+  # recovered a muff ("muffed by X ... recovered by STO ... TOUCHDOWN")
+  df$recovering_team <- recov_team
+
   flags <- list(rush = rush, pass = pass, completion = completion, sack = sack,
                 int = int, fumble_vec = fumble, turnover = turnover,
                 downs_turnover = downs_turnover, touchdown = touchdown, safety = safety)

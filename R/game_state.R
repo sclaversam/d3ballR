@@ -2,25 +2,34 @@
 #'
 #' TD +6 for the offense, -6 when the defense scores (interception or
 #' fumble return, punt / blocked-kick return, or a kickoff the kicking team
-#' recovers and scores on); FG +3; extra point +1; two-point try +2; safety
-#' conceded -2. Zero otherwise, and zero on every `penalty_no_play` row.
+#' recovers and scores on); a punt or kick the kicking team recovers (a muff)
+#' and scores on is +6; FG +3; extra point +1; two-point try +2; safety
+#' conceded -2; a try the defense returns ("defensive PAT Successful") -2. Zero otherwise, and zero on every `penalty_no_play` row.
 #' On a kickoff `pos_team` is the receiving team, so a kickoff-return TD is
 #' +6.
 #'
 #' @param kept Kept rows with `play_type`, `play_text`, `touchdown`,
-#'   `turnover`, `safety`, `kicker_recovered`, `penalty_no_play`.
+#'   `turnover`, `safety`, `kicker_recovered`, `penalty_no_play`,
+#'   `recovering_team` (from [parse_outcome_flags()]).
 #' @return Integer vector.
 #' @keywords internal
 score_points <- function(kept) {
   pt <- kept$play_type
   txt <- kept$play_text
   ic <- function(pattern) stringr::regex(pattern, ignore_case = TRUE)
-  defense_scores <- kept$touchdown & (
-    kept$turnover |
-      pt %in% c("punt_no_return", "punt_with_return", "punt_blocked",
-                "field_goal_blocked", "field_goal_missed") |
+  kick_types <- c("punt_no_return", "punt_with_return", "punt_blocked",
+                  "field_goal_blocked", "field_goal_missed")
+  # the kicking team recovered a muff / fumble and scored
+  kicker_regained <- pt %in% kick_types & !is.na(kept$recovering_team) &
+    kept$recovering_team == kept$pos_team
+  defense_scores <- kept$touchdown & !kicker_regained & (
+    kept$turnover | pt %in% kick_types |
       (pt == "kickoff" & kept$kicker_recovered)
   )
+  # a blocked / failed try returned by the defense: "... defensive PAT
+  # Successful."
+  defensive_try <- pt %in% c("extra_point", "two_point") &
+    stringr::str_detect(txt, ic("\\bdefensive (PAT|two[- ]point|2[- ]?pt|conversion)\\b.*\\bsuccessful\\b"))
   pat_good <- pt == "extra_point" & stringr::str_detect(txt, ic("\\bgood\\b")) &
     !stringr::str_detect(txt, ic("no good|failed|blocked"))
   two_good <- pt == "two_point" & stringr::str_detect(txt, ic("\\b(good|successful)\\b")) &
@@ -30,6 +39,7 @@ score_points <- function(kept) {
     kept$touchdown ~ 6L,
     pt == "field_goal_good" ~ 3L,
     kept$safety ~ -2L,
+    defensive_try ~ -2L,
     pat_good ~ 1L,
     two_good ~ 2L,
     TRUE ~ 0L

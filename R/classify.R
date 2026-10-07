@@ -37,7 +37,8 @@ verb_pattern <- "\\b(rush|pass (complete|incomplete|intercepted|attempt)|sacked|
 #' - `substitution` — "TEAM_PLAYER in at QB", "D. Brown Jr at QB for Albright."
 #' - `annotation` — a note that isn't a play of its own: "Spiked" (after the
 #'   incomplete pass that was the spike; the down doesn't advance again),
-#'   "2:00 minute warning", "recovered by NAME" (a fragment repeating the
+#'   "2:00 minute warning" / "2-Minute Timeout" / "2:00 Officials Timeout",
+#'   "recovered by NAME" (a fragment repeating the
 #'   kickoff's recovery)
 #'
 #' Two more non-play types, with no down-and-distance requirement:
@@ -88,7 +89,7 @@ classify_plays <- function(plays) {
     is_dd & stringr::str_detect(plays$play, "\\bSAFETY\\b") ~ "play",
     is_dd & !has_verb & stringr::str_detect(plays$play, stringr::regex("penalty", ignore_case = TRUE)) ~ "penalty_no_play",
     stringr::str_detect(plays$play, stringr::regex("drive start", ignore_case = TRUE)) ~ "drive_start",
-    same & stringr::str_detect(plays$play, " at \\d{1,2}:\\d{2}$") ~ "drive_header",
+    same & stringr::str_detect(plays$play, " at( \\d{1,2}:\\d{2})?$") ~ "drive_header",
     same & stringr::str_detect(plays$play, "^\\d+ plays, -?\\d+ yards, \\d{1,2}:\\d{2} elapsed$") ~ "drive_footer",
     (same & stringr::str_detect(plays$play, "^([1-4](st|nd|rd|th)|\\d?OT)$")) |
       stringr::str_detect(plays$play, stringr::regex("^Start of|^End of (game|half)", ignore_case = TRUE)) ~ "quarter",
@@ -110,7 +111,7 @@ classify_plays <- function(plays) {
     is_dd & stringr::str_detect(plays$play, stringr::regex("review", ignore_case = TRUE)) ~ "replay_review",
     same & stringr::str_detect(plays$play, stringr::regex("^back to top$|^Quarters:", ignore_case = TRUE)) ~ "nav",
     blank_sit & stringr::str_detect(plays$play, stringr::regex("^PENALTY\\b.*\\b(declined|offsetting)\\b", ignore_case = TRUE)) ~ "penalty_note",
-    is_dd & stringr::str_detect(plays$play, stringr::regex("^(Spiked\\.?|\\d:00 minute warning\\.?|two minute warning\\.?|recovered by .+)$", ignore_case = TRUE)) ~ "annotation",
+    is_dd & stringr::str_detect(plays$play, stringr::regex("^(Spiked\\.?|\\d:00 minute warning\\.?|2-Minute Timeout\\.?|\\d:00 Officials Timeout\\.?|two minute warning\\.?|recovered by .+)$", ignore_case = TRUE)) ~ "annotation",
     stringr::str_detect(plays$play, "^\\.?$") ~ "blank",
     TRUE ~ "other"
   )

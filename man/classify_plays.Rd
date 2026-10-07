@@ -33,7 +33,8 @@ never be double-counted as its own down)
 \item \code{substitution} — "TEAM_PLAYER in at QB", "D. Brown Jr at QB for Albright."
 \item \code{annotation} — a note that isn't a play of its own: "Spiked" (after the
 incomplete pass that was the spike; the down doesn't advance again),
-"2:00 minute warning", "recovered by NAME" (a fragment repeating the
+"2:00 minute warning" / "2-Minute Timeout" / "2:00 Officials Timeout",
+"recovered by NAME" (a fragment repeating the
 kickoff's recovery)
 }
 }

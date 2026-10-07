@@ -13,7 +13,7 @@ find_line_score_teams(tbls)
 A character vector of length 2: the two team names.
 }
 \description{
-Located by content (a table with a "Final" column and at least 2 rows),
+Located by content (see \code{\link[=is_line_score]{is_line_score()}}),
 not by position, same philosophy as \code{\link[=find_plays]{find_plays()}}. Each of the first two
 rows is "TEAM NAME (W-L, conf)" or "TEAM NAME (W-L)"; the trailing
 parenthetical record is stripped.
