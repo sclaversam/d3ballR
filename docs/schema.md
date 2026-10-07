@@ -172,17 +172,17 @@ clock and seconds columns are NA in periods 5+.
 | 51 | `punt` | logical | Any punt. | Never NA. | |
 | 52 | `scoring_play` | logical | Points scored on the row. | Never NA. | `score_pts != 0`. A failed PAT is FALSE. |
 | 53 | `score_pts` | integer | Points scored on the row, from `pos_team`'s view. | Never NA. | TD +6, FG +3, PAT +1, two-point +2, defensive TD −6, safety conceded −2. |
-| 54 | `firstD_by_kickoff` | logical | First snap row of a series that began with a kickoff. | Never NA. | Kickoff rows themselves are FALSE. Includes after an onside kick, whoever recovered. cfbfastR name. |
-| 55 | `firstD_by_poss` | logical | First snap row after a change of possession, or of an overtime possession. | Never NA. | After a punt, interception, lost fumble, downs, missed / blocked FG, or a punt / FG the kicking team regained. cfbfastR name. |
-| 56 | `firstD_by_yards` | logical | First snap row of a series earned by the previous play's yardage. | Never NA. | Same offense; the previous play reached the line (d3's "1ST DOWN" text, or yards ≥ distance outside goal-to-go), unless an accepted offensive penalty took it away. cfbfastR name. |
-| 57 | `firstD_by_penalty` | logical | First snap row of a series awarded by a penalty. | Never NA. | Same offense; the previous play didn't reach the line; an accepted penalty awarded it. A declined penalty never counts. cfbfastR name. |
-| 58 | `new_series` | logical | The row starts a new series: one of the four flags. | Never NA. | Exactly one of the four is TRUE when this is. |
-| 59 | `penalty_flag` | logical | The row mentions a penalty. | Never NA. | |
-| 60 | `penalty_yards_signed` | integer | Net accepted penalty yards, from `pos_team`'s view. | NA with no penalty or when every infraction was declined. | + = defense flagged, − = offense flagged; offsetting = 0. |
-| 61 | `penalized_team` | character | Team that committed the penalty. | NA with no penalty. | Both teams joined with `"; "` when offsetting or accepted on both. |
-| 62 | `penalty_no_play` | logical | A penalty nullified the snap, or there was no snap. | Never NA. | See No-play gating. |
-| 63 | `penalty_declined` | logical | Every infraction on the row was declined. | NA when `penalty_flag` is FALSE. | |
-| 64 | `penalty_text` | character | Raw penalty clause, from the first "PENALTY" on. | NA with no penalty clause. | |
-| 65 | `drive_result` | character | How the row's drive ended, repeated on every row of the drive. | Never NA. | `TD`, `FG`, `MISSED FG`, `BLOCKED FG`, `PUNT`, `BLOCKED PUNT`, `INT`, `FUMBLE`, `DOWNS`, `SAFETY`, `END OF HALF`, `END OF GAME`, `ONSIDE`. A defensive TD is labeled by how the offense lost the ball. |
+| 54 | `drive_result` | character | How the row's drive ended, repeated on every row of the drive. | Never NA. | `TD`, `FG`, `MISSED FG`, `BLOCKED FG`, `PUNT`, `BLOCKED PUNT`, `INT`, `FUMBLE`, `DOWNS`, `SAFETY`, `END OF HALF`, `END OF GAME`, `ONSIDE`. A defensive TD is labeled by how the offense lost the ball. |
+| 55 | `firstD_by_kickoff` | logical | First snap row of a series that began with a kickoff. | Never NA. | Kickoff rows themselves are FALSE. Includes after an onside kick, whoever recovered. cfbfastR name. |
+| 56 | `firstD_by_poss` | logical | First snap row after a change of possession, or of an overtime possession. | Never NA. | After a punt, interception, lost fumble, downs, missed / blocked FG, or a punt / FG the kicking team regained. cfbfastR name. |
+| 57 | `firstD_by_yards` | logical | First snap row of a series earned by the previous play's yardage. | Never NA. | Same offense; the previous play reached the line (d3's "1ST DOWN" text, or yards ≥ distance outside goal-to-go), unless an accepted offensive penalty took it away. cfbfastR name. |
+| 58 | `firstD_by_penalty` | logical | First snap row of a series awarded by a penalty. | Never NA. | Same offense; the previous play didn't reach the line; an accepted penalty awarded it. A declined penalty never counts. cfbfastR name. |
+| 59 | `new_series` | logical | The row starts a new series: one of the four flags. | Never NA. | Exactly one of the four is TRUE when this is. |
+| 60 | `penalty_flag` | logical | The row mentions a penalty. | Never NA. | |
+| 61 | `penalty_yards_signed` | integer | Net accepted penalty yards, from `pos_team`'s view. | NA with no penalty or when every infraction was declined. | + = defense flagged, − = offense flagged; offsetting = 0. |
+| 62 | `penalized_team` | character | Team that committed the penalty. | NA with no penalty. | Both teams joined with `"; "` when offsetting or accepted on both. |
+| 63 | `penalty_no_play` | logical | A penalty nullified the snap, or there was no snap. | Never NA. | See No-play gating. |
+| 64 | `penalty_declined` | logical | Every infraction on the row was declined. | NA when `penalty_flag` is FALSE. | |
+| 65 | `penalty_text` | character | Raw penalty clause, from the first "PENALTY" on. | NA with no penalty clause. | |
 | 66 | `situation` | character | Raw down-and-distance text, verbatim. | Empty (NA on read) on kickoffs and tries. | Audit column. |
 | 67 | `play_text` | character | Raw play description, verbatim. | Never NA. | Audit column. |

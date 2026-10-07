@@ -5,6 +5,11 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## `drive_result` moved after `score_pts`
+
+Column order only: `drive_result` now sits with the scoring columns (after
+`score_pts`) instead of near the end, for readability. Still 67 columns.
+
 ## Checkpoint: Centennial Conference 2025 (git tag `checkpoint-centennial-2025`)
 
 **Repo reorganized:**

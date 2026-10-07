@@ -44,10 +44,10 @@ na.strings = "")`.
 | Game | `game_id`, `season`, `game_date`, `week`, `season_type`, `home`, `away`, conferences, `conference_game` |
 | Drive and clock | `drive_number`, `period`, exact snap and end clocks, the snap-clock range, seconds remaining |
 | Situation | possession, score before the play, `down`, `distance`, `yards_to_goal`, `Goal_To_Go`, and the next snap's situation |
-| Play | `play_type`, `yards_gained`, outcome flags (rush, pass, sack, turnover, touchdown, ...), scoring |
+| Play | `play_type`, `yards_gained`, outcome flags (rush, pass, sack, turnover, touchdown, ...), scoring, `drive_result` |
 | Series | `firstD_by_kickoff` / `_poss` / `_yards` / `_penalty`, `new_series` |
 | Penalties | signed yards, penalized team, no-play, declined, raw text |
-| Audit | `drive_result`, raw `situation`, raw `play_text` |
+| Audit | raw `situation`, raw `play_text` |
 
 Every column is defined in **[docs/schema.md](docs/schema.md)**.
 

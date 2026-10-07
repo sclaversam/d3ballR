@@ -374,23 +374,20 @@ parse_yards_gained <- function(play_text, play_type, no_play) {
 #' cfbfastR-aligned. See `docs/schema.md` for the data dictionary.
 #' @keywords internal
 pbp_columns <- c(
-  "game_id", "season", "game_date", "week", "season_type",
-  "home", "away", "home_team_conference", "away_team_conference", "conference_game",
-  "play_index", "drive_number", "drive_play_number",
-  "period", "half", "clock_start", "clock_end", "clock_start_max", "clock_start_min",
-  "secs_remaining_start", "secs_remaining_end", "secs_remaining_start_max", "secs_remaining_start_min",
-  "pos_team", "def_pos_team", "pos_team_score", "def_pos_team_score", "score_diff",
-  "down", "distance", "yards_to_goal", "Goal_To_Go",
-  "down_end", "distance_end", "yards_to_goal_end",
-  "play_type", "scrimmage_play", "yards_gained",
-  "rush", "pass", "completion", "sack", "int", "fumble_vec", "turnover", "downs_turnover",
-  "touchdown", "safety",
-  "field_goal_attempt", "field_goal_made", "punt",
-  "scoring_play", "score_pts",
-  "firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards", "firstD_by_penalty", "new_series",
-  "penalty_flag", "penalty_yards_signed", "penalized_team", "penalty_no_play",
-  "penalty_declined", "penalty_text",
-  "drive_result", "situation", "play_text"
+  "game_id", "season", "game_date", "week", "season_type", "home", "away",
+  "home_team_conference", "away_team_conference", "conference_game", "play_index",
+  "drive_number", "drive_play_number", "period", "half", "clock_start", "clock_end",
+  "clock_start_max", "clock_start_min", "secs_remaining_start", "secs_remaining_end",
+  "secs_remaining_start_max", "secs_remaining_start_min", "pos_team", "def_pos_team",
+  "pos_team_score", "def_pos_team_score", "score_diff", "down", "distance",
+  "yards_to_goal", "Goal_To_Go", "down_end", "distance_end", "yards_to_goal_end",
+  "play_type", "scrimmage_play", "yards_gained", "rush", "pass", "completion", "sack",
+  "int", "fumble_vec", "turnover", "downs_turnover", "touchdown", "safety",
+  "field_goal_attempt", "field_goal_made", "punt", "scoring_play", "score_pts",
+  "drive_result", "firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards",
+  "firstD_by_penalty", "new_series", "penalty_flag", "penalty_yards_signed",
+  "penalized_team", "penalty_no_play", "penalty_declined", "penalty_text", "situation",
+  "play_text"
 )
 
 #' Possession on try-phase rows: the team that just scored
