@@ -69,8 +69,8 @@ structured feed. The rules:
 
 In practice, fetch in batches of about 10-100 pages and stop when refused.
 Bursts of a few dozen requests have triggered the limit: the first all-D3
-run (6 s apart) was refused after 21 pages. Pass a longer `delay` to
-`build_season()` to space requests further.
+run (6 s apart) was refused after 21 pages; 50 pages 15 s apart went through
+cleanly. Use `--delay 15` (or `build_season(..., delay = 15)`).
 
 ## Validation
 
@@ -130,7 +130,7 @@ first-down exclusivity and placement.
 
 1. **CMU 2025** (validation set): done.
 2. **Centennial 2025**: done (this checkpoint).
-3. **All of D3 2025** (in progress, branch `all-d3-2025`; 83 games built):
+3. **All of D3 2025** (in progress, branch `all-d3-2025`; 133 games built):
    `build_season(2025)`. About 1,180 more games plus about
    230 team pages, fetched in capped runs. Expect new StatCrew formats to
    surface. The score-reconciliation test and the `first_downs.md` series

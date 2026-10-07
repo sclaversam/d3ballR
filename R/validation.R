@@ -102,7 +102,7 @@ footer_clock_check <- function(full, clk, kept, game_id) {
     f <- footers[i]
     starts <- opening[opening > prev_f[i] & opening < f]
     st <- if (length(starts)) starts[1] else NA_integer_
-    team <- if (!is.na(st)) stringr::str_match(full$play[st], "^(.*?)(?: drive start)? at \\d")[, 2] else NA_character_
+    team <- if (!is.na(st)) drive_row_team(full$play[st]) else NA_character_
     el <- clock_secs(stringr::str_match(full$play[f], "(\\d{1,2}:\\d{2}) elapsed")[, 2])
     s_secs <- if (!is.na(st)) val[as.character(st)] else NA
     sc <- scoring_rows[scoring_rows > ifelse(is.na(st), prev_f[i], st) & scoring_rows < f]

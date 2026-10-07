@@ -13,6 +13,8 @@ find_line_score_finals(tbls)
 Integer vector of length 2, named by the line-score team names.
 }
 \description{
-Same table as \code{\link[=find_line_score_teams]{find_line_score_teams()}}; the "Final" column.
+Same table as \code{\link[=find_line_score_teams]{find_line_score_teams()}}; the "Final" column. A game
+stopped early has no "Final" column: its last column is the score when
+play stopped ("3rd QTR - 04:19" in Case Western Reserve at Rowan, 2025).
 }
 \keyword{internal}

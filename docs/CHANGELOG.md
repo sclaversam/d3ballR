@@ -5,6 +5,29 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## All of D3 2025: second batch
+
+50 more game pages, fetched 15 s apart with no refusal (the first batch, 6 s
+apart, was refused after 21). Now 133 games are built, and all 133 reconcile.
+
+- **Defensive try returns score.** "kick attempt failed (blocked by ...) ...
+  defensive PAT Successful." is −2 for the trying team, i.e. 2 points to the
+  defense (Nichols at MIT; Bethel (Tenn.) at Mary Hardin-Baylor).
+- **Kicking-team muff touchdowns.** A punt the returner muffs and the kicking
+  team recovers in the end zone is a touchdown for the kicking team, +6
+  (Northwestern (Minn.) at St. Olaf). It was credited to the return team. The
+  row keeps `turnover = TRUE` (the returner lost the muff), as before.
+- **Games stopped early.** Case Western Reserve at Rowan ended in the 3rd
+  quarter ("3rd QTR - 04:19" in place of a "Final" column). The line score is
+  found by its "Scoring" header, and the last column is the final.
+- **Drive rows:** a drive header with no clock ("Virginia-Lynchburg at"), and
+  a drive start after a clock ("clock 09:08, LaGrange College drive start
+  at 09:08."). The bogus "drive start at 00:00" on that Virginia-Lynchburg
+  drive is discarded by the clock cleaning.
+- **Two-minute stops:** "2-Minute Timeout" and "2:00 Officials Timeout" are
+  `annotation` rows, like "2:00 minute warning": printed at exactly 2:00 with
+  no team named, so they're not team timeouts.
+
 ## All of D3 2025: first batch (branch `all-d3-2025`)
 
 The first 21 pages of the full-season fetch (stopped by d3football's rate

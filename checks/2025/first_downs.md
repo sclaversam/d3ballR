@@ -23,11 +23,11 @@ cfbfastR also puts `firstD_by_poss`, `firstD_by_yards`, `firstD_by_penalty` on t
 
 | flag | rows |
 |---|---|
-| firstD_by_kickoff | 845 |
-| firstD_by_poss | 999 |
-| firstD_by_yards | 2535 |
-| firstD_by_penalty | 244 |
-| new_series | 4623 |
+| firstD_by_kickoff | 1326 |
+| firstD_by_poss | 1731 |
+| firstD_by_yards | 3970 |
+| firstD_by_penalty | 394 |
+| new_series | 7421 |
 
 Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
@@ -35,7 +35,7 @@ Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**4630 series; 4621 have exactly one `new_series` row on their first snap row; 9 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 517.
+**7435 series; 7419 have exactly one `new_series` row on their first snap row; 16 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 830.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | first_row_text |
 |---|---|---|---|---|---|---|---|---|
@@ -45,6 +45,13 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 20250904_x3up | 116 | 117 | N.C. Wesleyan | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Sechrest,Trae rush middle for 8 yards gain to the NWC18 (Russell,Israel). |
 | 20250905_p2em | 119 | 124 | Gallaudet | 1 & 10 | 119, 123 | more than one new_series row | unexplained | J. Sargent pass incomplete to Jaylen Johnson. |
 | 20250905_rgw0 | 93 | 96 | Massachusetts Maritime | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Chase Dombroski rush for 2 yards to the MASS. MA39 (Ryan Costales). |
+| 20250906_10mp | 171 | 174 | Beloit | 1 & 10 | none | no new_series row | unexplained | Shotgun Richards,Conner pass incomplete short middle to Guzman,Dominic thrown to BC25. |
+| 20250906_2yy3 | 143 | 148 | Southern Virginia | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Watson,Devin pass incomplete short right to Washington,Jireek thrown to SVU43. |
+| 20250906_3f7l | 73 | 73 | Mary Hardin-Baylor | 1 & 10 | none | no new_series row | unexplained | PENALTY BETHEL Personal Foul (Douglas,Detarius) 15 yards from UMHB27 to UMHB42, 1ST DOWN. |
+| 20250906_3f7l | 74 | 75 | Bethel (Tenn.) | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Chance,Destin pass incomplete short left to Pressey,Jayden thrown to UMHB39. |
+| 20250906_71s2 | 7 | 7 | Baldwin Wallace | 1 & 10 | none | no new_series row | unexplained | No Huddle Bubonics,Charlie pass complete deep right to Birkett,Donovan caught at WIT11, for 22 yards to the WI |
+| 20250906_85f2 | 50 | 52 | Utica | 1 & 11 | none | no new_series row | unexplained | No Huddle-Shotgun Szalkowski,Tyler pass complete short right to Frederick,Logan caught at UTICA25, for 8 yards |
+| 20250906_d0ep | 14 | 17 | Franklin | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Kmiecik,Marshall pass complete short right to Fonda,Jordan caught at FRA24, for 4 yards to t |
 | 20251115_bpex | 129 | 130 | Dickinson | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Ben Klassen rush for 3 yards to the DSON16 (CJ Kearney). |
 | 20251122_6ygb | 112 | 112 | Union | 1 & 10 | none | no new_series row | previous play has more than one yardage segment (a lateral): yards_gained reads only the first, so its first down is missed | Dj Wright rush for 1 yard to the MUHL12 (George Europe), PENALTY MUHL face mask (George Europe) 6 yards to the |
 | 20251122_6ygb | 158 | 159 | Muhlenberg | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TEAM rush for loss of 1 yard to the MUHL21. |
@@ -55,10 +62,14 @@ None.
 
 ## Edge cases
 
-First snap row of an overtime possession (`firstD_by_poss`): 2.
+First snap row of an overtime possession (`firstD_by_poss`): 6.
 
 | game_id | play_index | period | pos_team | play_type | play_text |
 |---|---|---|---|---|---|
+| 20250906_70fv | 239 | 5 | University of New England | rush | Shotgun Jones,Damien rush middle for 4 yards gain to the CGA21 (Delevan,Blake; Wolf,William). |
+| 20250906_70fv | 243 | 5 | Coast Guard | pass_complete | No Huddle-Shotgun Burns,Sean pass complete short right to LaBouliere,Matthew caught at UNE25, for 1 yard to th |
+| 20250906_8o5p | 180 | 5 | UW-Stevens Point | rush | Shotgun Cashin,Brycen rush middle for 4 yards gain to the Albion21 (Mills,Adam; Deibis,Ryan). |
+| 20250906_8o5p | 189 | 5 | Albion | pass_complete | Shotgun Murray,Ali pass complete short left to Davey,Connor caught at UWSP26, for 4 yards to the UWSP21 (Luedt |
 | 20251115_2lnx | 158 | 5 | Johns Hopkins | rush | No Huddle-Shotgun Schroeder,Geoff rush middle for 24 yards gain to the F&M21 (Hille,Connor), 1ST DOWN. |
 | 20251115_2lnx | 165 | 5 | Franklin and Marshall | rush | No Huddle-Shotgun Tremba,Ty rush middle for 3 yards gain to the JHU22 (Smith,Jackson). |
 

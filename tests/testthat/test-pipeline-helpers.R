@@ -37,6 +37,33 @@ test_that("play_actor reads the name before the verb", {
                c("Booker,Jayden", "Jesch,Mateo", "Andrew Deutsch", NA))
 })
 
+test_that("drive_row_team reads drive headers and starts, with or without a clock", {
+  expect_equal(drive_row_team(c("LaGrange at 09:08", "clock 09:08, LaGrange College drive start at 09:08.",
+                                "Virginia-Lynchburg at", "Point drive start at 12:07.")),
+               c("LaGrange", "LaGrange College", "Virginia-Lynchburg", "Point"))
+})
+
+test_that("a game stopped early: the line score's last column is the final", {
+  ls <- data.frame(Scoring = c("Case Western Reserve (1-0)", "Rowan (0-1)"), `1` = c("14", "7"),
+                   `2` = c("0", "0"), `3` = c("0", "10"), `3rd QTR - 04:19` = c("14", "17"), check.names = FALSE)
+  expect_equal(unname(find_line_score_finals(list(ls))), c(14L, 17L))
+  expect_equal(find_line_score_teams(list(ls)), c("Case Western Reserve", "Rowan"))
+})
+
+test_that("score_points: defensive try returns and kicking-team muff touchdowns", {
+  kept <- data.frame(
+    play_type = c("extra_point", "punt_no_return", "punt_with_return"),
+    play_text = c("X kick attempt failed ( blocked by Y) recovered by MIT Y at MIT20 Y return 80 yards to the NIC00 Y defensive PAT Successful.",
+                  "Z punt 39 yards to the UNW20 muffed by W at UNW20 recovered by STO V at UNW00 TOUCHDOWN, clock 14:00.",
+                  "Z punt 40 yards to the UNW10, W return 90 yards to the STO00, TOUCHDOWN."),
+    pos_team = c("Nichols", "St. Olaf", "St. Olaf"),
+    touchdown = c(FALSE, TRUE, TRUE), turnover = c(FALSE, TRUE, FALSE), safety = FALSE,
+    kicker_recovered = FALSE, penalty_no_play = FALSE,
+    recovering_team = c("MIT", "St. Olaf", NA)
+  )
+  expect_equal(score_points(kept), c(-2L, 6L, -6L))
+})
+
 test_that("is_no_play reads the text only", {
   expect_equal(
     is_no_play(c(

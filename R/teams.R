@@ -35,8 +35,9 @@ parse_matchup <- function(tbls) {
 #' @keywords internal
 build_team_map <- function(classified, other_names) {
   rt <- classified$row_type
-  header <- stringr::str_match(classified$play, "^(.*?) at \\d{1,2}:\\d{2}$")[, 2]
-  start <- stringr::str_match(classified$play, stringr::regex("^(.*?) drive start at", ignore_case = TRUE))[, 2]
+  team <- drive_row_team(classified$play)
+  header <- ifelse(rt == "drive_header", team, NA_character_)
+  start <- ifelse(rt == "drive_start", team, NA_character_)
   canonical <- unique(stats::na.omit(start[rt == "drive_start"]))
 
   map <- stats::setNames(canonical, canonical)
@@ -177,4 +178,22 @@ refine_kickoffs_by_kicker <- function(kickoffs, kept, actor_map, teams) {
     kickoffs$kicker_recovered[i] <- recovered
   }
   kickoffs
+}
+
+#' The team named on a drive header or drive-start row
+#'
+#' Drive headers read "TEAM at MM:SS" (some stat crews drop the clock:
+#' "Virginia-Lynchburg at"); drive-start rows read "TEAM drive start at
+#' MM:SS.", sometimes after a clock ("clock 09:08, LaGrange College drive
+#' start at 09:08."). Callers apply this to drive_header / drive_start rows.
+#'
+#' @param play Play text.
+#' @return Character vector of team spellings (NA when neither shape matches).
+#' @keywords internal
+drive_row_team <- function(play) {
+  p <- stringr::str_remove(play, stringr::regex("^clock \\d{1,2}:\\d{2},\\s*", ignore_case = TRUE))
+  dplyr::coalesce(
+    stringr::str_match(p, stringr::regex("^(.*?) drive start at", ignore_case = TRUE))[, 2],
+    stringr::str_match(p, "^(.*?) at(?: \\d{1,2}:\\d{2})?$")[, 2]
+  )
 }

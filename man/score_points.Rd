@@ -8,7 +8,8 @@ score_points(kept)
 }
 \arguments{
 \item{kept}{Kept rows with \code{play_type}, \code{play_text}, \code{touchdown},
-\code{turnover}, \code{safety}, \code{kicker_recovered}, \code{penalty_no_play}.}
+\code{turnover}, \code{safety}, \code{kicker_recovered}, \code{penalty_no_play},
+\code{recovering_team} (from \code{\link[=parse_outcome_flags]{parse_outcome_flags()}}).}
 }
 \value{
 Integer vector.
@@ -16,8 +17,9 @@ Integer vector.
 \description{
 TD +6 for the offense, -6 when the defense scores (interception or
 fumble return, punt / blocked-kick return, or a kickoff the kicking team
-recovers and scores on); FG +3; extra point +1; two-point try +2; safety
-conceded -2. Zero otherwise, and zero on every \code{penalty_no_play} row.
+recovers and scores on); a punt or kick the kicking team recovers (a muff)
+and scores on is +6; FG +3; extra point +1; two-point try +2; safety
+conceded -2; a try the defense returns ("defensive PAT Successful") -2. Zero otherwise, and zero on every \code{penalty_no_play} row.
 On a kickoff \code{pos_team} is the receiving team, so a kickoff-return TD is
 +6.
 }

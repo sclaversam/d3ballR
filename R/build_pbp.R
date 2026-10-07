@@ -8,9 +8,21 @@ extract_game_id <- function(game_url) {
   stringr::str_match(game_url, "boxscores/([^./]+)\\.xml")[, 2]
 }
 
+#' Is this table the line score?
+#'
+#' A table with at least 2 rows and either a "Final" column or a first
+#' column headed "Scoring" (a game stopped early has no "Final" column).
+#'
+#' @param t A data frame.
+#' @return TRUE / FALSE.
+#' @keywords internal
+is_line_score <- function(t) {
+  nrow(t) >= 2 && ("Final" %in% colnames(t) || identical(colnames(t)[1], "Scoring"))
+}
+
 #' Read the two team names off a boxscore's line-score table
 #'
-#' Located by content (a table with a "Final" column and at least 2 rows),
+#' Located by content (see [is_line_score()]),
 #' not by position, same philosophy as [find_plays()]. Each of the first two
 #' rows is "TEAM NAME (W-L, conf)" or "TEAM NAME (W-L)"; the trailing
 #' parenthetical record is stripped.
@@ -20,7 +32,7 @@ extract_game_id <- function(game_url) {
 #' @keywords internal
 find_line_score_teams <- function(tbls) {
   for (t in tbls) {
-    if ("Final" %in% colnames(t) && nrow(t) >= 2) {
+    if (is_line_score(t)) {
       raw <- stringr::str_squish(as.character(t[[1]][1:2]))
       return(stringr::str_remove(raw, "\\s*\\([^)]*\\)\\s*$"))
     }
@@ -30,17 +42,20 @@ find_line_score_teams <- function(tbls) {
 
 #' Read the two final scores off a boxscore's line-score table
 #'
-#' Same table as [find_line_score_teams()]; the "Final" column.
+#' Same table as [find_line_score_teams()]; the "Final" column. A game
+#' stopped early has no "Final" column: its last column is the score when
+#' play stopped ("3rd QTR - 04:19" in Case Western Reserve at Rowan, 2025).
 #'
 #' @param tbls A list of data frames (from [tables_on()]).
 #' @return Integer vector of length 2, named by the line-score team names.
 #' @keywords internal
 find_line_score_finals <- function(tbls) {
   for (t in tbls) {
-    if ("Final" %in% colnames(t) && nrow(t) >= 2) {
+    if (is_line_score(t)) {
       raw <- stringr::str_squish(as.character(t[[1]][1:2]))
       nm <- stringr::str_remove(raw, "\\s*\\([^)]*\\)\\s*$")
-      return(stats::setNames(suppressWarnings(as.integer(t[["Final"]][1:2])), nm))
+      final <- if ("Final" %in% colnames(t)) t[["Final"]] else t[[ncol(t)]]
+      return(stats::setNames(suppressWarnings(as.integer(final[1:2])), nm))
     }
   }
   stop("No line-score table found. Open the page and check the layout.")
@@ -168,13 +183,8 @@ derive_quarter <- function(classified) {
 #'   forward filled, canonical names).
 #' @keywords internal
 derive_possession <- function(classified, team_map) {
-  header_team <- stringr::str_match(classified$play, "^(.*?) at \\d{1,2}:\\d{2}$")[, 2]
-  start_team <- stringr::str_match(classified$play, stringr::regex("^(.*?) drive start at", ignore_case = TRUE))[, 2]
-  possession_here <- dplyr::case_when(
-    classified$row_type == "drive_header" ~ header_team,
-    classified$row_type == "drive_start" ~ start_team,
-    TRUE ~ NA_character_
-  )
+  possession_here <- ifelse(classified$row_type %in% c("drive_header", "drive_start"),
+                            drive_row_team(classified$play), NA_character_)
   classified$possession <- unname(team_map[possession_here])
   tidyr::fill(classified, "possession", .direction = "down")
 }

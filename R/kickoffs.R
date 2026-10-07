@@ -54,10 +54,7 @@ assign_kickoffs <- function(full, teams, team_map, own_side, text_team, scores) 
   ko <- which(rt == "kickoff")
   kept <- rt %in% kept_row_types
   marker <- rt %in% c("drive_header", "drive_start")
-  marker_team <- dplyr::coalesce(
-    stringr::str_match(full$play, "^(.*?) at \\d{1,2}:\\d{2}$")[, 2],
-    stringr::str_match(full$play, stringr::regex("^(.*?) drive start at", ignore_case = TRUE))[, 2]
-  )
+  marker_team <- ifelse(marker, drive_row_team(full$play), NA_character_)
   marker_team <- unname(team_map[marker_team])
 
   res <- vector("list", length(ko))
