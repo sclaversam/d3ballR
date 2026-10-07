@@ -1,10 +1,31 @@
 "game_id","season","game_date","week","season_type","away","home","n_rows","away_final","home_final","away_pts_parsed","home_pts_parsed","week_source","score_reconciled"
+"20250904_2g4w",2025,"2025-09-04",1,"regular","Brockport","Buffalo State",143,41,0,41,0,"index",TRUE
+"20250904_d231",2025,"2025-09-04",1,"regular","Carroll","UW-Eau Claire",149,7,29,7,29,"index",TRUE
+"20250904_e307",2025,"2025-09-04",1,"regular","Augsburg","Valley City State",143,0,27,0,27,"index",TRUE
+"20250904_hjux",2025,"2025-09-04",1,"regular","Hiram","Heidelberg",191,27,65,27,65,"index",TRUE
 "20250904_hz19",2025,"2025-09-04",1,"regular","Franklin and Marshall","Lebanon Valley",173,31,21,31,21,"index",TRUE
+"20250904_ndb9",2025,"2025-09-04",1,"regular","Greenville","Illinois College",141,9,28,9,28,"index",TRUE
+"20250904_x3up",2025,"2025-09-04",1,"regular","Averett","N.C. Wesleyan",170,12,64,12,64,"index",TRUE
+"20250904_x4o2",2025,"2025-09-04",1,"regular","Millsaps","Belhaven",177,24,50,24,50,"index",TRUE
+"20250904_x9dy",2025,"2025-09-04",1,"regular","Pacific","Howard Payne",143,13,21,13,21,"index",TRUE
+"20250904_xvn8",2025,"2025-09-04",1,"regular","Coe","Cornell",167,62,6,62,6,"index",TRUE
+"20250904_zbay",2025,"2025-09-04",1,"regular","Marietta","Westminster (Pa.)",151,12,8,12,8,"index",TRUE
+"20250904_zik0",2025,"2025-09-04",1,"regular","Trinity (Texas)","Texas Lutheran",163,26,14,26,14,"index",TRUE
+"20250905_0otb",2025,"2025-09-05",1,"regular","Bridgewater State","Curry",174,28,35,28,35,"index",TRUE
+"20250905_2ic2",2025,"2025-09-05",1,"regular","Hobart","Alfred",163,23,28,23,28,"index",TRUE
+"20250905_5sfv",2025,"2025-09-05",1,"regular","Norwich","St. Lawrence",142,3,19,3,19,"index",TRUE
 "20250905_8wt2",2025,"2025-09-05",1,"regular","Moravian","Muhlenberg",165,19,38,19,38,"index",TRUE
+"20250905_9lhe",2025,"2025-09-05",1,"regular","Concordia (Wis.)","Thiel",176,27,8,27,8,"index",TRUE
 "20250905_9opj",2025,"2025-09-05",1,"regular","McDaniel","Catholic",141,7,10,7,10,"index",TRUE
 "20250905_j032",2025,"2025-09-05",1,"regular","Ursinus","Alvernia",176,41,17,41,17,"index",TRUE
 "20250905_jdn4",2025,"2025-09-05",1,"regular","Dickinson","Randolph-Macon",164,34,48,34,48,"index",TRUE
+"20250905_jir1",2025,"2025-09-05",1,"regular","Dean","Fitchburg State",162,14,49,14,49,"index",TRUE
+"20250905_p2em",2025,"2025-09-05",1,"regular","Albright","Gallaudet",145,9,7,9,7,"index",TRUE
+"20250905_qsmw",2025,"2025-09-05",1,"regular","Montclair State","Merchant Marine",164,15,29,15,29,"index",TRUE
+"20250905_rgw0",2025,"2025-09-05",1,"regular","SUNY-Maritime","Massachusetts Maritime",150,21,14,21,14,"index",TRUE
 "20250905_wr9m",2025,"2025-09-05",1,"regular","Juniata","Gettysburg",196,31,30,31,30,"index",TRUE
+"20250906_034w",2025,"2025-09-06",1,"regular","Kalamazoo","Austin",163,14,10,14,10,"index",TRUE
+"20250906_09bx",2025,"2025-09-06",1,"regular","Wheaton (Ill.)","Mount Union",168,29,37,29,37,"index",TRUE
 "20250906_5qby",2025,"2025-09-06",1,"regular","Johns Hopkins","Ithaca",155,42,14,42,14,"index",TRUE
 "20250906_e064",2025,"2025-09-06",1,"regular","Carnegie Mellon","Chicago",158,20,0,20,0,"index",TRUE
 "20250913_6i95",2025,"2025-09-13",2,"regular","UW-La Crosse","Carnegie Mellon",166,38,14,38,14,"index",TRUE

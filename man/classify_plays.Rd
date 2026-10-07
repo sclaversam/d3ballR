@@ -30,10 +30,22 @@ distinct from the other five because it may need special handling later
 (it's driven off the same enforcement as the row before it, so it must
 never be double-counted as its own down)
 \item \code{replay_review} — "previous play upheld by review"
-\item \code{substitution} — "TEAM_PLAYER in at QB"
+\item \code{substitution} — "TEAM_PLAYER in at QB", "D. Brown Jr at QB for Albright."
+\item \code{annotation} — a note that isn't a play of its own: "Spiked" (after the
+incomplete pass that was the spike; the down doesn't advance again),
+"2:00 minute warning", "recovered by NAME" (a fragment repeating the
+kickoff's recovery)
 }
 }
 \details{
+Two more non-play types, with no down-and-distance requirement:
+\itemize{
+\item \code{penalty_note} — a declined or offsetting penalty on its own row with no
+situation (seen between a touchdown and its try). It changes nothing, so
+it's dropped. An accepted penalty in that spot still lands in \code{other}.
+\item \code{blank} — a row whose text is just "." (after a coin toss, or at the half)
+}
+
 \code{other} is the unknown bucket and should come back empty; anything landing
 there means a new row shape has appeared and the classifier needs a new
 rule, not that the row should be silently dropped.

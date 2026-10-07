@@ -39,12 +39,14 @@ score_points <- function(kept) {
 
 #' Running score before each play
 #'
-#' The score before row i is the last score line printed before it plus any
-#' points scored on kept rows between that line and row i. That gets the
-#' extra point right: d3 prints the score line AFTER the try, so a PAT's
-#' "before" score already includes its touchdown's 6. Every score line is
-#' also checked against the play-by-play points since the previous line;
-#' mismatches are returned for the change log.
+#' The score before row i is the running total of the points parsed on the
+#' rows before it (`score_pts`, credited to `pos_team` when positive and
+#' `def_pos_team` when negative). A PAT's "before" score therefore includes
+#' its touchdown. d3's printed score lines are not used as the source,
+#' because a stat crew sometimes skips one and the following lines lag a
+#' score behind. Each line is compared with the parsed total at that point
+#' instead (`checks`); the game's final score is reconciled separately
+#' against the boxscore.
 #'
 #' @param kept Kept rows with `row`, `pos_team`, `def_pos_team`,
 #'   `score_pts`.
@@ -59,25 +61,16 @@ running_score <- function(kept, scores, teams) {
   p1 <- ifelse(scorer %in% teams[1], abs(kept$score_pts), 0L)
   p2 <- ifelse(scorer %in% teams[2], abs(kept$score_pts), 0L)
 
-  n <- nrow(kept)
-  s1 <- s2 <- integer(n)
-  for (i in seq_len(n)) {
-    prior <- scores[scores$row < kept$row[i], ]
-    base_row <- if (nrow(prior)) prior$row[nrow(prior)] else 0L
-    b1 <- if (nrow(prior)) prior$score_1[nrow(prior)] else 0L
-    b2 <- if (nrow(prior)) prior$score_2[nrow(prior)] else 0L
-    between <- kept$row > base_row & kept$row < kept$row[i]
-    s1[i] <- b1 + sum(p1[between])
-    s2[i] <- b2 + sum(p2[between])
-  }
+  # score before each row = running total of the parsed points before it
+  s1 <- cumsum(c(0L, p1))[seq_len(nrow(kept))]
+  s2 <- cumsum(c(0L, p2))[seq_len(nrow(kept))]
 
+  # d3's printed score lines are a check, not the source: compare each with
+  # the parsed total at that point
   checks <- do.call(rbind, lapply(seq_len(nrow(scores)), function(j) {
-    prev_row <- if (j > 1) scores$row[j - 1] else 0L
-    b1 <- if (j > 1) scores$score_1[j - 1] else 0L
-    b2 <- if (j > 1) scores$score_2[j - 1] else 0L
-    between <- kept$row > prev_row & kept$row < scores$row[j]
+    before <- kept$row < scores$row[j]
     data.frame(row = scores$row[j], stated_1 = scores$score_1[j], stated_2 = scores$score_2[j],
-               parsed_1 = b1 + sum(p1[between]), parsed_2 = b2 + sum(p2[between]))
+               parsed_1 = sum(p1[before]), parsed_2 = sum(p2[before]))
   }))
   if (!is.null(checks)) checks$ok <- checks$stated_1 == checks$parsed_1 & checks$stated_2 == checks$parsed_2
 

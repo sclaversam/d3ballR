@@ -9,6 +9,34 @@ test_that("classify_plays types a kickoff with a return penalty as kickoff", {
   expect_equal(classify_plays(plays)$row_type, c("kickoff", "kickoff"))
 })
 
+test_that("classify_plays types the all-D3 row shapes (no 'other')", {
+  plays <- tibble::tibble(
+    situation = c("3 plays, -12 yards, 2:23 elapsed", "2nd and 3 at AUG41", "1st and 10 at MUHL48",
+                  "2nd and 10 at HOBART43", "1st and 10 at ALBFB35", "1st and 10 at UC35",
+                  "2nd and 19 at GAL22", "4th and 8 at ALBFB22", "1st and 10 at DSON41",
+                  "", "", "1st and 10 at GC35", "1st and 10 at X20", ""),
+    play = c("3 plays, -12 yards, 2:23 elapsed", "Clock 02:00.", "clock 0:26",
+             "Spiked", "Gallaudet wins the toss and will defer", "Ursinus to receive and defense the East goal",
+             "D. Brown Jr at QB for Albright.", "2:00 minute warning", "recovered by Sorensen",
+             "PENALTY MCD Pass Interference declined.",
+             "PENALTY F&M UNS: Unsportsmanlike Conduct offsetting MCD UNS: Unsportsmanlike Conduct offsetting. NO PLAY.",
+             ".", "(03:20). N.C. Wesleyan SAFETY, clock 03:20.",
+             "PENALTY MCD Holding 10 yards from MCD20 to MCD10.")
+  )
+  expect_equal(classify_plays(plays)$row_type,
+               c("drive_footer", "bare_clock", "bare_clock", "annotation", "coin_toss", "coin_toss",
+                 "substitution", "annotation", "annotation", "penalty_note", "penalty_note", "blank",
+                 "play", "other"))  # an accepted penalty with no situation still surfaces
+})
+
+test_that("play_actor reads the name before the verb", {
+  expect_equal(play_actor(c("(04:23) No Huddle-Shotgun Booker,Jayden pass complete to X for 5 yards.",
+                            "Jesch,Mateo onside kickoff 12 yards to the WHE47.",
+                            "Kneel down by Andrew Deutsch at CMU30 for loss of 1 yard.",
+                            "TEAM rush for loss of 2 yards.")),
+               c("Booker,Jayden", "Jesch,Mateo", "Andrew Deutsch", NA))
+})
+
 test_that("is_no_play reads the text only", {
   expect_equal(
     is_no_play(c(

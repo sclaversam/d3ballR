@@ -1,10 +1,31 @@
 "game_id","game_date","away","home","away_final","home_final","away_pts_parsed","home_pts_parsed","score_reconciled"
+"20250904_2g4w","2025-09-04","Brockport","Buffalo State",41,0,41,0,TRUE
+"20250904_d231","2025-09-04","Carroll","UW-Eau Claire",7,29,7,29,TRUE
+"20250904_e307","2025-09-04","Augsburg","Valley City State",0,27,0,27,TRUE
+"20250904_hjux","2025-09-04","Hiram","Heidelberg",27,65,27,65,TRUE
 "20250904_hz19","2025-09-04","Franklin and Marshall","Lebanon Valley",31,21,31,21,TRUE
+"20250904_ndb9","2025-09-04","Greenville","Illinois College",9,28,9,28,TRUE
+"20250904_x3up","2025-09-04","Averett","N.C. Wesleyan",12,64,12,64,TRUE
+"20250904_x4o2","2025-09-04","Millsaps","Belhaven",24,50,24,50,TRUE
+"20250904_x9dy","2025-09-04","Pacific","Howard Payne",13,21,13,21,TRUE
+"20250904_xvn8","2025-09-04","Coe","Cornell",62,6,62,6,TRUE
+"20250904_zbay","2025-09-04","Marietta","Westminster (Pa.)",12,8,12,8,TRUE
+"20250904_zik0","2025-09-04","Trinity (Texas)","Texas Lutheran",26,14,26,14,TRUE
+"20250905_0otb","2025-09-05","Bridgewater State","Curry",28,35,28,35,TRUE
+"20250905_2ic2","2025-09-05","Hobart","Alfred",23,28,23,28,TRUE
+"20250905_5sfv","2025-09-05","Norwich","St. Lawrence",3,19,3,19,TRUE
 "20250905_8wt2","2025-09-05","Moravian","Muhlenberg",19,38,19,38,TRUE
+"20250905_9lhe","2025-09-05","Concordia (Wis.)","Thiel",27,8,27,8,TRUE
 "20250905_9opj","2025-09-05","McDaniel","Catholic",7,10,7,10,TRUE
 "20250905_j032","2025-09-05","Ursinus","Alvernia",41,17,41,17,TRUE
 "20250905_jdn4","2025-09-05","Dickinson","Randolph-Macon",34,48,34,48,TRUE
+"20250905_jir1","2025-09-05","Dean","Fitchburg State",14,49,14,49,TRUE
+"20250905_p2em","2025-09-05","Albright","Gallaudet",9,7,9,7,TRUE
+"20250905_qsmw","2025-09-05","Montclair State","Merchant Marine",15,29,15,29,TRUE
+"20250905_rgw0","2025-09-05","SUNY-Maritime","Massachusetts Maritime",21,14,21,14,TRUE
 "20250905_wr9m","2025-09-05","Juniata","Gettysburg",31,30,31,30,TRUE
+"20250906_034w","2025-09-06","Kalamazoo","Austin",14,10,14,10,TRUE
+"20250906_09bx","2025-09-06","Wheaton (Ill.)","Mount Union",29,37,29,37,TRUE
 "20250906_5qby","2025-09-06","Johns Hopkins","Ithaca",42,14,42,14,TRUE
 "20250906_e064","2025-09-06","Carnegie Mellon","Chicago",20,0,20,0,TRUE
 "20250913_6i95","2025-09-13","UW-La Crosse","Carnegie Mellon",38,14,38,14,TRUE

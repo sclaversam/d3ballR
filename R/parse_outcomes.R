@@ -2,9 +2,10 @@
 #'
 #' "to the UCHI45", "at RMCFB32", "to the McD28", "to the Wolves05": a token
 #' that starts with a capital letter, then the yard number. Tokens can be
-#' upper-case codes, mixed case ("McD"), or nicknames ("Wolves").
+#' upper-case codes, mixed case ("McD"), nicknames ("Wolves"), or two words
+#' ("MASS. MA27": the token is "MASS. MA").
 #' @keywords internal
-text_yard_pattern <- "(?:to the|at the|at|from|to) ([A-Z][A-Za-z&.]{1,9}) ?(\\d{1,2})\\b"
+text_yard_pattern <- "(?:to the|at the|at|from|to) ([A-Z][A-Za-z&.]{1,9}(?: [A-Z][A-Za-z&.]{0,9})?) ?(\\d{1,2})\\b"
 
 #' Map play-text team tokens to team names
 #'
@@ -41,7 +42,7 @@ infer_text_team <- function(df, own_side) {
   # votes: last yardline in the play text vs the next row's situation yardline
   end_tok <- vapply(m, function(x) if (nrow(x)) x[nrow(x), 2] else NA_character_, character(1))
   end_num <- vapply(m, function(x) if (nrow(x)) as.integer(x[nrow(x), 3]) else NA_integer_, integer(1))
-  sm <- stringr::str_match(df$situation, " at ([A-Za-z&]+) ?(\\d{1,2})$")
+  sm <- stringr::str_match(df$situation, " at ([A-Za-z&.' ]+?) ?(\\d{1,2})$")
   n <- nrow(df)
   nxt_tok <- c(sm[-1, 2], NA)
   nxt_num <- c(suppressWarnings(as.integer(sm[-1, 3])), NA)

@@ -9,7 +9,7 @@ play_type_categories <- c(
   "field_goal_blocked", "field_goal_missed", "field_goal_good",
   "punt_blocked", "punt_with_return", "punt_no_return",
   "sack", "pass_intercepted", "pass_complete", "pass_incomplete",
-  "rush", "kneel"
+  "rush", "kneel", "safety"
 )
 
 #' Categorize each `play` row by its play type
@@ -59,6 +59,8 @@ parse_play_type <- function(classified) {
     stringr::str_detect(p, ic("pass complete")) ~ "pass_complete",
     stringr::str_detect(p, ic("pass incomplete")) ~ "pass_incomplete",
     stringr::str_detect(p, ic("\\brush\\b")) ~ "rush",
+    # no play verb, just "TEAM SAFETY" (e.g. an intentional safety)
+    stringr::str_detect(p, "\\bSAFETY\\b") ~ "safety",
     TRUE ~ "UNPLACED"
   )
 

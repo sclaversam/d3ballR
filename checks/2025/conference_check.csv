@@ -1,10 +1,31 @@
 "game_id","game_date","season_type","away","home","away_team_conference","home_team_conference","conference_game","shared_conference","agree"
+"20250904_2g4w","2025-09-04","regular","Brockport","Buffalo State",,,,FALSE,
+"20250904_d231","2025-09-04","regular","Carroll","UW-Eau Claire",,,,FALSE,
+"20250904_e307","2025-09-04","regular","Augsburg","Valley City State",,,,FALSE,
+"20250904_hjux","2025-09-04","regular","Hiram","Heidelberg",,,,FALSE,
 "20250904_hz19","2025-09-04","regular","Franklin and Marshall","Lebanon Valley","Centennial Conference","Middle Atlantic Conference",FALSE,FALSE,TRUE
+"20250904_ndb9","2025-09-04","regular","Greenville","Illinois College",,,,FALSE,
+"20250904_x3up","2025-09-04","regular","Averett","N.C. Wesleyan",,,,FALSE,
+"20250904_x4o2","2025-09-04","regular","Millsaps","Belhaven",,,,FALSE,
+"20250904_x9dy","2025-09-04","regular","Pacific","Howard Payne",,,,FALSE,
+"20250904_xvn8","2025-09-04","regular","Coe","Cornell",,,,FALSE,
+"20250904_zbay","2025-09-04","regular","Marietta","Westminster (Pa.)",,"Presidents' Athletic Conference",FALSE,FALSE,
+"20250904_zik0","2025-09-04","regular","Trinity (Texas)","Texas Lutheran",,,,FALSE,
+"20250905_0otb","2025-09-05","regular","Bridgewater State","Curry",,,,FALSE,
+"20250905_2ic2","2025-09-05","regular","Hobart","Alfred",,,,FALSE,
+"20250905_5sfv","2025-09-05","regular","Norwich","St. Lawrence",,,,FALSE,
 "20250905_8wt2","2025-09-05","regular","Moravian","Muhlenberg","Landmark Conference","Centennial Conference",FALSE,FALSE,TRUE
+"20250905_9lhe","2025-09-05","regular","Concordia (Wis.)","Thiel",,,,FALSE,
 "20250905_9opj","2025-09-05","regular","McDaniel","Catholic","Centennial Conference","Landmark Conference",FALSE,FALSE,TRUE
 "20250905_j032","2025-09-05","regular","Ursinus","Alvernia","Centennial Conference","Middle Atlantic Conference",FALSE,FALSE,TRUE
 "20250905_jdn4","2025-09-05","regular","Dickinson","Randolph-Macon","Centennial Conference","ODAC",FALSE,FALSE,TRUE
+"20250905_jir1","2025-09-05","regular","Dean","Fitchburg State",,,,FALSE,
+"20250905_p2em","2025-09-05","regular","Albright","Gallaudet",,,,FALSE,
+"20250905_qsmw","2025-09-05","regular","Montclair State","Merchant Marine",,,,FALSE,
+"20250905_rgw0","2025-09-05","regular","SUNY-Maritime","Massachusetts Maritime",,,,FALSE,
 "20250905_wr9m","2025-09-05","regular","Juniata","Gettysburg","Landmark Conference","Centennial Conference",FALSE,FALSE,TRUE
+"20250906_034w","2025-09-06","regular","Kalamazoo","Austin",,,,FALSE,
+"20250906_09bx","2025-09-06","regular","Wheaton (Ill.)","Mount Union",,"Ohio Athletic Conference",FALSE,FALSE,
 "20250906_5qby","2025-09-06","regular","Johns Hopkins","Ithaca","Centennial Conference","Liberty League",FALSE,FALSE,TRUE
 "20250906_e064","2025-09-06","regular","Carnegie Mellon","Chicago","Centennial Conference","Midwest Conference",FALSE,FALSE,TRUE
 "20250913_6i95","2025-09-13","regular","UW-La Crosse","Carnegie Mellon","WIAC","Centennial Conference",FALSE,FALSE,TRUE
