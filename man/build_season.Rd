@@ -40,9 +40,12 @@ always rebuilt too, so \code{out_dir} and the reports in \code{check_dir} always
 cover every game built so far for the season.
 }
 \details{
-Steps: the team-to-conference table for every team in those games
-(\code{\link[=build_conference_table]{build_conference_table()}}), then each game (\code{\link[=build_all_pbp]{build_all_pbp()}}), then the
-build report (\code{\link[=write_build_report]{write_build_report()}}).
+Steps: fetch every game page not yet cached (\code{\link[=prefetch_games]{prefetch_games()}}), then
+the team-to-conference table for every team in those games
+(\code{\link[=build_conference_table]{build_conference_table()}}), then build each game (\code{\link[=build_all_pbp]{build_all_pbp()}}),
+then the build report (\code{\link[=write_build_report]{write_build_report()}}). Game pages come first so a
+capped run spends its budget on games; conference columns are NA for
+teams not yet looked up and fill in on a later run.
 
 Fetching is cached (a page is never requested twice), throttled
 (\code{delay} seconds apart), capped (\code{max_requests} new requests per call),

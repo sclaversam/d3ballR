@@ -12,7 +12,8 @@ situation_pattern
 }
 \description{
 e.g. "1st and 10 at CMU35" or "1st and Goal at CMU06" or "4th and 3 at UC 25".
-The yardline's team-letters group is optional so a bare midfield number
+The team code can contain periods and a space ("MASS. MA27": the code is
+"MASS. MA"). The yardline's team-letters group is optional so a bare midfield number
 ("at 50") still parses down/distance/yard_num, with \code{yard_side} NA. A
 negative distance (d3 printed "4th and -2" once in 2025) is kept as
 printed rather than dropping the down.

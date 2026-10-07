@@ -39,7 +39,9 @@ on every row, so any value can be traced back to its source.
 **receiving** team, and `def_pos_team` is the kicking team, as in cfbfastR. On
 punts and field goals the kicking team stays `pos_team`. A **try** (PAT or
 two-point), and any penalty row between a score and the next kickoff, belongs
-to the **scoring** team.
+to the **scoring** team. The try's kicker or passer decides it when that player's team
+is known from their other plays; otherwise the team that kicks off next, then
+the score line.
 
 **Drives.** A drive is one team's continuous possession. A kickoff is play 1 of
 the receiving team's drive. A try stays on the drive of its scoring play, even
@@ -64,8 +66,10 @@ PLAY"), but none of it is credited:
   `field_goal_attempt`, `field_goal_made`, `punt`, `scoring_play`.
 
 **Score.** `pos_team_score` / `def_pos_team_score` are the score *before* the
-play. d3 prints the score line after the try, so a PAT's "before" score
-already includes its touchdown.
+play, summed from the parsed points of every earlier row. d3's printed score
+lines are used only as a check (a stat crew sometimes skips one), and the
+game total is reconciled against the boxscore final. A PAT's "before" score
+includes its touchdown.
 
 **Down, distance, field position.**
 - `yards_to_goal` is the distance to the opponent's end zone (own 25 → 75).
@@ -154,7 +158,7 @@ clock and seconds columns are NA in periods 5+.
 | 33 | `down_end` | integer | Down of the next snap in the half. | NA on scoring plays, tries, and when no snap follows in the half. | That snap's offense view. On a kickoff: the receiving team's first snap. |
 | 34 | `distance_end` | integer | Distance of the next snap. | As `down_end`. | |
 | 35 | `yards_to_goal_end` | integer | Yards to goal of the next snap. | As `down_end`. | After a punt, `yards_to_goal + yards_to_goal_end − 100` is the net punt. |
-| 36 | `play_type` | character | What happened. Snaps: `rush`, `pass_complete`, `pass_incomplete`, `pass_intercepted`, `sack`, `kneel`, `punt_no_return`, `punt_with_return`, `punt_blocked`, `field_goal_good`, `field_goal_missed`, `field_goal_blocked`. Other rows: `kickoff`, `extra_point`, `two_point`, `penalty_no_play` (dead-ball penalty, no snap). | Never NA. | A snap wiped out by a penalty keeps its call (e.g. `pass_complete`); check `penalty_no_play`. |
+| 36 | `play_type` | character | What happened. Snaps: `rush`, `pass_complete`, `pass_incomplete`, `pass_intercepted`, `sack`, `kneel`, `punt_no_return`, `punt_with_return`, `punt_blocked`, `field_goal_good`, `field_goal_missed`, `field_goal_blocked`, `safety` (a row reading only "TEAM SAFETY", with no play described). Other rows: `kickoff`, `extra_point`, `two_point`, `penalty_no_play` (dead-ball penalty, no snap). | Never NA. | A snap wiped out by a penalty keeps its call (e.g. `pass_complete`); check `penalty_no_play`. |
 | 37 | `scrimmage_play` | logical | The row has a down: a snap or a dead-ball penalty. | Never NA. | FALSE on kickoffs and tries. |
 | 38 | `yards_gained` | integer | Yards gained on the play itself, penalty yardage excluded. | NA on no-play rows, and on interceptions, punts, field goals, kickoffs, tries (not defined yet). | Filled for `rush`, `pass_complete`, `sack`, `kneel`; 0 for `pass_incomplete`. |
 | 39 | `rush` | logical | Designed run: `rush` or `kneel`. | Never NA. | A sack is not a rush here (NCAA counts it as one). |

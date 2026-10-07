@@ -5,7 +5,7 @@
 \alias{play_type_categories}
 \title{Play-type categories recognized within \code{row_type == "play"}}
 \format{
-An object of class \code{character} of length 12.
+An object of class \code{character} of length 13.
 }
 \usage{
 play_type_categories

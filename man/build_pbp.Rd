@@ -23,7 +23,9 @@ cached \code{data-raw/conferences/{season}*.csv} files are used when present
 \value{
 A tibble, one row per kept play, with the columns in
 \code{pbp_columns}. Attributes, for the validation reports and change log:
-\code{week_source} ("index" or "date fallback"), \code{shared_conference} (both
+\code{week_source} ("index" or "date fallback"), \code{unclassified} (rows the
+classifier put in its unknown \code{other} bucket; should be NULL),
+\code{shared_conference} (both
 teams in one conference; for the cross-check), \code{finals} (line-score
 final scores by canonical team name), \code{kickoffs} (the
 per-kickoff possession decisions from \code{\link[=assign_kickoffs]{assign_kickoffs()}}),

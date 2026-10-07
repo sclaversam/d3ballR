@@ -23,11 +23,11 @@ cfbfastR also puts `firstD_by_poss`, `firstD_by_yards`, `firstD_by_penalty` on t
 
 | flag | rows |
 |---|---|
-| firstD_by_kickoff | 652 |
-| firstD_by_poss | 735 |
-| firstD_by_yards | 1975 |
-| firstD_by_penalty | 176 |
-| new_series | 3538 |
+| firstD_by_kickoff | 845 |
+| firstD_by_poss | 999 |
+| firstD_by_yards | 2535 |
+| firstD_by_penalty | 244 |
+| new_series | 4623 |
 
 Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
@@ -35,10 +35,16 @@ Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**3541 series; 3538 have exactly one `new_series` row on their first snap row; 3 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 352.
+**4630 series; 4621 have exactly one `new_series` row on their first snap row; 9 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 517.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | first_row_text |
 |---|---|---|---|---|---|---|---|---|
+| 20250904_e307 | 136 | 137 | Valley City State | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Marty Gohn rush for 5 yards to the VCSU42 (Nick Norman). |
+| 20250904_hjux | 117 | 118 | Heidelberg | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | No Huddle-Shotgun Poorman,Ty pass incomplete short right to Mossbarger,Mason thrown to HEID16. |
+| 20250904_hjux | 155 | 157 | Heidelberg | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Haley,Korbyn rush right for 4 yards gain to the HIRAM22 (Cofield-Washington,Darius). |
+| 20250904_x3up | 116 | 117 | N.C. Wesleyan | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Sechrest,Trae rush middle for 8 yards gain to the NWC18 (Russell,Israel). |
+| 20250905_p2em | 119 | 124 | Gallaudet | 1 & 10 | 119, 123 | more than one new_series row | unexplained | J. Sargent pass incomplete to Jaylen Johnson. |
+| 20250905_rgw0 | 93 | 96 | Massachusetts Maritime | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Chase Dombroski rush for 2 yards to the MASS. MA39 (Ryan Costales). |
 | 20251115_bpex | 129 | 130 | Dickinson | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Ben Klassen rush for 3 yards to the DSON16 (CJ Kearney). |
 | 20251122_6ygb | 112 | 112 | Union | 1 & 10 | none | no new_series row | previous play has more than one yardage segment (a lateral): yards_gained reads only the first, so its first down is missed | Dj Wright rush for 1 yard to the MUHL12 (George Europe), PENALTY MUHL face mask (George Europe) 6 yards to the |
 | 20251122_6ygb | 158 | 159 | Muhlenberg | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TEAM rush for loss of 1 yard to the MUHL21. |

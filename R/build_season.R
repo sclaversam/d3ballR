@@ -8,9 +8,12 @@
 #' always rebuilt too, so `out_dir` and the reports in `check_dir` always
 #' cover every game built so far for the season.
 #'
-#' Steps: the team-to-conference table for every team in those games
-#' ([build_conference_table()]), then each game ([build_all_pbp()]), then the
-#' build report ([write_build_report()]).
+#' Steps: fetch every game page not yet cached ([prefetch_games()]), then
+#' the team-to-conference table for every team in those games
+#' ([build_conference_table()]), then build each game ([build_all_pbp()]),
+#' then the build report ([write_build_report()]). Game pages come first so a
+#' capped run spends its budget on games; conference columns are NA for
+#' teams not yet looked up and fill in on a later run.
 #'
 #' Fetching is cached (a page is never requested twice), throttled
 #' (`delay` seconds apart), capped (`max_requests` new requests per call),
@@ -40,6 +43,10 @@ build_season <- function(season, teams = NULL, max_requests = Inf, delay = 6,
   games <- idx[in_scope | idx$game_id %in% existing, ]
   message(season, ": ", nrow(games), " games in scope (", sum(games$game_id %in% existing), " already built)")
 
+  # fetch game pages first: they're the priority within a capped run. Team
+  # pages (conferences) come after, and are filled in by later runs if the
+  # budget or a refusal stops this one.
+  prefetch_games(games$boxscore_url)
   conf <- build_conference_table(season, unique(c(games$home, games$away)))
   built <- build_all_pbp(games$boxscore_url, out_dir = out_dir, check_dir = check_dir, conf = conf)
   write_build_report(season, teams, games, built, conf, check_dir)
@@ -84,6 +91,8 @@ write_build_report <- function(season, teams, games, built, conf, check_dir) {
   }
   utils::write.csv(cc, file.path(check_dir, "conference_check.csv"), row.names = FALSE, na = "")
 
+  unclassified <- do.call(rbind, lapply(built, attr, "unclassified"))
+  if (is.null(unclassified)) unclassified <- data.frame()
   rec <- utils::read.csv(file.path(check_dir, "score_reconciliation.csv"), na.strings = "")
   fail <- utils::read.csv(file.path(check_dir, "build_failures.csv"), na.strings = "")
   pending <- fail[grepl("^Not fetched", fail$error), ]
@@ -116,8 +125,36 @@ write_build_report <- function(season, teams, games, built, conf, check_dir) {
            " games with known conferences agree (", sum(is.na(cc$agree)), " not checkable yet). Disagreements:"), "",
     md_table(if (nrow(cc)) cc[cc$agree %in% FALSE, ] else cc), "",
     "## Failed games", "",
-    md_table(broken), ""
+    md_table(broken), "",
+    "## Unclassified rows", "",
+    "Rows the classifier couldn't type (its `other` bucket). They are dropped, so any here may hide a play: each needs a classifier rule.", "",
+    md_table(unclassified), ""
   )
   writeLines(out, file.path(check_dir, "build_report.md"))
   invisible(out)
+}
+
+#' Fetch (and cache) the play-by-play pages of games not yet cached
+#'
+#' Stops as soon as the request budget is reached or d3football refuses a
+#' request (see [fetch_html()]). Prints progress every 25 pages.
+#'
+#' @param boxscore_urls Boxscore URLs (without `?view=`).
+#' @return Invisibly, the number of pages fetched.
+#' @keywords internal
+prefetch_games <- function(boxscore_urls) {
+  urls <- paste0(boxscore_urls[!is.na(boxscore_urls)], "?view=plays")
+  cache_dir <- getOption("d3ballR.cache_dir", "data-raw/cache")
+  todo <- urls[!file.exists(file.path(cache_dir, vapply(urls, cache_key, character(1))))]
+  message(length(todo), " game pages not yet cached")
+  got <- 0L
+  for (u in todo) {
+    ok <- tryCatch({ fetch_html(u); TRUE }, error = function(e) FALSE)
+    if (!ok && (fetch_refused() || n_requests() >= getOption("d3ballR.max_requests", Inf) ||
+                isTRUE(getOption("d3ballR.offline", FALSE)))) break
+    if (ok) got <- got + 1L
+    if (ok && got %% 25L == 0L) message(format(Sys.time(), "%H:%M:%S"), " fetched ", got, " game pages")
+  }
+  message("fetched ", got, " game pages this run", if (fetch_refused()) " (stopped: d3football refused a request)" else "")
+  invisible(got)
 }

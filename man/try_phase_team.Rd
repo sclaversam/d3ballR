@@ -4,7 +4,7 @@
 \alias{try_phase_team}
 \title{Possession on try-phase rows: the team that just scored}
 \usage{
-try_phase_team(kept, scores, teams, kickoffs = NULL)
+try_phase_team(kept, scores, teams, kickoffs = NULL, actor_map = character())
 }
 \arguments{
 \item{kept}{Kept rows with \code{row}, \code{try_phase}, \code{play_type}, \code{play_text},
@@ -14,18 +14,24 @@ try_phase_team(kept, scores, teams, kickoffs = NULL)
 
 \item{teams}{The two canonical team names.}
 
-\item{kickoffs}{Output of \code{\link[=assign_kickoffs]{assign_kickoffs()}}. Fallback when the score
-line after the score is missing or covers two scores (d3 sometimes skips
-one): the team that kicks off next is the scoring team.}
+\item{kickoffs}{Output of \code{\link[=assign_kickoffs]{assign_kickoffs()}} (refined by the kicker).}
+
+\item{actor_map}{Output of \code{\link[=build_actor_map]{build_actor_map()}}.}
 }
 \value{
 Character vector: the corrected \code{pos_team}.
 }
 \description{
 A PAT / two-point try (and any penalty row between a score and the next
-kickoff) belongs to the scoring team, which is about to kick. The scorer
-is read off the first score line after the scoring play (after a safety,
-the team that conceded kicks instead). This fixes the try after a
+kickoff) belongs to the scoring team, which is about to kick. For the
+extra point / two-point try itself, the player named on it (kicker,
+passer, rusher) decides when their team is known (\code{\link[=build_actor_map]{build_actor_map()}}).
+Otherwise the scorer is the team that kicks off next in the same half (its teams come from the
+next drive header); if no kickoff follows (end of half, overtime), the
+first score line after the scoring play (after a safety, the team that
+conceded), else the scoring play's own offense. Score lines are not the
+first choice because d3 sometimes skips one and the rest lag a score
+behind (Dean at Fitchburg State, 2025). This fixes the try after a
 defensive touchdown, which otherwise inherits the team that was scored
 on.
 }

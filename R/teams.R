@@ -94,3 +94,87 @@ resolve_team <- function(x, team_map, own_side, text_team) {
 other_team <- function(x, teams) {
   ifelse(is.na(x), NA_character_, ifelse(x == teams[1], teams[2], teams[1]))
 }
+
+#' The player a play description starts with (its "actor")
+#'
+#' The rusher, passer, sacked QB, punter, or kicker: the name right before the
+#' play's verb, after an optional printed clock ("(04:23) ") and formation
+#' ("No Huddle-Shotgun", "Shotgun", ...). Works for both "Booker,Jayden" and
+#' "Andrew Deutsch" styles. "Kneel down by NAME" gives NAME. "TEAM" (a team
+#' play) gives NA.
+#'
+#' @param text Play descriptions.
+#' @return Character vector (NA when no name is found).
+#' @keywords internal
+play_actor <- function(text) {
+  t <- stringr::str_remove(text, "^\\(\\d{1,2}:\\d{2}\\)\\s*")
+  t <- stringr::str_remove(t, stringr::regex("^((No Huddle-)?(Shotgun|Pistol|Under Center|Wildcat)|No Huddle)\\s+", ignore_case = TRUE))
+  kneel <- stringr::str_match(t, stringr::regex("^Kneel down by (.+?) (?:at|for)\\b", ignore_case = TRUE))[, 2]
+  verb <- "(?:onside kickoff|kickoff|kick attempt|field goal attempt|pass attempt|rush attempt|pass complete|pass incomplete|pass intercepted|sacked|punt|rush|pass)\\b"
+  a <- stringr::str_match(t, paste0("^(.{2,40}?) ", verb))[, 2]
+  a <- dplyr::coalesce(kneel, a)
+  a <- stringr::str_squish(a)
+  ifelse(is.na(a) | toupper(a) == "TEAM", NA_character_, a)
+}
+
+#' Which team each player name belongs to, learned from plays with a known team
+#'
+#' Training rows: snaps (their offense is known from the drive headers), and
+#' ordinary kickoffs decided by the drive header (the kicker is on the
+#' kicking team). Onside kicks are left out, since those are what the map is
+#' used to check. A name is mapped when at least 80% of its plays agree.
+#'
+#' @param kept Kept rows with `play_type`, `play_text`, `pos_team`, `row`.
+#' @param kickoffs Output of [assign_kickoffs()].
+#' @return Named character vector: player name -> team.
+#' @keywords internal
+build_actor_map <- function(kept, kickoffs) {
+  snap <- kept$play_type %in% play_type_categories
+  ko <- kickoffs[kickoffs$rule == "header" & !kickoffs$kicker_recovered, ]
+  ko_text <- kept$play_text[match(ko$row, kept$row)]
+  ko <- ko[!stringr::str_detect(ko_text, stringr::regex("on-?side", ignore_case = TRUE)), ]
+  d <- data.frame(
+    actor = c(play_actor(kept$play_text[snap]), play_actor(kept$play_text[match(ko$row, kept$row)])),
+    team = c(kept$pos_team[snap], ko$kicking_team)
+  )
+  d <- d[!is.na(d$actor) & !is.na(d$team), ]
+  if (!nrow(d)) return(character())
+  tab <- table(d$actor, d$team)
+  share <- apply(tab, 1, max) / rowSums(tab)
+  best <- colnames(tab)[apply(tab, 1, which.max)]
+  stats::setNames(best[share >= 0.8], rownames(tab)[share >= 0.8])
+}
+
+#' Correct kickoffs using the kicker's team
+#'
+#' The kicker named on a kickoff is on the kicking team. When the kicker's
+#' team is known ([build_actor_map()]) it decides the kicking team, and if
+#' the next drive belongs to that same team, the kicking team recovered (an
+#' onside kick, or a return fumble), even when the text never says
+#' "recovered by". Example: "Jesch,Mateo onside kickoff 12 yards to the
+#' WHE47." followed by a Wheaton drive.
+#'
+#' @param kickoffs Output of [assign_kickoffs()].
+#' @param kept Kept rows with `row`, `play_text`.
+#' @param actor_map Output of [build_actor_map()].
+#' @param teams The two canonical team names.
+#' @return `kickoffs`, with `kicking_team`, `receiving_team`,
+#'   `kicker_recovered`, `rule`, `disagreement` updated where the kicker
+#'   decides.
+#' @keywords internal
+refine_kickoffs_by_kicker <- function(kickoffs, kept, actor_map, teams) {
+  kicker <- play_actor(kept$play_text[match(kickoffs$row, kept$row)])
+  kt <- unname(actor_map[kicker])
+  for (i in which(!is.na(kt))) {
+    recovered <- isTRUE(kickoffs$header_team[i] == kt[i]) || kickoffs$kicker_recovered[i]
+    if (!identical(kickoffs$kicking_team[i], kt[i]) || recovered != kickoffs$kicker_recovered[i]) {
+      kickoffs$disagreement[i] <- paste0("kicker ", kicker[i], " is ", kt[i], "; was ", kickoffs$rule[i],
+                                         " (kicking ", kickoffs$kicking_team[i], ")")
+      kickoffs$rule[i] <- "kicker"
+    }
+    kickoffs$kicking_team[i] <- kt[i]
+    kickoffs$receiving_team[i] <- other_team(kt[i], teams)
+    kickoffs$kicker_recovered[i] <- recovered
+  }
+  kickoffs
+}
