@@ -1,0 +1,9 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^CLAUDE\.md$
+^docs$
+^scripts$
+^pbp$
+^checks$
+^data-raw$
+^\.claude$

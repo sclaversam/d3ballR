@@ -71,7 +71,7 @@ test_that("overtime: the first snap of each OT possession is firstD_by_poss (inc
 })
 
 test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {
-  dir <- test_path("../../analysis/pbp")
+  dir <- test_path("../../pbp")
   files <- list.files(dir, pattern = "\\.csv$", recursive = TRUE, full.names = TRUE)
   skip_if(!length(files), "no built games")
   g1 <- files[basename(files) == "20250906_e064.csv"]

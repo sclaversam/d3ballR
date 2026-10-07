@@ -22,7 +22,7 @@
 #' @param check_dir Output directory.
 #' @return Invisibly, a named list of the report data frames.
 #' @export
-write_pbp_checks <- function(games, check_dir = "analysis/checks") {
+write_pbp_checks <- function(games, check_dir = "checks") {
   dir.create(check_dir, showWarnings = FALSE, recursive = TRUE)
   reports <- list()
 

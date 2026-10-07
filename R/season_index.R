@@ -19,7 +19,7 @@ read_season_dates <- function(path = "data-raw/season_dates.csv") {
 #'
 #' The "{season} NCAA Division III football season" infobox has a line like
 #' `| regular_season = {{nowrap|September 1 – November 16, 2024}}`. The end
-#' date is the last "Month Day[, Year]" in that value; a missing year means
+#' date is the last "Month Day (, Year)" in that value; a missing year means
 #' the season year.
 #'
 #' @param wikitext Page wikitext.

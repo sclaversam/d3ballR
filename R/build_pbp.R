@@ -124,7 +124,7 @@ game_calendar <- function(game, index, season_dates) {
 #'
 #' Reads the quarter number off two row shapes typed `quarter` by
 #' [classify_plays()]: the bare "1st"/"2nd"/"3rd"/"4th" marker, and
-#' "Start of Nth quarter, clock M:SS[, ...]." Overtime markers ("OT",
+#' "Start of Nth quarter, clock M:SS, ...." Overtime markers ("OT",
 #' "Start of OT quarter", "2OT") give periods 5, 6, ... "End of half"/"End of game"
 #' rows carry no digit and are left NA here, which is correct -- forward-fill
 #' carries the still-current quarter through them.
@@ -319,7 +319,7 @@ derive_goal_to_go <- function(df) {
 #' Loosely parse yards gained from a play description
 #'
 #' Play yards only, penalty enforcement excluded (conventions 1, 4, 5 in
-#' `analysis/pbp_schema_and_build_plan.md`). Only the text BEFORE the
+#' `docs/schema.md` (Key conventions)). Only the text BEFORE the
 #' "PENALTY" clause is read, so enforcement yardage ("N yard(s) from X to
 #' Y" / "N yards to the X") can never land here. NA on every no-play row
 #' (convention 3): the wiped-out attempt's "for 54 yards" is not credited.
@@ -371,7 +371,7 @@ parse_yards_gained <- function(play_text, play_type, no_play) {
 
 #' Output column order
 #'
-#' cfbfastR-aligned. See `analysis/pbp_schema.md` for the data dictionary.
+#' cfbfastR-aligned. See `docs/schema.md` for the data dictionary.
 #' @keywords internal
 pbp_columns <- c(
   "game_id", "season", "game_date", "week", "season_type",
@@ -543,11 +543,27 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
   kept$conference_game <- gc$conference_game
   kept$play_index <- seq_len(nrow(kept))
 
+  # Team names: within a game every spelling was mapped to one name (the
+  # drive-start spelling), but stat crews spell teams differently from game
+  # to game ("Ursinus", "URSINUS", "URSINUS COLLEGE"). The season index
+  # (scoreboard) spells each team one way all season, so output uses that.
+  to_index <- stats::setNames(c(cal$index_home, cal$index_away), c(kept$home[1], kept$away[1]))
+  rename <- function(x) {
+    ifelse(is.na(x), NA_character_, vapply(strsplit(x, "; ", fixed = TRUE), function(p) {
+      m <- unname(to_index[p])
+      paste(ifelse(is.na(m), p, m), collapse = "; ")
+    }, character(1)))
+  }
+  for (col in c("home", "away", "pos_team", "def_pos_team", "penalized_team")) kept[[col]] <- rename(kept[[col]])
+  for (col in c("kicking_team", "receiving_team", "header_team", "context_kicker", "recovered_by")) {
+    kickoffs[[col]] <- rename(kickoffs[[col]])
+  }
+  finals <- game$finals
+  names(finals) <- rename(unname(team_map[names(finals)]))
+
   out <- kept[, pbp_columns]
   attr(out, "week_source") <- cal$week_source
   attr(out, "shared_conference") <- gc$shared_conference
-  finals <- game$finals
-  names(finals) <- unname(team_map[names(finals)])
   attr(out, "finals") <- finals
   kickoffs$play_index <- kept$play_index[ko]
   kickoffs$period <- kept$period[ko]

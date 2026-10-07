@@ -1,6 +1,6 @@
 #' Play-type categories recognized within `row_type == "play"`
 #'
-#' From `analysis/play_type_inventory.csv`, built by categorizing every play
+#' From a hand-checked play-type inventory, built by categorizing every play
 #' row across all 11 CMU 2025 games by hand-checked signature. Twelve
 #' categories, zero UNPLACED once `verb_pattern` (see `R/classify.R`) was
 #' tightened to stop matching "Pass" inside penalty names.
@@ -15,7 +15,7 @@ play_type_categories <- c(
 #' Categorize each `play` row by its play type
 #'
 #' Ordered `case_when` on the `play` description text, same signatures used to
-#' build `analysis/play_type_inventory.csv`. Ordering matters where one
+#' build that inventory. Ordering matters where one
 #' pattern is a superset of another:
 #' - `field_goal_blocked` before `field_goal_missed`/`field_goal_good`, since
 #'   a blocked attempt is sometimes also worded "NO GOOD blocked by ...".

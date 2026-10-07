@@ -13,7 +13,7 @@ test_that("cleaning drops a printed-clock typo rather than an official reading",
 })
 
 test_that("built games: clock columns are consistent and the seconds columns mirror them", {
-  files <- list.files(test_path("../../analysis/pbp"), pattern = "\\.csv$", recursive = TRUE, full.names = TRUE)
+  files <- list.files(test_path("../../pbp"), pattern = "\\.csv$", recursive = TRUE, full.names = TRUE)
   skip_if(!length(files), "no built games")
   for (f in files) {
     g <- utils::read.csv(f, na.strings = "")
@@ -37,7 +37,7 @@ test_that("built games: clock columns are consistent and the seconds columns mir
 })
 
 test_that("bounds meeting pins clock_start (McDaniel game: printed clocks tighten the range)", {
-  f <- test_path("../../analysis/pbp/2025/20251025_mepx.csv")
+  f <- test_path("../../pbp/2025/20251025_mepx.csv")
   skip_if_not(file.exists(f))
   g <- utils::read.csv(f, na.strings = "")
   r <- g[g$play_index == 162, ]

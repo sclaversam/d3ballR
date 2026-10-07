@@ -1,50 +1,78 @@
 # d3ballR
 
-Scrape and parse **NCAA Division III** college football play-by-play data from
-d3football.com into tidy, per-play tables.
+Play-by-play data for **NCAA Division III football**, scraped from
+d3football.com into tidy, cfbfastR-style tables.
 
-## Why this exists
+The college football data ecosystem stops at Division I: `cfbfastR` and the
+CollegeFootballData API cover only FBS and FCS. Division II and III are absent
+from every published dataset
+([coverage audit](docs/cfbfastr_d2_d3_coverage_audit.Rmd)). d3ballR fills that
+gap for Division III.
 
-The existing college football data ecosystem stops at Division I. `cfbfastR`
-and the CollegeFootballData API cover only FBS and FCS (division codes 11 and
-12); Division II and III are absent from every published dataset and package.
-This package fills that gap, starting with Carnegie Mellon and the Centennial
-Conference.
+## Status: checkpoint Centennial Conference 2025
 
-The coverage gap is documented in `analysis/cfbfastr_d2_d3_coverage_audit.Rmd`.
+- **Coverage:** every 2025 game involving a Centennial Conference team, 62 games
+  (10 postseason, 1 overtime). That's 10,149 rows across 36 teams.
+- **Shape:** one row per event, 67 columns. Names follow cfbfastR where an
+  equivalent exists.
+- **Checks:** every game's play-by-play points reconcile with its boxscore
+  final score, and every validation report is clean or explains its exceptions.
+- **Generic:** nothing assumes a team or season. Building all of D3 2025 is
+  the same call without a filter.
 
-## Status
+## Quick start
 
-Built generically for any d3football game and season; validated on all 11
-Carnegie Mellon 2025 games:
+```r
+# install.packages("devtools")
+devtools::load_all()
 
-- **Scrape** (`scrape_plays()`): fetch a game's play-by-play table from
-  d3football.com as a clean two-column tibble (`situation`, `play`).
-- **Index** (`build_season_index()`): every game in a season (date, week,
-  regular/postseason, teams, boxscore URL) from d3football's weekly
-  scoreboard, cached in `data-raw/index/`.
-- **Build** (`build_season(season, teams = NULL)`; one game: `build_pbp()`):
-  classify rows, parse them,
-  and assemble one 57-column, cfbfastR-aligned row per play. It covers
-  possession, drives, score, down / distance / yards to goal, outcome flags,
-  first downs, penalties, and clock. Output is in `analysis/pbp/{season}/`, with the
-  data dictionary in `analysis/pbp_schema.md` and validation reports in
-  `analysis/checks/{season}/`.
+# one game
+g <- build_pbp("https://www.d3football.com/seasons/2025/boxscores/20250906_e064.xml")
 
-Roadmap: all of D3 2025 (Centennial 2025 done), then other seasons: the same
-`build_season()` call with a different filter or season.
+# a season, or the games involving some teams
+members <- conference_members(2025, "CC")$team
+build_season(2025, teams = members)   # writes pbp/2025/ and checks/2025/
+```
 
-## Source notes
+Or read the built CSVs directly: `read.csv("pbp/2025/20250906_e064.csv",
+na.strings = "")`.
 
-- d3football serves the play-by-play in the rendered HTML table only; there is
-  no separate structured XML/JSON feed (verified via the browser Network tab).
-- Boxscore URL pattern:
-  `https://www.d3football.com/seasons/{year}/boxscores/{id}.xml`
-  with `?view=plays` and `?view=drives` for the two views.
+## What's in each row
 
-## Layout
+| Group | Columns |
+|---|---|
+| Game | `game_id`, `season`, `game_date`, `week`, `season_type`, `home`, `away`, conferences, `conference_game` |
+| Drive and clock | `drive_number`, `period`, exact snap and end clocks, the snap-clock range, seconds remaining |
+| Situation | possession, score before the play, `down`, `distance`, `yards_to_goal`, `Goal_To_Go`, and the next snap's situation |
+| Play | `play_type`, `yards_gained`, outcome flags (rush, pass, sack, turnover, touchdown, ...), scoring |
+| Series | `firstD_by_kickoff` / `_poss` / `_yards` / `_penalty`, `new_series` |
+| Penalties | signed yards, penalized team, no-play, declined, raw text |
+| Audit | `drive_result`, raw `situation`, raw `play_text` |
 
-- `R/` package functions
-- `analysis/` notebooks (coverage audit, single-game parser walkthrough)
-- `data-raw/` raw inputs and scraping scripts
-- `tests/` unit tests
+Every column is defined in **[docs/schema.md](docs/schema.md)**.
+
+## Repository layout
+
+```
+R/                 package code (pipeline stages; see docs/pipeline.md)
+tests/testthat/    unit tests + data tests over every built game
+scripts/           build_season.R, season_index_report.R
+pbp/{season}/      built play-by-play, one CSV per game
+checks/{season}/   validation reports for that season
+data-raw/          season dates, season index, conference tables (page cache: gitignored)
+docs/              schema.md, pipeline.md, CHANGELOG.md, coverage audit
+```
+
+## Docs
+
+- **[docs/schema.md](docs/schema.md):** every column, and the conventions for
+  reading them.
+- **[docs/pipeline.md](docs/pipeline.md):** how the pipeline works, how to run
+  it, what's checked, known issues, and the roadmap.
+- **[docs/CHANGELOG.md](docs/CHANGELOG.md):** how it got here, and the
+  decisions made along the way.
+
+## Roadmap
+
+CMU 2025 (done) → Centennial 2025 (done, this checkpoint) → all of D3 2025 →
+other seasons.

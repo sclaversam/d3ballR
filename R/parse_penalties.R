@@ -55,7 +55,7 @@ split_infractions <- function(clause, tokens) {
 #'
 #' Sets `penalty_flag`, `penalty_yards_signed`, `penalized_team`,
 #' `penalty_no_play`, `penalty_declined`, `penalty_text` per conventions 1-5
-#' in `analysis/pbp_schema_and_build_plan.md`.
+#' in `docs/schema.md` (Key conventions).
 #'
 #' - `penalty_flag`: text mentions a penalty (any case).
 #' - `penalty_text`: the raw clause from the first upper-case "PENALTY"
