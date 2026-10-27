@@ -26,7 +26,7 @@ pre-kick context.
 turnovers, downs, missed/blocked field goals, or any row whose next
 snap belongs to the other team) with \code{yards_to_goal}, the next snap's
 own down / distance / yards to goal, and its team and text. The
-\code{next_*} values are from the next snap's offense view, so across a
+\verb{next_*} values are from the next snap's offense view, so across a
 change of possession they are measured toward the other end zone.
 \item \code{drive_footer_clock.csv}: every d3 drive's start clock + footer
 "MM:SS elapsed" vs the drive's end reference (see
