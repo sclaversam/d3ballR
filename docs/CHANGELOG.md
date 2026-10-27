@@ -5,6 +5,48 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Removed `down_end`, `distance_end`, `yards_to_goal_end` (67 → 64 columns)
+
+The three "end state" columns held the **next** snap's down, distance and
+yards to goal, from **that** snap's offense view. Two things made them a trap:
+
+- **The frame of reference flipped silently.** Across a change of possession
+  the trio is measured toward the other end zone than the row's own
+  `yards_to_goal`. In 2025 that was 737 of 8,993 filled rows (8.2%) —
+  449 punts, 103 interceptions, and 185 others including 65 rushes and 50
+  incompletions (fourth-down stops). A reader computing
+  `yards_to_goal - yards_to_goal_end` as "yards the play gained" disagreed
+  with `yards_gained` by more than 5 yards on 248 rows; the worst case, a
+  goal-line stand at `yards_to_goal = 1` that turned the ball over, read as
+  a 98-yard loss on an 0-yard rush.
+- **The name promised something else.** `clock_start` / `clock_end` bracket
+  one play, so `_end` reads as "this play, after". But a down doesn't change
+  during a play, there was no `down_start` to pair with, and the value came
+  from a different row — sometimes a different team. `derive_end_state()` was
+  even documented as "the situation after the play", which it never was.
+
+Also: 490 of those filled rows (5.4%) pointed at a dead-ball `penalty_no_play`
+row rather than a real snap, so "next snap" was not quite true either.
+
+Nothing in the package consumed them — `next_snap_index()` stays, because the
+first-down and series flags need it. The next snap's situation is still
+reported for auditing in `checks/{season}/end_state.csv`, where it is now
+named `next_down` / `next_distance` / `next_yards_to_goal` and sits beside
+`next_pos_team`, so the team whose view it is, is on the row. Values there are
+unchanged.
+
+**Not renamed to `*_next`.** That was considered and rejected: the columns had
+no consumer, and a correctly-named column still invites the subtraction that
+the possession flip makes wrong. `cfbfastR` does not expose these in its
+public play-by-play either — the names come from its internal EPA prep
+(`prep_epa_df_after()`), not from the user-facing schema, so dropping them
+costs no compatibility. If EPA work later needs an "after" state, it should
+be built inside that pipeline with the possession flip handled explicitly.
+
+The 62 built 2025 CSVs had the three columns removed in place; every other
+field is byte-identical (the cache was unavailable to rebuild, and a pure
+column drop changes nothing else).
+
 ## `drive_result` moved after `score_pts`
 
 Column order only: `drive_result` now sits with the scoring columns (after

@@ -82,7 +82,7 @@ Run on every build; reports in `checks/{season}/`:
 | `kickoff_possession.csv` | Each kickoff's kicking and receiving team, the rule that decided it, and any disagreement. | No disagreements. |
 | `clock_bounds.csv` | No missing or inverted clock range in regulation, and `clock_start` inside its range. | Empty. |
 | `drive_footer_clock.csv` | Each d3 drive's start clock plus "MM:SS elapsed" vs the drive's end. | 15 of 1,325 flagged, mostly d3 "00:00 elapsed" footers. |
-| `end_state.csv` | Every change of possession with the next snap's situation. | |
+| `end_state.csv` | Every change of possession with the next snap's own down / distance / yards to goal, labeled by team. | |
 | `season_index.md` | How d3 numbers weeks; the season's game count; scoreboard week vs date-based week. | 1,260 games; no week disagreements. |
 
 `tests/testthat/` holds unit tests for every parsing rule and data tests that
@@ -107,6 +107,11 @@ first-down exclusivity and placement.
 - **Older seasons:** only 2025 has been indexed. Other seasons' scoreboard
   pages may differ (2020 was a spring season; folded conferences need extra
   codes).
+- **`R CMD check` fails 2 tests (to fix later).** `test-season-index.R`
+  (lines 51 and 62) reads `data-raw/season_dates.csv`, but `.Rbuildignore`
+  leaves `data-raw/` out of the built package, so the file is missing there.
+  `devtools::test()` runs from the source tree and passes. Fix: move the CSV
+  to `inst/extdata/` and read it with `system.file()`.
 
 ## d3 source quirks the pipeline handles
 

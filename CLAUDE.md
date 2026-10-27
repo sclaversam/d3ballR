@@ -22,7 +22,7 @@ filter or `season`, not a new pipeline.
 
 ## Read these
 
-- `docs/schema.md`: every output column (67) and the conventions for reading
+- `docs/schema.md`: every output column (64) and the conventions for reading
   them. Keep it in sync with `pbp_columns` in `R/build_pbp.R`.
 - `docs/pipeline.md`: stages and code map, how to run, fetching rules,
   validation reports, known issues, roadmap.
