@@ -107,6 +107,11 @@ first-down exclusivity and placement.
 - **Older seasons:** only 2025 has been indexed. Other seasons' scoreboard
   pages may differ (2020 was a spring season; folded conferences need extra
   codes).
+- **`R CMD check` fails 2 tests (to fix later).** `test-season-index.R`
+  (lines 51 and 62) reads `data-raw/season_dates.csv`, but `.Rbuildignore`
+  leaves `data-raw/` out of the built package, so the file is missing there.
+  `devtools::test()` runs from the source tree and passes. Fix: move the CSV
+  to `inst/extdata/` and read it with `system.file()`.
 
 ## d3 source quirks the pipeline handles
 
