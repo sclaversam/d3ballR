@@ -82,7 +82,7 @@ Run on every build; reports in `checks/{season}/`:
 | `kickoff_possession.csv` | Each kickoff's kicking and receiving team, the rule that decided it, and any disagreement. | No disagreements. |
 | `clock_bounds.csv` | No missing or inverted clock range in regulation, and `clock_start` inside its range. | Empty. |
 | `drive_footer_clock.csv` | Each d3 drive's start clock plus "MM:SS elapsed" vs the drive's end. | 15 of 1,325 flagged, mostly d3 "00:00 elapsed" footers. |
-| `end_state.csv` | Every change of possession with the next snap's situation. | |
+| `end_state.csv` | Every change of possession with the next snap's own down / distance / yards to goal, labeled by team. | |
 | `season_index.md` | How d3 numbers weeks; the season's game count; scoreboard week vs date-based week. | 1,260 games; no week disagreements. |
 
 `tests/testthat/` holds unit tests for every parsing rule and data tests that

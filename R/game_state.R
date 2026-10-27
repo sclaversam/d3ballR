@@ -102,27 +102,6 @@ next_snap_index <- function(kept) {
   }, integer(1))
 }
 
-#' End-of-play situation: down, distance, yards to goal after the play
-#'
-#' The situation of the next scrimmage snap in the same half, from THAT
-#' snap's offense view (so after a change of possession it's the new
-#' offense, as in cfbfastR). NA on scoring plays, tries and try-phase rows,
-#' and when no snap follows in the half. On a kickoff it's the receiving
-#' team's first snap.
-#'
-#' @param kept Kept rows with `down`, `distance`, `yards_to_goal`,
-#'   `scoring_play`, `try_phase`, `play_type`.
-#' @param nxt Output of [next_snap_index()].
-#' @return `kept` with `down_end`, `distance_end`, `yards_to_goal_end`.
-#' @keywords internal
-derive_end_state <- function(kept, nxt) {
-  na_end <- kept$scoring_play | kept$try_phase | kept$play_type %in% c("extra_point", "two_point") | is.na(nxt)
-  kept$down_end <- ifelse(na_end, NA_integer_, kept$down[nxt])
-  kept$distance_end <- ifelse(na_end, NA_integer_, kept$distance[nxt])
-  kept$yards_to_goal_end <- ifelse(na_end, NA_integer_, kept$yards_to_goal[nxt])
-  kept
-}
-
 #' First down by yards / by penalty
 #'
 #' d3's "Last,First" StatCrew format prints "1ST DOWN"; the other format

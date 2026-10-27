@@ -8,8 +8,10 @@
 #'   pre-kick context.
 #' - `end_state.csv`: every change-of-possession row (kickoffs, punts,
 #'   turnovers, downs, missed/blocked field goals, or any row whose next
-#'   snap belongs to the other team) with `yards_to_goal`, the end state,
-#'   and the next snap's team and text.
+#'   snap belongs to the other team) with `yards_to_goal`, the next snap's
+#'   own down / distance / yards to goal, and its team and text. The
+#'   `next_*` values are from the next snap's offense view, so across a
+#'   change of possession they are measured toward the other end zone.
 #' - `drive_footer_clock.csv`: every d3 drive's start clock + footer
 #'   "MM:SS elapsed" vs the drive's end reference (see
 #'   [footer_clock_check()]); `flag` marks mismatches.
@@ -40,6 +42,14 @@ write_pbp_checks <- function(games, check_dir = "checks") {
   reports$end_state <- do.call(rbind, lapply(games, function(g) {
     nxt <- attr(g, "next_snap")
     next_team <- g$pos_team[nxt]
+    # the next snap's own situation, from THAT snap's offense view -- a
+    # diagnostic only, which is why it is not an output column: on a change of
+    # possession it is measured toward the other end zone than `yards_to_goal`
+    na_next <- g$scoring_play | attr(g, "series_detail")$try_phase |
+      g$play_type %in% c("extra_point", "two_point") | is.na(nxt)
+    nx_down <- ifelse(na_next, NA_integer_, g$down[nxt])
+    nx_distance <- ifelse(na_next, NA_integer_, g$distance[nxt])
+    nx_yards_to_goal <- ifelse(na_next, NA_integer_, g$yards_to_goal[nxt])
     change <- g$play_type %in% c("kickoff", "punt_no_return", "punt_with_return", "punt_blocked",
                                  "field_goal_missed", "field_goal_blocked") |
       g$turnover | (!is.na(next_team) & next_team != g$pos_team & !g$play_type %in% c("extra_point", "two_point"))
@@ -47,8 +57,8 @@ write_pbp_checks <- function(games, check_dir = "checks") {
     data.frame(
       game_id = g$game_id[change], play_index = g$play_index[change], period = g$period[change],
       play_type = g$play_type[change], pos_team = g$pos_team[change],
-      yards_to_goal = g$yards_to_goal[change], down_end = g$down_end[change],
-      distance_end = g$distance_end[change], yards_to_goal_end = g$yards_to_goal_end[change],
+      yards_to_goal = g$yards_to_goal[change], next_down = nx_down[change],
+      next_distance = nx_distance[change], next_yards_to_goal = nx_yards_to_goal[change],
       next_pos_team = next_team[change], scoring_play = g$scoring_play[change],
       play_text = g$play_text[change], next_play_text = g$play_text[nxt][change]
     )

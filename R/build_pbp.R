@@ -380,7 +380,7 @@ pbp_columns <- c(
   "clock_start_max", "clock_start_min", "secs_remaining_start", "secs_remaining_end",
   "secs_remaining_start_max", "secs_remaining_start_min", "pos_team", "def_pos_team",
   "pos_team_score", "def_pos_team_score", "score_diff", "down", "distance",
-  "yards_to_goal", "Goal_To_Go", "down_end", "distance_end", "yards_to_goal_end",
+  "yards_to_goal", "Goal_To_Go",
   "play_type", "scrimmage_play", "yards_gained", "rush", "pass", "completion", "sack",
   "int", "fumble_vec", "turnover", "downs_turnover", "touchdown", "safety",
   "field_goal_attempt", "field_goal_made", "punt", "scoring_play", "score_pts",
@@ -521,7 +521,6 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
   kept$def_pos_team_score <- rs$def_pos_team_score
   kept$score_diff <- kept$pos_team_score - kept$def_pos_team_score
   nxt <- next_snap_index(kept)
-  kept <- derive_end_state(kept, nxt)
   kept <- derive_first_downs(kept, nxt)
   kept <- derive_series_flags(kept, nxt)
   kept$drive_result <- derive_drive_result(kept)
