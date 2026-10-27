@@ -30,6 +30,10 @@ option to \code{NULL} to disable caching. Empty or failed responses are not
 cached. With \code{options(d3ballR.offline = TRUE)} nothing is requested: an
 uncached page is an error.
 
+A bot challenge from d3football's firewall (header \code{x-amzn-waf-action},
+e.g. HTTP 202 with an empty body) is a refusal too, recorded as
+"bot challenge". It is not solved or worked around.
+
 Two guards keep a long run polite: \code{options(d3ballR.max_requests = N)}
 caps the number of network requests (see \code{\link[=reset_fetch_state]{reset_fetch_state()}}), and
 once d3football refuses a request (HTTP 459 / 429, or

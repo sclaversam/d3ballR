@@ -67,6 +67,10 @@ structured feed. The rules:
   pages in a row, which is how d3football rate-limits), the rest of the run
   uses the cache only. The reason and URL are printed and written to
   `build_failures.csv`.
+- **Bot challenge:** d3football's firewall (AWS WAF) can answer scripted
+  requests with a challenge (HTTP 202, `x-amzn-waf-action: challenge`, empty
+  body) while a browser still gets the page. This is a refusal; the run stops
+  asking. It is not worked around.
 - **Skip a single empty page:** some games' pages are empty on d3football.
   One empty page is not cached; the game is listed in `empty_pages.csv` and
   retried, last, on each later run.

@@ -5,6 +5,17 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Bot challenges are reported as refusals
+
+The "empty pages" of 27 October were not empty games. d3football's firewall
+(AWS WAF, behind CloudFront) answered our requests with a bot challenge:
+HTTP 202, header `x-amzn-waf-action: challenge`, 0-byte body. A browser on
+the same IP solves it with JavaScript and gets the page; a script can't.
+`fetch_html()` now treats that header as a refusal ("bot challenge"), at
+once, without adding the game to `empty_pages.csv`. The pipeline does not
+solve or work around the challenge. The empty-page streak message now reads
+"(3 in a row)".
+
 ## Empty pages are skipped and tracked (new report `empty_pages.csv`)
 
 Two capped runs stopped on their first request: d3football answered the play

@@ -113,3 +113,16 @@ test_that("write_empty_pages adds, updates and drops games", {
   expect_equal(out$game_id, "g1")
   expect_equal(out$first_seen, first[1])
 })
+
+test_that("an AWS WAF bot challenge is a refusal, not an empty page", {
+  local_fetch_test()
+  httr2::local_mocked_responses(function(req) {
+    httr2::response(status_code = 202, headers = list(`x-amzn-waf-action` = "challenge"), body = raw(0))
+  })
+  suppressMessages(got <- prefetch_games(box(c("a", "b"))))
+  expect_equal(got, 0L)
+  expect_equal(n_requests(), 1L)
+  expect_length(empty_pages(), 0)
+  expect_equal(fetch_refusal(),
+               paste0("bot challenge: HTTP 202, x-amzn-waf-action challenge at ", box("a"), "?view=plays"))
+})
