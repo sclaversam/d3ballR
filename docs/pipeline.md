@@ -49,7 +49,7 @@ rate-limiting) are listed as pending, and the next run continues from there.
 | Fetch | Each game's play-by-play page. Cached and throttled. | `R/scrape_plays.R` (`fetch_html`) | `data-raw/cache/` (gitignored) |
 | Classify | Label every row of the page: snap, kickoff, try, dead-ball penalty, or one of the non-play types (drive header / footer, quarter marker, timeout, ...). | `R/classify.R`, `R/parse_play_type.R` | |
 | Derive | Period, possession, team names, kickoff teams, drives, down / distance / yards to goal, penalties, outcome flags, score, first downs and series, clock. | `R/build_pbp.R` and the files it calls: `teams.R`, `kickoffs.R`, `drives.R`, `scores.R`, `parse_penalties.R`, `parse_outcomes.R`, `game_state.R`, `parse_clock.R` | |
-| Assemble | One 67-column table per game. | `R/build_pbp.R` (`build_pbp`, `build_all_pbp`) | `pbp/{season}/{game_id}.csv` |
+| Assemble | One 64-column table per game. | `R/build_pbp.R` (`build_pbp`, `build_all_pbp`) | `pbp/{season}/{game_id}.csv` |
 | Validate | Reports for the season. | `R/validation.R`, `R/build_season.R` | `checks/{season}/` |
 
 **One pipeline for everything.** `build_season()` runs all the stages. The
@@ -68,7 +68,9 @@ structured feed. The rules:
   only.
 
 In practice, fetch in batches of about 10-100 pages and stop when refused.
-Bursts of a few dozen requests have triggered the limit.
+Bursts of a few dozen requests have triggered the limit: the first all-D3
+run (6 s apart) was refused after 21 pages; 50 pages 15 s apart went through
+cleanly. Use `--delay 15` (or `build_season(..., delay = 15)`).
 
 ## Validation
 
@@ -133,7 +135,8 @@ first-down exclusivity and placement.
 
 1. **CMU 2025** (validation set): done.
 2. **Centennial 2025**: done (this checkpoint).
-3. **All of D3 2025:** `build_season(2025)`. About 1,180 more games plus about
+3. **All of D3 2025** (in progress, branch `all-d3-2025`; 133 games built):
+   `build_season(2025)`. About 1,180 more games plus about
    230 team pages, fetched in capped runs. Expect new StatCrew formats to
    surface. The score-reconciliation test and the `first_downs.md` series
    check are the main guards.

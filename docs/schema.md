@@ -39,7 +39,9 @@ on every row, so any value can be traced back to its source.
 **receiving** team, and `def_pos_team` is the kicking team, as in cfbfastR. On
 punts and field goals the kicking team stays `pos_team`. A **try** (PAT or
 two-point), and any penalty row between a score and the next kickoff, belongs
-to the **scoring** team.
+to the **scoring** team. The try's kicker or passer decides it when that player's team
+is known from their other plays; otherwise the team that kicks off next, then
+the score line.
 
 **Drives.** A drive is one team's continuous possession. A kickoff is play 1 of
 the receiving team's drive. A try stays on the drive of its scoring play, even
@@ -64,8 +66,10 @@ PLAY"), but none of it is credited:
   `field_goal_attempt`, `field_goal_made`, `punt`, `scoring_play`.
 
 **Score.** `pos_team_score` / `def_pos_team_score` are the score *before* the
-play. d3 prints the score line after the try, so a PAT's "before" score
-already includes its touchdown.
+play, summed from the parsed points of every earlier row. d3's printed score
+lines are used only as a check (a stat crew sometimes skips one), and the
+game total is reconciled against the boxscore final. A PAT's "before" score
+includes its touchdown.
 
 **Down, distance, field position.**
 - `yards_to_goal` is the distance to the opponent's end zone (own 25 → 75).
@@ -155,7 +159,7 @@ clock and seconds columns are NA in periods 5+.
 | 30 | `distance` | integer | Yards to go. | NA wherever `down` is NA. | On "and Goal" it is `yards_to_goal`. A PAT penalty can carry a placeholder "1st and 10". |
 | 31 | `yards_to_goal` | integer | Yards to the opponent's end zone (own 25 → 75). | NA wherever `down` is NA. | |
 | 32 | `Goal_To_Go` | logical | The line to gain is the goal line. | NA wherever `down` is NA. | Literal "and Goal", or `distance == yards_to_goal`. |
-| 33 | `play_type` | character | What happened. Snaps: `rush`, `pass_complete`, `pass_incomplete`, `pass_intercepted`, `sack`, `kneel`, `punt_no_return`, `punt_with_return`, `punt_blocked`, `field_goal_good`, `field_goal_missed`, `field_goal_blocked`. Other rows: `kickoff`, `extra_point`, `two_point`, `penalty_no_play` (dead-ball penalty, no snap). | Never NA. | A snap wiped out by a penalty keeps its call (e.g. `pass_complete`); check `penalty_no_play`. |
+| 33 | `play_type` | character | What happened. Snaps: `rush`, `pass_complete`, `pass_incomplete`, `pass_intercepted`, `sack`, `kneel`, `punt_no_return`, `punt_with_return`, `punt_blocked`, `field_goal_good`, `field_goal_missed`, `field_goal_blocked`, `safety` (a row reading only "TEAM SAFETY", with no play described). Other rows: `kickoff`, `extra_point`, `two_point`, `penalty_no_play` (dead-ball penalty, no snap). | Never NA. | A snap wiped out by a penalty keeps its call (e.g. `pass_complete`); check `penalty_no_play`. |
 | 34 | `scrimmage_play` | logical | The row has a down: a snap or a dead-ball penalty. | Never NA. | FALSE on kickoffs and tries. |
 | 35 | `yards_gained` | integer | Yards gained on the play itself, penalty yardage excluded. | NA on no-play rows, and on interceptions, punts, field goals, kickoffs, tries (not defined yet). | Filled for `rush`, `pass_complete`, `sack`, `kneel`; 0 for `pass_incomplete`. |
 | 36 | `rush` | logical | Designed run: `rush` or `kneel`. | Never NA. | A sack is not a rush here (NCAA counts it as one). |
@@ -172,7 +176,7 @@ clock and seconds columns are NA in periods 5+.
 | 47 | `field_goal_made` | logical | Field goal good. | Never NA. | |
 | 48 | `punt` | logical | Any punt. | Never NA. | |
 | 49 | `scoring_play` | logical | Points scored on the row. | Never NA. | `score_pts != 0`. A failed PAT is FALSE. |
-| 50 | `score_pts` | integer | Points scored on the row, from `pos_team`'s view. | Never NA. | TD +6, FG +3, PAT +1, two-point +2, defensive TD −6, safety conceded −2. |
+| 50 | `score_pts` | integer | Points scored on the row, from `pos_team`'s view. | Never NA. | TD +6, FG +3, PAT +1, two-point +2, defensive TD −6, safety conceded −2, try returned by the defense −2. A punt the kicking team recovers in the end zone after a muff is +6. |
 | 51 | `drive_result` | character | How the row's drive ended, repeated on every row of the drive. | Never NA. | `TD`, `FG`, `MISSED FG`, `BLOCKED FG`, `PUNT`, `BLOCKED PUNT`, `INT`, `FUMBLE`, `DOWNS`, `SAFETY`, `END OF HALF`, `END OF GAME`, `ONSIDE`. A defensive TD is labeled by how the offense lost the ball. |
 | 52 | `firstD_by_kickoff` | logical | First snap row of a series that began with a kickoff. | Never NA. | Kickoff rows themselves are FALSE. Includes after an onside kick, whoever recovered. cfbfastR name. |
 | 53 | `firstD_by_poss` | logical | First snap row after a change of possession, or of an overtime possession. | Never NA. | After a punt, interception, lost fumble, downs, missed / blocked FG, or a punt / FG the kicking team regained. cfbfastR name. |

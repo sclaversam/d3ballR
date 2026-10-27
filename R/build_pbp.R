@@ -8,9 +8,21 @@ extract_game_id <- function(game_url) {
   stringr::str_match(game_url, "boxscores/([^./]+)\\.xml")[, 2]
 }
 
+#' Is this table the line score?
+#'
+#' A table with at least 2 rows and either a "Final" column or a first
+#' column headed "Scoring" (a game stopped early has no "Final" column).
+#'
+#' @param t A data frame.
+#' @return TRUE / FALSE.
+#' @keywords internal
+is_line_score <- function(t) {
+  nrow(t) >= 2 && ("Final" %in% colnames(t) || identical(colnames(t)[1], "Scoring"))
+}
+
 #' Read the two team names off a boxscore's line-score table
 #'
-#' Located by content (a table with a "Final" column and at least 2 rows),
+#' Located by content (see [is_line_score()]),
 #' not by position, same philosophy as [find_plays()]. Each of the first two
 #' rows is "TEAM NAME (W-L, conf)" or "TEAM NAME (W-L)"; the trailing
 #' parenthetical record is stripped.
@@ -20,7 +32,7 @@ extract_game_id <- function(game_url) {
 #' @keywords internal
 find_line_score_teams <- function(tbls) {
   for (t in tbls) {
-    if ("Final" %in% colnames(t) && nrow(t) >= 2) {
+    if (is_line_score(t)) {
       raw <- stringr::str_squish(as.character(t[[1]][1:2]))
       return(stringr::str_remove(raw, "\\s*\\([^)]*\\)\\s*$"))
     }
@@ -30,17 +42,20 @@ find_line_score_teams <- function(tbls) {
 
 #' Read the two final scores off a boxscore's line-score table
 #'
-#' Same table as [find_line_score_teams()]; the "Final" column.
+#' Same table as [find_line_score_teams()]; the "Final" column. A game
+#' stopped early has no "Final" column: its last column is the score when
+#' play stopped ("3rd QTR - 04:19" in Case Western Reserve at Rowan, 2025).
 #'
 #' @param tbls A list of data frames (from [tables_on()]).
 #' @return Integer vector of length 2, named by the line-score team names.
 #' @keywords internal
 find_line_score_finals <- function(tbls) {
   for (t in tbls) {
-    if ("Final" %in% colnames(t) && nrow(t) >= 2) {
+    if (is_line_score(t)) {
       raw <- stringr::str_squish(as.character(t[[1]][1:2]))
       nm <- stringr::str_remove(raw, "\\s*\\([^)]*\\)\\s*$")
-      return(stats::setNames(suppressWarnings(as.integer(t[["Final"]][1:2])), nm))
+      final <- if ("Final" %in% colnames(t)) t[["Final"]] else t[[ncol(t)]]
+      return(stats::setNames(suppressWarnings(as.integer(final[1:2])), nm))
     }
   }
   stop("No line-score table found. Open the page and check the layout.")
@@ -168,13 +183,8 @@ derive_quarter <- function(classified) {
 #'   forward filled, canonical names).
 #' @keywords internal
 derive_possession <- function(classified, team_map) {
-  header_team <- stringr::str_match(classified$play, "^(.*?) at \\d{1,2}:\\d{2}$")[, 2]
-  start_team <- stringr::str_match(classified$play, stringr::regex("^(.*?) drive start at", ignore_case = TRUE))[, 2]
-  possession_here <- dplyr::case_when(
-    classified$row_type == "drive_header" ~ header_team,
-    classified$row_type == "drive_start" ~ start_team,
-    TRUE ~ NA_character_
-  )
+  possession_here <- ifelse(classified$row_type %in% c("drive_header", "drive_start"),
+                            drive_row_team(classified$play), NA_character_)
   classified$possession <- unname(team_map[possession_here])
   tidyr::fill(classified, "possession", .direction = "down")
 }
@@ -186,12 +196,13 @@ kept_row_types <- c("play", "kickoff", "extra_point", "two_point", "penalty_no_p
 #' Down/distance/yardline pattern for a real situation line
 #'
 #' e.g. "1st and 10 at CMU35" or "1st and Goal at CMU06" or "4th and 3 at UC 25".
-#' The yardline's team-letters group is optional so a bare midfield number
+#' The team code can contain periods and a space ("MASS. MA27": the code is
+#' "MASS. MA"). The yardline's team-letters group is optional so a bare midfield number
 #' ("at 50") still parses down/distance/yard_num, with `yard_side` NA. A
 #' negative distance (d3 printed "4th and -2" once in 2025) is kept as
 #' printed rather than dropping the down.
 #' @keywords internal
-situation_pattern <- "^([1-4])(?:st|nd|rd|th)\\s+and\\s+(Goal|-?\\d+)\\s+at\\s+([A-Za-z&]*)\\s*(\\d+)$"
+situation_pattern <- "^([1-4])(?:st|nd|rd|th)\\s+and\\s+(Goal|-?\\d+)\\s+at\\s+([A-Za-z&.' ]*?)\\s*(\\d+)$"
 
 #' Parse down, distance, yard_side, yard_num from `situation`
 #'
@@ -393,9 +404,15 @@ pbp_columns <- c(
 #' Possession on try-phase rows: the team that just scored
 #'
 #' A PAT / two-point try (and any penalty row between a score and the next
-#' kickoff) belongs to the scoring team, which is about to kick. The scorer
-#' is read off the first score line after the scoring play (after a safety,
-#' the team that conceded kicks instead). This fixes the try after a
+#' kickoff) belongs to the scoring team, which is about to kick. For the
+#' extra point / two-point try itself, the player named on it (kicker,
+#' passer, rusher) decides when their team is known ([build_actor_map()]).
+#' Otherwise the scorer is the team that kicks off next in the same half (its teams come from the
+#' next drive header); if no kickoff follows (end of half, overtime), the
+#' first score line after the scoring play (after a safety, the team that
+#' conceded), else the scoring play's own offense. Score lines are not the
+#' first choice because d3 sometimes skips one and the rest lag a score
+#' behind (Dean at Fitchburg State, 2025). This fixes the try after a
 #' defensive touchdown, which otherwise inherits the team that was scored
 #' on.
 #'
@@ -403,27 +420,39 @@ pbp_columns <- c(
 #'   `penalty_no_play`, `pos_team`.
 #' @param scores Output of [parse_score_rows()].
 #' @param teams The two canonical team names.
-#' @param kickoffs Output of [assign_kickoffs()]. Fallback when the score
-#'   line after the score is missing or covers two scores (d3 sometimes skips
-#'   one): the team that kicks off next is the scoring team.
+#' @param kickoffs Output of [assign_kickoffs()] (refined by the kicker).
+#' @param actor_map Output of [build_actor_map()].
 #' @return Character vector: the corrected `pos_team`.
 #' @keywords internal
-try_phase_team <- function(kept, scores, teams, kickoffs = NULL) {
+try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = character()) {
   scoring <- which(is_scoring_snap(kept))
   out <- kept$pos_team
+  actor_team <- unname(actor_map[play_actor(kept$play_text)])
   for (i in which(kept$try_phase)) {
     s <- scoring[scoring < i]
     if (!length(s)) next
     s <- s[length(s)]
+    # 0. the kicker / passer / rusher named on the try is on the scoring team
+    if (kept$play_type[i] %in% c("extra_point", "two_point") && !is.na(actor_team[i])) {
+      out[i] <- actor_team[i]
+      next
+    }
+    # 1. the team that kicks off next in the same half scored (or conceded a
+    #    safety). Kickoff teams come from the next drive header, which is
+    #    reliable; d3's score lines sometimes lag a score behind.
+    k <- if (!is.null(kickoffs)) kickoffs[kickoffs$row > kept$row[i] & kickoffs$half == kept$half[i], ] else NULL
+    if (!is.null(k) && nrow(k) && !is.na(k$kicking_team[1])) {
+      out[i] <- k$kicking_team[1]
+      next
+    }
+    # 2. no kickoff follows (end of half, overtime): the next score line
     sr <- scores[scores$row > kept$row[s], ]
     safety <- stringr::str_detect(kept$play_text[s], stringr::regex("\\bsafety\\b", ignore_case = TRUE))
     if (nrow(sr) && !is.na(sr$scorer[1])) {
       out[i] <- if (safety) other_team(sr$scorer[1], teams) else sr$scorer[1]
-    } else if (!is.null(kickoffs)) {
-      # score line missing or covering two scores: the team that kicks off
-      # next is the team that just scored (or conceded a safety)
-      k <- kickoffs[kickoffs$row > kept$row[i], ]
-      if (nrow(k) && !is.na(k$kicking_team[1])) out[i] <- k$kicking_team[1]
+    } else {
+      # 3. the scoring play's own offense
+      out[i] <- kept$pos_team[s]
     }
   }
   out
@@ -450,7 +479,9 @@ try_phase_team <- function(kept, scores, teams, kickoffs = NULL) {
 #'   (no network), else the conference columns are NA.
 #' @return A tibble, one row per kept play, with the columns in
 #'   `pbp_columns`. Attributes, for the validation reports and change log:
-#'   `week_source` ("index" or "date fallback"), `shared_conference` (both
+#'   `week_source` ("index" or "date fallback"), `unclassified` (rows the
+#'   classifier put in its unknown `other` bucket; should be NULL),
+#'   `shared_conference` (both
 #'   teams in one conference; for the cross-check), `finals` (line-score
 #'   final scores by canonical team name), `kickoffs` (the
 #'   per-kickoff possession decisions from [assign_kickoffs()]),
@@ -491,6 +522,8 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
   # kickoffs: pos_team is the receiving team
   scores <- parse_score_rows(classified, team_map, teams)
   kickoffs <- assign_kickoffs(classified, teams, team_map, own_side, text_team, scores)
+  actor_map <- build_actor_map(kept, kickoffs)
+  kickoffs <- refine_kickoffs_by_kicker(kickoffs, kept, actor_map, teams)
   ko <- match(kickoffs$row, kept$row)
   kept$pos_team[ko] <- kickoffs$receiving_team
   kept$kicker_recovered <- FALSE
@@ -498,7 +531,7 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
 
   # tries belong to the scoring team
   kept$try_phase <- flag_try_phase(kept)
-  kept$pos_team <- try_phase_team(kept, scores, teams, kickoffs)
+  kept$pos_team <- try_phase_team(kept, scores, teams, kickoffs, actor_map)
   kept$def_pos_team <- other_team(kept$pos_team, teams)
 
   kept$yards_to_goal <- compute_yards_to_goal(kept, own_side)
@@ -559,6 +592,8 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
 
   out <- kept[, pbp_columns]
   attr(out, "week_source") <- cal$week_source
+  unk <- classified[classified$row_type == "other", c("situation", "play")]
+  attr(out, "unclassified") <- if (nrow(unk)) data.frame(game_id = game$game_id, situation = unk$situation, play = unk$play) else NULL
   attr(out, "shared_conference") <- gc$shared_conference
   attr(out, "finals") <- finals
   kickoffs$play_index <- kept$play_index[ko]

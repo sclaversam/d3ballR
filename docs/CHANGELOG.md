@@ -5,6 +5,63 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## All of D3 2025: second batch
+
+50 more game pages, fetched 15 s apart with no refusal (the first batch, 6 s
+apart, was refused after 21). Now 133 games are built, and all 133 reconcile.
+
+- **Defensive try returns score.** "kick attempt failed (blocked by ...) ...
+  defensive PAT Successful." is −2 for the trying team, i.e. 2 points to the
+  defense (Nichols at MIT; Bethel (Tenn.) at Mary Hardin-Baylor).
+- **Kicking-team muff touchdowns.** A punt the returner muffs and the kicking
+  team recovers in the end zone is a touchdown for the kicking team, +6
+  (Northwestern (Minn.) at St. Olaf). It was credited to the return team. The
+  row keeps `turnover = TRUE` (the returner lost the muff), as before.
+- **Games stopped early.** Case Western Reserve at Rowan ended in the 3rd
+  quarter ("3rd QTR - 04:19" in place of a "Final" column). The line score is
+  found by its "Scoring" header, and the last column is the final.
+- **Drive rows:** a drive header with no clock ("Virginia-Lynchburg at"), and
+  a drive start after a clock ("clock 09:08, LaGrange College drive start
+  at 09:08."). The bogus "drive start at 00:00" on that Virginia-Lynchburg
+  drive is discarded by the clock cleaning.
+- **Two-minute stops:** "2-Minute Timeout" and "2:00 Officials Timeout" are
+  `annotation` rows, like "2:00 minute warning": printed at exactly 2:00 with
+  no team named, so they're not team timeouts.
+
+## All of D3 2025: first batch (branch `all-d3-2025`)
+
+The first 21 pages of the full-season fetch (stopped by d3football's rate
+limit, as designed) brought new games, and new StatCrew shapes with them. Now
+83 games are built, and all 83 reconcile with their final scores.
+
+- **Kicker and passer names decide teams.** A name-to-team map, learned from
+  each game's snaps and ordinary kickoffs, now decides:
+  - who kicked a kickoff. An onside kick the kicking team recovered without
+    the text saying "recovered by" was credited to the wrong team (Wheaton at
+    Mount Union);
+  - whose try it is, ahead of the next-kickoff and score-line rules.
+- **Score before the play is summed from parsed points.** Previously it came
+  from d3's score lines. A stat crew skipped one after a touchdown at 00:00
+  (Dean at Fitchburg), and every later line lagged by a try.
+- **Team codes with spaces and periods** ("MASS. MA") in situations and play
+  text.
+- **New play type `safety`:** a row reading only "N.C. Wesleyan SAFETY" is a
+  play. It was dropped before, losing 2 points.
+- **Classifier:** drive footers and clocks with one-digit minutes ("2:23
+  elapsed", "clock 0:26"), and wording variants of the coin toss and
+  substitutions. Three new non-play types:
+  - `annotation`: "Spiked", "2:00 minute warning", "recovered by NAME";
+  - `penalty_note`: a declined or offsetting penalty alone on a row with no
+    situation;
+  - `blank`: ".".
+
+  Footers with one-digit minutes now parse, so 5 games gain clock-end readings.
+- **Build report:** lists any row the classifier couldn't type. It's empty
+  for all 83 games.
+- **Clock test:** a printed play clock that contradicts an official reading is
+  discarded. The test now allows up to 2% of a game's printed clocks to be
+  discarded (Texas Lutheran at Trinity (TX) has 2 of 144), instead of 1.
+
 ## Removed `down_end`, `distance_end`, `yards_to_goal_end` (67 → 64 columns)
 
 The three "end state" columns held the **next** snap's down, distance and

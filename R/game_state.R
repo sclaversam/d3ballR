@@ -2,25 +2,34 @@
 #'
 #' TD +6 for the offense, -6 when the defense scores (interception or
 #' fumble return, punt / blocked-kick return, or a kickoff the kicking team
-#' recovers and scores on); FG +3; extra point +1; two-point try +2; safety
-#' conceded -2. Zero otherwise, and zero on every `penalty_no_play` row.
+#' recovers and scores on); a punt or kick the kicking team recovers (a muff)
+#' and scores on is +6; FG +3; extra point +1; two-point try +2; safety
+#' conceded -2; a try the defense returns ("defensive PAT Successful") -2. Zero otherwise, and zero on every `penalty_no_play` row.
 #' On a kickoff `pos_team` is the receiving team, so a kickoff-return TD is
 #' +6.
 #'
 #' @param kept Kept rows with `play_type`, `play_text`, `touchdown`,
-#'   `turnover`, `safety`, `kicker_recovered`, `penalty_no_play`.
+#'   `turnover`, `safety`, `kicker_recovered`, `penalty_no_play`,
+#'   `recovering_team` (from [parse_outcome_flags()]).
 #' @return Integer vector.
 #' @keywords internal
 score_points <- function(kept) {
   pt <- kept$play_type
   txt <- kept$play_text
   ic <- function(pattern) stringr::regex(pattern, ignore_case = TRUE)
-  defense_scores <- kept$touchdown & (
-    kept$turnover |
-      pt %in% c("punt_no_return", "punt_with_return", "punt_blocked",
-                "field_goal_blocked", "field_goal_missed") |
+  kick_types <- c("punt_no_return", "punt_with_return", "punt_blocked",
+                  "field_goal_blocked", "field_goal_missed")
+  # the kicking team recovered a muff / fumble and scored
+  kicker_regained <- pt %in% kick_types & !is.na(kept$recovering_team) &
+    kept$recovering_team == kept$pos_team
+  defense_scores <- kept$touchdown & !kicker_regained & (
+    kept$turnover | pt %in% kick_types |
       (pt == "kickoff" & kept$kicker_recovered)
   )
+  # a blocked / failed try returned by the defense: "... defensive PAT
+  # Successful."
+  defensive_try <- pt %in% c("extra_point", "two_point") &
+    stringr::str_detect(txt, ic("\\bdefensive (PAT|two[- ]point|2[- ]?pt|conversion)\\b.*\\bsuccessful\\b"))
   pat_good <- pt == "extra_point" & stringr::str_detect(txt, ic("\\bgood\\b")) &
     !stringr::str_detect(txt, ic("no good|failed|blocked"))
   two_good <- pt == "two_point" & stringr::str_detect(txt, ic("\\b(good|successful)\\b")) &
@@ -30,6 +39,7 @@ score_points <- function(kept) {
     kept$touchdown ~ 6L,
     pt == "field_goal_good" ~ 3L,
     kept$safety ~ -2L,
+    defensive_try ~ -2L,
     pat_good ~ 1L,
     two_good ~ 2L,
     TRUE ~ 0L
@@ -39,12 +49,14 @@ score_points <- function(kept) {
 
 #' Running score before each play
 #'
-#' The score before row i is the last score line printed before it plus any
-#' points scored on kept rows between that line and row i. That gets the
-#' extra point right: d3 prints the score line AFTER the try, so a PAT's
-#' "before" score already includes its touchdown's 6. Every score line is
-#' also checked against the play-by-play points since the previous line;
-#' mismatches are returned for the change log.
+#' The score before row i is the running total of the points parsed on the
+#' rows before it (`score_pts`, credited to `pos_team` when positive and
+#' `def_pos_team` when negative). A PAT's "before" score therefore includes
+#' its touchdown. d3's printed score lines are not used as the source,
+#' because a stat crew sometimes skips one and the following lines lag a
+#' score behind. Each line is compared with the parsed total at that point
+#' instead (`checks`); the game's final score is reconciled separately
+#' against the boxscore.
 #'
 #' @param kept Kept rows with `row`, `pos_team`, `def_pos_team`,
 #'   `score_pts`.
@@ -59,25 +71,16 @@ running_score <- function(kept, scores, teams) {
   p1 <- ifelse(scorer %in% teams[1], abs(kept$score_pts), 0L)
   p2 <- ifelse(scorer %in% teams[2], abs(kept$score_pts), 0L)
 
-  n <- nrow(kept)
-  s1 <- s2 <- integer(n)
-  for (i in seq_len(n)) {
-    prior <- scores[scores$row < kept$row[i], ]
-    base_row <- if (nrow(prior)) prior$row[nrow(prior)] else 0L
-    b1 <- if (nrow(prior)) prior$score_1[nrow(prior)] else 0L
-    b2 <- if (nrow(prior)) prior$score_2[nrow(prior)] else 0L
-    between <- kept$row > base_row & kept$row < kept$row[i]
-    s1[i] <- b1 + sum(p1[between])
-    s2[i] <- b2 + sum(p2[between])
-  }
+  # score before each row = running total of the parsed points before it
+  s1 <- cumsum(c(0L, p1))[seq_len(nrow(kept))]
+  s2 <- cumsum(c(0L, p2))[seq_len(nrow(kept))]
 
+  # d3's printed score lines are a check, not the source: compare each with
+  # the parsed total at that point
   checks <- do.call(rbind, lapply(seq_len(nrow(scores)), function(j) {
-    prev_row <- if (j > 1) scores$row[j - 1] else 0L
-    b1 <- if (j > 1) scores$score_1[j - 1] else 0L
-    b2 <- if (j > 1) scores$score_2[j - 1] else 0L
-    between <- kept$row > prev_row & kept$row < scores$row[j]
+    before <- kept$row < scores$row[j]
     data.frame(row = scores$row[j], stated_1 = scores$score_1[j], stated_2 = scores$score_2[j],
-               parsed_1 = b1 + sum(p1[between]), parsed_2 = b2 + sum(p2[between]))
+               parsed_1 = sum(p1[before]), parsed_2 = sum(p2[before]))
   }))
   if (!is.null(checks)) checks$ok <- checks$stated_1 == checks$parsed_1 & checks$stated_2 == checks$parsed_2
 

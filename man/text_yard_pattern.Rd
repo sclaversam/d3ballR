@@ -13,6 +13,7 @@ text_yard_pattern
 \description{
 "to the UCHI45", "at RMCFB32", "to the McD28", "to the Wolves05": a token
 that starts with a capital letter, then the yard number. Tokens can be
-upper-case codes, mixed case ("McD"), or nicknames ("Wolves").
+upper-case codes, mixed case ("McD"), nicknames ("Wolves"), or two words
+("MASS. MA27": the token is "MASS. MA").
 }
 \keyword{internal}

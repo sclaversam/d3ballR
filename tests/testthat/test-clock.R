@@ -30,9 +30,13 @@ test_that("built games: clock columns are consistent and the seconds columns mir
     expect_equal(g$secs_remaining_start_min, gs(mn), label = paste(basename(f), "secs min"))
     expect_true(all(is.na(g$clock_start_max[!reg])), label = paste(basename(f), "OT untimed"))
     p <- clock_secs(stringr::str_match(g$play_text, "^\\((\\d{1,2}:\\d{2})\\)")[, 2])
-    # a printed clock that survived cleaning is a minimum for its own snap
+    # a printed clock that survived cleaning is a minimum for its own snap.
+    # A printed clock that contradicts an official reading is discarded
+    # (e.g. 20250904_zik0: printed 14:48, timeout 13:59, printed 14:15), so
+    # allow a few: at most 1, or 2% of the game's printed clocks
     ok <- is.na(p) | !reg | p <= mx
-    expect_true(sum(!ok) <= 1, label = paste(basename(f), "printed clocks within the snap range (allowing a discarded typo)"))
+    expect_true(sum(!ok) <= max(1, 0.02 * sum(!is.na(p))),
+                label = paste(basename(f), "printed clocks within the snap range (allowing discarded typos)"))
   }
 })
 
