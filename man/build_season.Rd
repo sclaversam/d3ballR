@@ -52,4 +52,7 @@ Fetching is cached (a page is never requested twice), throttled
 and stops at the first sign of rate limiting (after that the run builds
 only from the cache). Anything not fetched is reported as pending, so
 calling \code{build_season()} again picks up where the last call stopped.
+Games whose play-by-play page came back empty are kept in
+\code{{check_dir}/empty_pages.csv} (\code{\link[=write_empty_pages]{write_empty_pages()}}), reported as their
+own category, and retried (last, at most once) on each later call.
 }

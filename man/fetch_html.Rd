@@ -30,11 +30,24 @@ option to \code{NULL} to disable caching. Empty or failed responses are not
 cached. With \code{options(d3ballR.offline = TRUE)} nothing is requested: an
 uncached page is an error.
 
+A bot challenge from d3football's firewall (header \code{x-amzn-waf-action},
+e.g. HTTP 202 with an empty body) is a refusal too, recorded as
+"bot challenge". It is not solved or worked around.
+
 Two guards keep a long run polite: \code{options(d3ballR.max_requests = N)}
 caps the number of network requests (see \code{\link[=reset_fetch_state]{reset_fetch_state()}}), and
-once d3football refuses a request (HTTP 459 / 429 or an empty page, its
+once d3football refuses a request (HTTP 459 / 429, or
+\code{getOption("d3ballR.max_empty_streak", 3)} empty pages in a row, its
 rate limiting), every later uncached request in the run fails
 immediately instead of asking again. Errors from these guards start with
-"Not fetched:".
+"Not fetched:". The refusal itself (HTTP status or empty pages, and the
+URL) is kept for the run (see \code{\link[=fetch_refusal]{fetch_refusal()}}) and repeated in every
+later "refused an earlier request" error, so it reaches the run log and
+\code{build_failures.csv}.
+
+A single empty page is not a refusal: some games' pages are empty on
+d3football. It is not cached, its URL is remembered for the run (see
+\code{\link[=empty_pages]{empty_pages()}}), and asking for it again in the same run fails without a
+request. Its error starts with "Not fetched: empty page".
 }
 \keyword{internal}

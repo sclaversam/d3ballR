@@ -5,6 +5,35 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Bot challenges are reported as refusals
+
+The "empty pages" of 27 October were not empty games. d3football's firewall
+(AWS WAF, behind CloudFront) answered our requests with a bot challenge:
+HTTP 202, header `x-amzn-waf-action: challenge`, 0-byte body. A browser on
+the same IP solves it with JavaScript and gets the page; a script can't.
+`fetch_html()` now treats that header as a refusal ("bot challenge"), at
+once, without adding the game to `empty_pages.csv`. The pipeline does not
+solve or work around the challenge. The empty-page streak message now reads
+"(3 in a row)".
+
+## Empty pages are skipped and tracked (new report `empty_pages.csv`)
+
+Two capped runs stopped on their first request: d3football answered the play
+page of Central at Illinois Wesleyan (`20250906_lo04`) with an empty page,
+and an empty page counted as a refusal. One bad page stopped every run.
+
+- **A single empty page is skipped.** It isn't cached, and the run moves on.
+  Only HTTP 459 / 429, or 3 empty pages in a row
+  (`options(d3ballR.max_empty_streak)`), count as a refusal.
+- **New report `checks/{season}/empty_pages.csv`:** every game whose page
+  came back empty (game, date, teams, URL, first seen, last checked).
+  `build_report.md` counts them as **Empty**, a category separate from
+  pending and failed, and lists them. Each is retried, after all other
+  pages, once per run; a game whose page comes back with content leaves the
+  list.
+- **Refusals are logged:** the reason (HTTP status, or the empty-page
+  streak) and the URL are printed and repeated in `build_failures.csv`.
+
 ## All of D3 2025: second batch
 
 50 more game pages, fetched 15 s apart with no refusal (the first batch, 6 s

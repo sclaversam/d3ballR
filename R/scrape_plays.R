@@ -12,12 +12,25 @@
 #' cached. With `options(d3ballR.offline = TRUE)` nothing is requested: an
 #' uncached page is an error.
 #'
+#' A bot challenge from d3football's firewall (header `x-amzn-waf-action`,
+#' e.g. HTTP 202 with an empty body) is a refusal too, recorded as
+#' "bot challenge". It is not solved or worked around.
+#'
 #' Two guards keep a long run polite: `options(d3ballR.max_requests = N)`
 #' caps the number of network requests (see [reset_fetch_state()]), and
-#' once d3football refuses a request (HTTP 459 / 429 or an empty page, its
+#' once d3football refuses a request (HTTP 459 / 429, or
+#' `getOption("d3ballR.max_empty_streak", 3)` empty pages in a row, its
 #' rate limiting), every later uncached request in the run fails
 #' immediately instead of asking again. Errors from these guards start with
-#' "Not fetched:".
+#' "Not fetched:". The refusal itself (HTTP status or empty pages, and the
+#' URL) is kept for the run (see [fetch_refusal()]) and repeated in every
+#' later "refused an earlier request" error, so it reaches the run log and
+#' `build_failures.csv`.
+#'
+#' A single empty page is not a refusal: some games' pages are empty on
+#' d3football. It is not cached, its URL is remembered for the run (see
+#' [empty_pages()]), and asking for it again in the same run fails without a
+#' request. Its error starts with "Not fetched: empty page".
 #'
 #' @param url Full page URL, including the `?view=...` suffix when needed.
 #' @param user_agent Browser User-Agent string.
@@ -33,8 +46,12 @@ fetch_html <- function(url, user_agent = default_user_agent(), refresh = FALSE) 
   if (isTRUE(getOption("d3ballR.offline", FALSE))) {
     stop("Not fetched: offline (option d3ballR.offline = TRUE): ", url, call. = FALSE)
   }
+  if (url %in% .d3_state$empty) {
+    stop("Not fetched: empty page (already tried this run): ", url, call. = FALSE)
+  }
   if (isTRUE(.d3_state$refused)) {
-    stop("Not fetched: d3football refused an earlier request this run: ", url, call. = FALSE)
+    stop("Not fetched: d3football refused an earlier request this run (",
+         fetch_refusal(), "): ", url, call. = FALSE)
   }
   budget <- getOption("d3ballR.max_requests", Inf)
   if (n_requests() >= budget) {
@@ -42,23 +59,46 @@ fetch_html <- function(url, user_agent = default_user_agent(), refresh = FALSE) 
   }
   throttle()
   .d3_state$n_requests <- n_requests() + 1L
-  html <- tryCatch(
+  resp <- tryCatch(
     httr2::request(url) |>
       httr2::req_user_agent(user_agent) |>
       httr2::req_retry(max_tries = 3) |>
       httr2::req_timeout(30) |>
-      httr2::req_perform() |>
-      httr2::resp_body_string(),
+      httr2::req_perform(),
     error = function(e) {
-      # rate limiting shows up as HTTP 459 or an empty body: stop asking
-      if (grepl("459|429|empty body", conditionMessage(e))) .d3_state$refused <- TRUE
+      status <- if (inherits(e, "httr2_http")) httr2::resp_status(e$resp) else NA_integer_
+      # rate limiting shows up as HTTP 459 / 429: stop asking
+      if (status %in% c(429L, 459L) || grepl("459|429", conditionMessage(e))) {
+        what <- if (!is.na(status)) paste("HTTP", status) else conditionMessage(e)
+        record_refusal(what, url)
+        stop("Not fetched: d3football refused the request (", what, "): ", url, call. = FALSE)
+      }
       stop(e)
     }
   )
-  if (!nchar(html)) {
-    .d3_state$refused <- TRUE
-    stop("Not fetched: d3football returned an empty page: ", url, call. = FALSE)
+  # d3football's firewall (AWS WAF) answers some scripted requests with a
+  # bot challenge: HTTP 202, `x-amzn-waf-action: challenge`, empty body. A
+  # browser solves it with JavaScript; we don't. It's a refusal, not an
+  # empty game page.
+  waf <- httr2::resp_header(resp, "x-amzn-waf-action")
+  if (!is.null(waf)) {
+    what <- paste0("bot challenge: HTTP ", httr2::resp_status(resp), ", x-amzn-waf-action ", waf)
+    record_refusal(what, url)
+    stop("Not fetched: d3football refused the request (", what, "): ", url, call. = FALSE)
   }
+  html <- if (httr2::resp_has_body(resp)) httr2::resp_body_string(resp) else ""
+  if (!nchar(html)) {
+    .d3_state$empty <- c(.d3_state$empty, url)
+    .d3_state$empty_streak <- empty_streak() + 1L
+    streak <- getOption("d3ballR.max_empty_streak", 3)
+    if (empty_streak() >= streak) {
+      record_refusal(paste(streak, "empty pages in a row, the last"), url)
+      stop("Not fetched: empty page (", streak, " in a row): d3football refused the request: ",
+           url, call. = FALSE)
+    }
+    stop("Not fetched: empty page: ", url, call. = FALSE)
+  }
+  .d3_state$empty_streak <- 0L
   if (!is.null(path)) {
     dir.create(cache_dir, showWarnings = FALSE, recursive = TRUE)
     writeLines(html, path, useBytes = TRUE)
@@ -85,7 +125,37 @@ n_requests <- function() if (is.null(.d3_state$n_requests)) 0L else .d3_state$n_
 reset_fetch_state <- function() {
   .d3_state$n_requests <- 0L
   .d3_state$refused <- FALSE
+  .d3_state$refusal <- NULL
+  .d3_state$empty <- character()
+  .d3_state$empty_streak <- 0L
   invisible(NULL)
+}
+
+#' URLs that came back as an empty page since the last [reset_fetch_state()]
+#' @keywords internal
+empty_pages <- function() if (is.null(.d3_state$empty)) character() else .d3_state$empty
+
+#' Empty pages in a row (reset by any non-empty response)
+#' @keywords internal
+empty_streak <- function() if (is.null(.d3_state$empty_streak)) 0L else .d3_state$empty_streak
+
+#' Remember that d3football refused a request, and why
+#' @param what Reason, e.g. `"HTTP 459"` or `"empty page"`.
+#' @param url The refused URL.
+#' @keywords internal
+record_refusal <- function(what, url) {
+  .d3_state$refused <- TRUE
+  .d3_state$refusal <- paste0(what, " at ", url)
+  invisible(NULL)
+}
+
+#' Why d3football refused a request this run
+#'
+#' @return `"<reason> at <url>"` (reason: `"HTTP 459"`, `"3 empty pages in a row, the last"`, ...)
+#'   for the first refusal since [reset_fetch_state()], or `NA` if none.
+#' @keywords internal
+fetch_refusal <- function() {
+  if (is.null(.d3_state$refusal)) NA_character_ else .d3_state$refusal
 }
 
 #' Has d3football refused a request since the last [reset_fetch_state()]?
