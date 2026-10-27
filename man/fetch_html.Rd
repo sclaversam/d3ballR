@@ -35,6 +35,9 @@ caps the number of network requests (see \code{\link[=reset_fetch_state]{reset_f
 once d3football refuses a request (HTTP 459 / 429 or an empty page, its
 rate limiting), every later uncached request in the run fails
 immediately instead of asking again. Errors from these guards start with
-"Not fetched:".
+"Not fetched:". The refusal itself (HTTP status or "empty page", and its
+URL) is kept for the run (see \code{\link[=fetch_refusal]{fetch_refusal()}}) and repeated in every
+later "refused an earlier request" error, so it reaches the run log and
+\code{build_failures.csv}.
 }
 \keyword{internal}

@@ -17,7 +17,10 @@
 #' once d3football refuses a request (HTTP 459 / 429 or an empty page, its
 #' rate limiting), every later uncached request in the run fails
 #' immediately instead of asking again. Errors from these guards start with
-#' "Not fetched:".
+#' "Not fetched:". The refusal itself (HTTP status or "empty page", and its
+#' URL) is kept for the run (see [fetch_refusal()]) and repeated in every
+#' later "refused an earlier request" error, so it reaches the run log and
+#' `build_failures.csv`.
 #'
 #' @param url Full page URL, including the `?view=...` suffix when needed.
 #' @param user_agent Browser User-Agent string.
@@ -34,7 +37,8 @@ fetch_html <- function(url, user_agent = default_user_agent(), refresh = FALSE) 
     stop("Not fetched: offline (option d3ballR.offline = TRUE): ", url, call. = FALSE)
   }
   if (isTRUE(.d3_state$refused)) {
-    stop("Not fetched: d3football refused an earlier request this run: ", url, call. = FALSE)
+    stop("Not fetched: d3football refused an earlier request this run (",
+         fetch_refusal(), "): ", url, call. = FALSE)
   }
   budget <- getOption("d3ballR.max_requests", Inf)
   if (n_requests() >= budget) {
@@ -50,13 +54,20 @@ fetch_html <- function(url, user_agent = default_user_agent(), refresh = FALSE) 
       httr2::req_perform() |>
       httr2::resp_body_string(),
     error = function(e) {
-      # rate limiting shows up as HTTP 459 or an empty body: stop asking
-      if (grepl("459|429|empty body", conditionMessage(e))) .d3_state$refused <- TRUE
+      status <- if (inherits(e, "httr2_http")) httr2::resp_status(e$resp) else NA_integer_
+      # rate limiting shows up as HTTP 459 / 429 or an empty body: stop asking
+      if (status %in% c(429L, 459L) || grepl("459|429|empty body", conditionMessage(e))) {
+        what <- if (!is.na(status)) paste("HTTP", status)
+                else if (grepl("empty body", conditionMessage(e))) "empty page"
+                else conditionMessage(e)
+        record_refusal(what, url)
+        stop("Not fetched: d3football refused the request (", what, "): ", url, call. = FALSE)
+      }
       stop(e)
     }
   )
   if (!nchar(html)) {
-    .d3_state$refused <- TRUE
+    record_refusal("empty page", url)
     stop("Not fetched: d3football returned an empty page: ", url, call. = FALSE)
   }
   if (!is.null(path)) {
@@ -85,7 +96,27 @@ n_requests <- function() if (is.null(.d3_state$n_requests)) 0L else .d3_state$n_
 reset_fetch_state <- function() {
   .d3_state$n_requests <- 0L
   .d3_state$refused <- FALSE
+  .d3_state$refusal <- NULL
   invisible(NULL)
+}
+
+#' Remember that d3football refused a request, and why
+#' @param what Reason, e.g. `"HTTP 459"` or `"empty page"`.
+#' @param url The refused URL.
+#' @keywords internal
+record_refusal <- function(what, url) {
+  .d3_state$refused <- TRUE
+  .d3_state$refusal <- paste0(what, " at ", url)
+  invisible(NULL)
+}
+
+#' Why d3football refused a request this run
+#'
+#' @return `"<reason> at <url>"` (reason: `"HTTP 459"`, `"empty page"`, ...)
+#'   for the first refusal since [reset_fetch_state()], or `NA` if none.
+#' @keywords internal
+fetch_refusal <- function() {
+  if (is.null(.d3_state$refusal)) NA_character_ else .d3_state$refusal
 }
 
 #' Has d3football refused a request since the last [reset_fetch_state()]?

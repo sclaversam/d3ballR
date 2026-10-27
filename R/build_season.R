@@ -51,7 +51,7 @@ build_season <- function(season, teams = NULL, max_requests = Inf, delay = 6,
   built <- build_all_pbp(games$boxscore_url, out_dir = out_dir, check_dir = check_dir, conf = conf)
   write_build_report(season, teams, games, built, conf, check_dir)
   write_first_down_report(built, check_dir)
-  if (fetch_refused()) message("d3football refused a request; the rest of this run used the cache only. Rerun later to continue.")
+  if (fetch_refused()) message("d3football refused a request (", fetch_refusal(), "); the rest of this run used the cache only. Rerun later to continue.")
   invisible(built)
 }
 
@@ -137,7 +137,9 @@ write_build_report <- function(season, teams, games, built, conf, check_dir) {
 #' Fetch (and cache) the play-by-play pages of games not yet cached
 #'
 #' Stops as soon as the request budget is reached or d3football refuses a
-#' request (see [fetch_html()]). Prints progress every 25 pages.
+#' request (see [fetch_html()]). Prints progress every 25 pages, and the
+#' reason for any page it could not fetch (for a refusal: HTTP status or
+#' "empty page", and the URL).
 #'
 #' @param boxscore_urls Boxscore URLs (without `?view=`).
 #' @return Invisibly, the number of pages fetched.
@@ -149,12 +151,16 @@ prefetch_games <- function(boxscore_urls) {
   message(length(todo), " game pages not yet cached")
   got <- 0L
   for (u in todo) {
-    ok <- tryCatch({ fetch_html(u); TRUE }, error = function(e) FALSE)
+    ok <- tryCatch({ fetch_html(u); TRUE }, error = function(e) {
+      message(conditionMessage(e))
+      FALSE
+    })
     if (!ok && (fetch_refused() || n_requests() >= getOption("d3ballR.max_requests", Inf) ||
                 isTRUE(getOption("d3ballR.offline", FALSE)))) break
     if (ok) got <- got + 1L
     if (ok && got %% 25L == 0L) message(format(Sys.time(), "%H:%M:%S"), " fetched ", got, " game pages")
   }
-  message("fetched ", got, " game pages this run", if (fetch_refused()) " (stopped: d3football refused a request)" else "")
+  message("fetched ", got, " game pages this run",
+          if (fetch_refused()) paste0(" (stopped: d3football refused a request: ", fetch_refusal(), ")") else "")
   invisible(got)
 }

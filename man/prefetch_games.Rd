@@ -14,6 +14,8 @@ Invisibly, the number of pages fetched.
 }
 \description{
 Stops as soon as the request budget is reached or d3football refuses a
-request (see \code{\link[=fetch_html]{fetch_html()}}). Prints progress every 25 pages.
+request (see \code{\link[=fetch_html]{fetch_html()}}). Prints progress every 25 pages, and the
+reason for any page it could not fetch (for a refusal: HTTP status or
+"empty page", and the URL).
 }
 \keyword{internal}
