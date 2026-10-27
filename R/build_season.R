@@ -20,6 +20,9 @@
 #' and stops at the first sign of rate limiting (after that the run builds
 #' only from the cache). Anything not fetched is reported as pending, so
 #' calling `build_season()` again picks up where the last call stopped.
+#' Games whose play-by-play page came back empty are kept in
+#' `{check_dir}/empty_pages.csv` ([write_empty_pages()]), reported as their
+#' own category, and retried (last, at most once) on each later call.
 #'
 #' @param season Season year.
 #' @param teams Team names (scoreboard spelling) to filter to, or NULL for
@@ -46,9 +49,12 @@ build_season <- function(season, teams = NULL, max_requests = Inf, delay = 6,
   # fetch game pages first: they're the priority within a capped run. Team
   # pages (conferences) come after, and are filled in by later runs if the
   # budget or a refusal stops this one.
-  prefetch_games(games$boxscore_url)
+  empty_file <- file.path(check_dir, "empty_pages.csv")
+  known_empty <- if (file.exists(empty_file)) utils::read.csv(empty_file, na.strings = "")$url else character()
+  prefetch_games(games$boxscore_url, last = known_empty)
   conf <- build_conference_table(season, unique(c(games$home, games$away)))
   built <- build_all_pbp(games$boxscore_url, out_dir = out_dir, check_dir = check_dir, conf = conf)
+  write_empty_pages(games, check_dir)
   write_build_report(season, teams, games, built, conf, check_dir)
   write_first_down_report(built, check_dir)
   if (fetch_refused()) message("d3football refused a request (", fetch_refusal(), "); the rest of this run used the cache only. Rerun later to continue.")
@@ -95,8 +101,10 @@ write_build_report <- function(season, teams, games, built, conf, check_dir) {
   if (is.null(unclassified)) unclassified <- data.frame()
   rec <- utils::read.csv(file.path(check_dir, "score_reconciliation.csv"), na.strings = "")
   fail <- utils::read.csv(file.path(check_dir, "build_failures.csv"), na.strings = "")
-  pending <- fail[grepl("^Not fetched", fail$error), ]
-  broken <- fail[!grepl("^Not fetched", fail$error), ]
+  empty <- utils::read.csv(file.path(check_dir, "empty_pages.csv"), na.strings = "")
+  is_empty <- fail$game_url %in% empty$game_url
+  pending <- fail[grepl("^Not fetched", fail$error) & !is_empty, ]
+  broken <- fail[!grepl("^Not fetched", fail$error) & !is_empty, ]
   pending_teams <- setdiff(unique(c(games$home, games$away)), conf$table$team)
   unnamed <- unique(stats::na.omit(conf$table$conference_code[is.na(conf$table$conference)]))
 
@@ -109,6 +117,7 @@ write_build_report <- function(season, teams, games, built, conf, check_dir) {
     paste0("- **Requested:** ", scope, "."),
     paste0("- **Games in scope:** ", nrow(games), " (includes every game already built for the season)."),
     paste0("- **Built:** ", length(built), ". **Pending** (page not fetched yet): ", nrow(pending),
+           ". **Empty** (d3football's page had no content): ", nrow(empty),
            ". **Failed** (fetched but did not parse): ", nrow(broken), "."),
     paste0("- **Teams:** ", length(unique(c(games$home, games$away))), " in these games; ",
            nrow(conf$table), " in `data-raw/conferences/", season, ".csv`",
@@ -126,6 +135,9 @@ write_build_report <- function(season, teams, games, built, conf, check_dir) {
     md_table(if (nrow(cc)) cc[cc$agree %in% FALSE, ] else cc), "",
     "## Failed games", "",
     md_table(broken), "",
+    "## Empty pages", "",
+    "Games whose play-by-play page came back empty (`empty_pages.csv`). Each is retried, last, on every run; one that comes back with content leaves this list.", "",
+    md_table(empty[, c("game_id", "game_date", "away", "home", "first_seen", "last_checked")]), "",
     "## Unclassified rows", "",
     "Rows the classifier couldn't type (its `other` bucket). They are dropped, so any here may hide a play: each needs a classifier rule.", "",
     md_table(unclassified), ""
@@ -141,11 +153,16 @@ write_build_report <- function(season, teams, games, built, conf, check_dir) {
 #' reason for any page it could not fetch (for a refusal: HTTP status or
 #' "empty page", and the URL).
 #'
+#' An empty page doesn't stop the run (see [fetch_html()]): it is skipped.
+#'
 #' @param boxscore_urls Boxscore URLs (without `?view=`).
+#' @param last Play-by-play URLs to try after all others (pages that were
+#'   empty on an earlier run), so they don't use up a capped run's budget.
 #' @return Invisibly, the number of pages fetched.
 #' @keywords internal
-prefetch_games <- function(boxscore_urls) {
+prefetch_games <- function(boxscore_urls, last = character()) {
   urls <- paste0(boxscore_urls[!is.na(boxscore_urls)], "?view=plays")
+  urls <- c(setdiff(urls, last), intersect(urls, last))
   cache_dir <- getOption("d3ballR.cache_dir", "data-raw/cache")
   todo <- urls[!file.exists(file.path(cache_dir, vapply(urls, cache_key, character(1))))]
   message(length(todo), " game pages not yet cached")
@@ -160,7 +177,47 @@ prefetch_games <- function(boxscore_urls) {
     if (ok) got <- got + 1L
     if (ok && got %% 25L == 0L) message(format(Sys.time(), "%H:%M:%S"), " fetched ", got, " game pages")
   }
+  if (length(empty_pages())) message(length(empty_pages()), " empty page(s) this run")
   message("fetched ", got, " game pages this run",
           if (fetch_refused()) paste0(" (stopped: d3football refused a request: ", fetch_refusal(), ")") else "")
   invisible(got)
+}
+
+#' Keep track of games whose play-by-play page came back empty
+#'
+#' Updates `{check_dir}/empty_pages.csv`: one row per game whose page was
+#' empty on its latest check (`game_id`, `home`, `away`, `game_date`,
+#' `game_url`, `url`, `first_seen`, `last_checked`, times in UTC). Games
+#' empty this run are added (or have `last_checked` updated); a listed game
+#' whose page is now cached (it came back with content) is dropped; other
+#' listed games are kept as they were.
+#'
+#' @param games Index rows in scope (`game_id`, `home`, `away`, `game_date`,
+#'   `boxscore_url`).
+#' @param check_dir Report directory.
+#' @return Invisibly, the table written.
+#' @keywords internal
+write_empty_pages <- function(games, check_dir) {
+  file <- file.path(check_dir, "empty_pages.csv")
+  cols <- c("game_id", "home", "away", "game_date", "game_url", "url", "first_seen", "last_checked")
+  old <- if (file.exists(file)) utils::read.csv(file, na.strings = "", colClasses = "character") else
+    stats::setNames(data.frame(matrix(character(), 0, length(cols))), cols)
+  now <- format(Sys.time(), "%Y-%m-%d %H:%M", tz = "UTC")
+  urls <- paste0(games$boxscore_url, "?view=plays")
+  sel <- !is.na(games$boxscore_url) & urls %in% empty_pages()
+  hit <- games[sel, ]
+  new <- data.frame(game_id = hit$game_id, home = hit$home, away = hit$away,
+                    game_date = as.character(hit$game_date), game_url = hit$boxscore_url,
+                    url = urls[sel],
+                    first_seen = rep(now, nrow(hit)), last_checked = rep(now, nrow(hit)))
+  new$first_seen <- ifelse(new$url %in% old$url, old$first_seen[match(new$url, old$url)], now)
+  cache_dir <- getOption("d3ballR.cache_dir", "data-raw/cache")
+  cached <- !is.null(cache_dir) &
+    file.exists(file.path(if (is.null(cache_dir)) "" else cache_dir, vapply(old$url, cache_key, character(1))))
+  keep <- old[!(old$url %in% new$url) & !cached, cols, drop = FALSE]
+  out <- rbind(keep, new[, cols])
+  out <- out[order(out$game_date, out$game_id), , drop = FALSE]
+  dir.create(check_dir, showWarnings = FALSE, recursive = TRUE)
+  utils::write.csv(out, file, row.names = FALSE, na = "")
+  invisible(out)
 }

@@ -4,10 +4,13 @@
 \alias{prefetch_games}
 \title{Fetch (and cache) the play-by-play pages of games not yet cached}
 \usage{
-prefetch_games(boxscore_urls)
+prefetch_games(boxscore_urls, last = character())
 }
 \arguments{
 \item{boxscore_urls}{Boxscore URLs (without \verb{?view=}).}
+
+\item{last}{Play-by-play URLs to try after all others (pages that were
+empty on an earlier run), so they don't use up a capped run's budget.}
 }
 \value{
 Invisibly, the number of pages fetched.
@@ -17,5 +20,8 @@ Stops as soon as the request budget is reached or d3football refuses a
 request (see \code{\link[=fetch_html]{fetch_html()}}). Prints progress every 25 pages, and the
 reason for any page it could not fetch (for a refusal: HTTP status or
 "empty page", and the URL).
+}
+\details{
+An empty page doesn't stop the run (see \code{\link[=fetch_html]{fetch_html()}}): it is skipped.
 }
 \keyword{internal}

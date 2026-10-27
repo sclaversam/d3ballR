@@ -63,9 +63,13 @@ structured feed. The rules:
   twice.
 - **Throttle:** requests are spaced 6 seconds apart in `build_season()`.
 - **Cap:** `max_requests` limits new requests per run.
-- **Stop on refusal:** after the first refusal (HTTP 459 or an empty page,
-  which is how d3football rate-limits), the rest of the run uses the cache
-  only.
+- **Stop on refusal:** after the first refusal (HTTP 459 / 429, or 3 empty
+  pages in a row, which is how d3football rate-limits), the rest of the run
+  uses the cache only. The reason and URL are printed and written to
+  `build_failures.csv`.
+- **Skip a single empty page:** some games' pages are empty on d3football.
+  One empty page is not cached; the game is listed in `empty_pages.csv` and
+  retried, last, on each later run.
 
 In practice, fetch in batches of about 10-100 pages and stop when refused.
 Bursts of a few dozen requests have triggered the limit: the first all-D3
@@ -79,6 +83,7 @@ Run on every build; reports in `checks/{season}/`:
 | Report | Checks | 2025 result |
 |---|---|---|
 | `build_report.md`, `score_reconciliation.csv` | Every game's points by team, summed from `score_pts`, equal the boxscore final. Also lists pending and failed games. | 62 of 62 |
+| `empty_pages.csv` | Games whose play-by-play page came back empty (game, date, teams, URL, first seen, last checked). Listed in `build_report.md` as **Empty**, apart from pending and failed. A game leaves the list when its page comes back with content. | |
 | `conference_check.csv` | d3's "*" conference marker vs shared membership. | Agree wherever both conferences are known (NJAC's name pending a fetch). |
 | `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: cfbfastR comparison and edge cases. | 3,538 of 3,541; the 3 exceptions are labeled (2 d3 quirks, 1 lateral). |
 | `kickoff_possession.csv` | Each kickoff's kicking and receiving team, the rule that decided it, and any disagreement. | No disagreements. |

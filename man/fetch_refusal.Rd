@@ -7,7 +7,7 @@
 fetch_refusal()
 }
 \value{
-\code{"<reason> at <url>"} (reason: \code{"HTTP 459"}, \code{"empty page"}, ...)
+\code{"<reason> at <url>"} (reason: \code{"HTTP 459"}, \code{"3 empty pages in a row, the last"}, ...)
 for the first refusal since \code{\link[=reset_fetch_state]{reset_fetch_state()}}, or \code{NA} if none.
 }
 \description{
