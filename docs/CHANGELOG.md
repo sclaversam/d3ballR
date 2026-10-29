@@ -5,6 +5,34 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Kick details (77 columns)
+
+Thirteen cfbfastR-named columns, placed after `punt`: `yds_kickoff`,
+`yds_kickoff_return`, `kickoff_tb`, `kickoff_oob`, `kickoff_fair_catch`,
+`kickoff_onside`, `yds_punted`, `yds_punt_return`, `punt_tb`, `punt_oob`,
+`punt_fair_catch`, `punt_downed`, `yds_fg`. Chosen by Sam from the cfbfastR
+column comparison (2026-10-29). All are read from the play text before any
+`PENALTY` clause, and a no-play row credits none of them.
+
+- **Kick flags read the kick only.** cfbfastR searches the whole play text,
+  so a returner running out of bounds counts as `punt_oob` there. Here the
+  flags read the text up to the first return, muff, fumble, recovery, block
+  or lateral: 43 punts in the 133 games say "return ... out of bounds", and
+  none of them is `punt_oob`.
+- **No return is NA, not 0.** `yds_kickoff_return` / `yds_punt_return` are
+  NA on a touchback, fair catch or kick out of bounds, so an average over
+  the column is an average over real returns. A return "for no gain" is 0.
+- **Not included:** `kickoff_downed`, `kickoff_safety`, `punt_safety`,
+  `punt_blocked` (already `play_type == "punt_blocked"`).
+
+**Classifier fix: coin tosses that say "will kickoff".** Four games
+(Dickinson at Randolph-Macon, St. John Fisher at FDU-Florham, Alfred State at
+Anderson, Johns Hopkins at Susquehanna) print the toss as "X wins toss and will
+kickoff; Y will defend ...". The word "kickoff" sent both halves' toss rows to
+`kickoff`, so each of those games had two phantom kickoff rows, and the real
+opening kickoffs were read as re-kicks. Coin tosses are now checked before
+the kickoff rule.
+
 ## All of D3 2025: second batch
 
 50 more game pages, fetched 15 s apart with no refusal (the first batch, 6 s
