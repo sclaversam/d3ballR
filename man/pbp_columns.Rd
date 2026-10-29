@@ -5,7 +5,7 @@
 \alias{pbp_columns}
 \title{Output column order}
 \format{
-An object of class \code{character} of length 64.
+An object of class \code{character} of length 77.
 }
 \usage{
 pbp_columns

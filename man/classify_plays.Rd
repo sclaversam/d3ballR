@@ -53,6 +53,8 @@ rule, not that the row should be silently dropped.
 
 Ordering matters, per CLAUDE.md:
 \itemize{
+\item \code{coin_toss} is checked first: some formats write "wins toss and will
+kickoff", which the kickoff rule would otherwise take.
 \item \code{play} is checked first, so a nullified snap (has a verb, also has a
 \verb{PENALTY ... NO PLAY} clause) is still counted as \code{play}.
 \item \code{kickoff} comes next, before \code{penalty_no_play}, so a kickoff with a
