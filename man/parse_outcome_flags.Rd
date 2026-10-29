@@ -17,7 +17,7 @@ parse_outcome_flags(df, text_team)
 \code{df} with the ten flag columns set (logical, never NA).
 }
 \description{
-Sets \code{rush}, \code{pass}, \code{completion}, \code{sack}, \code{int}, \code{fumble_vec},
+Sets \code{rush}, \code{pass_attempt}, \code{completion}, \code{sack}, \code{int}, \code{fumble_vec},
 \code{turnover}, \code{downs_turnover}, \code{touchdown}, \code{safety}. All are FALSE on
 rows with \code{penalty_no_play} TRUE (see \code{\link[=is_no_play]{is_no_play()}}), regardless of
 what the text says.
@@ -26,7 +26,7 @@ what the text says.
 \itemize{
 \item \code{rush}: play_type \code{rush} or \code{kneel}. A sack is NOT a rush here (it has
 its own flag), even though NCAA stats charge sacks to rushing.
-\item \code{pass}: \code{pass_complete}, \code{pass_incomplete}, \code{pass_intercepted}.
+\item \code{pass_attempt}: \code{pass_complete}, \code{pass_incomplete}, \code{pass_intercepted}.
 \item \code{completion}, \code{int}, \code{sack}: the matching play_type.
 \item Two-point tries (\code{two_point}) get no rush/pass flag; they aren't
 scrimmage plays in cfbfastR's counting.

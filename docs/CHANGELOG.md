@@ -5,6 +5,52 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Two renames to cfbfastR names
+
+Decided by Sam from the cfbfastR column comparison (2026-10-29). Both kept
+names that cfbfastR uses for something else, so cfbfastR code run on our
+files would have given wrong answers without an error.
+
+- **`pass` → `pass_attempt`.** Ours never counted sacks; cfbfastR's `pass`
+  does (it is a dropback flag), and `pass_attempt` is its name for ours.
+- **`penalty_text` → `penalty_play_text`.** cfbfastR's `penalty_text` is a
+  TRUE/FALSE flag; `penalty_play_text` is its column for the text.
+
+**Kept as is:** `score_diff`, `pos_team_score`, `def_pos_team_score`. All
+three are the score before the play. cfbfastR's columns of the same name are
+after the play, but we have no `_end` / after-play columns, so nothing in our
+files reads the other way. The after-play margin is `score_diff + score_pts`.
+
+Values are unchanged; only the two header names changed in the built CSVs.
+
+## Kick details (77 columns)
+
+Thirteen cfbfastR-named columns, placed after `punt`: `yds_kickoff`,
+`yds_kickoff_return`, `kickoff_tb`, `kickoff_oob`, `kickoff_fair_catch`,
+`kickoff_onside`, `yds_punted`, `yds_punt_return`, `punt_tb`, `punt_oob`,
+`punt_fair_catch`, `punt_downed`, `yds_fg`. Chosen by Sam from the cfbfastR
+column comparison (2026-10-29). All are read from the play text before any
+`PENALTY` clause, and a no-play row credits none of them.
+
+- **Kick flags read the kick only.** cfbfastR searches the whole play text,
+  so a returner running out of bounds counts as `punt_oob` there. Here the
+  flags read the text up to the first return, muff, fumble, recovery, block
+  or lateral: 43 punts in the 133 games say "return ... out of bounds", and
+  none of them is `punt_oob`.
+- **No return is NA, not 0.** `yds_kickoff_return` / `yds_punt_return` are
+  NA on a touchback, fair catch or kick out of bounds, so an average over
+  the column is an average over real returns. A return "for no gain" is 0.
+- **Not included:** `kickoff_downed`, `kickoff_safety`, `punt_safety`,
+  `punt_blocked` (already `play_type == "punt_blocked"`).
+
+**Classifier fix: coin tosses that say "will kickoff".** Four games
+(Dickinson at Randolph-Macon, St. John Fisher at FDU-Florham, Alfred State at
+Anderson, Johns Hopkins at Susquehanna) print the toss as "X wins toss and will
+kickoff; Y will defend ...". The word "kickoff" sent both halves' toss rows to
+`kickoff`, so each of those games had two phantom kickoff rows, and the real
+opening kickoffs were read as re-kicks. Coin tosses are now checked before
+the kickoff rule.
+
 ## All of D3 2025: second batch
 
 50 more game pages, fetched 15 s apart with no refusal (the first batch, 6 s

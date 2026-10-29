@@ -49,7 +49,7 @@ rate-limiting) are listed as pending, and the next run continues from there.
 | Fetch | Each game's play-by-play page. Cached and throttled. | `R/scrape_plays.R` (`fetch_html`) | `data-raw/cache/` (gitignored) |
 | Classify | Label every row of the page: snap, kickoff, try, dead-ball penalty, or one of the non-play types (drive header / footer, quarter marker, timeout, ...). | `R/classify.R`, `R/parse_play_type.R` | |
 | Derive | Period, possession, team names, kickoff teams, drives, down / distance / yards to goal, penalties, outcome flags, score, first downs and series, clock. | `R/build_pbp.R` and the files it calls: `teams.R`, `kickoffs.R`, `drives.R`, `scores.R`, `parse_penalties.R`, `parse_outcomes.R`, `game_state.R`, `parse_clock.R` | |
-| Assemble | One 64-column table per game. | `R/build_pbp.R` (`build_pbp`, `build_all_pbp`) | `pbp/{season}/{game_id}.csv` |
+| Assemble | One 77-column table per game. | `R/build_pbp.R` (`build_pbp`, `build_all_pbp`) | `pbp/{season}/{game_id}.csv` |
 | Validate | Reports for the season. | `R/validation.R`, `R/build_season.R` | `checks/{season}/` |
 
 **One pipeline for everything.** `build_season()` runs all the stages. The

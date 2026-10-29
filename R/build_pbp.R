@@ -392,12 +392,15 @@ pbp_columns <- c(
   "secs_remaining_start_max", "secs_remaining_start_min", "pos_team", "def_pos_team",
   "pos_team_score", "def_pos_team_score", "score_diff", "down", "distance",
   "yards_to_goal", "Goal_To_Go",
-  "play_type", "scrimmage_play", "yards_gained", "rush", "pass", "completion", "sack",
+  "play_type", "scrimmage_play", "yards_gained", "rush", "pass_attempt", "completion", "sack",
   "int", "fumble_vec", "turnover", "downs_turnover", "touchdown", "safety",
-  "field_goal_attempt", "field_goal_made", "punt", "scoring_play", "score_pts",
+  "field_goal_attempt", "field_goal_made", "punt",
+  "yds_kickoff", "yds_kickoff_return", "kickoff_tb", "kickoff_oob", "kickoff_fair_catch",
+  "kickoff_onside", "yds_punted", "yds_punt_return", "punt_tb", "punt_oob",
+  "punt_fair_catch", "punt_downed", "yds_fg", "scoring_play", "score_pts",
   "drive_result", "firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards",
   "firstD_by_penalty", "new_series", "penalty_flag", "penalty_yards_signed",
-  "penalized_team", "penalty_no_play", "penalty_declined", "penalty_text", "situation",
+  "penalized_team", "penalty_no_play", "penalty_declined", "penalty_play_text", "situation",
   "play_text"
 )
 
@@ -547,6 +550,7 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
   kept$field_goal_attempt <- kept$play_type %in% c("field_goal_good", "field_goal_missed", "field_goal_blocked") & live
   kept$field_goal_made <- kept$play_type == "field_goal_good" & live
   kept$punt <- kept$play_type %in% c("punt_no_return", "punt_with_return", "punt_blocked") & live
+  kept <- cbind(kept, parse_kick_details(kept$play_text, kept$play_type, kept$penalty_no_play))
   kept$score_pts <- score_points(kept)
   kept$scoring_play <- kept$score_pts != 0L
   rs <- running_score(kept, scores, teams)

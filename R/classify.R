@@ -17,6 +17,15 @@ dd_pattern <- "[1-4](st|nd|rd|th)\\s+and\\s+.*\\bat\\b"
 #' @keywords internal
 verb_pattern <- "\\b(rush|pass (complete|incomplete|intercepted|attempt)|sacked|punt|field goal|kneel)\\b"
 
+#' Coin-toss pattern
+#'
+#' "wins toss and defers", "won the toss", "will receive", "to receive and
+#' defend", "will defend". Some StatCrew formats say "wins toss and will
+#' kickoff", which is why [classify_plays()] checks this before the kickoff
+#' rule.
+#' @keywords internal
+toss_pattern <- "wins (the )?toss|will receive|will defend|to receive and defen[ds]e?|won the toss"
+
 #' Classify each play-by-play row into a type
 #'
 #' Positive-identification design (see CLAUDE.md "Classifier design"): a row
@@ -52,6 +61,8 @@ verb_pattern <- "\\b(rush|pass (complete|incomplete|intercepted|attempt)|sacked|
 #' rule, not that the row should be silently dropped.
 #'
 #' Ordering matters, per CLAUDE.md:
+#' - `coin_toss` is checked first: some formats write "wins toss and will
+#'   kickoff", which the kickoff rule would otherwise take.
 #' - `play` is checked first, so a nullified snap (has a verb, also has a
 #'   `PENALTY ... NO PLAY` clause) is still counted as `play`.
 #' - `kickoff` comes next, before `penalty_no_play`, so a kickoff with a
@@ -77,7 +88,13 @@ classify_plays <- function(plays) {
 
   is_kickoff <- stringr::str_detect(plays$play, stringr::regex("\\bkickoff\\b", ignore_case = TRUE))
 
+  # StatCrew's coin-toss line can contain the word "kickoff" ("Dickinson
+  # wins toss and will kickoff; RMC will defend South end-zone."), so it is
+  # caught before the kickoff rule, whatever its situation column says.
+  is_toss <- stringr::str_detect(plays$play, stringr::regex(toss_pattern, ignore_case = TRUE))
+
   row_type <- dplyr::case_when(
+    is_toss & !has_verb ~ "coin_toss",
     is_dd & has_verb ~ "play",
     # A kickoff is a kickoff even when it carries a return penalty: StatCrew
     # then prints a stale down-and-distance in the situation column, which
@@ -105,7 +122,7 @@ classify_plays <- function(plays) {
     stringr::str_detect(plays$play, stringr::regex("^Timeout", ignore_case = TRUE)) ~ "timeout",
     is_dd & stringr::str_detect(plays$play, stringr::regex("^clock \\d{1,2}:\\d{2}\\.?$", ignore_case = TRUE)) ~ "bare_clock",
     is_dd & stringr::str_detect(plays$play, "^[1-4](st|nd|rd|th) and \\d+\\.?$") ~ "down_distance_echo",
-    is_dd & stringr::str_detect(plays$play, stringr::regex("wins (the )?toss|will receive|will defend|to receive and defen[ds]e?|won the toss", ignore_case = TRUE)) ~ "coin_toss",
+    is_dd & is_toss ~ "coin_toss",
     is_dd & stringr::str_detect(plays$play, stringr::regex("ball on", ignore_case = TRUE)) ~ "spot_correction",
     is_dd & stringr::str_detect(plays$play, " in at | at QB for ") ~ "substitution",
     is_dd & stringr::str_detect(plays$play, stringr::regex("review", ignore_case = TRUE)) ~ "replay_review",
