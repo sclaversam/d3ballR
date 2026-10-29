@@ -72,7 +72,7 @@ the row is a dead-ball penalty with no snap. d3 still prints the wiped-out
 attempt in full ("... 54 yards ... TOUCHDOWN nullified by penalty ... NO
 PLAY"), but none of it is credited:
 - `yards_gained` is NA and `score_pts` is 0;
-- every outcome flag is FALSE: `rush`, `pass`, `completion`, `sack`, `int`,
+- every outcome flag is FALSE: `rush`, `pass_attempt`, `completion`, `sack`, `int`,
   `fumble_vec`, `turnover`, `downs_turnover`, `touchdown`, `safety`,
   `field_goal_attempt`, `field_goal_made`, `punt`, `scoring_play`.
 - every kick yardage (`yds_kickoff`, `yds_punted`, `yds_fg`, and the return
@@ -176,7 +176,7 @@ clock and seconds columns are NA in periods 5+.
 | 34 | `scrimmage_play` | logical | The row has a down: a snap or a dead-ball penalty. | Never NA. | FALSE on kickoffs and tries. |
 | 35 | `yards_gained` | integer | Yards gained on the play itself, penalty yardage excluded. | NA on no-play rows, and on interceptions, punts, field goals, kickoffs, tries (not defined yet). | Filled for `rush`, `pass_complete`, `sack`, `kneel`; 0 for `pass_incomplete`. |
 | 36 | `rush` | logical | Designed run: `rush` or `kneel`. | Never NA. | A sack is not a rush here (NCAA counts it as one). |
-| 37 | `pass` | logical | Pass attempt: complete, incomplete, or intercepted. | Never NA. | Sacks and two-point passes are FALSE. |
+| 37 | `pass_attempt` | logical | Pass attempt: complete, incomplete, or intercepted. | Never NA. | Sacks and two-point passes are FALSE. cfbfastR name; cfbfastR's `pass` (not included) also counts sacks. |
 | 38 | `completion` | logical | Completed pass. | Never NA. | |
 | 39 | `sack` | logical | QB sacked. | Never NA. | |
 | 40 | `int` | logical | Interception. | Never NA. | Always also `turnover`. |
@@ -214,6 +214,6 @@ clock and seconds columns are NA in periods 5+.
 | 72 | `penalized_team` | character | Team that committed the penalty. | NA with no penalty. | Both teams joined with `"; "` when offsetting or accepted on both. |
 | 73 | `penalty_no_play` | logical | A penalty nullified the snap, or there was no snap. | Never NA. | See No-play gating. |
 | 74 | `penalty_declined` | logical | Every infraction on the row was declined. | NA when `penalty_flag` is FALSE. | |
-| 75 | `penalty_text` | character | Raw penalty clause, from the first "PENALTY" on. | NA with no penalty clause. | |
+| 75 | `penalty_play_text` | character | Raw penalty clause, from the first "PENALTY" on. | NA with no penalty clause. | cfbfastR name (its `penalty_text` is a TRUE/FALSE flag). |
 | 76 | `situation` | character | Raw down-and-distance text, verbatim. | Empty (NA on read) on kickoffs and tries. | Audit column. |
 | 77 | `play_text` | character | Raw play description, verbatim. | Never NA. | Audit column. |

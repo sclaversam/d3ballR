@@ -5,6 +5,24 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Two renames to cfbfastR names
+
+Decided by Sam from the cfbfastR column comparison (2026-10-29). Both kept
+names that cfbfastR uses for something else, so cfbfastR code run on our
+files would have given wrong answers without an error.
+
+- **`pass` → `pass_attempt`.** Ours never counted sacks; cfbfastR's `pass`
+  does (it is a dropback flag), and `pass_attempt` is its name for ours.
+- **`penalty_text` → `penalty_play_text`.** cfbfastR's `penalty_text` is a
+  TRUE/FALSE flag; `penalty_play_text` is its column for the text.
+
+**Kept as is:** `score_diff`, `pos_team_score`, `def_pos_team_score`. All
+three are the score before the play. cfbfastR's columns of the same name are
+after the play, but we have no `_end` / after-play columns, so nothing in our
+files reads the other way. The after-play margin is `score_diff + score_pts`.
+
+Values are unchanged; only the two header names changed in the built CSVs.
+
 ## Kick details (77 columns)
 
 Thirteen cfbfastR-named columns, placed after `punt`: `yds_kickoff`,

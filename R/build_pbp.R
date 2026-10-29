@@ -392,7 +392,7 @@ pbp_columns <- c(
   "secs_remaining_start_max", "secs_remaining_start_min", "pos_team", "def_pos_team",
   "pos_team_score", "def_pos_team_score", "score_diff", "down", "distance",
   "yards_to_goal", "Goal_To_Go",
-  "play_type", "scrimmage_play", "yards_gained", "rush", "pass", "completion", "sack",
+  "play_type", "scrimmage_play", "yards_gained", "rush", "pass_attempt", "completion", "sack",
   "int", "fumble_vec", "turnover", "downs_turnover", "touchdown", "safety",
   "field_goal_attempt", "field_goal_made", "punt",
   "yds_kickoff", "yds_kickoff_return", "kickoff_tb", "kickoff_oob", "kickoff_fair_catch",
@@ -400,7 +400,7 @@ pbp_columns <- c(
   "punt_fair_catch", "punt_downed", "yds_fg", "scoring_play", "score_pts",
   "drive_result", "firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards",
   "firstD_by_penalty", "new_series", "penalty_flag", "penalty_yards_signed",
-  "penalized_team", "penalty_no_play", "penalty_declined", "penalty_text", "situation",
+  "penalized_team", "penalty_no_play", "penalty_declined", "penalty_play_text", "situation",
   "play_text"
 )
 

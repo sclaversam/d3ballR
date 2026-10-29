@@ -79,14 +79,14 @@ token_regex <- function(tokens) {
 
 #' Populate the outcome-flag columns
 #'
-#' Sets `rush`, `pass`, `completion`, `sack`, `int`, `fumble_vec`,
+#' Sets `rush`, `pass_attempt`, `completion`, `sack`, `int`, `fumble_vec`,
 #' `turnover`, `downs_turnover`, `touchdown`, `safety`. All are FALSE on
 #' rows with `penalty_no_play` TRUE (see [is_no_play()]), regardless of
 #' what the text says.
 #'
 #' - `rush`: play_type `rush` or `kneel`. A sack is NOT a rush here (it has
 #'   its own flag), even though NCAA stats charge sacks to rushing.
-#' - `pass`: `pass_complete`, `pass_incomplete`, `pass_intercepted`.
+#' - `pass_attempt`: `pass_complete`, `pass_incomplete`, `pass_intercepted`.
 #' - `completion`, `int`, `sack`: the matching play_type.
 #' - Two-point tries (`two_point`) get no rush/pass flag; they aren't
 #'   scrimmage plays in cfbfastR's counting.
@@ -169,7 +169,7 @@ parse_outcome_flags <- function(df, text_team) {
   # recovered a muff ("muffed by X ... recovered by STO ... TOUCHDOWN")
   df$recovering_team <- recov_team
 
-  flags <- list(rush = rush, pass = pass, completion = completion, sack = sack,
+  flags <- list(rush = rush, pass_attempt = pass, completion = completion, sack = sack,
                 int = int, fumble_vec = fumble, turnover = turnover,
                 downs_turnover = downs_turnover, touchdown = touchdown, safety = safety)
   for (nm in names(flags)) df[[nm]] <- flags[[nm]] & !no_play

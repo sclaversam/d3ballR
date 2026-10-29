@@ -54,11 +54,11 @@ split_infractions <- function(clause, tokens) {
 #' Populate the penalty columns
 #'
 #' Sets `penalty_flag`, `penalty_yards_signed`, `penalized_team`,
-#' `penalty_no_play`, `penalty_declined`, `penalty_text` per conventions 1-5
+#' `penalty_no_play`, `penalty_declined`, `penalty_play_text` per conventions 1-5
 #' in `docs/schema.md` (Key conventions).
 #'
 #' - `penalty_flag`: text mentions a penalty (any case).
-#' - `penalty_text`: the raw clause from the first upper-case "PENALTY"
+#' - `penalty_play_text`: the raw clause from the first upper-case "PENALTY"
 #'   onward (so "TOUCHDOWN nullified by penalty" isn't mistaken for the
 #'   clause start). NA if none.
 #' - `penalized_team`: team name of the accepted infraction(s); for an
@@ -113,6 +113,6 @@ parse_penalties <- function(df, text_team) {
   df$penalized_team <- team
   df$penalty_no_play <- is_no_play(txt)
   df$penalty_declined <- ifelse(flag, declined %in% TRUE, NA)
-  df$penalty_text <- clause
+  df$penalty_play_text <- clause
   df
 }
