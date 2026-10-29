@@ -16,13 +16,13 @@ parse_penalties(df, text_team)
 }
 \description{
 Sets \code{penalty_flag}, \code{penalty_yards_signed}, \code{penalized_team},
-\code{penalty_no_play}, \code{penalty_declined}, \code{penalty_text} per conventions 1-5
+\code{penalty_no_play}, \code{penalty_declined}, \code{penalty_play_text} per conventions 1-5
 in \code{docs/schema.md} (Key conventions).
 }
 \details{
 \itemize{
 \item \code{penalty_flag}: text mentions a penalty (any case).
-\item \code{penalty_text}: the raw clause from the first upper-case "PENALTY"
+\item \code{penalty_play_text}: the raw clause from the first upper-case "PENALTY"
 onward (so "TOUCHDOWN nullified by penalty" isn't mistaken for the
 clause start). NA if none.
 \item \code{penalized_team}: team name of the accepted infraction(s); for an
