@@ -119,3 +119,15 @@ test_that("ncaa_scoring_entries flattens the scoring summary", {
   expect_equal(e$type, c("TD", "XP", "FG"))
   expect_equal(e$time, c("11:10", "", "00:00"))
 })
+
+test_that("conf_seo reads a scoreboard team's conference tag", {
+  expect_equal(conf_seo(list(conferences = list(list(conferenceName = "", conferenceSeo = "centennial")))), "centennial")
+  expect_equal(conf_seo(list(conferences = list())), "")
+})
+
+test_that("the conference crosswalk covers every D3 conference tag with a unique code", {
+  tab <- utils::read.csv(test_path("../../data-raw/ncaa/conference_names.csv"), na.strings = "")
+  expect_false(anyDuplicated(tab$ncaa_seo) > 0)
+  expect_false(anyDuplicated(tab$conference_code) > 0)
+  expect_true(all(c("centennial", "wiac", "njac", "middle-atlantic") %in% tab$ncaa_seo))
+})

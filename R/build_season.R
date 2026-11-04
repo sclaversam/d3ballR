@@ -61,7 +61,7 @@ build_season <- function(season, teams = NULL, max_requests = Inf, delay = 6,
   if (source == "ncaa") {
     contests <- map_ncaa_contests(season, idx)
     prefetch_ncaa_games(contests$contest[contests$game_id %in% games$game_id])
-    conf <- build_conference_table(season, unique(c(games$home, games$away)))
+    conf <- ncaa_conference_table(season, idx)
     built <- build_all_pbp(games$game_id, out_dir = out_dir, check_dir = check_dir, conf = conf,
                            loader = function(id) fetch_ncaa_game(id, contests, idx), season = season)
   } else {
@@ -117,7 +117,7 @@ prefetch_ncaa_games <- function(contests) {
 #' @param teams Filter used, or NULL.
 #' @param games Index rows in scope.
 #' @param built Output of [build_all_pbp()].
-#' @param conf Output of [build_conference_table()].
+#' @param conf Output of [build_conference_table()] or [ncaa_conference_table()].
 #' @param check_dir Report directory.
 #' @param source "ncaa" or "d3football" (wording of the report).
 #' @param out_dir Where the per-game CSVs are (named in the report).
@@ -137,7 +137,16 @@ write_build_report <- function(season, teams, games, built, conf, check_dir, sou
     away_team_conference = g$away_team_conference[1], home_team_conference = g$home_team_conference[1],
     conference_game = g$conference_game[1], shared_conference = attr(g, "shared_conference"))))
   if (is.null(cc)) cc <- data.frame()
-  if (nrow(cc)) {
+  if (nrow(cc) && source == "ncaa") {
+    # our conference_game (same conference, regular season) vs d3football's
+    # "*" marker, where a team's d3football schedule page is cached
+    d3m <- load_cached_conferences(season)$markers
+    cc$d3_marker <- vapply(cc$game_id, function(id) {
+      m <- d3m$conference_marker[d3m$game_id %in% id]
+      if (length(m)) any(m) else NA
+    }, logical(1))
+    cc$agree <- ifelse(is.na(cc$d3_marker), NA, cc$conference_game == cc$d3_marker)
+  } else if (nrow(cc)) {
     known <- !is.na(cc$conference_game) & !is.na(cc$away_team_conference) & !is.na(cc$home_team_conference)
     cc$agree <- ifelse(known, cc$conference_game == cc$shared_conference, NA)
   }
@@ -170,10 +179,16 @@ write_build_report <- function(season, teams, games, built, conf, check_dir, sou
     else
       paste0("- **Built:** ", length(built), ". **Pending** (page not fetched yet): ", nrow(pending),
              ". **Failed** (fetched but did not parse): ", nrow(broken), "."),
+    if (source == "ncaa") {
+      tm <- unique(c(games$home, games$away))
+      paste0("- **Teams:** ", length(tm), " in these games; conferences from ncaa.com's scoreboards (`data-raw/ncaa/",
+             season, "_conferences.csv`); ", sum(is.na(conf$table$conference[match(tm, conf$table$team)])),
+             " have no D3 conference (non-D3 opponents and independents).")
+    } else
     paste0("- **Teams:** ", length(unique(c(games$home, games$away))), " in these games; ",
            nrow(conf$table), " in `data-raw/conferences/", season, ".csv`",
            if (length(pending_teams)) paste0(" (", length(pending_teams), " team pages pending; their conference is NA until fetched)") else "", "."),
-    if (length(unnamed)) paste0("- **Conference names pending:** ", paste(unnamed, collapse = ", "),
+    if (source != "ncaa" && length(unnamed)) paste0("- **Conference names pending:** ", paste(unnamed, collapse = ", "),
                                 " (standings page not fetched yet; those teams' conference columns are NA until it is).") else NULL,
     "",
     "## Score reconciliation", "",
@@ -181,9 +196,11 @@ write_build_report <- function(season, teams, games, built, conf, check_dir, sou
            if (source == "ncaa") "ncaa.com scoreboard" else "boxscore line score", "). Per-game results: `score_reconciliation.csv`."), "",
     paste0("**", sum(rec$score_reconciled), " of ", nrow(rec), " built games pass.** Failing games:"), "",
     md_table(rec[!rec$score_reconciled, , drop = FALSE]), "",
-    "## Conference game: d3's \"*\" marker vs shared membership", "",
+    if (source == "ncaa") "## Conference game: same conference in the regular season vs d3football's \"*\" marker" else
+      "## Conference game: d3's \"*\" marker vs shared membership", "",
     paste0(if (nrow(cc)) sum(cc$agree, na.rm = TRUE) else 0, " of ", sum(!is.na(cc$agree)),
-           " games with known conferences agree (", sum(is.na(cc$agree)), " not checkable yet). Disagreements:"), "",
+           " games agree (", sum(is.na(cc$agree)),
+           if (source == "ncaa") " with no cached d3football marker). Disagreements:" else " not checkable yet). Disagreements:"), "",
     md_table(if (nrow(cc)) cc[cc$agree %in% FALSE, ] else cc), "",
     "## Failed games", "",
     md_table(broken), "",

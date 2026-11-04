@@ -162,9 +162,9 @@ clock and seconds columns are NA in periods 5+.
 | 5 | `season_type` | character | `"regular"` or `"postseason"`. | Never NA. | Postseason if `game_date` is after the regular-season end date (`data-raw/season_dates.csv`). All 2020 games are regular. |
 | 6 | `home` | character | Home team. | Never NA. | Season-index spelling. |
 | 7 | `away` | character | Away team. | Never NA. | Season-index spelling. |
-| 8 | `home_team_conference` | character | Home team's conference that season, e.g. `"Centennial Conference"`. | NA for a team with no conference that season (independent, non-D3) or not yet looked up. | Membership is per season (Carnegie Mellon: PAC through 2024, Centennial from 2025). cfbfastR name. |
+| 8 | `home_team_conference` | character | Home team's conference that season, e.g. `"Centennial Conference"`. ncaa.com builds: from ncaa.com's scoreboard tag, named as d3football names it (`data-raw/ncaa/conference_names.csv`). | NA for a team with no D3 conference that season (independent, non-D3) or not yet looked up. | Membership is per season (Carnegie Mellon: PAC through 2024, Centennial from 2025). cfbfastR name. |
 | 9 | `away_team_conference` | character | Away team's conference that season. | As `home_team_conference`. | cfbfastR name. |
-| 10 | `conference_game` | logical | d3football marks it a conference game ("*" on the team schedule). | NA if neither team's schedule has been read. | From d3's marker, not shared membership, so playoff and bowl games between members are FALSE. cfbfastR name. |
+| 10 | `conference_game` | logical | ncaa.com builds: a regular-season game between two teams of the same conference. d3football builds: d3football marks it a conference game ("*" on the team schedule). | d3football builds: NA if neither team's schedule has been read. | Playoff and bowl games between members are FALSE either way. The ncaa.com rule matches d3football's marker on all 58 Centennial 2025 games. cfbfastR name. |
 | 11 | `play_index` | integer | Row order within the game, 1..N. | Never NA. | |
 | 12 | `drive_number` | integer | Drive within the game, 1..N. | Never NA. | The opening kickoff starts drive 1. |
 | 13 | `drive_play_number` | integer | Row's position within its drive, from 1. | Never NA. | A kickoff is always 1. |

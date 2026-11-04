@@ -67,6 +67,12 @@ filter or `season`, not a new pipeline.
   - Some playoff games are a different StatCrew file from d3football's.
   - Stagg Bowl 2025 (contest 6529905) tags every line with one team and is
     missing lines: not buildable.
+- **Conferences come from ncaa.com's scoreboards:** each team's
+  `conferences[].conferenceSeo` tag, named through
+  `data-raw/ncaa/conference_names.csv` (d3football's names and codes).
+  ncaa.com has no conference-game marker, so a conference game is a
+  regular-season game between two teams of the same conference; it matches
+  d3football's "*" marker on all 58 Centennial 2025 games.
 - **d3football.com is now cache-only.** Its firewall serves scripts a
   JavaScript bot challenge. Do not try to get around it: no browser
   automation, no reusing browser cookies such as `aws-waf-token`.

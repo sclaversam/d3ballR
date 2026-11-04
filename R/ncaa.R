@@ -83,8 +83,71 @@ ncaa_scoreboard_week <- function(season, week) {
     home = vapply(g, function(x) x$home$names$short, character(1)),
     away_score = vapply(g, function(x) num(x$away$score), integer(1)),
     home_score = vapply(g, function(x) num(x$home$score), integer(1)),
-    bracket_round = vapply(g, function(x) as.character(if (is.null(x$bracketRound)) "" else x$bracketRound), character(1))
+    bracket_round = vapply(g, function(x) as.character(if (is.null(x$bracketRound)) "" else x$bracketRound), character(1)),
+    away_conference = vapply(g, function(x) conf_seo(x$away), character(1)),
+    home_conference = vapply(g, function(x) conf_seo(x$home), character(1))
   )
+}
+
+# a scoreboard team's conference tag ("centennial", "wiac", ...; "" if none)
+conf_seo <- function(team) {
+  cf <- team$conferences
+  if (!length(cf) || is.null(cf[[1]]$conferenceSeo)) "" else as.character(cf[[1]]$conferenceSeo)
+}
+
+#' Team-to-conference table and conference games, from ncaa.com
+#'
+#' ncaa.com's weekly scoreboards tag each team in each game with its
+#' conference ("centennial", "wiac", ...). Each team's most common tag is
+#' its conference, named through `data-raw/ncaa/conference_names.csv`
+#' (d3football's names and codes, e.g. "Centennial Conference", "CC").
+#' Tags not in that table (non-D3 conferences such as "nec", and
+#' "diii-independent") and blank tags give NA, as for an independent or a
+#' non-D3 opponent. The scoreboards are the ones [map_ncaa_contests()]
+#' reads, so nothing new is fetched once they are cached.
+#'
+#' ncaa.com has no conference-game marker, so `conference_marker` is TRUE
+#' for a regular-season game (the season index's `season_type`) between two
+#' teams of the same conference. Playoff and bowl games are FALSE.
+#'
+#' @param season Season year.
+#' @param index The season index ([build_season_index()]).
+#' @param weeks ncaa.com week numbers to read.
+#' @param dir Where `conference_names.csv` is, and where
+#'   `{season}_conferences.csv` is written.
+#' @return The same shape as [build_conference_table()]: a list with
+#'   `table` (`season`, `team`, `conference`, `conference_code`,
+#'   `ncaa_conference`) and `markers` (`season`, `team`, `game_id`,
+#'   `conference_marker`; one row per index game, `team` is the home team).
+#' @export
+ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/ncaa") {
+  sb <- list()
+  for (w in weeks) {
+    x <- tryCatch(ncaa_scoreboard_week(season, w), error = function(e) NULL)
+    if (!is.null(x)) sb[[length(sb) + 1]] <- x
+  }
+  sb <- do.call(rbind, sb)
+  tags <- data.frame(team = ncaa_to_index_name(c(sb$away, sb$home)),
+                     seo = c(sb$away_conference, sb$home_conference))
+  tags <- tags[tags$seo != "", ]
+  seo <- tapply(tags$seo, tags$team, function(v) names(sort(table(v), decreasing = TRUE))[1])
+  names_tab <- utils::read.csv(file.path(dir, "conference_names.csv"), na.strings = "")
+  teams <- sort(unique(c(index$home, index$away)))
+  tab <- data.frame(season = as.integer(season), team = teams,
+                    ncaa_conference = unname(seo[teams]))
+  k <- match(tab$ncaa_conference, names_tab$ncaa_seo)
+  tab$conference <- names_tab$conference[k]
+  tab$conference_code <- names_tab$conference_code[k]
+  tab <- tab[, c("season", "team", "conference", "conference_code", "ncaa_conference")]
+  utils::write.csv(tab[order(tab$conference_code, tab$team), ], file.path(dir, paste0(season, "_conferences.csv")),
+                   row.names = FALSE, na = "")
+
+  games <- index[!is.na(index$game_id), ]
+  hc <- tab$conference_code[match(games$home, tab$team)]
+  ac <- tab$conference_code[match(games$away, tab$team)]
+  markers <- data.frame(season = as.integer(season), team = games$home, game_id = games$game_id,
+                        conference_marker = games$season_type %in% "regular" & !is.na(hc) & !is.na(ac) & hc == ac)
+  list(table = tab, markers = markers)
 }
 
 #' ncaa.com team names translated to the season index's spelling

@@ -64,7 +64,7 @@ ncaa.com yet) are listed as pending, and the next run continues from there.
 |---|---|---|---|
 | Season dates | Regular-season end date per season (2019-2025 seeded and verified). A missing season is read from its Wikipedia infobox and logged for checking. | `R/season_index.R` (`ensure_season_dates`, `check_season_dates`) | `data-raw/season_dates.csv` |
 | Season index | Every game of a season from d3's weekly scoreboard pages: date, week, regular/postseason, teams, boxscore URL. | `R/season_index.R` (`build_season_index`) | `data-raw/index/{season}.csv` |
-| Conferences | For the teams in scope: each team's conference that season and d3's "*" conference-game marker, from the team's page. | `R/conferences.R` (`build_conference_table`) | `data-raw/conferences/{season}*.csv` |
+| Conferences | Each team's conference that season, from ncaa.com's scoreboard tags (already read for the contest map, so no new requests); conference game = same conference, regular season. (d3football source: the team pages and their "*" marker.) | `R/ncaa.R` (`ncaa_conference_table`); `R/conferences.R` (`build_conference_table`) | `data-raw/ncaa/{season}_conferences.csv`; `data-raw/conferences/{season}*.csv` |
 | ncaa contests | Each index game's ncaa.com contest id, from ncaa.com's weekly scoreboards (team names through a crosswalk, dates at most a day apart). | `R/ncaa.R` (`map_ncaa_contests`) | `data-raw/ncaa/{season}_contests.csv`, `data-raw/ncaa/team_names.csv` |
 | Fetch | Each game's play-by-play JSON from ncaa.com (or, for `source = "d3football"`, its cached boxscore page). Cached and throttled. | `R/ncaa.R` (`fetch_ncaa_json`), `R/scrape_plays.R` (`fetch_html`) | `data-raw/cache/ncaa/`, `data-raw/cache/` (gitignored) |
 | Rebuild table | ncaa.com's lines become d3football's (situation, play) table: situations from `driveText` with the yardline side recovered, quarter markers, drive headers, score lines, and labelled extra points ncaa.com left out. | `R/ncaa.R` (`fetch_ncaa_game`, `ncaa_play_table`) | |
@@ -102,7 +102,7 @@ the ncaa.com Centennial build:
 | Report | Checks | 2025 result |
 |---|---|---|
 | `build_report.md`, `score_reconciliation.csv` | Every game's points by team, summed from `score_pts`, equal the final (ncaa.com scoreboard, or the d3football line score). Also lists pending, not-on-ncaa.com and failed games, and unclassified rows. | 58 of 58 |
-| `conference_check.csv` | d3's "*" conference marker vs shared membership. | Agree wherever both conferences are known (NJAC's name pending a fetch). |
+| `conference_check.csv` | ncaa.com builds: our conference-game rule vs d3football's cached "*" marker. (d3football builds: the marker vs shared membership.) | 58 of 58 agree. |
 | `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: cfbfastR comparison and edge cases. | 3,267 of 3,288. 5 of the 21 exceptions are the same as in the d3football build (labelled); the other 16 are new and not yet explained. The one traced (`20251018_uxv5`) follows a kickoff ncaa.com dropped. Most of the rest are in games where ncaa.com's file differs from d3football's. |
 | `kickoff_possession.csv` | Each kickoff's kicking and receiving team, the rule that decided it, and any disagreement. | No disagreements. |
 | `clock_bounds.csv` | No missing or inverted clock range in regulation, and `clock_start` inside its range. | Empty. |
@@ -135,8 +135,12 @@ first-down exclusivity and placement.
 - **Rule-derived first downs:** first downs in games whose StatCrew format
   never prints "1ST DOWN" come from a yardage rule. That rule matches the
   printed flag exactly where the flag exists.
-- **NJAC's conference name** is pending one standings-page fetch. Until then,
-  NJAC teams' conference columns are NA.
+- **Conference disagreement, Gallaudet:** ncaa.com tags Gallaudet "scac";
+  d3football marked its game with Randolph-Macon (ODAC) a conference game.
+  ncaa.com's tag is used and the disagreement is left as is (not a
+  Centennial game).
+- **20 teams have no ncaa.com conference tag** (non-D3 opponents such as
+  Anna Maria, Madonna, Point); their conference columns are NA.
 - **Older seasons:** only 2025 has been indexed. Other seasons' scoreboard
   pages may differ (2020 was a spring season; folded conferences need extra
   codes).
@@ -171,9 +175,8 @@ d3football's, so these still apply:
 1. **CMU 2025** (validation set): done.
 2. **Centennial 2025**: done; rebuilt from ncaa.com on 2026-11-04.
 3. **All of D3 2025 from ncaa.com** (next): `build_season(2025)`. About
-   1,180 more games, fetched in capped runs with Sam's go-ahead. Team pages
-   for conferences still come from d3football's cache, so most teams'
-   conference columns stay NA until another source is chosen. Expect new
+   1,180 more games, fetched in capped runs with Sam's go-ahead.
+   Conferences come from ncaa.com's scoreboards for every team. Expect new
    StatCrew formats to surface. The score-reconciliation test and the
    `first_downs.md` series check are the main guards.
 4. **Other seasons:** index each season, check its week structure and

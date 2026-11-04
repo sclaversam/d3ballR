@@ -37,6 +37,19 @@ fallback for touchdowns the summary doesn't list. The box score's
 100 added extra points: 91 from the running score and 9 from the scoring
 summary. d3football's copies agree on all 8 of those 9 it has.
 
+**Conferences from ncaa.com** (asked by Sam): d3football's team pages
+are blocked, so for ncaa.com builds each team's conference comes from
+ncaa.com's scoreboards, which tag every team in every game (29 D3
+conferences; every team has the same tag all season). Names and codes
+follow d3football's (`data-raw/ncaa/conference_names.csv`). ncaa.com has
+no conference-game marker, so `conference_game` is a regular-season game
+between two teams of the same conference. It matches d3football's "*"
+marker on all 58 Centennial games, and on 292 of the 293 games with a
+cached marker. The exception is Gallaudet, which ncaa.com tags SCAC while
+d3football counted its game with Randolph-Macon (ODAC) as a conference
+game. NJAC teams, whose name was pending a d3football fetch, now read
+"NJAC".
+
 **Shared parser changes** (both sources):
 - `try_phase_team()` (rule 1) uses a kickoff only if it comes before the
   next live snap. Otherwise, when ncaa.com dropped a kickoff, the try was

@@ -24,7 +24,7 @@ write_build_report(
 
 \item{built}{Output of \code{\link[=build_all_pbp]{build_all_pbp()}}.}
 
-\item{conf}{Output of \code{\link[=build_conference_table]{build_conference_table()}}.}
+\item{conf}{Output of \code{\link[=build_conference_table]{build_conference_table()}} or \code{\link[=ncaa_conference_table]{ncaa_conference_table()}}.}
 
 \item{check_dir}{Report directory.}
 
