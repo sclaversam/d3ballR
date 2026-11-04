@@ -117,7 +117,7 @@ classify_plays <- function(plays) {
     # extra points, but phrased "pass attempt"/"rush attempt" rather than
     # "kick attempt", which is what keeps this rule from colliding with
     # extra_point above.
-    blank_sit & stringr::str_detect(plays$play, stringr::regex("pass attempt|rush attempt", ignore_case = TRUE)) ~ "two_point",
+    blank_sit & stringr::str_detect(plays$play, stringr::regex("pass attempt|rush attempt|two-point attempt", ignore_case = TRUE)) ~ "two_point",
     blank_sit & stringr::str_detect(plays$play, "^[A-Za-z].*\\d+, .*\\d+$") ~ "score",
     stringr::str_detect(plays$play, stringr::regex("^Timeout", ignore_case = TRUE)) ~ "timeout",
     is_dd & stringr::str_detect(plays$play, stringr::regex("^clock \\d{1,2}:\\d{2}\\.?$", ignore_case = TRUE)) ~ "bare_clock",

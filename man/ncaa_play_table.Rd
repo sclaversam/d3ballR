@@ -4,7 +4,7 @@
 \alias{ncaa_play_table}
 \title{Rebuild d3football-style situations and table rows from ncaa.com lines}
 \usage{
-ncaa_play_table(lines, teams, final_total = NULL)
+ncaa_play_table(lines, teams, final_total = NULL, scoring = NULL)
 }
 \arguments{
 \item{lines}{Output of \code{\link[=ncaa_lines]{ncaa_lines()}}.}
@@ -15,6 +15,9 @@ two teams.}
 
 \item{final_total}{Both teams' final points together, for games with no
 running score (see above), or NULL.}
+
+\item{scoring}{ncaa.com's scoring summary as \code{\link[=ncaa_scoring_entries]{ncaa_scoring_entries()}}
+returns it, for games with no running score, or NULL.}
 }
 \value{
 A tibble with \code{situation} and \code{play}, as \code{\link[=find_plays]{find_plays()}} returns.
@@ -54,10 +57,16 @@ followed by no try line before the next kickoff or snap, and ncaa.com's
 score has risen by exactly 1 by then, a line "kick attempt good \link{...}"
 is added after the touchdown (after its last try line) and labelled as
 added (see \code{ncaa_added_try_text}). Some games (every Carnegie Mellon
-home game in 2025) have no running score at all: there, when the
-final score is short by exactly one point per touchdown with no try
-line, a good kick is added after each of those touchdowns, labelled
-differently (\code{ncaa_added_try_text_final}). Anything else is left alone
+home game in 2025) have no running score at all. There, ncaa.com's
+scoring summary (\code{scoring}) decides: it lists every good try ("XP",
+"TPC") after its touchdown, matched here by period and clock, and
+leaves out tries that failed. A touchdown with no try line gets a good
+kick (\code{ncaa_added_try_text_summary}) or a good two-point try
+(\code{ncaa_added_two_point_text}) when the summary lists one, and nothing
+when it doesn't. Touchdowns the summary doesn't list (or every one,
+when there is no summary) fall back to the final score: when it is
+short by exactly one point per such touchdown, a good kick is added
+after each (\code{ncaa_added_try_text_final}). Anything else is left alone
 and shows up in the score reconciliation.
 }
 

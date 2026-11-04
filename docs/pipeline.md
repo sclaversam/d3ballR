@@ -119,8 +119,9 @@ first-down exclusivity and placement.
 - **ncaa.com series flags:** 16 of the 21 `first_downs.md` exceptions in the
   ncaa.com Centennial build are new and unexplained (see Validation).
 - **Added extra points:** 100 extra points in the 58 games have no line on
-  ncaa.com and are added, labelled in `play_text`. 9 of them rely on the
-  final score alone, in games whose file has no running score.
+  ncaa.com and are added, labelled in `play_text`: 91 proved by the running
+  score, 9 (CMU home games, no running score) by ncaa.com's scoring summary.
+  The final-score fallback is not needed in Centennial 2025.
 - **Games ncaa.com can't give:** non-NCAA bowl games, and the 2025 Stagg
   Bowl (broken file). Both are listed in the build report.
 - **`yards_gained` on a lateral** reads only the first yardage segment. So a

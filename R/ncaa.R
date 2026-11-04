@@ -272,10 +272,16 @@ ncaa_spot_pattern <- "(thrown to|caught at|to the|at the|at|from|to|on) ([A-Z][A
 #'   score has risen by exactly 1 by then, a line "kick attempt good [...]"
 #'   is added after the touchdown (after its last try line) and labelled as
 #'   added (see `ncaa_added_try_text`). Some games (every Carnegie Mellon
-#'   home game in 2025) have no running score at all: there, when the
-#'   final score is short by exactly one point per touchdown with no try
-#'   line, a good kick is added after each of those touchdowns, labelled
-#'   differently (`ncaa_added_try_text_final`). Anything else is left alone
+#'   home game in 2025) have no running score at all. There, ncaa.com's
+#'   scoring summary (`scoring`) decides: it lists every good try ("XP",
+#'   "TPC") after its touchdown, matched here by period and clock, and
+#'   leaves out tries that failed. A touchdown with no try line gets a good
+#'   kick (`ncaa_added_try_text_summary`) or a good two-point try
+#'   (`ncaa_added_two_point_text`) when the summary lists one, and nothing
+#'   when it doesn't. Touchdowns the summary doesn't list (or every one,
+#'   when there is no summary) fall back to the final score: when it is
+#'   short by exactly one point per such touchdown, a good kick is added
+#'   after each (`ncaa_added_try_text_final`). Anything else is left alone
 #'   and shows up in the score reconciliation.
 #'
 #' Team names are each team's own drive-start spelling (the most common
@@ -288,9 +294,11 @@ ncaa_spot_pattern <- "(thrown to|caught at|to the|at the|at|from|to|on) ([A-Z][A
 #'   two teams.
 #' @param final_total Both teams' final points together, for games with no
 #'   running score (see above), or NULL.
+#' @param scoring ncaa.com's scoring summary as [ncaa_scoring_entries()]
+#'   returns it, for games with no running score, or NULL.
 #' @return A tibble with `situation` and `play`, as [find_plays()] returns.
 #' @keywords internal
-ncaa_play_table <- function(lines, teams, final_total = NULL) {
+ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   n <- nrow(lines)
   txt <- lines$text
   dt <- parse_ncaa_drive_text(lines$drive_text)
@@ -429,8 +437,8 @@ ncaa_play_table <- function(lines, teams, final_total = NULL) {
                       !stringr::str_detect(txt, ic("no good|failed")),
                     ifelse(stringr::str_detect(txt, ic("kick attempt")), 1L, 2L), 0L)
   action <- which(is_kickoff)
-  add_try_after <- integer()
-  added_text <- ncaa_added_try_text
+  # the rows to add, keyed by the row they follow
+  added <- character()
   has_running_score <- any(hs > 0L | vs > 0L)
   tryless <- integer()
   for (i in which(is_td)) {
@@ -454,21 +462,37 @@ ncaa_play_table <- function(lines, teams, final_total = NULL) {
     }
     if (up[3L - ti] != 0L || up[ti] - sum(try_pts[tries]) != 1L) next
     at <- max(c(i, tries))
-    add_try_after <- c(add_try_after, at)
+    added[as.character(at)] <- ncaa_added_try_text
     gap <- at:(j - 1L)
     if (ti == 1L) hs[gap] <- hs[gap] + 1L else vs[gap] <- vs[gap] + 1L
   }
   # No running score at all (some host schools' files): when the final
   # score is short by exactly one point per touchdown with no try line, a
   # good kick is added after each of those touchdowns.
-  if (!has_running_score && !is.null(final_total) && length(tryless)) {
-    text_pts <- 6L * sum(is_td) +
-      3L * sum(stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("NO GOOD|NO PLAY"))) +
-      2L * sum(stringr::str_detect(txt, "\\bSAFETY\\b") & !stringr::str_detect(txt, ic("NO PLAY"))) +
-      sum(try_pts)
-    if (final_total - text_pts == length(tryless)) {
-      add_try_after <- tryless
-      added_text <- ncaa_added_try_text_final
+  if (!has_running_score && length(tryless)) {
+    # the scoring summary, matched to each try-less touchdown by period and clock
+    unmatched <- tryless
+    if (!is.null(scoring) && nrow(scoring)) {
+      td_clock <- dplyr::coalesce(stringr::str_match(txt, "clock (\\d{1,2}:\\d{2})")[, 2], lines$clock)
+      norm <- function(x) sub("^0", "", x)
+      for (i in tryless) {
+        k <- which(scoring$type == "TD" & scoring$period == lines$period[i] &
+                     norm(scoring$time) == norm(td_clock[i]))
+        if (length(k) != 1L) next
+        nxt <- scoring$type[k + 1L]
+        if (nxt %in% "XP") added[as.character(i)] <- ncaa_added_try_text_summary
+        if (nxt %in% "TPC") added[as.character(i)] <- ncaa_added_two_point_text
+        unmatched <- setdiff(unmatched, i)
+      }
+    }
+    if (length(unmatched) && !is.null(final_total)) {
+      text_pts <- 6L * sum(is_td) +
+        3L * sum(stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("NO GOOD|NO PLAY"))) +
+        2L * sum(stringr::str_detect(txt, "\\bSAFETY\\b") & !stringr::str_detect(txt, ic("NO PLAY"))) +
+        sum(try_pts) + sum(ifelse(added == ncaa_added_two_point_text, 2L, 1L))
+      if (final_total - text_pts == length(unmatched)) {
+        added[as.character(unmatched)] <- ncaa_added_try_text_final
+      }
     }
   }
 
@@ -514,7 +538,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL) {
     }
     if (is_snap[i]) last_snap <- i
     add(situation[i], txt[i])
-    if (i %in% add_try_after) add("", added_text)
+    if (as.character(i) %in% names(added)) add("", added[[as.character(i)]])
     changed <- hs[i] != last_hs || vs[i] != last_vs
     if (changed && (i == n || !is_try[i + 1])) {
       add("", score_line(i))
@@ -532,6 +556,38 @@ ncaa_added_try_text <- "kick attempt good [added by d3ballR: ncaa.com has no lin
 #' Play text of an extra point added from the final score
 #' @keywords internal
 ncaa_added_try_text_final <- "kick attempt good [added by d3ballR: ncaa.com has no line for this try and no running score; the final score is one point short for each such touchdown]."
+
+#' Play text of an extra point added from ncaa.com's scoring summary
+#' @keywords internal
+ncaa_added_try_text_summary <- "kick attempt good [added by d3ballR: ncaa.com has no line for this try and no running score; its scoring summary lists the extra point as good]."
+
+#' Play text of a two-point try added from ncaa.com's scoring summary
+#'
+#' The summary doesn't say whether it was a run or a pass.
+#' @keywords internal
+ncaa_added_two_point_text <- "two-point attempt good [added by d3ballR: ncaa.com has no line for this try and no running score; its scoring summary lists a two-point conversion as good]."
+
+#' ncaa.com's scoring summary as one row per entry
+#'
+#' @param j Parsed JSON of `/game/{contest}/scoring-summary`.
+#' @return A data frame: `period` (1, 2, ... in the summary's order),
+#'   `team_id`, `time` ("MM:SS", blank on tries), `type` ("TD", "XP",
+#'   "TPC", "FG", ...), `text`. Only good tries are listed.
+#' @keywords internal
+ncaa_scoring_entries <- function(j) {
+  val <- function(x) if (is.null(x)) NA_character_ else as.character(x)
+  rows <- list()
+  for (p in seq_along(j$periods)) {
+    for (e in j$periods[[p]]$summary) {
+      rows[[length(rows) + 1]] <- data.frame(
+        period = p, team_id = val(e$teamId), time = dplyr::coalesce(val(e$time), ""),
+        type = val(e$scoreType), text = dplyr::coalesce(val(e$scoreText), ""))
+    }
+  }
+  if (!length(rows)) return(data.frame(period = integer(), team_id = character(), time = character(),
+                                      type = character(), text = character()))
+  do.call(rbind, rows)
+}
 
 #' Which yardline token is each team's own side (ncaa.com lines)
 #'
@@ -592,6 +648,14 @@ fetch_ncaa_game <- function(game_id, contests, index) {
   }, character(1))
   if (anyDuplicated(teams$name)) teams$name <- teams$short
 
+  # with no running score, ncaa.com's scoring summary says which tries were
+  # good (one more request; NULL if it can't be had, e.g. offline and not cached)
+  scoring <- NULL
+  if (!any(lines$home_score > 0L | lines$visitor_score > 0L, na.rm = TRUE)) {
+    scoring <- tryCatch(ncaa_scoring_entries(fetch_ncaa_json(paste0("/game/", hit$contest, "/scoring-summary"))),
+                        error = function(e) NULL)
+  }
+
   row <- index[!is.na(index$game_id) & index$game_id == game_id, ]
   home <- teams$name[teams$is_home]
   away <- teams$name[!teams$is_home]
@@ -609,7 +673,7 @@ fetch_ncaa_game <- function(game_id, contests, index) {
     finals = stats::setNames(as.integer(c(fin_a, fin_h)), c(away, home)),
     matchup = c(away = away, home = home),
     header_date = if (nrow(row)) as.Date(row$game_date) else as.Date(substr(game_id, 1, 8), format = "%Y%m%d"),
-    plays = ncaa_play_table(lines, teams, final_total = fin_a + fin_h),
+    plays = ncaa_play_table(lines, teams, final_total = fin_a + fin_h, scoring = scoring),
     contest = hit$contest
   )
 }

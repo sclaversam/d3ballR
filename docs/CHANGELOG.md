@@ -27,10 +27,15 @@ The 133 d3football games moved to `pbp/d3football/2025/` and
 running score rises by exactly one point more than the try lines account
 for, an extra point is added after the touchdown, with `play_text` "kick
 attempt good [added by d3ballR: ...]". Some host schools' files (CMU home
-games) have no running score at all. For those, the rule is: when the
-final score is short by exactly one point per try-less touchdown, one is
-added after each, with a different bracketed reason. Centennial 2025 has
-100 added extra points, 9 of them from the final-score rule.
+games) have no running score at all. For those, Sam suggested checking
+ncaa.com's box score and scoring summary. The scoring summary lists every
+good try after its touchdown, so it decides: a good kick or two-point try is
+added when it lists one, and nothing when it doesn't. A final-score rule
+(short by exactly one point per try-less touchdown) is kept only as a
+fallback for touchdowns the summary doesn't list. The box score's
+`patAttempted` was 0 next to 5 made, so it isn't used. Centennial 2025 has
+100 added extra points: 91 from the running score and 9 from the scoring
+summary. d3football's copies agree on all 8 of those 9 it has.
 
 **Shared parser changes** (both sources):
 - `try_phase_team()` (rule 1) uses a kickoff only if it comes before the

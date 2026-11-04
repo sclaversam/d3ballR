@@ -54,9 +54,13 @@ filter or `season`, not a new pipeline.
     from spots in the play text. Tournament games use "2 and  at JHU13"
     (distance often blank, recomputed from the line to gain).
   - It drops many extra-point lines; one is added, labelled
-    "[added by d3ballR: ...]" in `play_text`, only when the running score (or,
-    with no running score, the final) proves a point is missing.
-  - Some host schools' files (CMU home games) have no running score.
+    "[added by d3ballR: ...]" in `play_text`, only when the running score
+    proves a point is missing.
+  - Some host schools' files (CMU home games) have no running score. For
+    those, `/game/{contest}/scoring-summary` (one more request per game)
+    lists every good try after its touchdown ("XP", "TPC"; failed tries are
+    absent), and it decides; the final score is a last resort. The box
+    score's `patAttempted` is unreliable (0 with 5 made); don't use it.
   - `teamId` is unreliable on single lines (a punt can carry the receiver's
     id), so drives open at "drive start" lines.
   - Some kickoffs are dropped; no drive footers ("N plays, Y yards").

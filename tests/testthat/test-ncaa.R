@@ -80,3 +80,42 @@ test_that("with no running score, the final score decides the missing extra poin
   expect_true(ncaa_added_try_text_final %in% ncaa_play_table(lines, teams, final_total = 7L)$play)
   expect_false(any(grepl("added by d3ballR", ncaa_play_table(lines, teams, final_total = 6L)$play)))
 })
+
+test_that("with no running score, the scoring summary decides each missing try", {
+  lines <- data.frame(
+    period = 1L, team_id = c("2", "2", "1", "1", "1", "2"), clock = NA_character_,
+    drive_text = c("1 and 10 at 30", NA, "1 and 10 at 25", "1 and 10 at 40", NA, "1 and 10 at 25"),
+    home_score = NA_integer_, visitor_score = NA_integer_,
+    text = c("Doe rush for 70 yards to the AA0, TOUCHDOWN, clock 10:00.",
+             "Kick kickoff 65 yards to the AA0, Touchback.",
+             "Smith rush for 75 yards to the BB0, TOUCHDOWN, clock 08:12.",
+             "Smith rush for 60 yards to the BB0, TOUCHDOWN, clock 5:01.",
+             "Lee kickoff 65 yards to the BB0, Touchback.",
+             "Doe rush for 3 yards to the BB28.")
+  )
+  teams <- data.frame(team_id = c("1", "2"), name = c("Alpha", "Beta"), ncaa_home = c(TRUE, FALSE))
+  # Beta's 10:00 kick good, Alpha's 08:12 two-pointer good, Alpha's 05:01 try failed (not listed)
+  scoring <- data.frame(period = 1L, team_id = c("2", "2", "1", "1", "1"),
+                        time = c("10:00", "", "08:12", "", "05:01"),
+                        type = c("TD", "XP", "TD", "TPC", "TD"), text = "")
+  tab <- ncaa_play_table(lines, teams, final_total = 23L, scoring = scoring)
+  after <- function(p) tab$play[which(startsWith(tab$play, p)) + 1L]
+  expect_equal(after("Doe rush for 70"), ncaa_added_try_text_summary)
+  expect_equal(after("Smith rush for 75"), ncaa_added_two_point_text)
+  expect_false(startsWith(after("Smith rush for 60"), "kick attempt"))
+  expect_false(ncaa_added_try_text_final %in% tab$play)
+  expect_equal(classify_plays(tibble::tibble(situation = "", play = ncaa_added_two_point_text))$row_type, "two_point")
+})
+
+test_that("ncaa_scoring_entries flattens the scoring summary", {
+  j <- list(periods = list(
+    list(title = "1st Quarter", summary = list(
+      list(teamId = "704", time = "11:10", scoreType = "TD", scoreText = "A runs 1 yard for a touchdown."),
+      list(teamId = "704", time = "", scoreType = "XP", scoreText = "B extra point is good."))),
+    list(title = "2nd Quarter", summary = list(
+      list(teamId = "1806", time = "00:00", scoreType = "FG", scoreText = "C field goal is good.")))))
+  e <- ncaa_scoring_entries(j)
+  expect_equal(e$period, c(1L, 1L, 2L))
+  expect_equal(e$type, c("TD", "XP", "FG"))
+  expect_equal(e$time, c("11:10", "", "00:00"))
+})
