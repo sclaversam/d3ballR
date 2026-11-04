@@ -36,13 +36,7 @@ test_that("parse_kick_details reads kickoffs", {
   k <- parse_kick_details(text, rep("kickoff", 7), c(rep(FALSE, 6), TRUE))
   expect_equal(k$yds_kickoff, c(65L, 52L, 43L, 32L, 57L, 12L, NA))
   expect_equal(k$yds_kickoff_return, c(NA, NA, NA, NA, 17L, NA, NA))
-  expect_equal(k$kickoff_tb, c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE))
-  # the returner running out of bounds (row 5) is not a kick out of bounds
-  expect_equal(k$kickoff_oob, c(FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE))
-  expect_equal(k$kickoff_fair_catch, c(FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE))
-  # a no-play onside kick credits nothing
-  expect_equal(k$kickoff_onside, c(FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE))
-  expect_true(all(is.na(k$yds_punted)) && !any(k$punt_tb) && all(is.na(k$yds_fg)))
+  expect_true(all(is.na(k$yds_punted)) && all(is.na(k$yds_fg)))
 })
 
 test_that("parse_kick_details reads punts and field goals", {
@@ -63,10 +57,7 @@ test_that("parse_kick_details reads punts and field goals", {
   k <- parse_kick_details(text, type, rep(FALSE, 10))
   expect_equal(k$yds_punted, c(32L, 71L, 18L, 42L, 37L, 23L, -7L, NA, NA, NA))
   expect_equal(k$yds_punt_return, c(13L, NA, NA, 13L, NA, NA, 0L, NA, NA, NA))
-  expect_equal(which(k$punt_tb), 2L)
-  expect_equal(which(k$punt_oob), 3L)
-  expect_equal(which(k$punt_fair_catch), 5L)
-  expect_equal(which(k$punt_downed), 6L)
   expect_equal(k$yds_fg, c(rep(NA, 8), 35L, 24L))
-  expect_true(all(is.na(k$yds_kickoff)) && !any(k$kickoff_onside))
+  expect_true(all(is.na(k$yds_kickoff)))
+  expect_equal(names(k), c("yds_kickoff", "yds_kickoff_return", "yds_punted", "yds_punt_return", "yds_fg"))
 })
