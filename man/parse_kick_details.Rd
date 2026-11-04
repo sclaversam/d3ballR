@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse_kicks.R
 \name{parse_kick_details}
 \alias{parse_kick_details}
-\title{Kickoff, punt and field-goal details from the play text}
+\title{Kickoff, punt and field-goal distances from the play text}
 \usage{
 parse_kick_details(play_text, play_type, no_play)
 }
@@ -15,25 +15,17 @@ parse_kick_details(play_text, play_type, no_play)
 }
 \value{
 A data frame with one row per input row: \code{yds_kickoff},
-\code{yds_kickoff_return}, \code{kickoff_tb}, \code{kickoff_oob}, \code{kickoff_fair_catch},
-\code{kickoff_onside}, \code{yds_punted}, \code{yds_punt_return}, \code{punt_tb}, \code{punt_oob},
-\code{punt_fair_catch}, \code{punt_downed}, \code{yds_fg}. Yardage is integer, NA on
-other rows and when not printed; flags are logical, never NA.
+\code{yds_kickoff_return}, \code{yds_punted}, \code{yds_punt_return}, \code{yds_fg}.
+Integer; NA on other rows and when not printed.
 }
 \description{
-Thirteen cfbfastR-named columns: kick and return distance, how the kick
-ended (touchback, out of bounds, fair catch, downed, onside), and field
-goal distance. Only the text before the first "PENALTY" is read, as in
-\code{\link[=parse_yards_gained]{parse_yards_gained()}}, so enforcement yardage never lands here.
+Five cfbfastR-named yardage columns: kick and return distance for
+kickoffs and punts, and field goal distance. Only the text before the
+first "PENALTY" is read, as in \code{\link[=parse_yards_gained]{parse_yards_gained()}}, so enforcement
+yardage never lands here.
 }
 \details{
-The end-of-kick flags (\verb{*_tb}, \verb{*_oob}, \verb{*_fair_catch}, \code{punt_downed})
-read only the kick itself: the text up to the first return, muff, fumble,
-recovery, block or lateral. So "return 13 yards to the APP33, out of
-bounds" (the returner ran out) is not \code{punt_oob}; "punt 18 yards to the
-JHU25, out of bounds" is.
-
 No-play gating as in \code{docs/schema.md}: on a \code{penalty_no_play} row every
-yardage is NA and every flag FALSE.
+yardage is NA.
 }
 \keyword{internal}

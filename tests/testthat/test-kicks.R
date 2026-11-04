@@ -36,27 +36,7 @@ test_that("parse_kick_details reads kickoffs", {
   k <- parse_kick_details(text, rep("kickoff", 7), c(rep(FALSE, 6), TRUE))
   expect_equal(k$yds_kickoff, c(65L, 52L, 43L, 32L, 57L, 12L, NA))
   expect_equal(k$yds_kickoff_return, c(NA, NA, NA, NA, 17L, NA, NA))
-  expect_equal(k$kickoff_tb, c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE))
-  # the returner running out of bounds (row 5) is not a kick out of bounds
-  expect_equal(k$kickoff_oob, c(FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE))
-  expect_equal(k$kickoff_fair_catch, c(FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE))
-  # a no-play onside kick credits nothing
-  expect_equal(k$kickoff_onside, c(FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE))
-  expect_true(all(is.na(k$yds_punted)) && !any(k$punt_tb) && all(is.na(k$yds_fg)))
-})
-
-test_that("parse_kick_details flags the hyphenated 'on-side kick' wording", {
-  # some StatCrew hosts write "kickoff ..., on-side kick, recovered by ..."
-  text <- c(
-    "Walker Brondos kickoff 30 yards to the AUG35, on-side kick, recovered by VCSU TEAM on AUG35.",
-    "Isa Parks-Gill kickoff 18 yards to the CMU47, on-side kick, recovered by CMU on CMU47.",
-    "Mason Veits kickoff 10 yards to the BRIDGEWA30, on-side kick, recovered by CURRY on BRIDGEWA30, PENALTY BRIDGEWA face mask 15 yards to the BRIDGEWA15.",
-    "Isa Parks-Gill kickoff 60 yards to the CMU05, Jane Doe return 20 yards to the CMU25."
-  )
-  k <- parse_kick_details(text, rep("kickoff", 4), rep(FALSE, 4))
-  # flagged whichever team recovered (kicking team in 1 and 3, receiving team in 2)
-  expect_equal(k$kickoff_onside, c(TRUE, TRUE, TRUE, FALSE))
-  expect_equal(k$yds_kickoff, c(30L, 18L, 10L, 60L))
+  expect_true(all(is.na(k$yds_punted)) && all(is.na(k$yds_fg)))
 })
 
 test_that("parse_kick_details reads punts and field goals", {
@@ -77,10 +57,7 @@ test_that("parse_kick_details reads punts and field goals", {
   k <- parse_kick_details(text, type, rep(FALSE, 10))
   expect_equal(k$yds_punted, c(32L, 71L, 18L, 42L, 37L, 23L, -7L, NA, NA, NA))
   expect_equal(k$yds_punt_return, c(13L, NA, NA, 13L, NA, NA, 0L, NA, NA, NA))
-  expect_equal(which(k$punt_tb), 2L)
-  expect_equal(which(k$punt_oob), 3L)
-  expect_equal(which(k$punt_fair_catch), 5L)
-  expect_equal(which(k$punt_downed), 6L)
   expect_equal(k$yds_fg, c(rep(NA, 8), 35L, 24L))
-  expect_true(all(is.na(k$yds_kickoff)) && !any(k$kickoff_onside))
+  expect_true(all(is.na(k$yds_kickoff)))
+  expect_equal(names(k), c("yds_kickoff", "yds_kickoff_return", "yds_punted", "yds_punt_return", "yds_fg"))
 })
