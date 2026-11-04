@@ -443,7 +443,13 @@ try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = cha
     # 1. the team that kicks off next in the same half scored (or conceded a
     #    safety). Kickoff teams come from the next drive header, which is
     #    reliable; d3's score lines sometimes lag a score behind.
-    k <- if (!is.null(kickoffs)) kickoffs[kickoffs$row > kept$row[i] & kickoffs$half == kept$half[i], ] else NULL
+    #    Only a kickoff before the next live snap counts: when the source
+    #    has no kickoff line after the try (ncaa.com drops some), a later
+    #    kickoff belongs to a later score.
+    live <- kept$row[kept$play_type %in% play_type_categories & !kept$penalty_no_play & kept$row > kept$row[i]]
+    next_live <- if (length(live)) live[1] else Inf
+    k <- if (!is.null(kickoffs)) kickoffs[kickoffs$row > kept$row[i] & kickoffs$row < next_live &
+                                            kickoffs$half == kept$half[i], ] else NULL
     if (!is.null(k) && nrow(k) && !is.na(k$kicking_team[1])) {
       out[i] <- k$kicking_team[1]
       next
@@ -471,7 +477,9 @@ try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = cha
 #' See `R/classify.R` and `R/parse_play_type.R` for the upstream row_type /
 #' play_type classification this builds on.
 #'
-#' @param game_url Boxscore URL without the `?view=` suffix.
+#' @param game_url A d3football boxscore URL without the `?view=` suffix
+#'   (the page is read with [fetch_game()]), or a game already read, as a
+#'   list in [fetch_game()]'s shape (e.g. from [fetch_ncaa_game()]).
 #' @param index Season index for the game's season. If NULL, the cached
 #'   `data-raw/index/{season}.csv` is used when present (no network);
 #'   otherwise a date-based week is used and logged (see [game_calendar()]).
@@ -495,7 +503,7 @@ try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = cha
 #'   elapsed time vs the clock anchors).
 #' @export
 build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) {
-  game <- fetch_game(game_url)
+  game <- if (is.list(game_url)) game_url else fetch_game(game_url)
   if (is.null(index)) index <- load_cached_index(game$season)
   if (is.null(season_dates)) season_dates <- ensure_season_dates(game$season)
   cal <- game_calendar(game, index, season_dates)
@@ -675,18 +683,23 @@ team_points <- function(g, team) {
 #' index is loaded once per season, via [build_season_index()] (cached;
 #' scraped only if no cache exists). Prints the per-game counts.
 #'
-#' @param game_urls Character vector of boxscore URLs (any teams, any
-#'   seasons).
+#' @param game_urls Character vector of d3football boxscore URLs (any
+#'   teams, any seasons), or of game ids when `loader` is given.
+#' @param loader NULL to read d3football pages, or a function taking a game
+#'   id and returning the game ([fetch_game()]'s shape), e.g. a wrapper
+#'   around [fetch_ncaa_game()].
+#' @param season With `loader`: the games' season (for the season index).
 #' @param out_dir Directory to write per-game CSVs into.
 #' @param check_dir Directory for the validation reports.
 #' @param conf Conference data from [build_conference_table()] (else the
 #'   cached files are used).
 #' @return Invisibly, a named list of the per-game tibbles (by `game_id`).
 #' @export
-build_all_pbp <- function(game_urls, out_dir, check_dir, conf = NULL) {
+build_all_pbp <- function(game_urls, out_dir, check_dir, conf = NULL, loader = NULL, season = NULL) {
   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
-  seasons <- unique(stats::na.omit(extract_season(game_urls)))
+  season_of <- function(u) if (is.null(loader)) extract_season(u) else rep(as.integer(season), length(u))
+  seasons <- unique(stats::na.omit(season_of(game_urls)))
   indexes <- lapply(seasons, build_season_index)
   names(indexes) <- seasons
   season_dates <- ensure_season_dates(seasons)
@@ -694,7 +707,8 @@ build_all_pbp <- function(game_urls, out_dir, check_dir, conf = NULL) {
   failures <- list()
   games <- lapply(game_urls, function(u) {
     tryCatch(
-      build_pbp(u, index = indexes[[as.character(extract_season(u))]], season_dates = season_dates, conf = conf),
+      build_pbp(if (is.null(loader)) u else loader(u),
+                index = indexes[[as.character(season_of(u))]], season_dates = season_dates, conf = conf),
       error = function(e) {
         failures[[length(failures) + 1]] <<- data.frame(game_url = u, error = conditionMessage(e))
         message("FAILED ", u, ": ", conditionMessage(e))

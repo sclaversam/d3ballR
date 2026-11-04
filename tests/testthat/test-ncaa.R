@@ -1,0 +1,82 @@
+test_that("parse_ncaa_drive_text reads both driveText formats", {
+  d <- parse_ncaa_drive_text(c("2 and 9 at 28", "1 and 0 at 4", "2 and  at JHU13",
+                               "1 and true at DSON3", "- and - at JHU35", NA))
+  expect_equal(d$down, c(2L, 1L, 2L, 1L, NA, NA))
+  expect_equal(d$dist, c("9", "Goal", NA, "Goal", NA, NA))
+  expect_equal(d$token, c(NA, NA, "JHU", "DSON", NA, NA))
+  expect_equal(d$yard, c(28L, 4L, 13L, 3L, NA, NA))
+})
+
+test_that("ncaa_to_index_name maps through the crosswalk and keeps unknown names", {
+  f <- withr::local_tempfile(fileext = ".csv")
+  utils::write.csv(data.frame(ncaa_name = "Alfred St.", index_name = "Alfred State"), f, row.names = FALSE)
+  expect_equal(ncaa_to_index_name(c("Alfred St.", "Carnegie Mellon"), f), c("Alfred State", "Carnegie Mellon"))
+})
+
+# A tiny ncaa.com-shaped game: Alpha (ncaa home) kicks off, Beta scores a
+# touchdown whose extra point ncaa.com has no line for (the score still
+# rises by 1), then Alpha starts a drive. driveText has no yardline team.
+ncaa_toy <- function() {
+  lines <- data.frame(
+    period = 1L,
+    team_id = c("1", "2", "2", "2", "2", "2", "1", "1"),
+    clock = NA_character_,
+    drive_text = c(NA, NA, "1 and 10 at 25", NA, "2 and 5 at 30", NA, NA, "1 and 10 at 25"),
+    home_score = c(0L, 0L, 0L, NA, 0L, 0L, 0L, 0L),
+    visitor_score = c(0L, 0L, 0L, NA, 6L, 7L, 7L, 7L),
+    text = c("Smith kickoff 65 yards to the BB0 Jones return 25 yards to the BB25 (Lee).",
+             "Beta drive start at 15:00.",
+             "Doe rush for 5 yards to the BB30 (Roe).",
+             "clock 14:30",
+             "Doe rush for 70 yards to the AA0, TOUCHDOWN, clock 14:00.",
+             "Kick kickoff 65 yards to the AA0, Touchback.",
+             "Alpha drive start at 14:00.",
+             "Smith pass complete to Lee for 10 yards to the AA35.")
+  )
+  teams <- data.frame(team_id = c("1", "2"), name = c("Alpha", "Beta"), ncaa_home = c(TRUE, FALSE))
+  ncaa_play_table(lines, teams)
+}
+
+test_that("ncaa_play_table recovers the yardline side from spots in the text", {
+  tab <- ncaa_toy()
+  expect_equal(tab$situation[tab$play == "Doe rush for 5 yards to the BB30 (Roe)."], "1st and 10 at BB25")
+  expect_equal(tab$situation[tab$play == "Smith pass complete to Lee for 10 yards to the AA35."], "1st and 10 at AA25")
+})
+
+test_that("ncaa_play_table adds a labelled extra point ncaa.com left out", {
+  tab <- ncaa_toy()
+  td <- which(grepl("TOUCHDOWN", tab$play))
+  expect_equal(tab$play[td + 1], ncaa_added_try_text)
+  expect_equal(tab$situation[td + 1], "")
+  expect_equal(tab$play[td + 2], "Beta 7, Alpha 0")
+  expect_equal(sum(grepl("added by d3ballR", tab$play)), 1L)
+})
+
+test_that("ncaa_play_table adds drive headers and quarter markers d3football-style", {
+  tab <- ncaa_toy()
+  expect_equal(tab$play[1], "1st")
+  expect_true(all(c("Beta at 15:00", "Alpha at 14:00") %in% tab$play))
+  expect_equal(which(tab$play == "Beta at 15:00") + 1L, which(tab$play == "Beta drive start at 15:00."))
+})
+
+test_that("a note with no driveText carries the situation before it and is classified", {
+  tab <- ncaa_toy()
+  i <- which(tab$play == "clock 14:30")
+  expect_equal(tab$situation[i], "1st and 10 at BB25")
+  expect_equal(classify_plays(tab[i, ])$row_type, "bare_clock")
+  expect_false("other" %in% classify_plays(tab)$row_type)
+})
+
+test_that("with no running score, the final score decides the missing extra points", {
+  lines <- data.frame(
+    period = 1L, team_id = c("2", "2", "1"), clock = NA_character_,
+    drive_text = c("1 and 10 at 30", NA, "1 and 10 at 25"),
+    home_score = NA_integer_, visitor_score = NA_integer_,
+    text = c("Doe rush for 70 yards to the AA0, TOUCHDOWN.",
+             "Kick kickoff 65 yards to the AA0, Touchback.",
+             "Smith rush for 3 yards to the AA28, out of bounds at the BB45.")
+  )
+  teams <- data.frame(team_id = c("1", "2"), name = c("Alpha", "Beta"), ncaa_home = c(TRUE, FALSE))
+  expect_true(ncaa_added_try_text_final %in% ncaa_play_table(lines, teams, final_total = 7L)$play)
+  expect_false(any(grepl("added by d3ballR", ncaa_play_table(lines, teams, final_total = 6L)$play)))
+})

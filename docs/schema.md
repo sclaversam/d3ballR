@@ -1,7 +1,9 @@
 # Play-by-play schema (71 columns)
 
-Every column of the per-game play-by-play CSVs in `pbp/{season}/{game_id}.csv`,
-and the conventions needed to read them. How the files are built and checked
+Every column of the per-game play-by-play CSVs in `pbp/{season}/{game_id}.csv`
+(built from ncaa.com) and `pbp/d3football/{season}/{game_id}.csv` (built from
+d3football.com, the old source), and the conventions needed to read them. The
+columns are the same for both sources. How the files are built and checked
 is in [`pipeline.md`](pipeline.md); how the schema got here is in
 [`CHANGELOG.md`](CHANGELOG.md).
 
@@ -13,9 +15,10 @@ One file per game, **one row per event**, in game order. A row is one of:
 - **an extra point or two-point try**;
 - **a dead-ball penalty with no snap** (false start, delay of game, ...).
 
-Everything else on d3football's play-by-play page is read but not kept: quarter
-markers, drive headers and summaries, timeouts, score lines, coin toss, spot
-corrections. The pipeline uses those rows to work out the period, possession,
+Everything else in the play-by-play is read but not kept: quarter markers,
+drive headers and summaries, timeouts, score lines, coin toss, spot
+corrections. (For ncaa.com games, the quarter markers, drive headers and
+score lines are rebuilt from ncaa.com's JSON first; see `pipeline.md`.) The pipeline uses those rows to work out the period, possession,
 kickoff teams, score and clock.
 
 Column names follow cfbfastR / nflfastR wherever an equivalent exists. Nothing
@@ -152,7 +155,7 @@ clock and seconds columns are NA in periods 5+.
 
 | # | column | type | definition | NA behavior | notes |
 |---|---|---|---|---|---|
-| 1 | `game_id` | character | d3football boxscore id, e.g. `"20250906_e064"`. | Never NA. | Constant per file; joins to the season index. |
+| 1 | `game_id` | character | d3football boxscore id, e.g. `"20250906_e064"`, for both sources. | Never NA. | Constant per file; joins to the season index, and to the ncaa.com contest id in `data-raw/ncaa/{season}_contests.csv`. |
 | 2 | `season` | integer | Season year. | Never NA. | From the boxscore URL path, never the date. |
 | 3 | `game_date` | character | Game date, `YYYY-MM-DD`. | Never NA. | |
 | 4 | `week` | integer | Week of the season. | Never NA. | d3 scoreboard week; postseason restarts at 1. Date-based if the game isn't in the season index (logged). |
@@ -221,5 +224,5 @@ clock and seconds columns are NA in periods 5+.
 | 67 | `penalty_no_play` | logical | A penalty nullified the snap, or there was no snap. | Never NA. | See No-play gating. |
 | 68 | `penalty_declined` | logical | Every infraction on the row was declined. | NA when `penalty_flag` is FALSE. | |
 | 69 | `penalty_play_text` | character | Raw penalty clause, from the first "PENALTY" on. | NA with no penalty clause. | cfbfastR name (its `penalty_text` is a TRUE/FALSE flag). |
-| 70 | `situation` | character | Raw down-and-distance text, verbatim. | Empty (NA on read) on kickoffs and tries. | Audit column. |
-| 71 | `play_text` | character | Raw play description, verbatim. | Never NA. | Audit column. |
+| 70 | `situation` | character | Raw down-and-distance text, verbatim. For ncaa.com games it is rebuilt from ncaa.com's `driveText` ("2 and 9 at 28" becomes "2nd and 9 at CMU28": the yardline team is recovered from the play text, and a blank distance is recomputed from the line to gain). | Empty (NA on read) on kickoffs and tries. | Audit column. |
+| 71 | `play_text` | character | Raw play description, verbatim. One exception: an extra point that ncaa.com has no line for, but whose point the score proves, is added as "kick attempt good [added by d3ballR: ...]" with the reason in brackets. | Never NA. | Audit column. |

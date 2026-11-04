@@ -4,7 +4,16 @@
 \alias{write_build_report}
 \title{Write a season's build report}
 \usage{
-write_build_report(season, teams, games, built, conf, check_dir)
+write_build_report(
+  season,
+  teams,
+  games,
+  built,
+  conf,
+  check_dir,
+  source = "ncaa",
+  out_dir = file.path("pbp", season)
+)
 }
 \arguments{
 \item{season}{Season year.}
@@ -18,6 +27,10 @@ write_build_report(season, teams, games, built, conf, check_dir)
 \item{conf}{Output of \code{\link[=build_conference_table]{build_conference_table()}}.}
 
 \item{check_dir}{Report directory.}
+
+\item{source}{"ncaa" or "d3football" (wording of the report).}
+
+\item{out_dir}{Where the per-game CSVs are (named in the report).}
 }
 \description{
 \code{{check_dir}/build_report.md}: scope, how many games are built / pending

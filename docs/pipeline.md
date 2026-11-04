@@ -1,28 +1,43 @@
 # Pipeline
 
-How a season of d3football play-by-play becomes the CSVs in `pbp/{season}/`,
-how it is checked, and what comes next. Column definitions are in
+How a season of play-by-play from ncaa.com becomes the CSVs in
+`pbp/{season}/`, how it is checked, and what comes next. (Until 2026-11-04
+the source was d3football.com; those builds are kept in
+`pbp/d3football/{season}/`.) Column definitions are in
 [`schema.md`](schema.md).
 
-## Status (checkpoint: Centennial Conference 2025)
+## Status (2026-11-04: Centennial 2025 rebuilt from ncaa.com)
 
-- **Built:** every 2025 game involving a Centennial Conference team. That's 62
-  games (10 postseason, 1 overtime), 10,149 rows and 1,400 drives, across the
-  8 Centennial teams and 28 opponents.
-- **Reconciled:** all 62 games match their boxscore final scores.
-- **Tests:** the test suite passes, and every report in `checks/2025/` is
-  clean or explains each exception (see Validation).
+- **Built from ncaa.com:** 58 of the 62 games in 2025 involving a Centennial
+  Conference team, 9,447 rows and 1,300 drives, in `pbp/2025/`. Not built:
+  - `20250905_8wt2`: pending (ncaa.com answered 502, no play-by-play yet).
+  - `20251122_6buh`, `20251122_a800`: not on ncaa.com (non-NCAA bowl games).
+  - `20251220_vlfc` (Stagg Bowl): ncaa.com's file tags every line with one
+    team and is missing lines, so possession can't be read.
+- **Reconciled:** all 58 match ncaa.com's final scores.
+- **Against d3football:** on the 7,136 rows whose play text matches the
+  d3football build, `pos_team`, `score_pts`, `yards_gained`, the penalty
+  columns and `td_team` agree 100%; down, distance, yards to goal, drive
+  number and `clock_start` agree 99.5-99.7%.
+- **d3football (old source):** the 133 cached 2025 games still rebuild,
+  byte-identical, into `pbp/d3football/2025/`.
+- **Tests:** the test suite passes.
 - **Generic:** nothing in `R/` assumes a team or season. Centennial 2025 is
   just `build_season(2025, teams = <the 8 members>)`.
 
 ## Running it
+
+The ncaa-api server must be running (Docker container `ncaa-api` on
+`127.0.0.1:3000`; set `options(d3ballR.ncaa_api = ...)` for another
+address). Cached runs (`OFFLINE=1`) don't need it.
 
 ```r
 devtools::load_all()
 members <- conference_members(2025, "CC")$team
 build_season(2025, teams = members)          # one conference's games
 build_season(2025)                           # every 2025 game
-build_season(2025, max_requests = 100)       # cap new page requests this run
+build_season(2025, max_requests = 100)       # cap new requests this run
+build_season(2025, source = "d3football")    # old source, cached pages only
 ```
 
 From the command line:
@@ -30,14 +45,18 @@ From the command line:
 ```sh
 Rscript scripts/build_season.R 2025 --conference CC
 Rscript scripts/build_season.R 2025 --max-requests 100
-OFFLINE=1 Rscript scripts/build_season.R 2025      # cache only, no requests
+OFFLINE=1 Rscript scripts/build_season.R 2025 --conference CC   # cache only
+OFFLINE=1 Rscript scripts/build_season.R 2025 --source d3football
 Rscript scripts/season_index_report.R              # season index check (no requests)
 ```
 
-**Resumable runs:** every run also rebuilds every game already in
-`pbp/{season}/`, so the folder and `checks/{season}/` always cover everything
-built so far. Pages not fetched in a run (request cap reached, or d3football
-rate-limiting) are listed as pending, and the next run continues from there.
+In the cloud, prefix R commands with `LC_ALL=C.UTF-8` so accented names are
+written as UTF-8.
+
+**Resumable runs:** every run also rebuilds every game already in the
+output folder, so it and the reports always cover everything built so far.
+Games not fetched in a run (request cap reached, or no play-by-play on
+ncaa.com yet) are listed as pending, and the next run continues from there.
 
 ## Stages
 
@@ -46,10 +65,12 @@ rate-limiting) are listed as pending, and the next run continues from there.
 | Season dates | Regular-season end date per season (2019-2025 seeded and verified). A missing season is read from its Wikipedia infobox and logged for checking. | `R/season_index.R` (`ensure_season_dates`, `check_season_dates`) | `data-raw/season_dates.csv` |
 | Season index | Every game of a season from d3's weekly scoreboard pages: date, week, regular/postseason, teams, boxscore URL. | `R/season_index.R` (`build_season_index`) | `data-raw/index/{season}.csv` |
 | Conferences | For the teams in scope: each team's conference that season and d3's "*" conference-game marker, from the team's page. | `R/conferences.R` (`build_conference_table`) | `data-raw/conferences/{season}*.csv` |
-| Fetch | Each game's play-by-play page. Cached and throttled. | `R/scrape_plays.R` (`fetch_html`) | `data-raw/cache/` (gitignored) |
+| ncaa contests | Each index game's ncaa.com contest id, from ncaa.com's weekly scoreboards (team names through a crosswalk, dates at most a day apart). | `R/ncaa.R` (`map_ncaa_contests`) | `data-raw/ncaa/{season}_contests.csv`, `data-raw/ncaa/team_names.csv` |
+| Fetch | Each game's play-by-play JSON from ncaa.com (or, for `source = "d3football"`, its cached boxscore page). Cached and throttled. | `R/ncaa.R` (`fetch_ncaa_json`), `R/scrape_plays.R` (`fetch_html`) | `data-raw/cache/ncaa/`, `data-raw/cache/` (gitignored) |
+| Rebuild table | ncaa.com's lines become d3football's (situation, play) table: situations from `driveText` with the yardline side recovered, quarter markers, drive headers, score lines, and labelled extra points ncaa.com left out. | `R/ncaa.R` (`fetch_ncaa_game`, `ncaa_play_table`) | |
 | Classify | Label every row of the page: snap, kickoff, try, dead-ball penalty, or one of the non-play types (drive header / footer, quarter marker, timeout, ...). | `R/classify.R`, `R/parse_play_type.R` | |
 | Derive | Period, possession, team names, kickoff teams, drives, down / distance / yards to goal, penalties, outcome flags, score, first downs and series, clock. | `R/build_pbp.R` and the files it calls: `teams.R`, `kickoffs.R`, `drives.R`, `scores.R`, `parse_penalties.R`, `parse_outcomes.R`, `game_state.R`, `parse_clock.R` | |
-| Assemble | One 69-column table per game. | `R/build_pbp.R` (`build_pbp`, `build_all_pbp`) | `pbp/{season}/{game_id}.csv` |
+| Assemble | One 71-column table per game. | `R/build_pbp.R` (`build_pbp`, `build_all_pbp`) | `pbp/{season}/{game_id}.csv` |
 | Validate | Reports for the season. | `R/validation.R`, `R/build_season.R` | `checks/{season}/` |
 
 **One pipeline for everything.** `build_season()` runs all the stages. The
@@ -57,33 +78,35 @@ roadmap stages differ only in its arguments: a `teams` filter, or the `season`.
 
 ## Fetching
 
-d3football is the only source. The play-by-play is rendered HTML; there is no
-structured feed. The rules:
-- **Cache:** every page is cached in `data-raw/cache/` and never requested
-  twice.
-- **Throttle:** requests are spaced 6 seconds apart in `build_season()`.
-- **Cap:** `max_requests` limits new requests per run.
-- **Stop on refusal:** after the first refusal (HTTP 459 or an empty page,
-  which is how d3football rate-limits), the rest of the run uses the cache
-  only.
+**ncaa.com** (the source) is read through the local ncaa-api server. The
+rules:
+- **Cache:** every response is cached in `data-raw/cache/ncaa/` and never
+  requested twice. Copy that folder between machines to rebuild offline.
+- **Throttle and cap:** requests are spaced `delay` seconds apart (6 by
+  default) and capped by `max_requests`, as before.
+- **Pending:** an HTTP 502 means ncaa.com has no play-by-play for the game
+  (yet); the game is listed as pending and retried on a later run.
+- **Terms:** NCAA's terms of use forbid scraping without permission, so
+  keep requests few and get a go-ahead before large runs.
 
-In practice, fetch in batches of about 10-100 pages and stop when refused.
-Bursts of a few dozen requests have triggered the limit: the first all-D3
-run (6 s apart) was refused after 21 pages; 50 pages 15 s apart went through
-cleanly. Use `--delay 15` (or `build_season(..., delay = 15)`).
+**d3football** (the old source) now serves scripts a JavaScript bot
+challenge. Its pages are read from the cache only; do not try to get past
+the challenge (no browser automation, no reused browser cookies).
 
 ## Validation
 
-Run on every build; reports in `checks/{season}/`:
+Run on every build; reports in `checks/{season}/` (ncaa.com) and
+`checks/d3football/{season}/` (old source). The 2025 results below are for
+the ncaa.com Centennial build:
 
 | Report | Checks | 2025 result |
 |---|---|---|
-| `build_report.md`, `score_reconciliation.csv` | Every game's points by team, summed from `score_pts`, equal the boxscore final. Also lists pending and failed games. | 62 of 62 |
+| `build_report.md`, `score_reconciliation.csv` | Every game's points by team, summed from `score_pts`, equal the final (ncaa.com scoreboard, or the d3football line score). Also lists pending, not-on-ncaa.com and failed games, and unclassified rows. | 58 of 58 |
 | `conference_check.csv` | d3's "*" conference marker vs shared membership. | Agree wherever both conferences are known (NJAC's name pending a fetch). |
-| `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: cfbfastR comparison and edge cases. | 3,538 of 3,541; the 3 exceptions are labeled (2 d3 quirks, 1 lateral). |
+| `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: cfbfastR comparison and edge cases. | 3,267 of 3,288. 5 of the 21 exceptions are the same as in the d3football build (labelled); the other 16 are new and not yet explained. The one traced (`20251018_uxv5`) follows a kickoff ncaa.com dropped. Most of the rest are in games where ncaa.com's file differs from d3football's. |
 | `kickoff_possession.csv` | Each kickoff's kicking and receiving team, the rule that decided it, and any disagreement. | No disagreements. |
 | `clock_bounds.csv` | No missing or inverted clock range in regulation, and `clock_start` inside its range. | Empty. |
-| `drive_footer_clock.csv` | Each d3 drive's start clock plus "MM:SS elapsed" vs the drive's end. | 15 of 1,325 flagged, mostly d3 "00:00 elapsed" footers. |
+| `drive_footer_clock.csv` | Each d3 drive's start clock plus "MM:SS elapsed" vs the drive's end. | Not applicable: ncaa.com has no drive footers. |
 | `end_state.csv` | Every change of possession with the next snap's own down / distance / yards to goal, labeled by team. | |
 | `season_index.md` | How d3 numbers weeks; the season's game count; scoreboard week vs date-based week. | 1,260 games; no week disagreements. |
 
@@ -93,6 +116,13 @@ first-down exclusivity and placement.
 
 ## Known issues
 
+- **ncaa.com series flags:** 16 of the 21 `first_downs.md` exceptions in the
+  ncaa.com Centennial build are new and unexplained (see Validation).
+- **Added extra points:** 100 extra points in the 58 games have no line on
+  ncaa.com and are added, labelled in `play_text`. 9 of them rely on the
+  final score alone, in games whose file has no running score.
+- **Games ncaa.com can't give:** non-NCAA bowl games, and the 2025 Stagg
+  Bowl (broken file). Both are listed in the build report.
 - **`yards_gained` on a lateral** reads only the first yardage segment. So a
   first down earned after a lateral is missed (1 series in 2025).
 - **`yards_gained` is not defined** for interceptions, punts, field goals,
@@ -115,7 +145,11 @@ first-down exclusivity and placement.
   `devtools::test()` runs from the source tree and passes. Fix: move the CSV
   to `inst/extdata/` and read it with `system.file()`.
 
-## d3 source quirks the pipeline handles
+## Source quirks the pipeline handles
+
+ncaa.com's own quirks are listed in `CLAUDE.md` (Source facts) and handled in
+`ncaa_play_table()`. Its play text is the same StatCrew text as
+d3football's, so these still apply:
 
 - **Two StatCrew formats per site.** Team codes in the play text often differ
   from the down-and-distance codes ("DCFB" vs "DCC", "McD28", nicknames like
@@ -134,12 +168,13 @@ first-down exclusivity and placement.
 ## Roadmap
 
 1. **CMU 2025** (validation set): done.
-2. **Centennial 2025**: done (this checkpoint).
-3. **All of D3 2025** (in progress, branch `all-d3-2025`; 133 games built):
-   `build_season(2025)`. About 1,180 more games plus about
-   230 team pages, fetched in capped runs. Expect new StatCrew formats to
-   surface. The score-reconciliation test and the `first_downs.md` series
-   check are the main guards.
+2. **Centennial 2025**: done; rebuilt from ncaa.com on 2026-11-04.
+3. **All of D3 2025 from ncaa.com** (next): `build_season(2025)`. About
+   1,180 more games, fetched in capped runs with Sam's go-ahead. Team pages
+   for conferences still come from d3football's cache, so most teams'
+   conference columns stay NA until another source is chosen. Expect new
+   StatCrew formats to surface. The score-reconciliation test and the
+   `first_downs.md` series check are the main guards.
 4. **Other seasons:** index each season, check its week structure and
    conferences, then `build_season(season)`.
 

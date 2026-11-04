@@ -1,0 +1,1238 @@
+"game_id","contest","ncaa_away","ncaa_home","ncaa_away_score","ncaa_home_score","home_away_flip","date_diff"
+"20250904_2g4w","6461490","SUNY Brockport","Buffalo St.",41,0,FALSE,0
+"20250904_d231","6462268","Carroll (WI)","Wis.-Eau Claire",7,29,FALSE,0
+"20250904_e307","6461924","Augsburg","Valley City St.",0,27,FALSE,0
+"20250904_hjux","6462411","Hiram","Heidelberg",27,65,FALSE,0
+"20250904_hz19","6462069","Franklin & Marshall","Lebanon Valley",31,21,FALSE,0
+"20250904_ndb9","6462034","Greenville","Illinois Col.",9,28,FALSE,0
+"20250904_x3up","6461535","Averett","N.C. Wesleyan",12,64,FALSE,0
+"20250904_x4o2","6461356","Millsaps","Belhaven",24,50,FALSE,0
+"20250904_x9dy","6462195","Pacific (OR)","Howard Payne",13,21,FALSE,0
+"20250904_xvn8","6462362","Coe","Cornell College",62,6,FALSE,0
+"20250904_zbay","6461480","Marietta","Westminster (PA)",12,8,FALSE,0
+"20250904_zik0","6461247","Trinity (TX)","Texas Lutheran",26,14,FALSE,0
+"20250905_0otb","6462432","Bridgewater St.","Curry",28,35,FALSE,0
+"20250905_2ic2","6461363","Hobart","Alfred",23,28,FALSE,0
+"20250905_5sfv","6461848","Norwich","St. Lawrence",3,19,FALSE,0
+"20250905_8wt2","6461900","Moravian","Muhlenberg",,,FALSE,0
+"20250905_9lhe","6461264","Concordia Wisconsin","Thiel",27,8,FALSE,0
+"20250905_9opj","6462322","McDaniel","Catholic",7,10,FALSE,0
+"20250905_j032","6461976","Ursinus","Alvernia",41,17,FALSE,0
+"20250905_jdn4","6461399","Dickinson","Randolph-Macon",34,48,FALSE,0
+"20250905_jir1","6461691","Dean","Fitchburg St.",,,FALSE,0
+"20250905_p2em","6461676","Albright","Gallaudet",9,7,FALSE,0
+"20250905_qsmw","6461647","Montclair St.","Merchant Marine",,,FALSE,0
+"20250905_rgw0","6461334","SUNY Maritime","Mass. Maritime",21,14,FALSE,0
+"20250905_wr9m","6461550","Juniata","Gettysburg",31,30,FALSE,0
+"20250906_034w","6461598","Kalamazoo","Austin",14,10,FALSE,0
+"20250906_09bx","6461428","Wheaton (IL)","Mount Union",29,37,FALSE,0
+"20250906_10mp","6462349","Beloit","Rockford",15,19,FALSE,0
+"20250906_1c8m","6461574","Wm. Paterson","WestConn",20,21,FALSE,0
+"20250906_1qeq","6462170","Macalester","Grinnell",20,15,FALSE,0
+"20250906_1qqy","6462079","Anna Maria","Eastern",7,46,FALSE,0
+"20250906_26ks","6461294","Hampden-Sydney","Delaware Valley",38,9,FALSE,0
+"20250906_29l4","6462114","Lyon","East Tex. Baptist",8,47,FALSE,0
+"20250906_2lhd","6461373","Mt. St. Joseph","Muskingum",33,27,FALSE,0
+"20250906_2q6t","6461543","Maryville (TN)","Hendrix",40,14,FALSE,0
+"20250906_2yy3","6461696","Apprentice","Southern Va.",6,27,FALSE,0
+"20250906_35p9","6462202","Hope","Loras",62,0,FALSE,0
+"20250906_3f7l","6462129","Bethel (TN)","Mary Hardin-Baylor",23,30,FALSE,0
+"20250906_3hu1","6461348","St. John Fisher","FDU-Florham",21,0,FALSE,0
+"20250906_41ka","6461785","Wis.-Oshkosh","Linfield",31,14,FALSE,0
+"20250906_45l3","6462097","Hilbert","Saint Vincent",7,28,FALSE,0
+"20250906_5qby","6461719","Johns Hopkins","Ithaca",42,14,FALSE,0
+"20250906_5t3v","6461284","Wooster","Wilmington (OH)",35,59,FALSE,0
+"20250906_5u5q","6461600","John Carroll","Waynesburg",48,14,FALSE,0
+"20250906_616y","6461320","Misericordia","Endicott",21,31,FALSE,0
+"20250906_6mvd","6462152","Carthage","Lakeland",51,40,FALSE,0
+"20250906_70fv","6461693","Coast Guard","U New England",49,56,FALSE,0
+"20250906_71s2","6461567","Baldwin Wallace","Wittenberg",31,13,FALSE,0
+"20250906_806w","6461499","Wabash","St. Norbert",55,21,FALSE,0
+"20250906_85f2","6462412","Utica","Wash. & Jeff.",49,31,FALSE,0
+"20250906_8da1","6462038","Alfred St.","Anderson (IN)",6,7,FALSE,0
+"20250906_8hxj","6461688","Kenyon","Bluffton",17,20,FALSE,0
+"20250906_8o5p","6462343","Albion","Wis.-Stevens Point",21,28,FALSE,0
+"20250906_8xam","6462415","LaGrange","Point U.",36,14,FALSE,0
+"20250906_91x0","6461772","Geneva","Widener",18,44,FALSE,0
+"20250906_ao7f","6462384","Mayville St.","Concordia-M'head",6,17,FALSE,0
+"20250906_c11m","6462215","Springfield","Western New Eng.",22,23,FALSE,0
+"20250906_d0ep","6462378","Ohio Northern","Franklin",20,27,FALSE,0
+"20250906_d1ph","6461940","Crown (MN)","Hamline",21,28,FALSE,0
+"20250906_dcg5","6462403","Neb. Wesleyan","Dakota St.",7,37,FALSE,0
+"20250906_due6","6461584","TCNJ","Lycoming",27,24,FALSE,0
+"20250906_e064","6461445","Carnegie Mellon","UChicago",20,0,FALSE,0
+"20250906_eq8n","6461677","Virginia-Lynchburg","Roanoke",7,23,FALSE,0
+"20250906_ex14","6461471","Knox","Eureka",13,14,FALSE,0
+"20250906_f4wr","6461311","Carleton","Wis.-Whitewater",14,45,FALSE,0
+"20250906_fm5a","6462091","Plymouth St.","New England Col.",49,21,FALSE,0
+"20250906_fw2w","6462049","Northwestern-St. Paul","St. Olaf",7,32,FALSE,0
+"20250906_glc4","6461389","Dubuque","Wis.-Stout",35,38,FALSE,0
+"20250906_hbla","6496410","CWRU","Rowan",17,17,FALSE,0
+"20250906_ipvv","6461409","DePauw","Rose-Hulman",40,0,FALSE,0
+"20250906_j3h2","6461752","Union (NY)","Susquehanna",14,33,FALSE,0
+"20250906_j5s3","6462291","Sewanee","Bethany (WV)",41,6,FALSE,0
+"20250906_jdae","6461859","Olivet","Rochester (NY)",17,38,FALSE,0
+"20250906_k8vz","6461328","Westminster (MO)","Manchester",21,14,FALSE,0
+"20250906_kbs4","6462177","Minn.-Morris","Concordia Chicago",16,17,FALSE,0
+"20250906_kd8h","6462064","Nichols","MIT",13,46,FALSE,0
+"20250906_khao","6462020","SUNY Morrisville","Kean",14,17,FALSE,0
+"20250906_km6t","6461806","Wis.-Platteville","Aurora",41,0,FALSE,0
+"20250906_kuih","6461986","St. Scholastica","Wis. Lutheran",41,27,FALSE,0
+"20250906_lo04","6462102","Central (IA)","Ill. Wesleyan",27,18,FALSE,0
+"20250906_lq0t","6461808","Trine","Chris. Newport",,,FALSE,0
+"20250906_ls6a","6461256","Hanover","Centre",15,23,FALSE,0
+"20250906_m4ph","6460259","Adrian","Valparaiso",10,7,FALSE,0
+"20250906_mww9","6462211","Pomona-Pitzer","Willamette",41,17,FALSE,0
+"20250906_nhof","6461583","Southwestern (TX)","McMurry",27,19,FALSE,0
+"20250906_nidd","6461516","Greensboro","Guilford",21,7,FALSE,0
+"20250906_og2i","6461632","Rhodes","WashU",0,49,FALSE,0
+"20250906_ol2o","6462188","Lake Forest","CMS",7,14,FALSE,0
+"20250906_puzg","6461793","Stevenson","Bridgewater (VA)",32,27,FALSE,0
+"20250906_pzhf","6461790","Lewis & Clark","Puget Sound",56,20,FALSE,0
+"20250906_q2oz","6461947","Gustavus Adolphus","Whitworth",10,23,FALSE,0
+"20250906_q4sa","6462239","Monmouth (IL)","Wartburg",7,21,FALSE,0
+"20250906_qgnn","6461721","Denison","Allegheny",35,24,FALSE,0
+"20250906_qqbg","6462165","Ohio Wesleyan","Otterbein",65,28,FALSE,0
+"20250906_rqq2","6461608","Alma","UW-River Falls",33,45,FALSE,0
+"20250906_s4wd","6461776","Millikin","Luther",33,3,FALSE,0
+"20250906_sofj","6462157","Martin Luther","Lawrence",33,14,FALSE,0
+"20250906_t9z9","6462109","George Fox","Redlands",7,10,FALSE,0
+"20250906_td14","6461927","Huntingdon","Berry",28,58,FALSE,0
+"20250906_u1p2","6462065","Grove City","Cortland",31,14,FALSE,0
+"20250906_uh9c","6461892","Ky. Christian","Brevard",41,20,FALSE,0
+"20250906_uhok","6461994","Pacific Lutheran","Cal Lutheran",15,18,FALSE,0
+"20250906_vatl","6461419","Salisbury","Wash. & Lee",42,21,FALSE,0
+"20250906_vkzk","6462260","Buena Vista","Benedictine (IL)",0,35,FALSE,0
+"20250906_vvrk","6461968","Augustana (IL)","Simpson",42,41,FALSE,0
+"20250906_was7","6462134","Hardin-Simmons","Chapman",37,30,FALSE,0
+"20250906_wf4k","6461703","Husson","Framingham St.",,,FALSE,0
+"20250906_wk1h","6462325","VTSU Castleton","Westfield St.",16,12,FALSE,0
+"20250906_xaxw","6461874","Rensselaer","WPI",26,9,FALSE,0
+"20250906_yr0t","6461614","UMass Dartmouth","Salve Regina",,,FALSE,0
+"20250906_z0ea","6461907","Calvin","Oberlin",88,6,FALSE,0
+"20250906_zgnw","6462124","North Park","Ripon",35,19,FALSE,0
+"20250906_zkds","6462033","Methodist","Shenandoah",6,25,FALSE,0
+"20250913_0680","6461779","Luther","Martin Luther",0,34,FALSE,0
+"20250913_1738","6461823","Eureka","Westminster (MO)",6,29,FALSE,0
+"20250913_1e9i","6461414","DePauw","Centre",35,14,FALSE,0
+"20250913_2coh","6462158","Lawrence","Monmouth (IL)",7,78,FALSE,0
+"20250913_2k0r","6462236","Madonna","Olivet",45,28,FALSE,0
+"20250913_2q8w","6462171","Beloit","Grinnell",0,24,FALSE,0
+"20250913_2te5","6462092","Worcester St.","Plymouth St.",46,47,FALSE,0
+"20250913_2yc7","6462418","Mount Union","Grove City",49,14,FALSE,0
+"20250913_2yjr","6461491","Hobart","SUNY Brockport",10,14,FALSE,0
+"20250913_36jd","6461977","Alvernia","Eastern",14,24,FALSE,0
+"20250913_3nbz","6462035","Greenville","Lakeland",29,28,FALSE,0
+"20250913_4hec","6462284","Ark. Baptist","Lyon",20,19,FALSE,0
+"20250913_4hzs","6461336","Anderson (IN)","SUNY Maritime",0,48,FALSE,0
+"20250913_55cm","6461820","Puget Sound","Southwestern (TX)",43,51,FALSE,0
+"20250913_5d37","6461557","CWRU","Wabash",28,38,FALSE,0
+"20250913_5ivd","6461689","Albion","Bluffton",45,39,FALSE,0
+"20250913_65gl","6461420","Wash. & Lee","Wittenberg",21,24,FALSE,0
+"20250913_6b2l","6461439","Catholic","Capital",20,36,FALSE,0
+"20250913_6fo1","6461544","Hendrix","Huntingdon",30,28,FALSE,0
+"20250913_6i95","6462021","Wis.-La Crosse","Carnegie Mellon",38,14,FALSE,0
+"20250913_6y5g","6461364","Ithaca","Alfred",45,14,FALSE,0
+"20250913_77cq","6461381","Williams","Hamilton",24,17,FALSE,0
+"20250913_7myh","6461995","Simpson (CA)","Pacific Lutheran",16,42,FALSE,0
+"20250913_8770","6461722","John Carroll","Johns Hopkins",13,27,FALSE,0
+"20250913_8l2c","6462216","Western New Eng.","Salve Regina",28,34,FALSE,0
+"20250913_8lde","6461285","Wilmington (OH)","Baldwin Wallace",21,63,FALSE,0
+"20250913_8wif","6461810","Chris. Newport","Gettysburg",49,14,FALSE,0
+"20250913_8wzq","6461649","Hartwick","Buffalo St.",29,27,FALSE,0
+"20250913_8x3b","6462401","Westfield St.","Bridgewater St.",16,29,FALSE,0
+"20250913_8xbz","6462376","Heidelberg","Ohio Northern",13,33,FALSE,0
+"20250913_9oo3","6462087","MIT","New England Col.",55,0,FALSE,0
+"20250913_a8k7","6462428","Wis.-Whitewater","St. Xavier",37,0,FALSE,0
+"20250913_b286","6462080","Framingham St.","Anna Maria",31,25,FALSE,0
+"20250913_bmwa","6462409","Curry","Coast Guard",24,34,FALSE,0
+"20250913_c7zf","6461949","Whitworth","Eastern Ore.",10,16,FALSE,0
+"20250913_cdoz","6461870","St. Lawrence","St. John Fisher",23,28,FALSE,0
+"20250913_cnrb","6461657","Guilford","Methodist",42,40,FALSE,0
+"20250913_crwv","6461694","Mass. Maritime","Dean",28,0,FALSE,0
+"20250913_d7vl","6461588","McMurry","Hardin-Simmons",19,24,FALSE,0
+"20250913_d8f5","6461617","Fitchburg St.","UMass Dartmouth",24,25,FALSE,0
+"20250913_e4ar","6461651","Lycoming","Montclair St.",24,27,FALSE,0
+"20250913_e6vy","6461275","King's (PA)","Delaware Valley",7,49,FALSE,0
+"20250913_easl","6462074","Oberlin","Hiram",21,58,FALSE,0
+"20250913_en9e","6461901","Moravian","Rowan",0,56,FALSE,0
+"20250913_epla","6461615","Austin","Rhodes",17,31,FALSE,0
+"20250913_f947","6461601","Waynesburg","Dickinson",19,52,FALSE,0
+"20250913_fyam","6461400","Randolph-Macon","Central (IA)",0,10,FALSE,0
+"20250913_fzim","6461869","Denison","Alma",27,53,FALSE,0
+"20250913_ggmc","6461517","Roanoke","Greensboro",32,22,FALSE,0
+"20250913_gm2p","6462307","Merchant Marine","Nichols",56,24,FALSE,0
+"20250913_h0td","6461321","Albright","Misericordia",21,42,FALSE,0
+"20250913_h5p6","6461536","Southern Va.","Averett",46,14,FALSE,0
+"20250913_hte9","6461329","Concordia Chicago","Manchester",35,14,FALSE,0
+"20250913_ic1r","6462122","Okla. Panhandle","East Tex. Baptist",0,28,FALSE,0
+"20250913_jcmz","6461465","Rose-Hulman","Trine",10,27,FALSE,0
+"20250913_jqge","6462310","Muhlenberg","Endicott",28,20,FALSE,0
+"20250913_jxwo","6461551","Allegheny","Juniata",38,40,FALSE,0
+"20250913_ki1k","6461795","Widener","Stevenson",3,19,FALSE,0
+"20250913_llkl","6459668","Butler","Hanover",16,7,FALSE,0
+"20250913_lyzg","6462203","Loras","Benedictine (IL)",13,20,FALSE,0
+"20250913_m2dl","6462231","Thiel","Adrian",0,76,FALSE,0
+"20250913_mc0u","6461481","Westminster (PA)","Franklin & Marshall",27,7,FALSE,0
+"20250913_mrh7","6461265","Concordia Wisconsin","Calvin",7,34,FALSE,0
+"20250913_myuk","6462196","Pacific (OR)","Willamette",42,0,FALSE,0
+"20250913_mz2v","6461707","Husson","Springfield",6,38,FALSE,0
+"20250913_npl1","6462344","Wash. & Jeff.","Hampden-Sydney",31,38,FALSE,0
+"20250913_o62p","6461610","Coe","UW-River Falls",47,59,FALSE,0
+"20250913_oc57","6462421","Lake Forest","Illinois Col.",25,28,FALSE,0
+"20250913_od64","6461302","Middlebury","Wesleyan (CT)",17,31,FALSE,0
+"20250913_ouyb","6461849","Norwich","VTSU Castleton",8,30,FALSE,0
+"20250913_ox10","6462254","Belhaven","Trinity (TX)",0,49,FALSE,0
+"20250913_oxzn","6461828","Amherst","Bates",23,26,FALSE,0
+"20250913_pqb6","6462297","Tufts","Bowdoin",13,0,FALSE,0
+"20250913_q5xn","6461248","Howard Payne","Texas Lutheran",28,18,FALSE,0
+"20250913_r1hn","6461446","UChicago","Cornell College",28,12,FALSE,0
+"20250913_rnc9","6462350","Rockford","Elmhurst",30,34,FALSE,0
+"20250913_rryo","6461753","Bridgewater (VA)","Susquehanna",17,56,FALSE,0
+"20250913_rt73","6462413","Rensselaer","Utica",14,41,FALSE,0
+"20250913_rw3b","6461852","Otterbein","Marietta",31,47,FALSE,0
+"20250913_s5dd","6461928","Berry","LaGrange",48,0,FALSE,0
+"20250913_shly","6461786","Wis.-Oshkosh","North Central (IL)",14,45,FALSE,0
+"20250913_ss2d","6461773","Shenandoah","Geneva",29,28,FALSE,0
+"20250913_tsw4","6461695","WPI","U New England",3,41,FALSE,0
+"20250913_u736","6461472","Ripon","Knox",50,7,FALSE,0
+"20250913_u86b","6461862","Rochester (NY)","SUNY Morrisville",30,14,FALSE,0
+"20250913_uvc5","6461893","Brevard","Sewanee",26,10,FALSE,0
+"20250913_uy29","6461834","Maryville (TN)","Ohio Wesleyan",48,24,FALSE,0
+"20250913_v6wh","6462008","Kean","Ursinus",14,42,FALSE,0
+"20250913_vau6","6462040","Alfred St.","Hilbert",49,13,FALSE,0
+"20250913_vg5b","6461618","Bethany (WV)","Kalamazoo",7,50,FALSE,0
+"20250913_vlco","6462404","Mayville St.","Neb. Wesleyan",20,13,FALSE,0
+"20250913_vwc7","6461390","Wis.-Platteville","Dubuque",56,27,FALSE,0
+"20250913_vxjv","6462269","Wis.-Eau Claire","Kenyon",35,6,FALSE,0
+"20250913_w2b6","6461963","Union (NY)","Cortland",6,30,FALSE,0
+"20250913_w344","6461508","Wartburg","Wis.-Stout",16,0,FALSE,0
+"20250913_w7x6","6462259","Wis. Lutheran","Buena Vista",6,17,FALSE,0
+"20250913_wd8f","6461355","Centenary (LA)","Millsaps",14,56,FALSE,0
+"20250913_whti","6461585","Wilkes","TCNJ",3,17,FALSE,0
+"20250913_wjtg","6461792","George Fox","Lewis & Clark",10,38,FALSE,0
+"20250913_wncr","6461349","FDU-Florham","Lebanon Valley",13,37,FALSE,0
+"20250913_x5xg","6461969","Simpson","Crown (MN)",45,7,FALSE,0
+"20250913_xd8j","6461923","Trinity (CT)","Colby",6,13,FALSE,0
+"20250913_ylno","6462249","Northwestern-St. Paul","Bethel (MN)",3,50,FALSE,0
+"20250913_yo3z","6462334","Salisbury","McDaniel",62,7,FALSE,0
+"20250913_z6qc","6462146","Minn.-Morris","Saint John's (MN)",0,49,FALSE,0
+"20250913_za5s","6462338","Hope","Franklin",38,14,FALSE,0
+"20250913_ztwy","6461374","Aurora","Mt. St. Joseph",35,28,FALSE,0
+"20250913_zvpb","6461457","Saint Vincent","Wooster",14,28,FALSE,0
+"20250920_012b","6461621","Anderson (IN)","Kalamazoo",0,27,FALSE,0
+"20250920_0aq7","6460793","Erskine","Brevard",34,38,FALSE,0
+"20250920_0n80","6462221","Franklin","Trine",27,35,FALSE,0
+"20250920_1q6f","6461690","Bluffton","Olivet",37,28,FALSE,0
+"20250920_1qoq","6461964","SUNY Morrisville","Union (NY)",7,31,FALSE,0
+"20250920_2c5k","6461391","Loras","Dubuque",27,34,FALSE,0
+"20250920_2fq2","6462115","East Tex. Baptist","Centenary (LA)",50,33,FALSE,0
+"20250920_36p6","6462286","Eastern","Lebanon Valley",21,24,FALSE,0
+"20250920_3awh","6462066","Cortland","Hartwick",59,9,FALSE,0
+"20250920_3rsf","6461970","Wartburg","Simpson",27,13,FALSE,0
+"20250920_3t24","6461582","Southern Va.","Keystone",42,0,FALSE,0
+"20250920_4tmb","6462050","Concordia-M'head","St. Olaf",16,17,FALSE,0
+"20250920_5aqo","6461415","Kenyon","DePauw",14,35,FALSE,0
+"20250920_5bx0","6462405","Neb. Wesleyan","Coe",14,62,FALSE,0
+"20250920_5iyg","6461303","Bowdoin","Middlebury",10,31,FALSE,0
+"20250920_5osf","6462380","Hamilton","Amherst",13,23,FALSE,0
+"20250920_5rb1","6461697","Westfield St.","Dean",48,6,FALSE,0
+"20250920_5w0q","6461908","Calvin","Heidelberg",40,37,FALSE,0
+"20250920_6638","6461745","Muhlenberg","Wilkes",26,18,FALSE,0
+"20250920_66j0","6462250","Bethel (MN)","Gustavus Adolphus",41,7,FALSE,0
+"20250920_6c77","6461556","Juniata","McDaniel",7,24,FALSE,0
+"20250920_6ews","6462358","Chapman","Linfield",13,28,FALSE,0
+"20250920_6gbq","6461401","Randolph-Macon","Bridgewater (VA)",27,3,FALSE,0
+"20250920_6y2o","6461286","Wilmington (OH)","Muskingum",49,56,FALSE,0
+"20250920_7a5r","6462217","Worcester St.","Western New Eng.",13,48,FALSE,0
+"20250920_7khk","6461807","Benedictine (IL)","Aurora",36,35,FALSE,0
+"20250920_7sdv","6461473","Knox","Beloit",16,14,FALSE,0
+"20250920_7u0m","6462390","Macalester","Carleton",7,51,FALSE,0
+"20250920_8d6t","6462240","Monmouth (IL)","Lake Forest",49,6,FALSE,0
+"20250920_8qlx","6462081","Anna Maria","Mass. Maritime",33,27,FALSE,0
+"20250920_90q0","6462093","Plymouth St.","Bridgewater St.",42,21,FALSE,0
+"20250920_93sr","6461725","Thiel","Allegheny",0,26,FALSE,0
+"20250920_a8p2","6462135","La. Christian","Hardin-Simmons",17,52,FALSE,0
+"20250920_aeyn","6461648","Willamette","La Verne",29,14,FALSE,0
+"20250920_apgz","6461919","Springfield","Wis.-Platteville",12,28,FALSE,0
+"20250920_ay8q","6461509","Wis.-Stout","Northwestern-St. Paul",56,13,FALSE,0
+"20250920_b4en","6461249","Texas Lutheran","Southwestern (TX)",38,35,FALSE,0
+"20250920_bzku","6461382","Colby","Williams",0,38,FALSE,0
+"20250920_c9mt","6462001","Carthage","North Central (IL)",0,62,FALSE,0
+"20250920_dclo","6461257","Hanover","Alma",24,23,FALSE,0
+"20250920_dxkr","6461322","Misericordia","Widener",21,7,FALSE,0
+"20250920_dyvl","6461726","Johns Hopkins","Susquehanna",40,22,FALSE,0
+"20250920_e64e","6462288","Wittenberg","Ohio Wesleyan",55,17,FALSE,0
+"20250920_ed92","6461575","Gettysburg","WestConn",21,55,FALSE,0
+"20250920_edjf","6461602","Hiram","Waynesburg",27,35,FALSE,0
+"20250920_egk4","6460461","Roosevelt","Wis.-Oshkosh",21,38,FALSE,0
+"20250920_ekjh","6461829","Bates","Trinity (CT)",13,30,FALSE,0
+"20250920_ev5d","6462273","Martin Luther","Wis.-Eau Claire",6,42,FALSE,0
+"20250920_evn8","6462057","Dickinson","Lycoming",52,29,FALSE,0
+"20250920_f4jk","6461440","Baldwin Wallace","Capital",44,7,FALSE,0
+"20250920_fauv","6460710","Wayne St. (MI)","Wis.-La Crosse",22,31,FALSE,0
+"20250920_fo39","6462201","Wayland Baptist","Howard Payne",21,18,FALSE,0
+"20250920_fq4w","6461492","SUNY Brockport","Rensselaer",24,30,FALSE,0
+"20250920_ft9d","6459813","Greensboro","Davidson",0,48,FALSE,0
+"20250920_hf88","6461821","Cal Lutheran","Puget Sound",55,28,FALSE,0
+"20250920_hm9s","6461797","Stevenson","Alvernia",35,13,FALSE,0
+"20250920_hxdx","6461447","Illinois Col.","UChicago",21,24,FALSE,0
+"20250920_i3jz","6462429","Salve Regina","Wm. Paterson",24,12,FALSE,0
+"20250920_iatw","6461906","Utica","Hobart",17,20,FALSE,0
+"20250920_id40","6461312","Wis.-Whitewater","Mary Hardin-Baylor",26,6,FALSE,0
+"20250920_iflt","6461526","Maine Maritime","Norwich",0,63,FALSE,0
+"20250920_ig5p","6461774","Saint Vincent","Geneva",35,55,FALSE,0
+"20250920_ij66","6461375","Mt. St. Joseph","Hope",28,31,FALSE,0
+"20250920_ikcl","6461996","Trinity (TX)","Pacific Lutheran",45,8,FALSE,0
+"20250920_itrh","6461678","Delaware Valley","Albright",35,28,FALSE,0
+"20250920_j29j","6462159","Cornell College","Lawrence",20,0,FALSE,0
+"20250920_k86q","6461429","Wheaton (IL)","Augustana (IL)",50,7,FALSE,0
+"20250920_kom0","6461941","Saint John's (MN)","Hamline",59,0,FALSE,0
+"20250920_kqmp","6461421","Guilford","Wash. & Lee",7,35,FALSE,0
+"20250920_l58t","6461930","Berry","Carnegie Mellon",9,17,FALSE,0
+"20250920_le3j","6461438","Millsaps","Hendrix",41,19,FALSE,0
+"20250920_lsyc","6461620","UMass Dartmouth","Framingham St.",10,14,FALSE,0
+"20250920_lxik","6461699","U New England","VTSU Castleton",35,8,FALSE,0
+"20250920_ly5p","6461330","Manchester","Adrian",0,57,FALSE,0
+"20250920_mg9e","6461266","Concordia Wisconsin","Wis. Lutheran",27,20,FALSE,0
+"20250920_mi5e","6462332","Centre","LaGrange",6,20,FALSE,0
+"20250920_ne5l","6461755","Buffalo St.","Alfred St.",20,56,FALSE,0
+"20250920_ofdb","6461709","WPI","Husson",15,13,FALSE,0
+"20250920_or3t","6461706","New England Col.","Fitchburg St.",0,48,FALSE,0
+"20250920_phpc","6461365","Alfred","St. Lawrence",35,13,FALSE,0
+"20250920_puiy","6462070","Catholic","Franklin & Marshall",7,42,FALSE,0
+"20250920_q3m6","6462172","Grinnell","Ripon",20,30,FALSE,0
+"20250920_qqu2","6462110","CMS","George Fox",28,21,FALSE,0
+"20250920_rm23","6461612","UW-River Falls","Belhaven",65,0,FALSE,0
+"20250920_s44c","6461902","Ursinus","Moravian",35,7,FALSE,0
+"20250920_svu6","6461591","McMurry","Huntingdon",46,52,FALSE,0
+"20250920_t39s","6461824","Eureka","Rockford",40,20,FALSE,0
+"20250920_t60m","6461781","Central (IA)","Luther",63,26,FALSE,0
+"20250920_ui2z","6462329","Sewanee","N.C. Wesleyan",33,0,FALSE,0
+"20250920_upco","6461466","Rose-Hulman","Albion",17,25,FALSE,0
+"20250920_vh7c","6461276","FDU-Florham","King's (PA)",21,27,FALSE,0
+"20250920_w0hw","6461931","Augsburg","St. Scholastica",30,23,FALSE,0
+"20250920_we0j","6461636","WashU","Carroll (WI)",41,29,FALSE,0
+"20250920_wxmp","6461537","Averett","Gallaudet",30,39,FALSE,0
+"20250920_wzcm","6461794","Lewis & Clark","Pomona-Pitzer",21,3,FALSE,0
+"20250920_x6fh","6461958","Wesleyan (CT)","Tufts",20,22,FALSE,0
+"20250920_xcy2","6461338","SUNY Maritime","Endicott",7,41,FALSE,0
+"20250920_xic9","6461482","Westminster (PA)","CWRU",28,23,FALSE,0
+"20250920_xoo0","6462406","Nichols","Coast Guard",60,92,FALSE,0
+"20250920_xx40","6462125","North Park","Millikin",17,22,FALSE,0
+"20250920_ydnj","6461501","St. Norbert","Concordia Chicago",59,28,FALSE,0
+"20250920_yf1s","6461741","Ithaca","Hilbert",65,3,FALSE,0
+"20250920_yf5k","6461458","Wabash","Wooster",34,7,FALSE,0
+"20250920_yhau","6462295","Shenandoah","Hampden-Sydney",7,42,FALSE,0
+"20250920_ylbh","6462075","Oberlin","John Carroll",0,63,FALSE,0
+"20250920_yszz","6461951","Redlands","Whitworth",34,17,FALSE,0
+"20250920_yw0g","6462181","Minn.-Morris","Crown (MN)",20,30,FALSE,0
+"20250920_yyz1","6461863","St. John Fisher","Rochester (NY)",21,28,FALSE,0
+"20250920_zhnm","6462103","Elmhurst","Ill. Wesleyan",6,42,FALSE,0
+"20250927_03mt","6462086","Springfield","MIT",31,7,FALSE,0
+"20250927_08c9","6461830","Wesleyan (CT)","Bates",23,7,FALSE,0
+"20250927_0bun","6460931","Mary Hardin-Baylor","Mars Hill",7,21,FALSE,0
+"20250927_0itn","6461277","Eastern","King's (PA)",39,37,FALSE,0
+"20250927_0kna","6462407","New England Col.","Nichols",21,41,FALSE,0
+"20250927_19x4","6462314","Cal Lutheran","Redlands",27,10,FALSE,0
+"20250927_1j5p","6462142","Luther","Neb. Wesleyan",7,44,FALSE,0
+"20250927_1l6g","6462302","Coe","Wartburg",7,17,FALSE,0
+"20250927_3kfs","6461622","UMass Dartmouth","Anna Maria",43,47,FALSE,0
+"20250927_3u3j","6462434","John Carroll","Kenyon",52,0,FALSE,0
+"20250927_4d0z","6462339","Alma","Hope",29,26,FALSE,0
+"20250927_4g3r","6461757","Buffalo St.","Hilbert",15,8,FALSE,0
+"20250927_4kd8","6461295","Lebanon Valley","Delaware Valley",21,18,FALSE,0
+"20250927_4w65","6462385","Gustavus Adolphus","Concordia-M'head",13,14,FALSE,0
+"20250927_5j4f","6462067","Cortland","SUNY Morrisville",48,3,FALSE,0
+"20250927_6app","6461711","Endicott","Husson",48,14,FALSE,0
+"20250927_6ez2","6461568","Mount Union","Baldwin Wallace",42,23,FALSE,0
+"20250927_6qv6","6462318","Hiram","Saint Vincent",40,38,FALSE,0
+"20250927_6vhe","6461987","Macalester","St. Scholastica",34,37,FALSE,0
+"20250927_6zcv","6461754","Susquehanna","Chris. Newport",27,41,FALSE,0
+"20250927_71uh","6461903","Wm. Paterson","Moravian",38,14,FALSE,0
+"20250927_7aif","6461493","Hartwick","SUNY Brockport",0,56,FALSE,0
+"20250927_9g2q","6461545","Rhodes","Hendrix",28,47,FALSE,0
+"20250927_9kaf","6462227","Westminster (MO)","Lyon",24,38,FALSE,0
+"20250927_9q5i","6461603","Waynesburg","Thiel",45,14,FALSE,0
+"20250927_9sle","6461383","Trinity (CT)","Williams",34,28,FALSE,0
+"20250927_a10w","6461934","Augsburg","Saint John's (MN)",0,63,FALSE,0
+"20250927_amrj","6462298","Tufts","Amherst",14,30,FALSE,0
+"20250927_ar7z","6462323","Salisbury","Catholic",55,6,FALSE,0
+"20250927_b1ua","6462043","Alfred St.","Utica",13,45,FALSE,0
+"20250927_bvwf","6461882","Coast Guard","WPI",49,21,FALSE,0
+"20250927_clhh","6461965","St. Lawrence","Union (NY)",12,44,FALSE,0
+"20250927_cnfi","6461701","Western New Eng.","U New England",31,37,FALSE,0
+"20250927_dz2s","6461538","Bridgewater (VA)","Averett",41,14,FALSE,0
+"20250927_e0ro","6461679","Gallaudet","Roanoke",14,38,FALSE,0
+"20250927_egrs","6462395","Millikin","Augustana (IL)",6,33,FALSE,0
+"20250927_eir7","6461441","Marietta","Capital",24,21,FALSE,0
+"20250927_ezew","6462266","Bridgewater St.","Framingham St.",40,46,FALSE,0
+"20250927_f2rp","6462222","Trine","Albion",38,35,FALSE,0
+"20250927_faof","6461971","Simpson","Buena Vista",41,0,FALSE,0
+"20250927_fbeo","6461250","East Tex. Baptist","Texas Lutheran",24,21,FALSE,0
+"20250927_fjhh","6461652","Wilkes","Montclair St.",24,21,FALSE,0
+"20250927_g10s","6462351","Lakeland","Rockford",35,7,FALSE,0
+"20250927_gn4g","6461430","Carroll (WI)","Wheaton (IL)",13,61,FALSE,0
+"20250927_hr5v","6462178","Concordia Chicago","Wis. Lutheran",6,28,FALSE,0
+"20250927_hrnr","6461559","Denison","Wabash",0,36,FALSE,0
+"20250927_i73g","6461680","Widener","Albright",9,35,FALSE,0
+"20250927_i8ac","6462436","Pikeville","Maryville (TN)",30,34,FALSE,0
+"20250927_jqwj","6461413","DePauw","Wittenberg",28,0,FALSE,0
+"20250927_jx36","6461350","Stevenson","FDU-Florham",55,20,FALSE,0
+"20250927_k6f9","6462104","Ill. Wesleyan","Carthage",34,10,FALSE,0
+"20250927_kqa4","6461392","Dubuque","Central (IA)",16,35,FALSE,0
+"20250927_ky12","6462051","St. Olaf","Carleton",28,35,FALSE,0
+"20250927_l291","6461366","Alfred","St. John Fisher",7,21,FALSE,0
+"20250927_l54d","6462247","Worcester St.","Westfield St.",22,31,FALSE,0
+"20250927_lme8","6461864","Rochester (NY)","Rensselaer",3,31,FALSE,0
+"20250927_mren","6461624","Kalamazoo","Calvin",16,24,FALSE,0
+"20250927_mzk1","6461743","Hobart","Ithaca",7,13,FALSE,0
+"20250927_n5yi","6462189","CMS","Pomona-Pitzer",17,25,FALSE,0
+"20250927_ncsj","6461339","SUNY Maritime","Salve Regina",20,28,FALSE,0
+"20250927_ngba","6462094","Mass. Maritime","Plymouth St.",10,14,FALSE,0
+"20250927_nk0h","6461650","La Verne","Chapman",6,56,FALSE,0
+"20250927_noe8","6462419","Wash. & Jeff.","Grove City",34,14,FALSE,0
+"20250927_nuea","6461267","Benedictine (IL)","Concordia Wisconsin",20,28,FALSE,0
+"20250927_nz64","6461700","Dean","Curry",12,52,FALSE,0
+"20250927_oplb","6461287","Ohio Northern","Wilmington (OH)",41,35,FALSE,0
+"20250927_orwo","6462059","Apprentice","Methodist",19,20,FALSE,0
+"20250927_p3f2","6462123","Elmhurst","North Park",6,34,FALSE,0
+"20250927_pqjf","6462232","Adrian","Olivet",59,27,FALSE,0
+"20250927_pu6m","6461660","Hampden-Sydney","Guilford",69,14,FALSE,0
+"20250927_rg6z","6462381","Bowdoin","Hamilton",13,27,FALSE,0
+"20250927_rv66","6462015","CWRU","Bethany (WV)",55,0,FALSE,0
+"20250927_s6dy","6461850","Merchant Marine","Norwich",49,0,FALSE,0
+"20250927_st6a","6461304","Middlebury","Colby",27,17,FALSE,0
+"20250927_swcu","6461402","Wash. & Lee","Randolph-Macon",6,24,FALSE,0
+"20250927_ty65","6461809","Aurora","Eureka",66,0,FALSE,0
+"20250927_ubam","6461638","North Central (IL)","WashU",44,14,FALSE,0
+"20250927_vlh0","6461323","Alvernia","Misericordia",10,41,FALSE,0
+"20250927_wpcf","6461728","Geneva","Allegheny",28,16,FALSE,0
+"20250927_wr0w","6461576","WestConn","Kean",38,7,FALSE,0
+"20250927_wvvq","6461942","Bethel (MN)","Hamline",62,12,FALSE,0
+"20250927_y144","6462166","Muskingum","Otterbein",37,13,FALSE,0
+"20250927_y56g","6462056","Rowan","Lycoming",34,23,FALSE,0
+"20250927_za9q","6461594","Howard Payne","McMurry",24,31,FALSE,0
+"20250927_zne4","6461558","Juniata","TCNJ",0,35,FALSE,0
+"20250927_zvzz","6461459","Wooster","Oberlin",38,0,FALSE,0
+"20251003_ktys","6461625","Mass. Maritime","UMass Dartmouth",7,31,FALSE,0
+"20251003_tcdm","6461731","Dickinson","Johns Hopkins",10,55,FALSE,0
+"20251004_0t4u","6461656","Montclair St.","Kean",38,28,FALSE,0
+"20251004_1ekt","6461331","Manchester","Bluffton",23,39,FALSE,0
+"20251004_1fpd","6461384","Williams","Bowdoin",35,17,FALSE,0
+"20251004_1gsu","6462299","Tufts","Trinity (CT)",14,41,FALSE,0
+"20251004_1lej","6461653","Pomona-Pitzer","La Verne",34,12,FALSE,0
+"20251004_1oxb","6461909","Rensselaer","Hobart",36,10,FALSE,0
+"20251004_1shb","6462303","Northwestern-St. Paul","Crown (MN)",3,22,FALSE,0
+"20251004_26pc","6461953","Whitworth","Pacific (OR)",28,14,FALSE,0
+"20251004_271q","6462030","Hilbert","St. Lawrence",14,45,FALSE,0
+"20251004_2kko","6461613","UW-River Falls","Wis.-Oshkosh",17,21,FALSE,0
+"20251004_2ngk","6462326","VTSU Castleton","Wm. Paterson",7,32,FALSE,0
+"20251004_354d","6462160","Lawrence","Illinois Col.",0,59,FALSE,0
+"20251004_3omj","6461783","Wartburg","Luther",36,3,FALSE,0
+"20251004_3puz","6461367","Hartwick","Alfred",24,45,FALSE,0
+"20251004_3xt3","6462319","Wash. & Jeff.","Hiram",70,13,FALSE,0
+"20251004_4bpj","6461796","Puget Sound","Lewis & Clark",21,58,FALSE,0
+"20251004_4cgc","6461747","Catholic","Wilkes",13,15,FALSE,0
+"20251004_53sq","6462037","Westminster (MO)","Greenville",24,38,FALSE,0
+"20251004_57kf","6462045","SUNY Morrisville","Alfred St.",21,41,FALSE,0
+"20251004_5sdb","6462173","Monmouth (IL)","Grinnell",49,9,FALSE,0
+"20251004_5zl7","6461528","Nichols","Maine Maritime",49,20,FALSE,0
+"20251004_6011","6461775","Grove City","Geneva",22,9,FALSE,0
+"20251004_60j5","6462190","CMS","Cal Lutheran",17,22,FALSE,0
+"20251004_64vz","6461450","UChicago","Knox",52,0,FALSE,0
+"20251004_6sus","6461313","Wis.-La Crosse","Wis.-Whitewater",23,20,FALSE,0
+"20251004_7p7e","6461403","Randolph-Macon","Roanoke",35,17,FALSE,0
+"20251004_83ae","6462153","Carthage","Elmhurst",31,7,FALSE,0
+"20251004_83oi","6461431","Wheaton (IL)","North Central (IL)",0,35,FALSE,0
+"20251004_8k6r","6461268","Concordia Wisconsin","St. Norbert",24,17,FALSE,0
+"20251004_8kxj","6461552","WestConn","Juniata",63,15,FALSE,0
+"20251004_97gq","6462261","Buena Vista","Coe",10,37,FALSE,0
+"20251004_9jc0","6461705","U New England","Endicott",14,53,FALSE,0
+"20251004_9kt1","6461760","Union (NY)","Buffalo St.",28,6,FALSE,0
+"20251004_9l6i","6462147","Saint John's (MN)","Bethel (MN)",10,17,FALSE,0
+"20251004_acvc","6461920","Wis.-Stevens Point","Wis.-Platteville",0,52,FALSE,0
+"20251004_arrb","6462082","Anna Maria","Westfield St.",41,14,FALSE,0
+"20251004_aubs","6462296","Bridgewater (VA)","Shenandoah",21,24,FALSE,0
+"20251004_awvc","6461518","Greensboro","Southern Va.",22,35,FALSE,0
+"20251004_az6u","6462371","N.C. Wesleyan","LaGrange",24,41,FALSE,0
+"20251004_b3mj","6461704","Plymouth St.","Dean",34,0,FALSE,0
+"20251004_bnm6","6462352","Rockford","Benedictine (IL)",9,42,FALSE,0
+"20251004_bq6e","6461258","Hanover","Rose-Hulman",44,10,FALSE,0
+"20251004_c1e5","6461854","Marietta","Ohio Northern",9,42,FALSE,0
+"20251004_cwsy","6461510","Wis.-Stout","Wis.-Eau Claire",42,17,FALSE,0
+"20251004_e8f2","6462324","Curry","New England Col.",62,7,FALSE,0
+"20251004_ec6d","6461894","Brevard","Belhaven",20,23,FALSE,0
+"20251004_f375","6461904","Moravian","Lycoming",0,17,FALSE,0
+"20251004_f7br","6461586","TCNJ","Salisbury",10,55,FALSE,0
+"20251004_fdfy","6461933","Rhodes","Berry",14,54,FALSE,0
+"20251004_ffx2","6461664","Guilford","Gallaudet",55,0,FALSE,0
+"20251004_fidj","6462423","Lake Forest","Ripon",38,0,FALSE,0
+"20251004_fker","6461305","Amherst","Middlebury",27,17,FALSE,0
+"20251004_g2xb","6462139","Centenary (LA)","Austin",15,41,FALSE,0
+"20251004_gavq","6462126","Augustana (IL)","North Park",24,21,FALSE,0
+"20251004_gczt","6461831","Colby","Bates",13,6,FALSE,0
+"20251004_ghod","6462437","Eureka","Concordia Chicago",20,49,FALSE,0
+"20251004_gwn0","6462022","McDaniel","Carnegie Mellon",7,56,FALSE,0
+"20251004_h4xl","6462136","Howard Payne","Hardin-Simmons",14,69,FALSE,0
+"20251004_h5zy","6462182","Martin Luther","Minn.-Morris",28,35,FALSE,0
+"20251004_hi4i","6462088","MIT","Merchant Marine",3,6,FALSE,0
+"20251004_i1ye","6462116","Mary Hardin-Baylor","East Tex. Baptist",42,28,FALSE,0
+"20251004_itkv","6461460","Wittenberg","Wooster",12,14,FALSE,0
+"20251004_iui1","6462111","Linfield","George Fox",35,17,FALSE,0
+"20251004_iwy5","6461742","Ithaca","Rochester (NY)",10,6,FALSE,0
+"20251004_jdl2","6461640","Ill. Wesleyan","WashU",40,42,FALSE,0
+"20251004_k167","6462009","Ursinus","Muhlenberg",36,39,FALSE,0
+"20251004_kvxr","6461988","St. Scholastica","Concordia-M'head",21,49,FALSE,0
+"20251004_l1s1","6462167","Otterbein","Mount Union",7,62,FALSE,0
+"20251004_lrtn","6461560","Wabash","John Carroll",28,31,FALSE,0
+"20251004_m13d","6461357","Millsaps","Centre",36,37,FALSE,0
+"20251004_m1e9","6461871","Ohio Wesleyan","Denison",20,35,FALSE,0
+"20251004_m2sf","6461604","Allegheny","Waynesburg",21,11,FALSE,0
+"20251004_mn95","6461483","Bethany (WV)","Westminster (PA)",0,52,FALSE,0
+"20251004_n967","6462354","Cornell College","Beloit",26,19,FALSE,0
+"20251004_ng1t","6461442","Capital","Heidelberg",27,30,FALSE,0
+"20251004_np44","6461340","Coast Guard","SUNY Maritime",28,26,FALSE,0
+"20251004_oeoq","6461494","SUNY Brockport","St. John Fisher",24,31,FALSE,0
+"20251004_ouoc","6461997","Willamette","Pacific Lutheran",28,31,FALSE,0
+"20251004_p4gx","6461812","Chris. Newport","Rowan",49,41,FALSE,0
+"20251004_pbxo","6462270","Southwestern (TX)","Trinity (TX)",14,65,FALSE,0
+"20251004_pyut","6461811","Aurora","Lakeland",49,28,FALSE,0
+"20251004_qids","6461422","Wash. & Lee","Hampden-Sydney",42,34,FALSE,0
+"20251004_quxy","6462248","Bridgewater St.","Worcester St.",10,19,FALSE,0
+"20251004_s1ak","6461886","Franklin & Marshall","Gettysburg",35,28,FALSE,0
+"20251004_shsy","6462366","Franklin","Muskingum",34,33,FALSE,0
+"20251004_sn30","6461910","Calvin","Alma",6,55,FALSE,0
+"20251004_t05s","6461851","WPI","Norwich",14,7,FALSE,0
+"20251004_t6zc","6461713","Framingham St.","Fitchburg St.",22,12,FALSE,0
+"20251004_tbhu","6462388","Carleton","Gustavus Adolphus",45,28,FALSE,0
+"20251004_ti5l","6462016","CWRU","Saint Vincent",42,14,FALSE,0
+"20251004_tufo","6462223","Hope","Trine",55,35,FALSE,0
+"20251004_udft","6461376","Anderson (IN)","Mt. St. Joseph",21,41,FALSE,0
+"20251004_uosq","6462032","Methodist","Huntingdon",0,26,FALSE,0
+"20251004_urp0","6461416","Oberlin","DePauw",0,75,FALSE,0
+"20251004_uzua","6462278","Salve Regina","Springfield",14,28,FALSE,0
+"20251004_v6is","6461980","St. Olaf","Augsburg",13,44,FALSE,0
+"20251004_w1sl","6461393","Neb. Wesleyan","Dubuque",10,21,FALSE,0
+"20251004_wb7u","6461943","Hamline","Macalester",0,29,FALSE,0
+"20251004_x33y","6462315","Redlands","Chapman",0,27,FALSE,0
+"20251004_xmdh","6462233","Albion","Adrian",7,28,FALSE,0
+"20251004_yc5u","6462200","Central (IA)","Loras",45,27,FALSE,0
+"20251004_yy2p","6462396","Carroll (WI)","Millikin",28,17,FALSE,0
+"20251004_zedh","6461959","Hamilton","Wesleyan (CT)",14,56,FALSE,0
+"20251004_zlas","6461714","Husson","Western New Eng.",10,35,FALSE,0
+"20251004_ztu6","6462068","Utica","Cortland",13,28,FALSE,0
+"20251004_zxz4","6461628","Olivet","Kalamazoo",47,44,FALSE,0
+"20251010_0ri6","6461278","King's (PA)","Stevenson",35,28,FALSE,0
+"20251011_0d04","6461735","Allegheny","CWRU",21,62,FALSE,0
+"20251011_0m1x","6461251","Texas Lutheran","Centenary (LA)",55,27,FALSE,0
+"20251011_0pnd","6461832","Bates","Tufts",35,28,FALSE,0
+"20251011_0yee","6461925","Wesleyan (CT)","Colby",24,7,FALSE,0
+"20251011_1315","6461616","Wis.-Platteville","UW-River Falls",21,31,FALSE,0
+"20251011_2llw","6462143","Luther","Buena Vista",7,31,FALSE,0
+"20251011_2r84","6462359","Chapman","Pomona-Pitzer",17,10,FALSE,0
+"20251011_2x0c","6461935","Trinity (TX)","Berry",6,29,FALSE,0
+"20251011_36q6","6461748","Wilkes","Moravian",26,7,FALSE,0
+"20251011_3km0","6462191","Redlands","CMS",17,10,FALSE,0
+"20251011_401u","6462002","Millikin","North Central (IL)",10,59,FALSE,0
+"20251011_483x","6461642","WashU","Carthage",31,23,FALSE,0
+"20251011_49vb","6462052","Gustavus Adolphus","St. Olaf",35,21,FALSE,0
+"20251011_4csw","6461813","Chris. Newport","VTSU Castleton",69,7,FALSE,0
+"20251011_50fr","6462039","Greenville","Northwestern-St. Paul",23,20,FALSE,0
+"20251011_5nq8","6462276","Wis.-Eau Claire","Wis.-La Crosse",21,41,FALSE,0
+"20251011_6a94","6462304","Crown (MN)","Martin Luther",17,7,FALSE,0
+"20251011_6ak2","6462205","Loras","Neb. Wesleyan",31,28,FALSE,0
+"20251011_6yv3","6461825","Benedictine (IL)","Eureka",56,0,FALSE,0
+"20251011_706s","6461562","Ohio Wesleyan","Wabash",27,44,FALSE,0
+"20251011_7v05","6462127","North Park","Carroll (WI)",10,24,FALSE,0
+"20251011_93p8","6461692","Bluffton","Anderson (IN)",49,7,FALSE,0
+"20251011_95sr","6462414","SUNY Morrisville","Utica",21,27,FALSE,0
+"20251011_98xu","6461887","Gettysburg","Dickinson",21,49,FALSE,0
+"20251011_aosd","6461668","Shenandoah","Guilford",45,7,FALSE,0
+"20251011_atry","6461259","Hanover","Mt. St. Joseph",45,21,FALSE,0
+"20251011_avtg","6461822","Pacific Lutheran","Puget Sound",41,27,FALSE,0
+"20251011_azf4","6461605","Waynesburg","Grove City",14,24,FALSE,0
+"20251011_azmf","6461944","Concordia-M'head","Hamline",58,12,FALSE,0
+"20251011_bn95","6461502","St. Norbert","Wis. Lutheran",17,14,FALSE,0
+"20251011_bonl","6461467","Rose-Hulman","Franklin",35,34,FALSE,0
+"20251011_bv9l","6461587","Wm. Paterson","TCNJ",0,42,FALSE,0
+"20251011_cwfu","6462076","Kenyon","Oberlin",57,2,FALSE,0
+"20251011_d947","6461569","Baldwin Wallace","Otterbein",56,14,FALSE,0
+"20251011_dcrz","6461358","Millsaps","Rhodes",45,19,FALSE,0
+"20251011_dfem","6462375","Trinity (CT)","Hamilton",49,0,FALSE,0
+"20251011_dfez","6461798","Lewis & Clark","Willamette",28,20,FALSE,0
+"20251011_dpuo","6462023","Kean","Salisbury",24,38,FALSE,0
+"20251011_e0h0","6461777","Geneva","Thiel",51,38,FALSE,0
+"20251011_e2mj","6462198","Pacific (OR)","Linfield",6,23,FALSE,0
+"20251011_e3xa","6461461","Denison","Wooster",28,7,FALSE,0
+"20251011_efvw","6461432","Wheaton (IL)","Ill. Wesleyan",65,21,FALSE,0
+"20251011_etjq","6461332","Capital","Manchester",52,27,FALSE,0
+"20251011_eumc","6461681","Roanoke","Bridgewater (VA)",24,14,FALSE,0
+"20251011_ew1x","6462010","McDaniel","Ursinus",0,52,FALSE,0
+"20251011_fs81","6461561","Juniata","Catholic",17,20,FALSE,0
+"20251011_gdtj","6461655","Cal Lutheran","La Verne",23,19,FALSE,0
+"20251011_h50c","6461837","Centre","Maryville (TN)",13,33,FALSE,0
+"20251011_h6v3","6461895","Southern Va.","Brevard",32,35,FALSE,0
+"20251011_ho10","6462130","Mary Hardin-Baylor","Hardin-Simmons",7,34,FALSE,0
+"20251011_iog6","6462117","East Tex. Baptist","Howard Payne",18,36,FALSE,0
+"20251011_ip91","6462292","Saint Vincent","Bethany (WV)",57,35,FALSE,0
+"20251011_j421","6462289","John Carroll","Wittenberg",44,7,FALSE,0
+"20251011_j7yv","6462241","Illinois Col.","Monmouth (IL)",15,48,FALSE,0
+"20251011_jg99","6461546","Austin","Hendrix",21,60,FALSE,0
+"20251011_js9f","6461744","Ithaca","St. Lawrence",24,7,FALSE,0
+"20251011_kfwm","6462183","Minn.-Morris","Westminster (MO)",30,27,FALSE,0
+"20251011_kqku","6462071","Muhlenberg","Franklin & Marshall",27,28,FALSE,0
+"20251011_lfb3","6459675","WestConn","New Haven",0,69,FALSE,0
+"20251011_lra0","6461654","St. John Fisher","Hartwick",35,21,FALSE,0
+"20251011_ls6y","6461269","Lakeland","Concordia Wisconsin",34,41,FALSE,0
+"20251011_m2jr","6461511","Wis.-Oshkosh","Wis.-Stout",16,27,FALSE,0
+"20251011_m7ii","6461519","Huntingdon","Greensboro",17,10,FALSE,0
+"20251011_mcx6","6461855","Heidelberg","Marietta",30,27,FALSE,0
+"20251011_me37","6461529","Maine Maritime","Curry",0,60,FALSE,0
+"20251011_moak","6462255","Belhaven","N.C. Wesleyan",41,38,FALSE,0
+"20251011_mqjy","6461682","Albright","Alvernia",38,14,FALSE,0
+"20251011_mxk9","6461484","Westminster (PA)","Wash. & Jeff.",7,24,FALSE,0
+"20251011_n348","6461351","FDU-Florham","Widener",17,20,FALSE,0
+"20251011_n6nc","6461758","Lycoming","Susquehanna",7,69,FALSE,0
+"20251011_navh","6461989","Carleton","St. Scholastica",41,14,FALSE,0
+"20251011_ned8","6461324","Misericordia","Lebanon Valley",23,21,FALSE,0
+"20251011_nhzr","6461661","Rowan","Montclair St.",38,26,FALSE,0
+"20251011_nn8o","6461815","Rockford","Aurora",0,48,FALSE,0
+"20251011_ocff","6461762","Buffalo St.","Rensselaer",13,57,FALSE,0
+"20251011_oo7c","6461342","SUNY Maritime","Merchant Marine",34,14,FALSE,0
+"20251011_oy5j","6461917","Hobart","Union (NY)",16,33,FALSE,0
+"20251011_p8pa","6461451","Lawrence","UChicago",0,66,FALSE,0
+"20251011_p9g8","6461596","Lyon","McMurry",7,65,FALSE,0
+"20251011_pa8l","6462367","Ohio Northern","Muskingum",54,16,FALSE,0
+"20251011_q2p4","6461423","Gallaudet","Wash. & Lee",0,45,FALSE,0
+"20251011_q8vo","6461404","Averett","Randolph-Macon",20,77,FALSE,0
+"20251011_qhn8","6461474","Grinnell","Knox",17,20,FALSE,0
+"20251011_qiy9","6462148","Macalester","Saint John's (MN)",0,70,FALSE,0
+"20251011_qp9j","6462355","Beloit","Lake Forest",0,59,FALSE,0
+"20251011_qs6v","6462383","Amherst","Bowdoin",34,7,FALSE,0
+"20251011_rhc9","6461288","Mount Union","Wilmington (OH)",59,0,FALSE,0
+"20251011_rvr0","6461981","Bethel (MN)","Augsburg",56,7,FALSE,0
+"20251011_rvzg","6461394","Dubuque","Wartburg",7,33,FALSE,0
+"20251011_sg6j","6461954","George Fox","Whitworth",16,40,FALSE,0
+"20251011_t8bp","6461734","Carnegie Mellon","Johns Hopkins",27,28,FALSE,0
+"20251011_tjet","6461865","Hilbert","Rochester (NY)",0,38,FALSE,0
+"20251011_tmcs","6462060","LaGrange","Methodist",26,7,FALSE,0
+"20251011_v55d","6461306","Middlebury","Williams",17,24,FALSE,0
+"20251011_wc5q","6461972","Coe","Simpson",34,7,FALSE,0
+"20251011_xh02","6461717","Fitchburg St.","Worcester St.",21,6,FALSE,0
+"20251011_xu6u","6462272","Sewanee","Southwestern (TX)",31,39,FALSE,0
+"20251011_ywlf","6461314","Wis.-Whitewater","Wis.-Stevens Point",45,14,FALSE,0
+"20251011_zemb","6461296","Delaware Valley","Eastern",20,37,FALSE,0
+"20251011_zlh0","6462363","Ripon","Cornell College",22,14,FALSE,0
+"20251016_hzlo","6462224","Trine","Olivet",59,7,FALSE,0
+"20251017_27mj","6461315","Wis.-Stout","Wis.-Whitewater",2,34,FALSE,0
+"20251017_9191","6461883","Springfield","WPI",24,10,FALSE,0
+"20251017_v1xc","6461530","U New England","Maine Maritime",77,14,FALSE,0
+"20251018_085q","6461462","Wooster","Ohio Wesleyan",24,20,FALSE,0
+"20251018_17vy","6462083","Anna Maria","Plymouth St.",35,28,FALSE,0
+"20251018_1cf0","6461787","Wis.-Eau Claire","Wis.-Oshkosh",21,28,FALSE,0
+"20251018_1hou","6461730","Grove City","Allegheny",42,6,FALSE,0
+"20251018_1xk5","6462394","Wis. Lutheran","Lakeland",34,31,FALSE,0
+"20251018_23qb","6461945","Hamline","Carleton",14,63,FALSE,0
+"20251018_2cx8","6462206","Wartburg","Loras",40,20,FALSE,0
+"20251018_2lsb","6461800","Lewis & Clark","George Fox",28,42,FALSE,0
+"20251018_366o","6461784","Simpson","Luther",36,3,FALSE,0
+"20251018_44dy","6461385","Williams","Bates",37,30,FALSE,0
+"20251018_4y5d","6462099","Gallaudet","Bridgewater (VA)",13,73,FALSE,0
+"20251018_5gc2","6461606","Geneva","Waynesburg",62,20,FALSE,0
+"20251018_5m54","6461433","Carthage","Wheaton (IL)",21,47,FALSE,0
+"20251018_6ohw","6461297","Delaware Valley","FDU-Florham",41,14,FALSE,0
+"20251018_6y68","6461766","Fitchburg St.","Mass. Maritime",0,10,FALSE,0
+"20251018_71xy","6462003","North Central (IL)","North Park",75,0,FALSE,0
+"20251018_7f29","6461564","Wabash","Kenyon",46,12,FALSE,0
+"20251018_7zbg","6462131","Texas Wesleyan","Mary Hardin-Baylor",19,28,FALSE,0
+"20251018_822s","6462179","Concordia Chicago","Rockford",37,26,FALSE,0
+"20251018_8333","6461857","Muskingum","Marietta",35,31,FALSE,0
+"20251018_8a03","6462209","Neb. Wesleyan","Central (IA)",13,34,FALSE,0
+"20251018_8qq8","6461553","Susquehanna","Juniata",56,7,FALSE,0
+"20251018_90wy","6461270","Concordia Wisconsin","Aurora",54,45,FALSE,0
+"20251018_93do","6461333","Manchester","Franklin",21,48,FALSE,0
+"20251018_9luj","6462399","Carroll (WI)","Augustana (IL)",24,31,FALSE,0
+"20251018_9m09","6462341","Alma","Albion",48,27,FALSE,0
+"20251018_9yv2","6462118","Hardin-Simmons","East Tex. Baptist",34,16,FALSE,0
+"20251018_a1wo","6461718","New England Col.","Husson",0,48,FALSE,0
+"20251018_acf5","6461659","La Verne","CMS",19,22,FALSE,0
+"20251018_aodv","6461443","Capital","Ohio Northern",0,56,FALSE,0
+"20251018_atwa","6462053","St. Olaf","Bethel (MN)",10,64,FALSE,0
+"20251018_b1o8","6462264","Westfield St.","Framingham St.",24,35,FALSE,0
+"20251018_b8ne","6461685","Albright","Eastern",10,17,FALSE,0
+"20251018_bkfm","6462174","Grinnell","Lake Forest",0,70,FALSE,0
+"20251018_c03m","6461485","Thiel","Westminster (PA)",6,48,FALSE,0
+"20251018_c1xh","6461597","McMurry","Austin",31,13,FALSE,0
+"20251018_c2vg","6461675","Salisbury","Montclair St.",56,21,FALSE,0
+"20251018_c8dp","6461990","St. Scholastica","Gustavus Adolphus",6,45,FALSE,0
+"20251018_ca53","6529008","Keystone","Apprentice",21,45,FALSE,0
+"20251018_cgxl","6461715","Dean","Bridgewater St.",25,47,FALSE,0
+"20251018_cldl","6461252","Hendrix","Texas Lutheran",48,50,FALSE,0
+"20251018_cox1","6461911","Adrian","Calvin",48,17,FALSE,0
+"20251018_daxb","6461955","Whitworth","Linfield",30,20,FALSE,0
+"20251018_dp0f","6462161","Beloit","Lawrence",34,0,FALSE,0
+"20251018_euje","6461452","Ripon","UChicago",12,37,FALSE,0
+"20251018_fjs8","6462242","Cornell College","Monmouth (IL)",3,45,FALSE,0
+"20251018_fpeh","6461960","Bowdoin","Wesleyan (CT)",25,17,FALSE,0
+"20251018_fw4y","6462061","Methodist","Southern Va.",13,30,FALSE,0
+"20251018_g1cw","6462408","Nichols","Curry",27,71,FALSE,0
+"20251018_g4pd","6461905","Moravian","Catholic",20,26,FALSE,0
+"20251018_gc3r","6462430","Wm. Paterson","Rowan",16,45,FALSE,0
+"20251018_hxst","6461982","Augsburg","Macalester",32,21,FALSE,0
+"20251018_i2h5","6462089","MIT","Coast Guard",14,24,FALSE,0
+"20251018_iacj","6461495","Alfred St.","SUNY Brockport",14,48,FALSE,0
+"20251018_ids7","6461998","Pacific (OR)","Pacific Lutheran",29,47,FALSE,0
+"20251018_j41h","6461630","Kalamazoo","Hope",21,56,FALSE,0
+"20251018_j8y5","6462149","Saint John's (MN)","Concordia-M'head",41,6,FALSE,0
+"20251018_k5hc","6461643","Elmhurst","WashU",0,17,FALSE,0
+"20251018_lqes","6461814","Kean","Chris. Newport",0,49,FALSE,0
+"20251018_lsn7","6461475","Knox","Illinois Col.",14,64,FALSE,0
+"20251018_lsni","6462287","Lebanon Valley","Widener",34,14,FALSE,0
+"20251018_mcjj","6461325","Misericordia","Stevenson",29,28,FALSE,0
+"20251018_mhk5","6462424","Muhlenberg","McDaniel",56,7,FALSE,0
+"20251018_muny","6461921","Wis.-La Crosse","Wis.-Platteville",21,38,FALSE,0
+"20251018_ncr1","6461260","Anderson (IN)","Hanover",0,58,FALSE,0
+"20251018_nmgq","6461503","Eureka","St. Norbert",0,44,FALSE,0
+"20251018_npru","6462274","Southwestern (TX)","Centre",16,19,FALSE,0
+"20251018_nvy4","6461838","Maryville (TN)","Millsaps",21,31,FALSE,0
+"20251018_nwu9","6461520","Greensboro","Belhaven",26,41,FALSE,0
+"20251018_ogq0","6462228","Westminster (MO)","Crown (MN)",6,19,FALSE,0
+"20251018_p1gd","6462372","N.C. Wesleyan","Huntingdon",21,20,FALSE,0
+"20251018_p22v","6462327","TCNJ","VTSU Castleton",48,7,FALSE,0
+"20251018_p4ay","6461368","Alfred","Cortland",12,65,FALSE,0
+"20251018_p5mo","6462435","Mount Union","Heidelberg",38,6,FALSE,0
+"20251018_pb88","6461405","Randolph-Macon","Guilford",47,0,FALSE,0
+"20251018_peh8","6462293","Hiram","Bethany (WV)",42,21,FALSE,0
+"20251018_q4jr","6462073","Franklin & Marshall","Dickinson",23,20,FALSE,0
+"20251018_q584","6462316","Pomona-Pitzer","Redlands",14,16,FALSE,0
+"20251018_qehs","6461343","Norwich","SUNY Maritime",0,42,FALSE,0
+"20251018_qo69","6462300","Tufts","Hamilton",38,28,FALSE,0
+"20251018_qp1z","6462105","Ill. Wesleyan","Millikin",49,27,FALSE,0
+"20251018_qtoo","6461279","Alvernia","King's (PA)",0,52,FALSE,0
+"20251018_rd3r","6461736","Ursinus","Johns Hopkins",21,52,FALSE,0
+"20251018_rs6p","6461627","Worcester St.","UMass Dartmouth",7,32,FALSE,0
+"20251018_rzyp","6461307","Middlebury","Trinity (CT)",26,28,FALSE,0
+"20251018_s3o8","6461937","Berry","Sewanee",44,7,FALSE,0
+"20251018_s6n3","6461896","Brevard","LaGrange",10,17,FALSE,0
+"20251018_t5ko","6462187","Northwestern-St. Paul","Minn.-Morris",21,3,FALSE,0
+"20251018_teml","6462360","Chapman","Cal Lutheran",35,25,FALSE,0
+"20251018_tkfi","6461539","Hampden-Sydney","Averett",67,7,FALSE,0
+"20251018_tl72","6461843","Willamette","Puget Sound",28,45,FALSE,0
+"20251018_trap","6461577","Lycoming","WestConn",42,24,FALSE,0
+"20251018_uba5","6462438","Wash. & Jeff.","Saint Vincent",56,10,FALSE,0
+"20251018_uxv5","6461888","Gettysburg","Carnegie Mellon",20,44,FALSE,0
+"20251018_uykj","6462041","Greenville","Martin Luther",39,41,FALSE,0
+"20251018_v1b9","6461619","UW-River Falls","Wis.-Stevens Point",52,7,FALSE,0
+"20251018_w6gx","6462140","Centenary (LA)","Lyon",23,20,FALSE,0
+"20251018_w9wb","6462281","Rhodes","Trinity (TX)",0,63,FALSE,0
+"20251018_wki3","6461683","Shenandoah","Roanoke",33,20,FALSE,0
+"20251018_wysz","6461926","Colby","Amherst",13,9,FALSE,0
+"20251018_x2s5","6461417","John Carroll","DePauw",31,27,FALSE,0
+"20251018_x3ve","6461872","Denison","Wittenberg",43,40,FALSE,0
+"20251018_xb3t","6462218","Western New Eng.","Endicott",24,45,FALSE,0
+"20251018_xwlp","6462308","Merchant Marine","Salve Regina",38,34,FALSE,0
+"20251018_y29z","6461395","Buena Vista","Dubuque",20,47,FALSE,0
+"20251018_z2v9","6461377","Mt. St. Joseph","Bluffton",35,7,FALSE,0
+"20251018_zedq","6461468","Rose-Hulman","Baldwin Wallace",20,52,FALSE,0
+"20251018_zqor","6461289","Wilmington (OH)","Otterbein",54,41,FALSE,0
+"20251025_024w","6461540","Averett","Shenandoah",3,48,FALSE,0
+"20251025_0m5o","6462219","Western New Eng.","Curry",31,52,FALSE,0
+"20251025_1ojm","6462265","Framingham St.","Mass. Maritime",12,14,FALSE,0
+"20251025_23jm","6461386","Williams","Tufts",20,41,FALSE,0
+"20251025_2zva","6462400","Elmhurst","Carroll (WI)",7,47,FALSE,0
+"20251025_3c40","6462024","Carnegie Mellon","Muhlenberg",23,27,FALSE,0
+"20251025_3f3m","6462132","Howard Payne","Mary Hardin-Baylor",17,41,FALSE,0
+"20251025_455z","6461732","Allegheny","Hiram",28,13,FALSE,0
+"20251025_4dhm","6462144","Luther","Coe",21,42,FALSE,0
+"20251025_4f70","6461352","FDU-Florham","Albright",18,32,FALSE,0
+"20251025_4mxm","6462207","Loras","Buena Vista",28,14,FALSE,0
+"20251025_4ug9","6461607","Waynesburg","Wash. & Jeff.",0,56,FALSE,0
+"20251025_52x4","6461512","Wis.-Stevens Point","Wis.-Stout",22,42,FALSE,0
+"20251025_543j","6462251","Macalester","Bethel (MN)",0,53,FALSE,0
+"20251025_5bk6","6461424","Bridgewater (VA)","Wash. & Lee",17,20,FALSE,0
+"20251025_5tyj","6461308","Bates","Middlebury",16,34,FALSE,0
+"20251025_5v7u","6461761","Catholic","Susquehanna",13,69,FALSE,0
+"20251025_5x43","6461778","Bethany (WV)","Geneva",28,75,FALSE,0
+"20251025_6c4m","6462090","Salve Regina","MIT",20,28,FALSE,0
+"20251025_6lzv","6462137","Nelson","Hardin-Simmons",14,68,FALSE,0
+"20251025_71yd","6461280","King's (PA)","Lebanon Valley",21,20,FALSE,0
+"20251025_7l5n","6461378","Franklin","Mt. St. Joseph",21,52,FALSE,0
+"20251025_7qws","6461720","Dean","Worcester St.",27,52,FALSE,0
+"20251025_7xan","6461634","Albion","Kalamazoo",26,30,FALSE,0
+"20251025_89um","6462364","Lake Forest","Cornell College",49,24,FALSE,0
+"20251025_8ezz","6461983","Concordia-M'head","Augsburg",26,7,FALSE,0
+"20251025_9f6y","6462237","Alma","Olivet",53,21,FALSE,0
+"20251025_9hv3","6461298","Stevenson","Delaware Valley",38,41,FALSE,0
+"20251025_9prp","6461768","Fitchburg St.","Anna Maria",22,30,FALSE,0
+"20251025_9v5e","6461335","Manchester","Hanover",7,76,FALSE,0
+"20251025_ag43","6461816","Chris. Newport","Wm. Paterson",52,7,FALSE,0
+"20251025_blxx","6461708","Husson","U New England",28,38,FALSE,0
+"20251025_bmll","6461929","Hamilton","Colby",10,17,FALSE,0
+"20251025_bq9e","6461826","Wis. Lutheran","Eureka",42,12,FALSE,0
+"20251025_cd1m","6461599","McMurry","Centenary (LA)",52,6,FALSE,0
+"20251025_cei1","6462335","Salisbury","Rowan",31,28,FALSE,0
+"20251025_ciwk","6462234","Hope","Adrian",19,17,FALSE,0
+"20251025_d607","6462154","Millikin","Carthage",7,24,FALSE,0
+"20251025_depj","6461961","Amherst","Wesleyan (CT)",21,31,FALSE,0
+"20251025_dgqs","6461271","Concordia Wisconsin","Concordia Chicago",47,20,FALSE,0
+"20251025_digk","6461912","Trine","Calvin",31,34,FALSE,0
+"20251025_dmry","6462416","Huntingdon","LaGrange",14,30,FALSE,0
+"20251025_dope","6462004","Augustana (IL)","North Central (IL)",14,76,FALSE,0
+"20251025_dsey","6461946","Gustavus Adolphus","Hamline",63,9,FALSE,0
+"20251025_e4ax","6461326","Eastern","Misericordia",28,21,FALSE,0
+"20251025_e5ht","6461434","WashU","Wheaton (IL)",24,28,FALSE,0
+"20251025_eeno","6462377","Trinity (CT)","Bowdoin",45,3,FALSE,0
+"20251025_fsf9","6461531","Maine Maritime","New England Col.",10,14,FALSE,0
+"20251025_fy7l","6461496","SUNY Brockport","SUNY Morrisville",61,3,FALSE,0
+"20251025_gdc7","6461999","Linfield","Pacific Lutheran",31,15,FALSE,0
+"20251025_gmjt","6462282","Centre","Trinity (TX)",14,19,FALSE,0
+"20251025_h25m","6462017","CWRU","Thiel",55,7,FALSE,0
+"20251025_h5ma","6461629","UMass Dartmouth","Bridgewater St.",15,35,FALSE,0
+"20251025_hbmw","6462150","Carleton","Saint John's (MN)",10,49,FALSE,0
+"20251025_hcz5","6462317","Redlands","Cal Lutheran",30,24,FALSE,0
+"20251025_hgxy","6462305","Crown (MN)","Northwestern-St. Paul",16,24,FALSE,0
+"20251025_htre","6462011","Franklin & Marshall","Ursinus",52,20,FALSE,0
+"20251025_im7k","6461853","Norwich","Coast Guard",28,59,FALSE,0
+"20251025_iu6d","6461406","Randolph-Macon","Gallaudet",47,7,FALSE,0
+"20251025_ixzt","6462279","Merchant Marine","Springfield",7,35,FALSE,0
+"20251025_jglz","6461359","Millsaps","Berry",20,43,FALSE,0
+"20251025_jupl","6461570","Marietta","Baldwin Wallace",0,38,FALSE,0
+"20251025_jybq","6461665","Montclair St.","VTSU Castleton",48,20,FALSE,0
+"20251025_k7jb","6461684","Roanoke","Hampden-Sydney",10,35,FALSE,0
+"20251025_kb9b","6461746","Union (NY)","Ithaca",19,14,FALSE,0
+"20251025_kvj1","6462095","Plymouth St.","Westfield St.",42,35,FALSE,0
+"20251025_l8zg","6461788","Wis.-Oshkosh","Wis.-La Crosse",13,44,FALSE,0
+"20251025_ljnt","6461876","Cortland","St. John Fisher",31,7,FALSE,0
+"20251025_lufv","6462106","North Park","Ill. Wesleyan",21,49,FALSE,0
+"20251025_mc26","6461469","Bluffton","Rose-Hulman",30,27,FALSE,0
+"20251025_mepx","6462426","Dickinson","McDaniel",23,20,FALSE,0
+"20251025_mmln","6462042","Minn.-Morris","Greenville",20,27,FALSE,0
+"20251025_n5hm","6462192","CMS","Chapman",31,37,FALSE,0
+"20251025_nj99","6461253","Austin","Texas Lutheran",7,55,FALSE,0
+"20251025_oc10","6462373","Southern Va.","N.C. Wesleyan",19,10,FALSE,0
+"20251025_ojtk","6462422","Illinois Col.","Ripon",31,0,FALSE,0
+"20251025_ow1f","6461839","Maryville (TN)","Southwestern (TX)",44,13,FALSE,0
+"20251025_oya2","6461444","Otterbein","Capital",20,19,FALSE,0
+"20251025_pa27","6461412","DePauw","Denison",35,28,FALSE,0
+"20251025_pg8w","6462077","Wittenberg","Oberlin",52,0,FALSE,0
+"20251025_pnh1","6461658","Hartwick","Alfred St.",28,54,FALSE,0
+"20251025_pp9h","6461345","SUNY Maritime","WPI",28,7,FALSE,0
+"20251025_q9bp","6462330","Sewanee","Rhodes",28,6,FALSE,0
+"20251025_rkm9","6461290","Wilmington (OH)","Anderson (IN)",34,23,FALSE,0
+"20251025_rto1","6462243","Monmouth (IL)","Beloit",72,0,FALSE,0
+"20251025_slz4","6462311","Endicott","Nichols",56,3,FALSE,0
+"20251025_spoh","6461463","Wooster","John Carroll",7,66,FALSE,0
+"20251025_sxum","6461486","Westminster (PA)","Grove City",7,14,FALSE,0
+"20251025_t9ss","6461504","Rockford","St. Norbert",10,61,FALSE,0
+"20251025_tehf","6462229","Martin Luther","Westminster (MO)",38,28,FALSE,0
+"20251025_tfdo","6461913","St. Lawrence","Hobart",17,49,FALSE,0
+"20251025_ti9j","6462210","Central (IA)","Wartburg",13,28,FALSE,0
+"20251025_tjsi","6461578","WestConn","Moravian",28,35,FALSE,0
+"20251025_uao9","6462391","Lakeland","Benedictine (IL)",35,42,FALSE,0
+"20251025_uswz","6461991","St. Scholastica","St. Olaf",41,44,FALSE,0
+"20251025_utnd","6461521","Brevard","Greensboro",34,7,FALSE,0
+"20251025_uu62","6461396","Dubuque","Simpson",7,27,FALSE,0
+"20251025_uy5n","6461369","Utica","Alfred",51,28,FALSE,0
+"20251025_uzzr","6462062","Methodist","Belhaven",7,28,FALSE,0
+"20251025_vnjk","6461623","UW-River Falls","Wis.-Eau Claire",73,21,FALSE,0
+"20251025_wenl","6461316","Wis.-Platteville","Wis.-Whitewater",19,29,FALSE,0
+"20251025_wfq5","6462098","Rensselaer","Hilbert",69,14,FALSE,0
+"20251025_wkgm","6461763","Rochester (NY)","Buffalo St.",23,3,FALSE,0
+"20251025_ws2j","6461802","Whitworth","Lewis & Clark",42,35,FALSE,0
+"20251025_wyk7","6462368","Heidelberg","Muskingum",29,14,FALSE,0
+"20251025_x38p","6461750","Wilkes","Lycoming",21,31,FALSE,0
+"20251025_xd6l","6461978","Widener","Alvernia",32,14,FALSE,0
+"20251025_xebw","6462199","Willamette","Pacific (OR)",14,35,FALSE,0
+"20251025_ybar","6461590","TCNJ","Kean",24,7,FALSE,0
+"20251025_ye87","6461547","Lyon","Hendrix",21,38,FALSE,0
+"20251025_yvrv","6461737","Johns Hopkins","Gettysburg",59,21,FALSE,0
+"20251025_yz1u","6461844","Puget Sound","George Fox",23,48,FALSE,0
+"20251025_z43s","6462346","Ohio Wesleyan","Kenyon",55,13,FALSE,0
+"20251025_z4da","6461663","La Verne","Pomona-Pitzer",26,8,FALSE,0
+"20251025_z541","6461453","UChicago","Grinnell",38,7,FALSE,0
+"20251025_zeq7","6462374","Ohio Northern","Mount Union",7,33,FALSE,0
+"20251101_0i6i","6461672","Guilford","Roanoke",20,21,FALSE,0
+"20251101_0jqm","6461370","Alfred","SUNY Brockport",0,51,FALSE,0
+"20251101_0npb","6461411","DePauw","Ohio Wesleyan",40,10,FALSE,0
+"20251101_0rdw","6461281","Albright","King's (PA)",14,24,FALSE,0
+"20251101_0unn","6462267","New England Col.","Western New Eng.",0,55,FALSE,0
+"20251101_17jz","6461637","Adrian","Kalamazoo",34,7,FALSE,0
+"20251101_1c0t","6462005","North Central (IL)","Carroll (WI)",64,7,FALSE,0
+"20251101_1gzy","6462180","Concordia Chicago","Lakeland",16,47,FALSE,0
+"20251101_1s8j","6461866","Hobart","Rochester (NY)",28,21,FALSE,0
+"20251101_1v4d","6462410","Coast Guard","Salve Regina",36,31,FALSE,0
+"20251101_1xlq","6461631","UMass Dartmouth","Dean",48,7,FALSE,0
+"20251101_266t","6461789","Wis.-Oshkosh","Wis.-Platteville",14,21,FALSE,0
+"20251101_2cro","6462225","Alma","Trine",42,28,FALSE,0
+"20251101_2ixh","6462151","Saint John's (MN)","Gustavus Adolphus",31,13,FALSE,0
+"20251101_33w1","6462100","Hampden-Sydney","Gallaudet",61,8,FALSE,0
+"20251101_3bki","6461856","Springfield","Norwich",48,6,FALSE,0
+"20251101_3wt7","6462420","Saint Vincent","Grove City",14,59,FALSE,0
+"20251101_43c6","6462252","Bethel (MN)","Concordia-M'head",55,9,FALSE,0
+"20251101_4o1s","6462128","Carthage","North Park",10,14,FALSE,0
+"20251101_4r1v","6462112","George Fox","Willamette",31,9,FALSE,0
+"20251101_4uk2","6531808","Anna Maria","Worcester St.",45,35,FALSE,0
+"20251101_5u7s","6461548","Centenary (LA)","Hendrix",10,64,FALSE,0
+"20251101_5vfk","6461845","Pacific (OR)","Puget Sound",52,35,FALSE,0
+"20251101_75we","6461803","Lewis & Clark","Linfield",21,29,FALSE,0
+"20251101_78yk","6461309","Middlebury","Hamilton",24,21,FALSE,0
+"20251101_7f1w","6461878","St. John Fisher","Utica",7,31,FALSE,0
+"20251101_7s9h","6461973","Simpson","Loras",28,27,FALSE,0
+"20251101_8ha3","6462285","Lyon","Austin",40,28,FALSE,0
+"20251101_8xlh","6462212","Buena Vista","Central (IA)",27,52,FALSE,0
+"20251101_9455","6461938","Berry","Centre",31,13,FALSE,0
+"20251101_aftt","6462058","Lycoming","Catholic",38,12,FALSE,0
+"20251101_b024","6461397","Coe","Dubuque",19,7,FALSE,0
+"20251101_bgf2","6462175","Grinnell","Illinois Col.",7,14,FALSE,0
+"20251101_bikc","6461738","Johns Hopkins","Muhlenberg",47,26,FALSE,0
+"20251101_bx5q","6461565","Wittenberg","Wabash",21,28,FALSE,0
+"20251101_c991","6461666","Redlands","La Verne",29,14,FALSE,0
+"20251101_cp5f","6461563","Juniata","Wilkes",7,38,FALSE,0
+"20251101_cxsp","6461327","Misericordia","FDU-Florham",35,16,FALSE,0
+"20251101_d6jj","6461833","Bates","Bowdoin",9,17,FALSE,0
+"20251101_dlys","6462025","Carnegie Mellon","Dickinson",70,29,FALSE,0
+"20251101_dyvd","6461435","Wheaton (IL)","Elmhurst",65,0,FALSE,0
+"20251101_e6vs","6462379","Amherst","Trinity (CT)",7,14,FALSE,0
+"20251101_fgk4","6461592","Rowan","TCNJ",44,30,FALSE,0
+"20251101_fksd","6461387","Wesleyan (CT)","Williams",34,28,FALSE,0
+"20251101_g0dr","6462168","Otterbein","Heidelberg",13,69,FALSE,0
+"20251101_g7ws","6462382","Franklin","Anderson (IN)",41,7,FALSE,0
+"20251101_gdb5","6461487","Allegheny","Westminster (PA)",21,57,FALSE,0
+"20251101_glah","6462336","Wm. Paterson","Salisbury",7,51,FALSE,0
+"20251101_gsrd","6462031","Rensselaer","St. Lawrence",48,0,FALSE,0
+"20251101_hwb9","6462162","Lawrence","Lake Forest",0,72,FALSE,0
+"20251101_hwk2","6462096","Framingham St.","Plymouth St.",26,28,FALSE,0
+"20251101_hyn8","6461749","Buffalo St.","Ithaca",7,49,FALSE,0
+"20251101_hzo8","6462044","Greenville","Westminster (MO)",7,24,FALSE,0
+"20251101_i30q","6461317","Wis.-Whitewater","UW-River Falls",14,52,FALSE,0
+"20251101_i5lm","6461723","Curry","Husson",40,21,FALSE,0
+"20251101_i7i8","6461984","Augsburg","Carleton",17,48,FALSE,0
+"20251101_id22","6462402","Mass. Maritime","Westfield St.",21,14,FALSE,0
+"20251101_imdv","6461840","Rhodes","Maryville (TN)",22,42,FALSE,0
+"20251101_imgs","6461254","Texas Lutheran","McMurry",42,13,FALSE,0
+"20251101_jc2y","6462054","St. Olaf","Macalester",6,27,FALSE,0
+"20251101_jzj2","6461464","Kenyon","Wooster",6,49,FALSE,0
+"20251101_k2em","6462072","McDaniel","Franklin & Marshall",3,24,FALSE,0
+"20251101_kwlz","6461873","Oberlin","Denison",9,62,FALSE,0
+"20251101_l1ok","6461889","Gettysburg","Ursinus",13,40,FALSE,0
+"20251101_l4zl","6462018","CWRU","Wash. & Jeff.",17,28,FALSE,0
+"20251101_lt7y","6461477","Cornell College","Knox",35,14,FALSE,0
+"20251101_mkzr","6461914","Olivet","Calvin",20,50,FALSE,0
+"20251101_msqs","6462047","Cortland","Alfred St.",49,7,FALSE,0
+"20251101_mzc1","6462256","Belhaven","Southern Va.",41,19,FALSE,0
+"20251101_nl0h","6461897","Huntingdon","Brevard",32,26,FALSE,0
+"20251101_nrsq","6461261","Hanover","Bluffton",48,0,FALSE,0
+"20251101_o7gl","6461817","Aurora","Wis. Lutheran",49,42,FALSE,0
+"20251101_ohhs","6462361","Pomona-Pitzer","Chapman",14,22,FALSE,0
+"20251101_oifr","6462283","Trinity (TX)","Sewanee",32,3,FALSE,0
+"20251101_oiog","6461579","Susquehanna","WestConn",34,0,FALSE,0
+"20251101_oml7","6461571","Baldwin Wallace","Muskingum",35,28,FALSE,0
+"20251101_p7c7","6462138","Hardin-Simmons","Howard Payne",54,24,FALSE,0
+"20251101_pe09","6462340","Hope","Albion",62,0,FALSE,0
+"20251101_pe1u","6462184","Crown (MN)","Minn.-Morris",34,15,FALSE,0
+"20251101_phsp","6461948","Hamline","St. Scholastica",18,49,FALSE,0
+"20251101_po4a","6462277","Wis.-Eau Claire","Wis.-Stevens Point",36,39,FALSE,0
+"20251101_q0qm","6461769","Bridgewater St.","Fitchburg St.",38,18,FALSE,0
+"20251101_q7h5","6461454","Monmouth (IL)","UChicago",29,0,FALSE,0
+"20251101_r7fu","6461299","Delaware Valley","Alvernia",43,10,FALSE,0
+"20251101_rd8q","6461448","Capital","Mount Union",17,65,FALSE,0
+"20251101_rmlr","6461425","Wash. & Lee","Averett",61,21,FALSE,0
+"20251101_rmum","6462193","Cal Lutheran","CMS",21,18,FALSE,0
+"20251101_rs2h","6462337","Eastern","Widener",35,0,FALSE,0
+"20251101_rzpw","6462348","Northwestern-St. Paul","Martin Luther",24,17,FALSE,0
+"20251101_siwb","6461522","LaGrange","Greensboro",49,20,FALSE,0
+"20251101_tjry","6461644","WashU","Millikin",38,7,FALSE,0
+"20251101_u6eq","6461966","Hilbert","Union (NY)",13,34,FALSE,0
+"20251101_ubsy","6462063","N.C. Wesleyan","Methodist",48,17,FALSE,0
+"20251101_us8v","6462119","East Tex. Baptist","Mary Hardin-Baylor",14,62,FALSE,0
+"20251101_v2bi","6461879","WPI","MIT",7,19,FALSE,0
+"20251101_v8dk","6461272","Rockford","Concordia Wisconsin",0,35,FALSE,0
+"20251101_vbg1","6461669","Montclair St.","Chris. Newport",42,49,FALSE,0
+"20251101_w7j5","6461932","Colby","Tufts",33,6,FALSE,0
+"20251101_wcrt","6461513","Wis.-Stout","Wis.-La Crosse",14,31,FALSE,0
+"20251101_wd8w","6461799","Lebanon Valley","Stevenson",13,15,FALSE,0
+"20251101_wkhy","6462301","Wartburg","Neb. Wesleyan",34,10,FALSE,0
+"20251101_wmpu","6461609","Waynesburg","Bethany (WV)",48,28,FALSE,0
+"20251101_wwv1","6461956","Pacific Lutheran","Whitworth",6,10,FALSE,0
+"20251101_wxoq","6462107","Ill. Wesleyan","Augustana (IL)",21,42,FALSE,0
+"20251101_xg3c","6461337","Rose-Hulman","Manchester",35,13,FALSE,0
+"20251101_xnwt","6461505","Benedictine (IL)","St. Norbert",17,24,FALSE,0
+"20251101_xtc2","6461379","Mt. St. Joseph","Ohio Northern",42,49,FALSE,0
+"20251101_y8ak","6461407","Shenandoah","Randolph-Macon",14,31,FALSE,0
+"20251101_yqo8","6461532","Maine Maritime","Endicott",7,69,FALSE,0
+"20251101_yuot","6461291","Marietta","Wilmington (OH)",44,14,FALSE,0
+"20251101_zavb","6461710","Nichols","U New England",34,58,FALSE,0
+"20251101_zhvs","6461360","Southwestern (TX)","Millsaps",24,27,FALSE,0
+"20251101_zj04","6462026","VTSU Castleton","Kean",9,14,FALSE,0
+"20251108_05d5","6462141","Austin","Centenary (LA)",20,10,FALSE,0
+"20251108_09bo","6461300","Delaware Valley","Misericordia",51,20,FALSE,0
+"20251108_0v10","6461936","Bowdoin","Colby",6,16,FALSE,0
+"20251108_0xm4","6462244","Ripon","Monmouth (IL)",3,58,FALSE,0
+"20251108_0y0s","6461589","VTSU Castleton","Rowan",7,62,FALSE,0
+"20251108_10an","6461514","Wis.-Stout","Wis.-Platteville",23,24,FALSE,0
+"20251108_12fo","6461818","Salisbury","Chris. Newport",42,45,FALSE,0
+"20251108_16e2","6461827","Lakeland","Eureka",40,12,FALSE,0
+"20251108_1bca","6462208","Loras","Coe",7,63,FALSE,0
+"20251108_1p00","6461791","Wis.-Stevens Point","Wis.-Oshkosh",15,41,FALSE,0
+"20251108_1uv6","6461371","Alfred","Alfred St.",28,35,FALSE,0
+"20251108_2taf","6462275","Southwestern (TX)","Rhodes",35,22,FALSE,0
+"20251108_2uq2","6462439","Southern Va.","Huntingdon",21,44,FALSE,0
+"20251108_2uu4","6461858","Salve Regina","Norwich",38,10,FALSE,0
+"20251108_3rr9","6461310","Tufts","Middlebury",30,33,FALSE,0
+"20251108_3t3x","6461388","Williams","Amherst",13,14,FALSE,0
+"20251108_3t9w","6462155","Augustana (IL)","Carthage",23,3,FALSE,0
+"20251108_3ubg","6462027","Franklin & Marshall","Carnegie Mellon",31,24,FALSE,0
+"20251108_3yae","6462028","Kean","Wm. Paterson",17,7,FALSE,0
+"20251108_4jf2","6461353","FDU-Florham","Eastern",7,28,FALSE,0
+"20251108_58k8","6461580","Catholic","WestConn",19,52,FALSE,0
+"20251108_655k","6462046","Northwestern-St. Paul","Greenville",17,14,FALSE,0
+"20251108_65m4","6461361","Millsaps","Trinity (TX)",24,42,FALSE,0
+"20251108_6nz8","6461846","Linfield","Puget Sound",77,14,FALSE,0
+"20251108_6pm0","6461282","King's (PA)","Widener",24,40,FALSE,0
+"20251108_6vmd","6462257","Belhaven","LaGrange",6,38,FALSE,0
+"20251108_7cw5","6462386","Concordia-M'head","Macalester",17,14,FALSE,0
+"20251108_7emn","6461488","Hiram","Westminster (PA)",0,76,FALSE,0
+"20251108_7lwl","6461712","U New England","Curry",30,47,FALSE,0
+"20251108_88i8","6461262","Otterbein","Hanover",8,49,FALSE,0
+"20251108_8d91","6461724","Dean","Framingham St.",6,31,FALSE,0
+"20251108_8e12","6461523","Greensboro","N.C. Wesleyan",38,29,FALSE,0
+"20251108_8enc","6461884","WPI","Merchant Marine",14,34,FALSE,0
+"20251108_8kin","6461455","UChicago","Beloit",40,0,FALSE,0
+"20251108_8ojg","6462294","Bethany (WV)","Thiel",17,12,FALSE,0
+"20251108_8rs8","6461478","Lake Forest","Knox",63,0,FALSE,0
+"20251108_9e7o","6461626","Wis.-La Crosse","UW-River Falls",7,41,FALSE,0
+"20251108_9l42","6461756","Ithaca","Rensselaer",24,23,FALSE,0
+"20251108_a0p9","6462113","Pacific (OR)","George Fox",21,27,FALSE,0
+"20251108_as9j","6461880","St. John Fisher","SUNY Morrisville",21,7,FALSE,0
+"20251108_avuh","6462306","Martin Luther","Crown (MN)",21,34,FALSE,0
+"20251108_b1hr","6461915","Calvin","Hope",0,52,FALSE,0
+"20251108_b23s","6462312","Endicott","New England Col.",63,0,FALSE,0
+"20251108_bjta","6461426","Roanoke","Wash. & Lee",14,35,FALSE,0
+"20251108_c14j","6461979","Alvernia","Lebanon Valley",7,38,FALSE,0
+"20251108_c5vt","6461318","Wis.-Eau Claire","Wis.-Whitewater",10,51,FALSE,0
+"20251108_cle3","6462262","Neb. Wesleyan","Buena Vista",21,34,FALSE,0
+"20251108_cn19","6461398","Dubuque","Luther",27,20,FALSE,0
+"20251108_dh26","6461950","Hamline","St. Olaf",34,41,FALSE,0
+"20251108_dpjk","6462392","Concordia Chicago","Benedictine (IL)",7,38,FALSE,0
+"20251108_dv30","6462133","Hardin-Simmons","Mary Hardin-Baylor",17,21,FALSE,0
+"20251108_e57c","6462019","Grove City","CWRU",28,14,FALSE,0
+"20251108_evqs","6461593","TCNJ","Montclair St.",27,30,FALSE,0
+"20251108_f8lt","6462331","Centre","Sewanee",28,0,FALSE,0
+"20251108_g97k","6461765","St. Lawrence","Buffalo St.",24,19,FALSE,0
+"20251108_gc3k","6461611","Saint Vincent","Waynesburg",24,35,FALSE,0
+"20251108_gfa3","6461804","Pacific Lutheran","Lewis & Clark",46,36,FALSE,0
+"20251108_gs9e","6462345","Bridgewater (VA)","Hampden-Sydney",45,42,FALSE,0
+"20251108_gwi1","6462120","Howard Payne","East Tex. Baptist",34,27,FALSE,0
+"20251108_gxxt","6462085","Anna Maria","Bridgewater St.",35,41,FALSE,0
+"20251108_h59b","6461506","St. Norbert","Aurora",14,37,FALSE,0
+"20251108_hr0t","6462163","Lawrence","Grinnell",6,63,FALSE,0
+"20251108_ieua","6461686","Stevenson","Albright",17,7,FALSE,0
+"20251108_ihrj","6462365","Illinois Col.","Cornell College",24,0,FALSE,0
+"20251108_iwhu","6461918","Hobart","Hilbert",63,6,FALSE,0
+"20251108_jx47","6461962","Trinity (CT)","Wesleyan (CT)",28,31,FALSE,0
+"20251108_jyrl","6461671","Chapman","La Verne",30,14,FALSE,0
+"20251108_jyzn","6461667","Hartwick","Utica",7,64,FALSE,0
+"20251108_k0zn","6461418","Wooster","DePauw",0,59,FALSE,0
+"20251108_k9s9","6461533","Western New Eng.","Maine Maritime",70,7,FALSE,0
+"20251108_ka36","6461875","Denison","Kenyon",33,18,FALSE,0
+"20251108_krd5","6461341","Manchester","Mt. St. Joseph",20,48,FALSE,0
+"20251108_ku7m","6461497","SUNY Brockport","Cortland",14,44,FALSE,0
+"20251108_kzf6","6461698","Bluffton","Franklin",57,59,FALSE,0
+"20251108_l7ay","6461572","Baldwin Wallace","Ohio Northern",28,30,FALSE,0
+"20251108_lp2d","6461541","Averett","Guilford",27,21,FALSE,0
+"20251108_lwza","6461346","MIT","SUNY Maritime",30,27,FALSE,0
+"20251108_mbgi","6462353","Wis. Lutheran","Rockford",48,3,FALSE,0
+"20251108_ngg8","6461985","Gustavus Adolphus","Augsburg",31,10,FALSE,0
+"20251108_nm50","6461470","Anderson (IN)","Rose-Hulman",0,38,FALSE,0
+"20251108_orgz","6461770","Fitchburg St.","Plymouth St.",0,27,FALSE,0
+"20251108_p5ch","6461974","Central (IA)","Simpson",35,10,FALSE,0
+"20251108_pt8z","6461449","Muskingum","Capital",7,3,FALSE,0
+"20251108_qzzj","6462226","Trine","Adrian",21,44,FALSE,0
+"20251108_r875","6461633","Westfield St.","UMass Dartmouth",13,33,FALSE,0
+"20251108_rhsg","6461957","Whitworth","Willamette",29,0,FALSE,0
+"20251108_rkyk","6462185","Westminster (MO)","Minn.-Morris",7,14,FALSE,0
+"20251108_s1zc","6461992","St. Scholastica","Saint John's (MN)",21,70,FALSE,0
+"20251108_smbh","6462101","Gallaudet","Shenandoah",14,52,FALSE,0
+"20251108_so36","6461566","Wabash","Oberlin",42,13,FALSE,0
+"20251108_t1ab","6462347","Ohio Wesleyan","John Carroll",17,55,FALSE,0
+"20251108_td0c","6461861","Mount Union","Marietta",30,19,FALSE,0
+"20251108_tfg9","6462245","Worcester St.","Mass. Maritime",17,10,FALSE,0
+"20251108_tl4c","6462253","Carleton","Bethel (MN)",7,49,FALSE,0
+"20251108_ub1q","6461645","North Park","WashU",14,42,FALSE,0
+"20251108_ug8z","6462194","CMS","Redlands",28,14,FALSE,0
+"20251108_ukbr","6461255","Texas Lutheran","Lyon",54,10,FALSE,0
+"20251108_uldi","6461292","Wilmington (OH)","Heidelberg",31,34,FALSE,0
+"20251108_vh0d","6462280","Coast Guard","Springfield",10,30,FALSE,0
+"20251108_vzlp","6462271","Albion","Olivet",58,42,FALSE,0
+"20251108_w3qs","6461549","Hendrix","McMurry",28,34,FALSE,0
+"20251108_w9oe","6461554","Moravian","Juniata",38,13,FALSE,0
+"20251108_wc79","6462012","Ursinus","Dickinson",22,47,FALSE,0
+"20251108_wfal","6461751","Wilkes","Susquehanna",3,26,FALSE,0
+"20251108_wjvx","6462108","Carroll (WI)","Ill. Wesleyan",34,14,FALSE,0
+"20251108_wpbq","6461867","Union (NY)","Rochester (NY)",14,10,FALSE,0
+"20251108_wqdk","6461780","Wash. & Jeff.","Geneva",49,7,FALSE,0
+"20251108_wzbj","6461841","Maryville (TN)","Berry",7,36,FALSE,0
+"20251108_x0k7","6462431","Cal Lutheran","Pomona-Pitzer",18,28,FALSE,0
+"20251108_x77w","6461739","McDaniel","Johns Hopkins",0,42,FALSE,0
+"20251108_xaqb","6461890","Muhlenberg","Gettysburg",59,27,FALSE,0
+"20251108_xb1x","6461835","Hamilton","Bates",24,21,FALSE,0
+"20251108_xo8e","6461639","Kalamazoo","Alma",3,53,FALSE,0
+"20251108_xrla","6462006","North Central (IL)","Elmhurst",58,0,FALSE,0
+"20251108_y8wu","6461727","Husson","Nichols",63,19,FALSE,0
+"20251108_ykdc","6461898","Brevard","Methodist",47,20,FALSE,0
+"20251108_zucq","6461436","Millikin","Wheaton (IL)",14,61,FALSE,0
+"20251114_ebkj","6462328","VTSU Castleton","Salisbury",13,63,FALSE,0
+"20251114_ha65","6461860","Norwich","MIT",14,48,FALSE,0
+"20251114_nnzr","6461952","Hamline","Augsburg",3,43,FALSE,0
+"20251114_zidm","6461595","Chris. Newport","TCNJ",27,7,FALSE,0
+"20251115_0f1a","6461456","UChicago","Lake Forest",28,34,FALSE,0
+"20251115_0hx7","6462176","Cornell College","Grinnell",22,17,FALSE,0
+"20251115_1cr9","6461891","Gettysburg","McDaniel",36,23,FALSE,0
+"20251115_1xn6","6462313","Curry","Endicott",17,45,FALSE,0
+"20251115_23uk","6462309","Merchant Marine","Coast Guard",39,38,FALSE,0
+"20251115_2bai","6461975","Simpson","Neb. Wesleyan",23,22,FALSE,0
+"20251115_2lnx","6461740","Johns Hopkins","Franklin & Marshall",28,29,FALSE,0
+"20251115_31su","6461641","Kalamazoo","Trine",24,25,FALSE,0
+"20251115_3iuh","6462342","Thiel","Wash. & Jeff.",0,67,FALSE,0
+"20251115_3ni7","6462220","Nichols","Western New Eng.",20,63,FALSE,0
+"20251115_3xzm","6462213","Coe","Central (IA)",13,7,FALSE,0
+"20251115_5dtr","6461801","Eastern","Stevenson",16,10,FALSE,0
+"20251115_5e2h","6461380","Mt. St. Joseph","Rose-Hulman",48,0,FALSE,0
+"20251115_5i9x","6461273","Eureka","Concordia Wisconsin",0,35,FALSE,0
+"20251115_5lpy","6533110","Centenary (LA)","Austin",14,16,FALSE,0
+"20251115_5zo2","6532780","McMurry","Texas Lutheran",27,19,FALSE,0
+"20251115_6wik","6462048","Crown (MN)","Greenville",38,20,FALSE,0
+"20251115_6ynt","6461881","Alfred St.","St. John Fisher",14,41,FALSE,0
+"20251115_757y","6532895","Lyon","Hendrix",28,55,FALSE,0
+"20251115_7vgf","6461916","Calvin","Albion",53,24,FALSE,0
+"20251115_7z71","6461764","Susquehanna","Moravian",48,7,FALSE,0
+"20251115_82vt","6462214","Willamette","Linfield",19,65,FALSE,0
+"20251115_83b6","6462258","Huntingdon","Belhaven",30,13,FALSE,0
+"20251115_8d1w","6461819","Aurora","Concordia Chicago",59,26,FALSE,0
+"20251115_8eat","6462387","Concordia-M'head","Carleton",31,24,FALSE,0
+"20251115_8idn","6461733","Bethany (WV)","Allegheny",6,42,FALSE,0
+"20251115_8s8s","6462427","Wis.-La Crosse","Wis.-Stevens Point",52,0,FALSE,0
+"20251115_8sbt","6462186","Minn.-Morris","Martin Luther",14,36,FALSE,0
+"20251115_96v9","6461534","Maine Maritime","Husson",7,48,FALSE,0
+"20251115_9ybi","6461922","Wis.-Platteville","Wis.-Eau Claire",55,28,FALSE,0
+"20251115_a55y","6462246","Framingham St.","Worcester St.",28,27,FALSE,0
+"20251115_acbx","6461805","Lewis & Clark","Pacific (OR)",28,21,FALSE,0
+"20251115_aunt","6461573","Heidelberg","Baldwin Wallace",38,41,FALSE,0
+"20251115_axjs","6462369","Muskingum","Mount Union",7,51,FALSE,0
+"20251115_b0cy","6461372","SUNY Morrisville","Alfred",21,34,FALSE,0
+"20251115_b72n","6461581","WestConn","Wilkes",0,38,FALSE,0
+"20251115_be4a","6461687","Lebanon Valley","Albright",38,35,FALSE,0
+"20251115_bkww","6461515","UW-River Falls","Wis.-Stout",29,19,FALSE,0
+"20251115_bofc","6461635","Plymouth St.","UMass Dartmouth",21,42,FALSE,0
+"20251115_bpex","6462425","Dickinson","Muhlenberg",17,30,FALSE,0
+"20251115_bsr3","6461847","Puget Sound","Whitworth",31,59,FALSE,0
+"20251115_cdcf","6462121","East Tex. Baptist","Hardin-Simmons",14,63,FALSE,0
+"20251115_cdd0","6461555","Lycoming","Juniata",24,16,FALSE,0
+"20251115_coz2","6461673","Montclair St.","Wm. Paterson",24,21,FALSE,0
+"20251115_d97d","6461842","Trinity (TX)","Maryville (TN)",31,14,FALSE,0
+"20251115_drb5","6461524","Methodist","Greensboro",12,13,FALSE,0
+"20251115_dst9","6461347","SUNY Maritime","Springfield",7,23,FALSE,0
+"20251115_effl","6461646","WashU","Augustana (IL)",35,13,FALSE,0
+"20251115_ewyn","6461967","Rensselaer","Union (NY)",21,28,FALSE,0
+"20251115_exa0","6462357","Illinois Col.","Beloit",38,7,FALSE,0
+"20251115_f7tv","6462007","Ill. Wesleyan","North Central (IL)",7,24,FALSE,0
+"20251115_fdhu","6461344","Anderson (IN)","Manchester",26,20,FALSE,0
+"20251115_fhoy","6462333","Centre","Rhodes",28,3,FALSE,0
+"20251115_fq8m","6462433","Bridgewater St.","Mass. Maritime",7,20,FALSE,0
+"20251115_gg18","6461507","St. Norbert","Lakeland",25,35,FALSE,0
+"20251115_glwd","6461498","Utica","SUNY Brockport",28,20,FALSE,0
+"20251115_gvlj","6461771","Westfield St.","Fitchburg St.",10,7,FALSE,0
+"20251115_h3wh","6462013","Carnegie Mellon","Ursinus",20,27,FALSE,0
+"20251115_h5jn","6532860","Cal Lutheran","Chapman",17,27,FALSE,0
+"20251115_h8fs","6462145","Luther","Loras",12,45,FALSE,0
+"20251115_hd72","6461362","Sewanee","Millsaps",20,34,FALSE,0
+"20251115_hern","6461939","Berry","Southwestern (TX)",49,7,FALSE,0
+"20251115_iaod","6461479","Knox","Monmouth (IL)",0,69,FALSE,0
+"20251115_igav","6462393","Wis. Lutheran","Benedictine (IL)",14,10,FALSE,0
+"20251115_io1e","6462204","Mary Hardin-Baylor","Howard Payne",65,9,FALSE,0
+"20251115_j0ef","6462290","Kenyon","Wittenberg",0,35,FALSE,0
+"20251115_jsqc","6462230","Westminster (MO)","Northwestern-St. Paul",15,6,FALSE,0
+"20251115_ko9g","6461899","N.C. Wesleyan","Brevard",6,45,FALSE,0
+"20251115_lgbn","6461437","Wheaton (IL)","North Park",52,6,FALSE,0
+"20251115_m5el","6461729","Dean","Anna Maria",15,62,FALSE,0
+"20251115_m5t6","6462169","Ohio Northern","Otterbein",56,14,FALSE,0
+"20251115_mhk5","6461408","Hampden-Sydney","Randolph-Macon",14,42,FALSE,0
+"20251115_nhny","6461767","Buffalo St.","Hobart",9,35,FALSE,0
+"20251115_nj8u","6461782","Geneva","CWRU",43,16,FALSE,0
+"20251115_nkhl","6461283","King's (PA)","Misericordia",21,27,FALSE,0
+"20251115_nxeh","6461489","Westminster (PA)","Saint Vincent",57,14,FALSE,0
+"20251115_nyha","6461885","Salve Regina","WPI",45,9,FALSE,0
+"20251115_oq8v","6462164","Ripon","Lawrence",48,7,FALSE,0
+"20251115_p0ch","6462029","Rowan","Kean",47,34,FALSE,0
+"20251115_p2bj","6462000","George Fox","Pacific Lutheran",21,55,FALSE,0
+"20251115_phob","6462397","Elmhurst","Millikin",22,29,FALSE,0
+"20251115_pshq","6462389","Macalester","Gustavus Adolphus",14,38,FALSE,0
+"20251115_q4id","6462321","Grove City","Hiram",63,14,FALSE,0
+"20251115_r09l","6461702","Bluffton","Marietta",14,37,FALSE,0
+"20251115_r4dp","6462417","LaGrange","Southern Va.",65,27,FALSE,0
+"20251115_r9am","6462156","Carroll (WI)","Carthage",3,7,FALSE,0
+"20251115_re56","6533319","La Verne","CMS",0,5,FALSE,0
+"20251115_rei3","6461354","Alvernia","FDU-Florham",3,52,FALSE,0
+"20251115_rr3o","6462055","St. Olaf","Saint John's (MN)",21,63,FALSE,0
+"20251115_sfz1","6462263","Buena Vista","Wartburg",20,63,FALSE,0
+"20251115_tosa","6461263","Franklin","Hanover",18,51,FALSE,0
+"20251115_ts6v","6461993","Bethel (MN)","St. Scholastica",62,0,FALSE,0
+"20251115_ui33","6461716","New England Col.","U New England",3,59,FALSE,0
+"20251115_up4p","6461410","DePauw","Wabash",41,20,FALSE,0
+"20251115_upkg","6461427","Wash. & Lee","Shenandoah",14,17,FALSE,0
+"20251115_ut1v","6462235","Adrian","Alma",34,35,FALSE,0
+"20251115_vmde","6461319","Wis.-Whitewater","Wis.-Oshkosh",24,7,FALSE,0
+"20251115_vqiy","6461301","Widener","Delaware Valley",7,28,FALSE,0
+"20251115_vt5u","6461293","Capital","Wilmington (OH)",28,27,FALSE,0
+"20251115_wd9p","6462238","Olivet","Hope",6,63,FALSE,0
+"20251115_y4uy","6532907","Pomona-Pitzer","Redlands",12,0,FALSE,0
+"20251115_yedx","6461877","John Carroll","Denison",48,21,FALSE,0
+"20251115_ypjs","6461868","Rochester (NY)","St. Lawrence",17,37,FALSE,0
+"20251115_zrqc","6461759","Cortland","Ithaca",21,26,FALSE,0
+"20251121_dny8","6533661","Merchant Marine","Curry",27,24,FALSE,0
+"20251122_1788","6533616","WashU","Wis.-Stout",23,31,FALSE,0
+"20251122_3cjz","6529875","Cortland","Springfield",7,21,FALSE,0
+"20251122_3edr","6533615","Aurora","Illinois Col.",49,14,FALSE,0
+"20251122_44ni","6533664","Rensselaer","St. John Fisher",35,24,FALSE,0
+"20251122_667w","6529861","Crown (MN)","Wheaton (IL)",14,76,FALSE,0
+"20251122_6ygb","6529845","Union (NY)","Muhlenberg",26,34,FALSE,0
+"20251122_7g8y","6533608","Ohio Northern","Wabash",31,32,FALSE,0
+"20251122_7r3l","6529853","Grove City","Hanover",15,23,FALSE,0
+"20251122_8ewe","6529859","Coe","Concordia Wisconsin",44,7,FALSE,0
+"20251122_dfrn","6529867","Chapman","Whitworth",18,16,FALSE,0
+"20251122_hx94","6533666","Hobart","SUNY Maritime",42,14,FALSE,0
+"20251122_ii7v","6533510","Wilkes","Shenandoah",37,35,FALSE,0
+"20251122_p3e7","6529851","LaGrange","Framingham St.",24,21,FALSE,0
+"20251122_p9ff","6529869","Wash. & Jeff.","Susquehanna",32,38,FALSE,0
+"20251122_xsab","6533658","Misericordia","Carnegie Mellon",17,24,FALSE,0
+"20251129_0tvc","6529883","Coe","Bethel (MN)",26,51,FALSE,0
+"20251129_1h8l","6529876","Muhlenberg","Mount Union",7,49,FALSE,0
+"20251129_3gqf","6529887","Chapman","UW-River Falls",7,58,FALSE,0
+"20251129_4bix","6529890","Endicott","Salisbury",28,35,FALSE,0
+"20251129_57m9","6529878","Hardin-Simmons","Trinity (TX)",24,34,FALSE,0
+"20251129_admb","6529879","LaGrange","Berry",14,18,FALSE,0
+"20251129_b9kr","6529888","Susquehanna","Chris. Newport",42,28,FALSE,0
+"20251129_ghzw","6529886","Monmouth (IL)","Saint John's (MN)",15,49,FALSE,0
+"20251129_h79x","6529889","Eastern","Franklin & Marshall",28,24,FALSE,0
+"20251129_p6rx","6529881","Wis.-La Crosse","Hope",9,7,FALSE,0
+"20251129_r5ne","6529884","Wheaton (IL)","Wartburg",28,24,FALSE,0
+"20251129_s26k","6529877","Randolph-Macon","John Carroll",6,35,FALSE,0
+"20251129_t77k","6529882","Alma","Wis.-Platteville",7,24,FALSE,0
+"20251129_txw9","6529880","Hanover","North Central (IL)",6,38,FALSE,0
+"20251129_y0qp","6529885","DePauw","Wis.-Whitewater",26,23,FALSE,0
+"20251129_zeoo","6529891","Springfield","Johns Hopkins",14,34,FALSE,0
+"20251206_bkyu","6529897","Saint John's (MN)","UW-River Falls",14,42,FALSE,0
+"20251206_msui","6529896","Wheaton (IL)","DePauw",49,24,FALSE,0
+"20251206_pt6d","6529895","Wis.-Platteville","Bethel (MN)",24,35,FALSE,0
+"20251206_rxq5","6529898","Eastern","Susquehanna",0,29,TRUE,0
+"20251206_snpc","6529893","Trinity (TX)","Berry",23,31,FALSE,0
+"20251206_t8r2","6529894","Wis.-La Crosse","North Central (IL)",27,35,FALSE,0
+"20251206_u8yr","6529899","Johns Hopkins","Salisbury",45,13,TRUE,0
+"20251206_v1xq","6529892","John Carroll","Mount Union",10,7,FALSE,0
+"20251213_5hrf","6529901","Bethel (MN)","North Central (IL)",21,35,FALSE,0
+"20251213_7ppt","6529900","John Carroll","Berry",21,13,FALSE,0
+"20251213_862g","6529903","Susquehanna","Johns Hopkins",10,40,FALSE,0
+"20251213_z53j","6529902","Wheaton (IL)","UW-River Falls",21,46,FALSE,0
+"20251220_0smg","6529904","John Carroll","North Central (IL)",21,41,FALSE,0
+"20251220_vlfc","6529905","Johns Hopkins","UW-River Falls",41,48,FALSE,0
