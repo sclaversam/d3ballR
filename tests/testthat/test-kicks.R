@@ -45,6 +45,20 @@ test_that("parse_kick_details reads kickoffs", {
   expect_true(all(is.na(k$yds_punted)) && !any(k$punt_tb) && all(is.na(k$yds_fg)))
 })
 
+test_that("parse_kick_details flags the hyphenated 'on-side kick' wording", {
+  # some StatCrew hosts write "kickoff ..., on-side kick, recovered by ..."
+  text <- c(
+    "Walker Brondos kickoff 30 yards to the AUG35, on-side kick, recovered by VCSU TEAM on AUG35.",
+    "Isa Parks-Gill kickoff 18 yards to the CMU47, on-side kick, recovered by CMU on CMU47.",
+    "Mason Veits kickoff 10 yards to the BRIDGEWA30, on-side kick, recovered by CURRY on BRIDGEWA30, PENALTY BRIDGEWA face mask 15 yards to the BRIDGEWA15.",
+    "Isa Parks-Gill kickoff 60 yards to the CMU05, Jane Doe return 20 yards to the CMU25."
+  )
+  k <- parse_kick_details(text, rep("kickoff", 4), rep(FALSE, 4))
+  # flagged whichever team recovered (kicking team in 1 and 3, receiving team in 2)
+  expect_equal(k$kickoff_onside, c(TRUE, TRUE, TRUE, FALSE))
+  expect_equal(k$yds_kickoff, c(30L, 18L, 10L, 60L))
+})
+
 test_that("parse_kick_details reads punts and field goals", {
   text <- c(
     "Cleary,Spencer punt 32 yards to the CUW30 Crowell,Nick return 13 yards to the CUW43 (White,Brian).",

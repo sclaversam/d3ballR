@@ -63,7 +63,7 @@ parse_kick_details <- function(play_text, play_type, no_play) {
     kickoff_tb = ko & has(kick, "touchback"),
     kickoff_oob = ko & has(kick, "out.of.bounds"),
     kickoff_fair_catch = ko & has(kick, "fair catch"),
-    kickoff_onside = ko & has(text, "\\bonside\\b"),
+    kickoff_onside = ko & has(text, "\\bon-?side\\b"),
     yds_punted = int_or_na(pu, punted_yds),
     yds_punt_return = int_or_na(pu, returned),
     punt_tb = pu & has(kick, "touchback"),

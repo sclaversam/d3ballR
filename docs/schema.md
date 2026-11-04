@@ -193,7 +193,7 @@ clock and seconds columns are NA in periods 5+.
 | 51 | `kickoff_tb` | logical | Kickoff touchback. | Never NA. | Read from the kick itself (see Kick details). cfbfastR name. |
 | 52 | `kickoff_oob` | logical | Kickoff went out of bounds. | Never NA. | Not a returner running out. cfbfastR name. |
 | 53 | `kickoff_fair_catch` | logical | Kickoff fair catch. | Never NA. | cfbfastR name. |
-| 54 | `kickoff_onside` | logical | Onside kick. | Never NA. | d3's "onside kickoff" wording; a stat crew that doesn't print "onside" leaves it FALSE. cfbfastR name. |
+| 54 | `kickoff_onside` | logical | Onside kick. | Never NA. | Read from the text: "onside kickoff" or "on-side kick", whichever team recovered; a no-play kickoff is FALSE. A stat crew that doesn't print onside leaves it FALSE. cfbfastR name. |
 | 55 | `yds_punted` | integer | Punt distance: "punt 37 yards"; "punt loss of 7 yards" is −7. | NA off punts, on no-play punts, and on blocked punts with no distance printed. | cfbfastR name. |
 | 56 | `yds_punt_return` | integer | Punt return yards. | NA when there was no return, and off punts. | As `yds_kickoff_return`. cfbfastR name. |
 | 57 | `punt_tb` | logical | Punt touchback. | Never NA. | cfbfastR name. |

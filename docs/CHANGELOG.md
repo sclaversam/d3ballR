@@ -5,6 +5,17 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## `kickoff_onside` now reads "on-side kick"
+
+Spotted by Sam in `20250904_e307` (Valley City State vs Augsburg): "Walker
+Brondos kickoff 30 yards to the AUG35, on-side kick, recovered by VCSU TEAM"
+had `drive_result` ONSIDE but `kickoff_onside` FALSE. The flag only matched
+the one-word "onside kickoff"; some stat crews write the hyphenated
+"on-side kick" after the yardage. It now matches both. 9 rows in 8 games
+flip to TRUE (both kicking-team and receiving-team recoveries); no other
+column changes, since nothing else reads this flag (kickoff possession and
+`drive_result` come from who recovered, not from this flag).
+
 ## Two renames to cfbfastR names
 
 Decided by Sam from the cfbfastR column comparison (2026-10-29). Both kept
