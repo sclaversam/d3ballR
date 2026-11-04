@@ -47,6 +47,34 @@ score_points <- function(kept) {
   ifelse(kept$penalty_no_play, 0L, pts)
 }
 
+#' Which team scored a touchdown, and whether it came on a return
+#'
+#' nflfastR-style. `td_team` is the team that scored the row's touchdown:
+#' `pos_team` when `score_pts` is +6, `def_pos_team` when it is -6, NA on
+#' rows with no touchdown. `return_touchdown` is TRUE for a touchdown scored
+#' on a return: every defensive touchdown (interception or fumble return,
+#' blocked punt, punt return; `score_pts` -6) and every kickoff-return
+#' touchdown. Because `pos_team` on a kickoff is the receiving team, a
+#' kickoff-return touchdown has `td_team == pos_team`; "the defense scored"
+#' is `td_team == def_pos_team`. A punt the kicking team recovers in the end
+#' zone after a muff is a recovery, not a return (`return_touchdown` FALSE).
+#'
+#' @param kept Rows with `touchdown`, `score_pts`, `play_type`, `pos_team`,
+#'   `def_pos_team`, after the final team-name mapping.
+#' @return `kept` with `td_team` (character) and `return_touchdown`
+#'   (logical) added.
+#' @keywords internal
+derive_td_team <- function(kept) {
+  td <- kept$touchdown & kept$score_pts != 0L
+  kept$td_team <- dplyr::case_when(
+    td & kept$score_pts > 0L ~ kept$pos_team,
+    td & kept$score_pts < 0L ~ kept$def_pos_team,
+    TRUE ~ NA_character_
+  )
+  kept$return_touchdown <- td & (kept$score_pts < 0L | kept$play_type == "kickoff")
+  kept
+}
+
 #' Running score before each play
 #'
 #' The score before row i is the running total of the points parsed on the

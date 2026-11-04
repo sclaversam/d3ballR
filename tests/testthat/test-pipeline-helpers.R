@@ -64,6 +64,21 @@ test_that("score_points: defensive try returns and kicking-team muff touchdowns"
   expect_equal(score_points(kept), c(-2L, 6L, -6L))
 })
 
+test_that("derive_td_team names the scorer and flags return touchdowns", {
+  kept <- data.frame(
+    play_type = c("pass_complete", "pass_intercepted", "kickoff", "punt_no_return", "punt_blocked", "rush"),
+    pos_team = c("CMU", "Ursinus", "Dickinson", "St. Olaf", "Gettysburg", "CMU"),
+    def_pos_team = c("Ursinus", "CMU", "Waynesburg", "UNW", "CNU", "F&M"),
+    touchdown = c(TRUE, TRUE, TRUE, TRUE, TRUE, FALSE),
+    score_pts = c(6L, -6L, 6L, 6L, -6L, 0L)
+  )
+  out <- derive_td_team(kept)
+  # passing TD, pick-six, kickoff-return TD, kicking-team muff recovery TD,
+  # blocked-punt TD, no TD
+  expect_equal(out$td_team, c("CMU", "CMU", "Dickinson", "St. Olaf", "CNU", NA))
+  expect_equal(out$return_touchdown, c(FALSE, TRUE, TRUE, FALSE, TRUE, FALSE))
+})
+
 test_that("is_no_play reads the text only", {
   expect_equal(
     is_no_play(c(

@@ -5,6 +5,30 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Return-touchdown columns (69 → 71 columns)
+
+Decided by Sam (2026-11-04). Added nflfastR's `return_touchdown` and
+`td_team`, after `touchdown`. No existing column changed.
+
+Why: on a pick-six or fumble-return touchdown `pos_team` is the team that
+lost the ball and `score_pts` is −6, as in cfbfastR / nflfastR, but nothing
+named the scorer, so counting `touchdown` by `pos_team` credited the
+touchdown to the team that threw the interception. `play_type` and
+`drive_result` still describe the offense's play (`pass_intercepted`,
+`INT`); cfbfastR instead renames the play ("Interception Return
+Touchdown") and adds `int_td`. We kept our labels and added the two
+columns.
+
+Kickoff-return touchdowns differ from cfbfastR: our `pos_team` on a
+kickoff is the receiving team (since v3), so the returner's touchdown is
++6 with `td_team == pos_team`; cfbfastR treats the kicking team as the
+offense and the return as a defensive score. `return_touchdown` follows
+nflfastR and is TRUE for both kinds; "the defense scored" is
+`td_team == def_pos_team`.
+
+2025 (133 games): 51 return touchdowns, 43 defensive (27 interception,
+10 fumble, 5 blocked punt, 1 punt return) and 8 kickoff returns.
+
 ## Kick flags removed (77 → 69 columns)
 
 Decided by Sam (2026-11-04): of the 13 kick columns, keep only the

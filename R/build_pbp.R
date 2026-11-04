@@ -393,7 +393,8 @@ pbp_columns <- c(
   "pos_team_score", "def_pos_team_score", "score_diff", "down", "distance",
   "yards_to_goal", "Goal_To_Go",
   "play_type", "scrimmage_play", "yards_gained", "rush", "pass_attempt", "completion", "sack",
-  "int", "fumble_vec", "turnover", "downs_turnover", "touchdown", "safety",
+  "int", "fumble_vec", "turnover", "downs_turnover", "touchdown",
+  "return_touchdown", "td_team", "safety",
   "field_goal_attempt", "field_goal_made", "punt",
   "yds_kickoff", "yds_kickoff_return", "yds_punted", "yds_punt_return", "yds_fg",
   "scoring_play", "score_pts",
@@ -592,6 +593,8 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
   }
   finals <- game$finals
   names(finals) <- rename(unname(team_map[names(finals)]))
+
+  kept <- derive_td_team(kept)
 
   out <- kept[, pbp_columns]
   attr(out, "week_source") <- cal$week_source

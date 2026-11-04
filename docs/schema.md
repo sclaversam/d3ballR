@@ -1,4 +1,4 @@
-# Play-by-play schema (69 columns)
+# Play-by-play schema (71 columns)
 
 Every column of the per-game play-by-play CSVs in `pbp/{season}/{game_id}.csv`,
 and the conventions needed to read them. How the files are built and checked
@@ -73,6 +73,22 @@ PLAY"), but none of it is credited:
   `field_goal_attempt`, `field_goal_made`, `punt`, `scoring_play`.
 - every kick yardage (`yds_kickoff`, `yds_punted`, `yds_fg`, and the return
   yards) is NA.
+
+**Return touchdowns.** On a pick-six, fumble-return, blocked-punt or
+punt-return touchdown, `pos_team` stays the team that lost the ball (as in
+cfbfastR and nflfastR): `touchdown` is TRUE, `score_pts` is −6, and
+`drive_result` says how the offense lost it (`INT`, `FUMBLE`, `BLOCKED
+PUNT`, `PUNT`). Don't count touchdowns by `pos_team`; use `td_team`. Because
+`pos_team` on a kickoff is the receiving team, a kickoff-return touchdown is
++6 with `td_team == pos_team`. To tell the cases apart:
+
+| Play | `return_touchdown` | `td_team` | `score_pts` |
+|---|---|---|---|
+| Rushing / passing TD, own-fumble recovery, kicking-team muff recovery | FALSE | `pos_team` | +6 |
+| Kickoff-return TD | TRUE | `pos_team` | +6 |
+| Interception / fumble return, blocked punt, punt return TD | TRUE | `def_pos_team` | −6 |
+
+"The defense scored" is `td_team == def_pos_team`.
 
 **Score.** `pos_team_score` / `def_pos_team_score` are the score *before* the
 play, summed from the parsed points of every earlier row. d3's printed score
@@ -180,28 +196,30 @@ clock and seconds columns are NA in periods 5+.
 | 42 | `turnover` | logical | Possession lost by interception, lost fumble, turnover on downs, or a kickoff the kicking team recovered. | Never NA. | A blocked kick the kicking team gets back is not a turnover. Punts and field goals are not turnovers. |
 | 43 | `downs_turnover` | logical | Turnover on downs. | Never NA. | "TURNOVER ON DOWNS" in the text, or a 4th-down play short of the line with the next snap by the other team. |
 | 44 | `touchdown` | logical | A touchdown that counts. | Never NA. | Includes defensive return touchdowns. |
-| 45 | `safety` | logical | A safety. | Never NA. | |
-| 46 | `field_goal_attempt` | logical | Field goal attempted (good, missed, or blocked). | Never NA. | |
-| 47 | `field_goal_made` | logical | Field goal good. | Never NA. | |
-| 48 | `punt` | logical | Any punt. | Never NA. | |
-| 49 | `yds_kickoff` | integer | Kickoff distance: "kickoff 59 yards". | NA off kickoffs and on no-play kickoffs. | Onside kicks included. cfbfastR name. |
-| 50 | `yds_kickoff_return` | integer | Kickoff return yards: "return 21 yards", "return for loss of 7 yards". | NA when there was no return (touchback, fair catch, out of bounds), and off kickoffs. | The first return in the text. cfbfastR name. |
-| 51 | `yds_punted` | integer | Punt distance: "punt 37 yards"; "punt loss of 7 yards" is −7. | NA off punts, on no-play punts, and on blocked punts with no distance printed. | cfbfastR name. |
-| 52 | `yds_punt_return` | integer | Punt return yards. | NA when there was no return, and off punts. | As `yds_kickoff_return`. cfbfastR name. |
-| 53 | `yds_fg` | integer | Field goal distance: "attempt from 35". | NA off field-goal attempts and on no-play attempts. | As printed by the stat crew. cfbfastR name. |
-| 54 | `scoring_play` | logical | Points scored on the row. | Never NA. | `score_pts != 0`. A failed PAT is FALSE. |
-| 55 | `score_pts` | integer | Points scored on the row, from `pos_team`'s view. | Never NA. | TD +6, FG +3, PAT +1, two-point +2, defensive TD −6, safety conceded −2, try returned by the defense −2. A punt the kicking team recovers in the end zone after a muff is +6. |
-| 56 | `drive_result` | character | How the row's drive ended, repeated on every row of the drive. | Never NA. | `TD`, `FG`, `MISSED FG`, `BLOCKED FG`, `PUNT`, `BLOCKED PUNT`, `INT`, `FUMBLE`, `DOWNS`, `SAFETY`, `END OF HALF`, `END OF GAME`, `ONSIDE`. A defensive TD is labeled by how the offense lost the ball. |
-| 57 | `firstD_by_kickoff` | logical | First snap row of a series that began with a kickoff. | Never NA. | Kickoff rows themselves are FALSE. Includes after an onside kick, whoever recovered. cfbfastR name. |
-| 58 | `firstD_by_poss` | logical | First snap row after a change of possession, or of an overtime possession. | Never NA. | After a punt, interception, lost fumble, downs, missed / blocked FG, or a punt / FG the kicking team regained. cfbfastR name. |
-| 59 | `firstD_by_yards` | logical | First snap row of a series earned by the previous play's yardage. | Never NA. | Same offense; the previous play reached the line (d3's "1ST DOWN" text, or yards ≥ distance outside goal-to-go), unless an accepted offensive penalty took it away. cfbfastR name. |
-| 60 | `firstD_by_penalty` | logical | First snap row of a series awarded by a penalty. | Never NA. | Same offense; the previous play didn't reach the line; an accepted penalty awarded it. A declined penalty never counts. cfbfastR name. |
-| 61 | `new_series` | logical | The row starts a new series: one of the four flags. | Never NA. | Exactly one of the four is TRUE when this is. |
-| 62 | `penalty_flag` | logical | The row mentions a penalty. | Never NA. | |
-| 63 | `penalty_yards_signed` | integer | Net accepted penalty yards, from `pos_team`'s view. | NA with no penalty or when every infraction was declined. | + = defense flagged, − = offense flagged; offsetting = 0. |
-| 64 | `penalized_team` | character | Team that committed the penalty. | NA with no penalty. | Both teams joined with `"; "` when offsetting or accepted on both. |
-| 65 | `penalty_no_play` | logical | A penalty nullified the snap, or there was no snap. | Never NA. | See No-play gating. |
-| 66 | `penalty_declined` | logical | Every infraction on the row was declined. | NA when `penalty_flag` is FALSE. | |
-| 67 | `penalty_play_text` | character | Raw penalty clause, from the first "PENALTY" on. | NA with no penalty clause. | cfbfastR name (its `penalty_text` is a TRUE/FALSE flag). |
-| 68 | `situation` | character | Raw down-and-distance text, verbatim. | Empty (NA on read) on kickoffs and tries. | Audit column. |
-| 69 | `play_text` | character | Raw play description, verbatim. | Never NA. | Audit column. |
+| 45 | `return_touchdown` | logical | A touchdown scored on a return: every defensive touchdown (interception or fumble return, blocked punt, punt return) and every kickoff-return touchdown. | Never NA. | nflfastR name. A punt the kicking team recovers in the end zone after a muff is a recovery, not a return (FALSE). |
+| 46 | `td_team` | character | The team that scored the row's touchdown. | NA when `touchdown` is FALSE. | nflfastR name. `pos_team` when `score_pts` is +6, `def_pos_team` when −6. See **Return touchdowns** above. |
+| 47 | `safety` | logical | A safety. | Never NA. | |
+| 48 | `field_goal_attempt` | logical | Field goal attempted (good, missed, or blocked). | Never NA. | |
+| 49 | `field_goal_made` | logical | Field goal good. | Never NA. | |
+| 50 | `punt` | logical | Any punt. | Never NA. | |
+| 51 | `yds_kickoff` | integer | Kickoff distance: "kickoff 59 yards". | NA off kickoffs and on no-play kickoffs. | Onside kicks included. cfbfastR name. |
+| 52 | `yds_kickoff_return` | integer | Kickoff return yards: "return 21 yards", "return for loss of 7 yards". | NA when there was no return (touchback, fair catch, out of bounds), and off kickoffs. | The first return in the text. cfbfastR name. |
+| 53 | `yds_punted` | integer | Punt distance: "punt 37 yards"; "punt loss of 7 yards" is −7. | NA off punts, on no-play punts, and on blocked punts with no distance printed. | cfbfastR name. |
+| 54 | `yds_punt_return` | integer | Punt return yards. | NA when there was no return, and off punts. | As `yds_kickoff_return`. cfbfastR name. |
+| 55 | `yds_fg` | integer | Field goal distance: "attempt from 35". | NA off field-goal attempts and on no-play attempts. | As printed by the stat crew. cfbfastR name. |
+| 56 | `scoring_play` | logical | Points scored on the row. | Never NA. | `score_pts != 0`. A failed PAT is FALSE. |
+| 57 | `score_pts` | integer | Points scored on the row, from `pos_team`'s view. | Never NA. | TD +6, FG +3, PAT +1, two-point +2, defensive TD −6, safety conceded −2, try returned by the defense −2. A punt the kicking team recovers in the end zone after a muff is +6. |
+| 58 | `drive_result` | character | How the row's drive ended, repeated on every row of the drive. | Never NA. | `TD`, `FG`, `MISSED FG`, `BLOCKED FG`, `PUNT`, `BLOCKED PUNT`, `INT`, `FUMBLE`, `DOWNS`, `SAFETY`, `END OF HALF`, `END OF GAME`, `ONSIDE`. A defensive TD is labeled by how the offense lost the ball. |
+| 59 | `firstD_by_kickoff` | logical | First snap row of a series that began with a kickoff. | Never NA. | Kickoff rows themselves are FALSE. Includes after an onside kick, whoever recovered. cfbfastR name. |
+| 60 | `firstD_by_poss` | logical | First snap row after a change of possession, or of an overtime possession. | Never NA. | After a punt, interception, lost fumble, downs, missed / blocked FG, or a punt / FG the kicking team regained. cfbfastR name. |
+| 61 | `firstD_by_yards` | logical | First snap row of a series earned by the previous play's yardage. | Never NA. | Same offense; the previous play reached the line (d3's "1ST DOWN" text, or yards ≥ distance outside goal-to-go), unless an accepted offensive penalty took it away. cfbfastR name. |
+| 62 | `firstD_by_penalty` | logical | First snap row of a series awarded by a penalty. | Never NA. | Same offense; the previous play didn't reach the line; an accepted penalty awarded it. A declined penalty never counts. cfbfastR name. |
+| 63 | `new_series` | logical | The row starts a new series: one of the four flags. | Never NA. | Exactly one of the four is TRUE when this is. |
+| 64 | `penalty_flag` | logical | The row mentions a penalty. | Never NA. | |
+| 65 | `penalty_yards_signed` | integer | Net accepted penalty yards, from `pos_team`'s view. | NA with no penalty or when every infraction was declined. | + = defense flagged, − = offense flagged; offsetting = 0. |
+| 66 | `penalized_team` | character | Team that committed the penalty. | NA with no penalty. | Both teams joined with `"; "` when offsetting or accepted on both. |
+| 67 | `penalty_no_play` | logical | A penalty nullified the snap, or there was no snap. | Never NA. | See No-play gating. |
+| 68 | `penalty_declined` | logical | Every infraction on the row was declined. | NA when `penalty_flag` is FALSE. | |
+| 69 | `penalty_play_text` | character | Raw penalty clause, from the first "PENALTY" on. | NA with no penalty clause. | cfbfastR name (its `penalty_text` is a TRUE/FALSE flag). |
+| 70 | `situation` | character | Raw down-and-distance text, verbatim. | Empty (NA on read) on kickoffs and tries. | Audit column. |
+| 71 | `play_text` | character | Raw play description, verbatim. | Never NA. | Audit column. |
