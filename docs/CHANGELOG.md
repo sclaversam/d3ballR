@@ -5,6 +5,35 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Batch 3 (2025 weeks 4-6): swapped team ids, wrong drive starts, safeties, team-code spellings
+
+Fixes from the third all-D3 batch (2026-11-05); see "Lessons from each
+batch" in `pipeline.md`:
+
+- `ncaa_unswap_team_ids()`: a file that tags every line with the other
+  team's id is swapped back (`20250927_kqa4`).
+- A "drive start" line naming the other team than its own id and the next
+  snap's gets a labelled drive start for the snapping team added after it
+  (`ncaa_wrong_start_label`; `20251004_p4gx`).
+- Safeties: one the running score gives to the team that started the play
+  is labelled (`ncaa_offense_safety_label`) and scored +2 for `pos_team`
+  (`20250927_1j5p`); kickoffs are excluded. A safety on a try scores 1 for
+  the trying team (`20250927_pu6m`).
+- Dropped extra points are found even when the kickoff line is dropped too
+  (`20251004_ffx2`), and a try's kicker is remembered within a game for
+  later tries (`20251011_xh02`).
+- Team codes with an apostrophe or two words parse (`20250927_0itn`,
+  `20251004_60j5`); keywords are word-anchored. This also corrects
+  `yards_to_goal` on 41 rows of `20250920_5bx0` ("NEB W."), which
+  reconciled before.
+- A single settling play no longer overrules a decisive yardline vote
+  (`20250927_ezew`).
+- `20251004_8kxj` added to `known_exceptions.csv`.
+
+Open for Sam: `20251004_6sus` (UW-La Crosse 23, UW-Whitewater 20): ncaa.com
+dropped the line of La Crosse's first-overtime field goal (its running
+score goes 17-17 to 20-17 on a Whitewater snap).
+
 ## Scoring summary: match by real quarter, and only trust a complete summary's silence
 
 - Extra points ncaa.com dropped (games with no running score) are matched

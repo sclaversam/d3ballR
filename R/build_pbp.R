@@ -317,6 +317,10 @@ infer_own_side <- function(df) {
   # the plays that settle it decide when they agree (at least 3 to 1);
   # when they split, the vote decides
   settled <- sum(anchors) > 0 && decisive(anchors) && (min(anchors) == 0 || max(anchors) >= 3 * min(anchors))
+  # a single settling play doesn't overrule a decisive vote: one touchback
+  # or false start on a mis-tagged possession would (20250927_ezew: 1
+  # play vs a 60-0 vote); it still decides when the vote can't
+  if (settled && sum(anchors) == 1 && decisive(vote)) settled <- FALSE
   if (settled) {
     if (decisive(vote) && (vote[["a"]] > vote[["b"]]) != (anchors[["a"]] > anchors[["b"]])) {
       stop("Yardline side: the plays that settle it (", anchors[["a"]], " vs ", anchors[["b"]],
@@ -476,11 +480,18 @@ pbp_columns <- c(
 try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = character()) {
   scoring <- which(is_scoring_snap(kept))
   out <- kept$pos_team
-  actor_team <- unname(actor_map[play_actor(kept$play_text)])
+  actors <- play_actor(kept$play_text)
+  actor_team <- unname(actor_map[actors])
+  # kickers / passers of tries already decided in this game (a kicker who
+  # only kicks extra points isn't in actor_map: 20251011_xh02)
+  try_actor <- character()
   for (i in which(kept$try_phase)) {
     s <- scoring[scoring < i]
     if (!length(s)) next
     s <- s[length(s)]
+    if (is.na(actor_team[i]) && !is.na(actors[i]) && actors[i] %in% names(try_actor)) {
+      actor_team[i] <- try_actor[[actors[i]]]
+    }
     # 0. the kicker / passer / rusher named on the try is on the scoring team
     if (kept$play_type[i] %in% c("extra_point", "two_point") && !is.na(actor_team[i])) {
       out[i] <- actor_team[i]
@@ -498,6 +509,7 @@ try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = cha
                                             kickoffs$half == kept$half[i], ] else NULL
     if (!is.null(k) && nrow(k) && !is.na(k$kicking_team[1])) {
       out[i] <- k$kicking_team[1]
+      if (!is.na(actors[i]) && kept$play_type[i] %in% c("extra_point", "two_point")) try_actor[actors[i]] <- out[i]
       next
     }
     # 2. no kickoff follows (end of half, overtime): the next score line

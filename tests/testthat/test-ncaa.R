@@ -165,7 +165,7 @@ test_that("a try whose points ncaa.com gives to the defense is labelled a defens
              "Shotgun Clark,Joseph rush middle for 3 yards gain to the IC00 TOUCHDOWN, clock 04:04.",
              "Johnson,Jaylen rush attempt Successful.",
              "Schambach,Hudson kickoff 65 yards to the IC00, Touchback.",
-             "Shotgun Elliott,Tyson rush right for 8 yards gain to the IC33."))
+             "Shotgun Elliott,Tyson rush right for 8 yards gain to the LF33."))
   teams <- data.frame(team_id = c("A", "B"), name = c("Lake Forest", "Illinois College"), ncaa_home = c(FALSE, TRUE))
   tab <- ncaa_play_table(lines, teams)
   hit <- tab$play[grepl("Johnson,Jaylen", tab$play)]
@@ -220,4 +220,20 @@ test_that("a scoring summary missing a team's tries isn't evidence that a try fa
   summ <- data.frame(period = 1L, quarter = 3L, team_id = "A", time = c("03:00", "01:56"), type = "TD", text = "")
   tab <- ncaa_play_table(lines, teams, final_total = 14L, scoring = summ)
   expect_true(any(tab$play == ncaa_added_try_text_final))
+})
+
+test_that("spot pattern: apostrophes and two-word codes, but not keywords inside names", {
+  m <- function(x) stringr::str_match_all(x, ncaa_spot_pattern)[[1]][, 3]
+  expect_equal(m("pass complete to Nikolopoulos,Justin caught at King's42, for 75 yards to the King's00 TOUCHDOWN"), c("King's", "King's"))
+  expect_equal(m("rush right for 3 yards gain to the Cal Lu47 (Kruger,George)"), "Cal Lu")
+  expect_equal(m("pass intercepted by Drinkard,Deion at UMHB31, End Of Play."), "UMHB")
+})
+
+test_that("ncaa_unswap_team_ids swaps ids that are attached to the wrong team", {
+  tm <- list(list(teamId = "1774", nameShort = "Central (IA)", name6Char = "CENTRA", seoname = "central-ia"),
+             list(teamId = "39", nameShort = "Dubuque", name6Char = "DUBUQU", seoname = "dubuque"))
+  starts <- c("Dubuque", NA, "Central (IA)", "Dubuque", "Central (IA)")
+  ids <- c("1774", "1774", "39", "1774", "39")
+  expect_equal(ncaa_unswap_team_ids(ids, starts, tm), c("39", "39", "1774", "39", "1774"))
+  expect_equal(ncaa_unswap_team_ids(c("39", "39", "1774", "39", "1774"), starts, tm), c("39", "39", "1774", "39", "1774"))
 })

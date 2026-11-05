@@ -35,7 +35,15 @@ score_points <- function(kept) {
     !stringr::str_detect(txt, ic("no good|failed|blocked"))
   two_good <- pt == "two_point" & stringr::str_detect(txt, ic("\\b(good|successful)\\b")) &
     !stringr::str_detect(txt, ic("failed|no good"))
+  # a safety on a try ("[Hampden-Sydney PAT safety]") is 1 point for the
+  # trying team (NCAA rules)
+  try_safety <- pt %in% c("extra_point", "two_point") & stringr::str_detect(txt, ic("\\bsafety\\b"))
+  # a safety ncaa.com's running score gives to the team that started the
+  # play (labelled by ncaa_play_table())
+  offense_safety <- stringr::str_detect(txt, stringr::fixed(ncaa_offense_safety_label))
   pts <- dplyr::case_when(
+    try_safety ~ 1L,
+    offense_safety ~ 2L,
     kept$touchdown & defense_scores ~ -6L,
     kept$touchdown ~ 6L,
     pt == "field_goal_good" ~ 3L,

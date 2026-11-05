@@ -214,6 +214,21 @@ section after every batch.
 | A scoring summary that leaves out a team's tries and field goals | a try missing from the summary only counts as evidence for a team the summary is complete for (as many good tries and field goals as the play text); otherwise the final-score rule decides | `20250913_oxzn` |
 | Index `week` restarts at 1 in the postseason | filter on `season_type == "regular"` when fetching by week | batch 2 fetched 28 playoff games by mistake |
 
+### Batch 3 (2025 weeks 4-6, 287 new games, 2026-11-05)
+
+| Quirk | Generic rule now | First seen |
+|---|---|---|
+| Every line tagged with the other team's teamId | `ncaa_unswap_team_ids()`: when the drive-start names match ncaa.com's team names the other way round on most lines, the ids are swapped back | `20250927_kqa4` |
+| A "drive start" line names the other team (overtime) | when its name disagrees with its own id and the next snap's, a drive start for the team that snaps is added after the raw line, labelled | `20251004_p4gx` |
+| Safety for the team that started the play (blocked field goal recovered by the defense, then a foul in its end zone) | when the running score gives the 2 to the line's own team (not on kickoffs, where `pos_team` is already the receiver), the row is labelled and scored +2 for `pos_team` | `20250927_1j5p` (`20250927_9q5i` kickoff case kept as is) |
+| A safety on a try ("[Hampden-Sydney PAT safety]") | 1 point for the trying team | `20250927_pu6m` |
+| Dropped extra point with the kickoff line dropped too | compare the running score on the last line before the other team's first snap | `20251004_ffx2` |
+| Extra point after a defensive touchdown by a kicker who only kicks tries | `try_phase_team()` remembers each try's kicker within the game | `20251011_xh02` |
+| Team codes with an apostrophe or two words ("King's42", "Cal Lu10", "NEB W.30") | token patterns accept both; keywords are word-anchored and can't be a code ("Deion at UMHB31") | `20250927_0itn`, `20251004_60j5`; fixed `yards_to_goal` on 41 rows of `20250920_5bx0` |
+| One settling play against a decisive yardline vote | a single touchback / false start doesn't overrule a decisive vote | `20250927_ezew` |
+| Source gap: try lines missing and an incomplete scoring summary | `known_exceptions.csv` | `20251004_8kxj` |
+| Index `week` and season type | fetch by `season_type == "regular"` (batch 2's lesson) held: no playoff games fetched | |
+
 ## Roadmap
 
 1. **CMU 2025** (validation set): done.

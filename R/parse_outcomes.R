@@ -5,7 +5,7 @@
 #' upper-case codes, mixed case ("McD"), nicknames ("Wolves"), or two words
 #' ("MASS. MA27": the token is "MASS. MA").
 #' @keywords internal
-text_yard_pattern <- "(?:to the|at the|at|from|to) ([A-Za-z][A-Za-z&.-]{1,9}(?: [A-Z][A-Za-z&.-]{0,9})?) ?(\\d{1,2})\\b"
+text_yard_pattern <- "\\b(?:to the|at the|at|from|to) (?!(?:at|to|the|on|from)\\b)([A-Za-z][A-Za-z&.'-]{1,9}(?: [A-Z][A-Za-z&.'-]{0,9})?) ?(\\d{1,2})\\b"
 
 #' Map play-text team tokens to team names
 #'

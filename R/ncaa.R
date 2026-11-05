@@ -305,6 +305,39 @@ load_known_exceptions <- function(file = "data-raw/ncaa/known_exceptions.csv") {
   utils::read.csv(file, colClasses = "character")
 }
 
+#' Swap back team ids that a file attaches to the wrong team
+#'
+#' Compares each "TEAM drive start" line's name with ncaa.com's two team
+#' names (`nameShort`, `name6Char`, `seoname`, ignoring case and
+#' punctuation). If most of the lines that name a team clearly carry the
+#' other team's id, every id in the game is swapped.
+#'
+#' @param team_id Line team ids.
+#' @param starts Drive-start names per line (NA elsewhere).
+#' @param tm ncaa.com's `teams` list from the play-by-play JSON.
+#' @return `team_id`, swapped or unchanged.
+#' @keywords internal
+ncaa_unswap_team_ids <- function(team_id, starts, tm) {
+  if (length(tm) != 2L) return(team_id)
+  norm <- function(x) gsub("[^a-z0-9]", "", tolower(x))
+  ids <- vapply(tm, function(t) as.character(t$teamId), character(1))
+  keys <- lapply(tm, function(t) unique(norm(unlist(t[c("nameShort", "name6Char", "seoname")]))))
+  named <- vapply(norm(starts), function(s) {
+    if (is.na(s) || !nzchar(s)) return(NA_character_)
+    hit <- vapply(keys, function(k) any(startsWith(s, k) | startsWith(k, s)), logical(1))
+    if (sum(hit) == 1L) ids[hit] else NA_character_
+  }, character(1))
+  ok <- !is.na(named) & team_id %in% ids
+  if (sum(ok) < 4L) return(team_id)
+  if (mean(named[ok] != team_id[ok]) > 0.8) {
+    out <- team_id
+    out[team_id == ids[1]] <- ids[2]
+    out[team_id == ids[2]] <- ids[1]
+    return(out)
+  }
+  team_id
+}
+
 #' Does an ncaa.com play-by-play carry a running score?
 #'
 #' Some host schools' files leave `homeScore` / `visitorScore` at 0 or null
@@ -346,7 +379,7 @@ parse_ncaa_drive_text <- function(x) {
 #' "to the RMCFB29", "at DCFB47", "from JHU35". The letters are whatever the
 #' stat crew uses (they can differ from the down-and-distance tokens).
 #' @keywords internal
-ncaa_spot_pattern <- "(thrown to|caught at|to the|at the|at|from|to|on) ([A-Za-z][A-Za-z&.-]*?) ?(\\d{1,2})\\b"
+ncaa_spot_pattern <- "\\b(thrown to|caught at|to the|at the|at|from|to|on) (?!(?:at|to|the|on|from)\\b)([A-Za-z][A-Za-z&.'-]*?(?: [A-Z][A-Za-z&.'-]{0,9})?) ?(\\d{1,2})\\b"
 
 #' Rebuild d3football-style situations and table rows from ncaa.com lines
 #'
@@ -549,7 +582,10 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     !stringr::str_detect(x, stringr::regex("NO PLAY", ignore_case = TRUE))
   is_td <- live_td(txt)
   ic <- function(p) stringr::regex(p, ignore_case = TRUE)
-  try_pts <- ifelse(is_try & !stringr::str_detect(txt, ic("NO PLAY")) &
+  # a safety on a try ("[Hampden-Sydney PAT safety]") is 1 point for the
+  # trying team (20250927_pu6m)
+  try_safety <- is_try & stringr::str_detect(txt, ic("\\bsafety\\b"))
+  try_pts <- ifelse(try_safety, 1L, 0L) + ifelse(!try_safety & is_try & !stringr::str_detect(txt, ic("NO PLAY")) &
                       stringr::str_detect(txt, ic("\\b(good|successful)\\b")) &
                       !stringr::str_detect(txt, ic("no good|failed")),
                     ifelse(stringr::str_detect(txt, ic("kick attempt")), 1L, 2L), 0L)
@@ -619,15 +655,19 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     between <- if (end > i) (i + 1L):end else integer()
     tries <- between[is_try[between]]
     if (!length(tries)) tryless <- c(tryless, i)
-    if (!has_running_score || is.na(j)) next
+    # the score is compared at the next kickoff or, when ncaa.com dropped the
+    # kickoff too, on the last line before the other team's first snap
+    # (20251004_ffx2)
+    ref <- if (!is.na(j)) j else if (!is.na(other_snap)) other_snap - 1L else NA_integer_
+    if (!has_running_score || is.na(ref) || ref <= i) next
     # the touchdown's team: the one whose running score jumped by 6 on it
     before <- if (i > 1L) c(hs[i - 1L], vs[i - 1L]) else c(0L, 0L)
     ti <- which(c(hs[i], vs[i]) - before >= 6L)
     if (length(ti) != 1L) next
-    up <- c(hs[j] - hs[i], vs[j] - vs[i])
+    up <- c(hs[ref] - hs[i], vs[ref] - vs[i])
     # the next kickoff may itself be returned for a touchdown by the other team
     # (or recovered by the kicking team, a muff or fumble, and scored)
-    if (live_td(txt[j])) {
+    if (!is.na(j) && live_td(txt[j])) {
       if (up[3L - ti] >= 6L) up[3L - ti] <- up[3L - ti] - 6L
       else if (up[ti] >= 6L) up[ti] <- up[ti] - 6L
       else next
@@ -635,7 +675,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     if (up[3L - ti] != 0L || up[ti] - sum(try_pts[tries]) != 1L) next
     at <- max(c(i, tries))
     added[as.character(at)] <- ncaa_added_try_text
-    gap <- at:(j - 1L)
+    gap <- at:(if (!is.na(j)) j - 1L else ref)
     if (ti == 1L) hs[gap] <- hs[gap] + 1L else vs[gap] <- vs[gap] + 1L
   }
   # No running score at all (some host schools' files): when the final
@@ -678,6 +718,40 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
       if (final_total - text_pts == length(unmatched)) {
         added[as.character(unmatched)] <- ncaa_added_try_text_final
       }
+    }
+  }
+
+  # --- drive starts that name the wrong team ----------------------------
+  normn <- function(x) gsub("[^a-z0-9]", "", tolower(x))
+  start_name <- normn(stringr::str_match(txt, stringr::regex("^(.*?) drive start at", ignore_case = TRUE))[, 2])
+  name_id <- function(x) {
+    hit <- vapply(seq_len(nrow(teams)), function(k)
+      x %in% normn(c(teams$name[k], if (!is.null(teams$short)) teams$short[k])), logical(1))
+    if (sum(hit) == 1L) teams$team_id[hit] else NA_character_
+  }
+  wrong_start <- rep(FALSE, n)
+  for (i in which(is_start)) {
+    said <- name_id(start_name[i])
+    nxt <- which(is_snap & seq_len(n) > i)[1]
+    wrong_start[i] <- !is.na(said) && !is.na(nxt) && !identical(said, lines$team_id[i]) &&
+      identical(lines$team_id[nxt], lines$team_id[i])
+  }
+
+  # --- safeties ncaa.com's score gives to the team that started the play ---
+  # On a change of possession (a blocked field goal recovered by the
+  # defense, which then fouls in its own end zone: 20251004_1j5p) the safety
+  # is the original offense's. When the running score rises by 2 for the
+  # line's own team and 0 for the other, `ncaa_offense_safety_label` is
+  # appended and the parser credits the 2 points to `pos_team`.
+  off_safety <- rep(FALSE, n)
+  if (any(hs_raw > 0L | vs_raw > 0L)) {
+    for (i in which(stringr::str_detect(txt, "\\bSAFETY\\b") & !stringr::str_detect(txt, ic("NO PLAY")) & !is_try & !is_kickoff)) {
+      # (not kickoffs: there pos_team is already the receiving team, so the
+      # usual -2 credits the kicking team: 20250927_9q5i)
+      own_home <- teams$ncaa_home[match(lines$team_id[i], teams$team_id)]
+      if (is.na(own_home) || i < 2L) next
+      up <- c(hs_raw[i], vs_raw[i]) - c(hs_raw[i - 1L], vs_raw[i - 1L])
+      if ((if (own_home) up[1] else up[2]) == 2L && (if (own_home) up[2] else up[1]) == 0L) off_safety[i] <- TRUE
     }
   }
 
@@ -733,7 +807,17 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     if (is_snap[i]) last_snap <- i
     if (is_kickoff[i]) last_kick <- i
     add(situation[i], if (def_try[i]) paste(txt[i], ncaa_defensive_try_label) else
-      if (safety_np[i]) paste(txt[i], ncaa_safety_label) else txt[i])
+      if (safety_np[i]) paste(txt[i], ncaa_safety_label) else
+        if (off_safety[i]) paste(txt[i], ncaa_offense_safety_label) else txt[i])
+    # a "drive start" line naming the other team than its own id and the
+    # next snap's id (20251004_p4gx: "Chris. Newport drive start at 15:00"
+    # opens Rowan's overtime possession): the raw line is kept and a drive
+    # start for the team that snaps is added after it
+    if (is_start[i] && wrong_start[i]) {
+      nm <- team_name[[lines$team_id[i]]]
+      add(paste0(nm, " at"), paste0(nm, " at"))
+      add(situation[i], paste0(nm, " drive start at. ", ncaa_wrong_start_label))
+    }
     if (as.character(i) %in% names(added)) add("", added[[as.character(i)]])
     changed <- hs[i] != last_hs || vs[i] != last_vs
     if (changed && (i == n || !is_try[i + 1])) {
@@ -760,6 +844,14 @@ ncaa_defensive_try_label <- "[d3ballR: ncaa.com's running score gives these 2 po
 #' (see [score_points()]).
 #' @keywords internal
 ncaa_safety_label <- "[d3ballR: a safety on a foul in the end zone; the play is a no-play but the safety counts]"
+
+#' Label appended to a safety ncaa.com's score gives to the team that started the play
+#' @keywords internal
+ncaa_offense_safety_label <- "[d3ballR: ncaa.com's running score gives this safety to the team that started the play]"
+
+#' Label on a drive start added when ncaa.com's names the wrong team
+#' @keywords internal
+ncaa_wrong_start_label <- "[added by d3ballR: the drive start line before names the other team; this team snaps]"
 
 #' Play text of an extra point added because ncaa.com left it out
 #' @keywords internal
@@ -874,6 +966,11 @@ fetch_ncaa_game <- function(game_id, contests, index) {
   )
   teams$is_home <- if (isTRUE(hit$home_away_flip)) !teams$ncaa_home else teams$ncaa_home
   starts <- stringr::str_match(lines$text, stringr::regex("^(.*?) drive start at", ignore_case = TRUE))[, 2]
+  # Some files tag every line with the other team's teamId (20250927_kqa4:
+  # each "Dubuque drive start" line carries Central's id). When the
+  # drive-start names match ncaa.com's team names the other way round on
+  # most such lines, the ids are swapped back.
+  lines$team_id <- ncaa_unswap_team_ids(lines$team_id, starts, tm)
   teams$name <- vapply(seq_len(nrow(teams)), function(k) {
     s <- starts[!is.na(starts) & lines$team_id == teams$team_id[k]]
     if (length(s)) names(sort(table(s), decreasing = TRUE))[1] else teams$short[k]
