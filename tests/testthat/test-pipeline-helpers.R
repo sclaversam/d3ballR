@@ -166,3 +166,25 @@ test_that("play-text tokens map by yardline vote when no spelling matches", {
   own <- c(Waynesburg = "WAY", Dickinson = "DIC")
   expect_equal(infer_text_team(df, own), c(WU = "Waynesburg", DSON = "Dickinson")[names(infer_text_team(df, own))])
 })
+
+test_that("infer_own_side: plays that settle it decide, losses don't vote", {
+  # A owns AA, B owns BB. A's offense mostly loses ground (sacks), which
+  # would mislead a plain yardline vote.
+  df <- data.frame(
+    pos_team = c("B", "A", "A", "A", "A", "A", "A", "A"),
+    yard_side = c(NA, "AA", "AA", "AA", "AA", "AA", "AA", "AA"),
+    yard_num = c(NA, 25L, 18L, 12L, 7L, 9L, 4L, 4L),
+    down = c(NA, 1L, 2L, 3L, 1L, 2L, 2L, 3L),
+    play_text = c("Kick kickoff 65 yards to the AA0, Touchback.",
+                  "Smith sacked for loss of 7 yards to the AA18.",
+                  "Smith sacked for loss of 6 yards to the AA12.",
+                  "Smith rush for 5 yards loss to the AA7.",
+                  "Smith rush for 2 yards to the AA9.",
+                  "PENALTY AA False Start 5 yards from AA9 to AA4. NO PLAY.",
+                  "Smith pass incomplete.",
+                  "Smith punt 40 yards.")
+  )
+  # one extra row so the pairing has a second team token
+  df <- rbind(df, data.frame(pos_team = "B", yard_side = "BB", yard_num = 30L, down = 1L, play_text = "Doe rush for 3 yards."))
+  expect_equal(infer_own_side(df), c(A = "AA", B = "BB"))
+})

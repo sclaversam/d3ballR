@@ -5,6 +5,27 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Yardline sides: plays that settle it first, then the vote
+
+Decided by Sam (2026-11-05). `infer_own_side()` works out which yardline
+token ("GCP", "GCQ") is each team's own side. It used to rely only on a
+vote: on consecutive snaps by one offense, the yard number goes up on its
+own side. Greensboro at Guilford (`20250906_nidd`) failed that vote's 2-to-1
+safety bar (47 vs 27) because Greensboro was sacked 8 or 9 times; every
+loss of yards votes the wrong way.
+
+Now plays that settle it come first:
+- after a touchback, the next snap is the receiving team's 1st down at its
+  own 25 (kickoff) or 20 (punt);
+- a false start (always on the offense) moves the ball back.
+
+They decide when a game has them (56 of the 58 ncaa.com Centennial games
+do), must agree at least 3 to 1, and must not contradict a decisive vote,
+or the game stops with an error. Without them the vote decides, with
+sacks, losses, kneel-downs and penalty plays left out. Rebuilding the 58
+ncaa.com Centennial games and the 133 d3football games gives identical
+CSVs.
+
 ## Source switched to ncaa.com (Centennial 2025 rebuilt)
 
 Decided by Sam (2026-11-04): d3football's firewall now serves scripts a

@@ -249,10 +249,19 @@ parse_situation <- function(df) {
 #' away from its own goal) and DOWN when it's the opponent's side. Gains
 #' far outnumber losses, so a vote over the whole game is decisive.
 #'
+#' Plays that settle it come first: after a touchback, the next snap is the
+#' receiving team's 1st down at its own 25 (kickoff) or 20 (punt); a false
+#' start (always on the offense) moves the ball back, so the yard number
+#' goes down on the offense's own side and up on the other. When a game has
+#' such plays they decide, and they must agree (at least 3 to 1) and not
+#' contradict a decisive vote. Only without them does the vote decide, and
+#' then plays whose text says the offense lost ground (sacks, losses,
+#' kneel-downs, penalties) are left out of it.
+#'
 #' Scores the two possible pairings (team 1 owns token 1, or team 1 owns
-#' token 2) and keeps the one with more agreeing votes. Stops if the game
-#' doesn't have exactly two teams and two tokens, or if the vote is too
-#' close to trust.
+#' token 2). Stops if the game doesn't have exactly two teams and two
+#' tokens, if the deciding evidence is too close to trust (vote under 2 to
+#' 1), or if the two kinds of evidence disagree.
 #'
 #' @param df Kept rows with `pos_team`, `yard_side`, `yard_num`.
 #' @return Named character vector: names are the two `pos_team` values,
@@ -265,23 +274,57 @@ infer_own_side <- function(df) {
     stop("Expected 2 teams and 2 yardline tokens, got teams: ",
          paste(teams, collapse = " / "), "; tokens: ", paste(tokens, collapse = " / "))
   }
-
   n <- nrow(df)
-  same <- df$pos_team[-1] == df$pos_team[-n] & df$yard_side[-1] == df$yard_side[-n]
-  step <- df$yard_num[-1] - df$yard_num[-n]
-  ok <- same %in% TRUE & !is.na(step) & step != 0
-  team <- df$pos_team[-n][ok]
-  token <- df$yard_side[-n][ok]
-  up <- step[ok] > 0
-
-  # votes for pairing A: teams[1] owns tokens[1], teams[2] owns tokens[2]
-  own_a <- ifelse(team == teams[1], tokens[1], tokens[2])
-  agree_a <- sum((token == own_a) == up)
-  agree_b <- sum((token != own_a) == up)
-  if (max(agree_a, agree_b) < 2 * min(agree_a, agree_b)) {
-    stop("Yardline side vote too close to call (", agree_a, " vs ", agree_b, ").")
+  txt <- if (is.null(df$play_text)) rep("", n) else dplyr::coalesce(df$play_text, "")
+  ic <- function(p) stringr::regex(p, ignore_case = TRUE)
+  # votes for pairing A (teams[1] owns tokens[1]) and B (the swap), from
+  # evidence (team, token, own): "this token is / isn't this team's side"
+  tally <- function(team, token, own) {
+    own_a <- ifelse(team == teams[1], tokens[1], tokens[2])
+    c(a = sum((token == own_a) == own), b = sum((token != own_a) == own))
   }
-  if (agree_a >= agree_b) stats::setNames(tokens, teams) else stats::setNames(rev(tokens), teams)
+  pick <- function(v) if (v[["a"]] >= v[["b"]]) stats::setNames(tokens, teams) else stats::setNames(rev(tokens), teams)
+  nxt <- c(2:n, NA)[seq_len(n)]
+  same_series <- !is.na(nxt) & df$pos_team[nxt] %in% df$pos_team & df$pos_team[nxt] == df$pos_team &
+    !is.na(df$yard_side) & df$yard_side[nxt] %in% df$yard_side & df$yard_side[nxt] == df$yard_side
+  step <- df$yard_num[nxt] - df$yard_num
+
+  # 1. plays that settle it
+  # - a touchback: the next snap is the receiving team's 1st down at its own 25 (kickoff) or 20 (punt)
+  tb <- which(stringr::str_detect(txt, ic("touchback")) & !is.na(nxt))
+  tb <- tb[!is.na(df$yard_side[nxt[tb]]) & df$down[nxt[tb]] %in% 1L & df$yard_num[nxt[tb]] %in% c(20L, 25L) &
+             !is.na(df$pos_team[nxt[tb]])]
+  # - a false start (always on the offense) moves the ball back: the yard
+  #   number goes down on the offense's own side, up on the other side
+  fs <- which(stringr::str_detect(txt, ic("false start")) & stringr::str_detect(txt, ic("NO PLAY")) &
+                same_series & !is.na(step) & step != 0)
+  anchors <- tally(c(df$pos_team[nxt[tb]], df$pos_team[fs]),
+                   c(df$yard_side[nxt[tb]], df$yard_side[fs]),
+                   c(rep(TRUE, length(tb)), step[fs] < 0))
+
+  # 2. the vote: on consecutive snaps by one offense on one token the yard
+  #    number goes up on its own side. Plays whose own text says the offense
+  #    lost ground (sacks, losses, kneel-downs, penalties) are left out.
+  lost <- stringr::str_detect(txt, ic("sacked|\\bloss\\b|kneel|NO PLAY|PENALTY"))
+  ok <- same_series & !is.na(step) & step != 0 & !lost
+  ok[is.na(ok)] <- FALSE
+  vote <- tally(df$pos_team[ok], df$yard_side[ok], step[ok] > 0)
+  decisive <- function(v) max(v) >= 2 * min(v) && max(v) > 0
+
+  if (sum(anchors) > 0) {
+    if (!decisive(anchors) || min(anchors) > 0 && max(anchors) < 3 * min(anchors)) {
+      stop("Yardline side: the plays that settle it disagree (", anchors[["a"]], " vs ", anchors[["b"]], ").")
+    }
+    if (decisive(vote) && (vote[["a"]] > vote[["b"]]) != (anchors[["a"]] > anchors[["b"]])) {
+      stop("Yardline side: the plays that settle it (", anchors[["a"]], " vs ", anchors[["b"]],
+           ") and the yardline vote (", vote[["a"]], " vs ", vote[["b"]], ") disagree.")
+    }
+    return(pick(anchors))
+  }
+  if (!decisive(vote)) {
+    stop("Yardline side vote too close to call (", vote[["a"]], " vs ", vote[["b"]], ").")
+  }
+  pick(vote)
 }
 
 #' Compute yards_to_goal from the yardline and the possessing team's side
