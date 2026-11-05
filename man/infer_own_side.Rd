@@ -23,9 +23,19 @@ away from its own goal) and DOWN when it's the opponent's side. Gains
 far outnumber losses, so a vote over the whole game is decisive.
 }
 \details{
+Plays that settle it come first: after a touchback, the next snap is the
+receiving team's 1st down at its own 25 (kickoff) or 20 (punt); a false
+start (always on the offense) moves the ball back, so the yard number
+goes down on the offense's own side and up on the other. When a game has
+such plays and they agree (at least 3 to 1) they decide, and must not
+contradict a decisive vote. Otherwise (none, or they split) the vote
+decides, with plays whose text says the offense lost ground (sacks,
+losses, kneel-downs, penalties) left out of it. A touchback line that
+also has a penalty doesn't count.
+
 Scores the two possible pairings (team 1 owns token 1, or team 1 owns
-token 2) and keeps the one with more agreeing votes. Stops if the game
-doesn't have exactly two teams and two tokens, or if the vote is too
-close to trust.
+token 2). Stops if the game doesn't have exactly two teams and two
+tokens, if the deciding evidence is too close to trust (vote under 2 to
+1), or if the two kinds of evidence disagree.
 }
 \keyword{internal}

@@ -20,5 +20,7 @@ carries a \code{teamId}), then by play. Each play has \code{playText} (the
 StatCrew text, same wording as d3football's), \code{driveText} (the down,
 distance and yardline \emph{before} the play, e.g. "2 and 9 at 28"),
 \code{homeScore} / \code{visitorScore} (the score \emph{after} the play) and \code{clock}.
+A line identical to the one before it in every field (ncaa.com
+sometimes repeats one) is dropped.
 }
 \keyword{internal}

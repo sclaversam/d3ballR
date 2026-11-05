@@ -5,6 +5,48 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## ncaa.com play table: possession after kickoffs and in overtime, nullified and repeated lines
+
+Fixing the score misses from the first all-D3 batch (2026-11-05, asked by
+Sam). All in `R/ncaa.R`; the parser is unchanged.
+
+- **Drives open after a kickoff, on the game's first snap, and in
+  overtime.** In games that have "drive start" lines, a drive used to open
+  only at such a line or after a snap that can end a possession (punt,
+  turnover, 4th down). Some files have "drive start" lines for only a few
+  drives (Lewis & Clark at Puget Sound, `20250906_pzhf`), or none for the
+  first drive (`20250913_2k0r`), so possession carried over from the
+  previous drive. Now a different team snapping also opens a drive when a
+  kickoff came since the last snap, on the game's first snap, when the
+  previous snap scored a touchdown, and on the first snap of each overtime
+  period (no kickoff there). Fixes `20250906_pzhf`, `20250913_2k0r`,
+  `20250913_c7zf`, and the overtime possessions of `20250913_5ivd`. It also
+  corrects possession in four games that already reconciled: an onside kick
+  recovered by the kicking team (`20250905_0otb`, `20250913_8x3b`, whose
+  first drive had no team), and drives after a kickoff credited to the
+  kicking team (`20250906_dcg5`, `20250913_b286`).
+- **"TOUCHDOWN nullified by penalty" is not a touchdown** when deciding
+  whether ncaa.com dropped an extra point. A kickoff "return 89 yards ...
+  TOUCHDOWN nullified by penalty" right after a touchdown stopped the missing
+  kick from being added (`20250906_8o5p`).
+- **Lines ncaa.com repeats verbatim are dropped** (same text, clock, down and
+  distance and score as the line before). A repeated safety counted twice in
+  `20250904_zik0`. 12 such repeats in 12 games of the batch; in the other 11
+  only `drive_play_number` shifts.
+- The build report counts games whose `score_reconciled` is blank (no points
+  parsed) as not passing, instead of printing "NA of N".
+
+Still not reconciling, all source gaps rather than parser errors:
+- `20250906_hbla` (CWRU 17, Rowan 17): ncaa.com's play-by-play stops at the
+  end of the 3rd quarter; CWRU's last 3 points aren't in it.
+- `20250906_wk1h` (Vermont State Castleton 16, Westfield State 12): the game
+  was called off for storms partway through; the plays give Castleton 14.
+  Left as is.
+- `20250913_5ivd` (Albion 45, Bluffton 39) and `20250913_8l2c` (Western New
+  England 28, Salve Regina 34): no running score and touchdowns with no try
+  line; which tries were good is in ncaa.com's scoring summary, which isn't
+  cached (one request per game).
+
 ## Yardline sides: plays that settle it first, then the vote
 
 Decided by Sam (2026-11-05). `infer_own_side()` works out which yardline

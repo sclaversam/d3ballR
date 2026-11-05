@@ -244,6 +244,8 @@ map_ncaa_contests <- function(season, index, weeks = 1:20, dir = "data-raw/ncaa"
 #' StatCrew text, same wording as d3football's), `driveText` (the down,
 #' distance and yardline *before* the play, e.g. "2 and 9 at 28"),
 #' `homeScore` / `visitorScore` (the score *after* the play) and `clock`.
+#' A line identical to the one before it in every field (ncaa.com
+#' sometimes repeats one) is dropped.
 #'
 #' @param j Parsed JSON from [fetch_ncaa_json()].
 #' @return A data frame: `period`, `team_id`, `clock`, `drive_text`,
@@ -269,7 +271,11 @@ ncaa_lines <- function(j) {
   }
   out <- do.call(rbind.data.frame, rows)
   out$text[is.na(out$text)] <- ""
-  out
+  # ncaa.com sometimes repeats a line verbatim (same text, clock, down and
+  # distance, score); a play can't happen twice, so the copy is dropped
+  key <- do.call(paste, c(out, sep = "\r"))
+  dup <- c(FALSE, key[-1] == key[-nrow(out)]) & nzchar(out$text)
+  out[!dup, , drop = FALSE]
 }
 
 #' Parse ncaa.com's `driveText`
@@ -327,9 +333,11 @@ ncaa_spot_pattern <- "(thrown to|caught at|to the|at the|at|from|to|on) ([A-Z][A
 #'   ("AWAY 7, HOME 0") after each scoring sequence, from ncaa.com's running
 #'   score. A header and a "TEAM drive start at." line are also added when
 #'   a different team snaps: always in games with no "drive start" lines at
-#'   all (the tournament format), otherwise only right after a snap that can
-#'   end a possession (ncaa.com's `teamId` is wrong on some single lines, so
-#'   it isn't trusted mid-drive).
+#'   all (the tournament format), otherwise only on the game's first snap,
+#'   after a kickoff, on the first snap of an overtime period, or right after
+#'   a snap that can end a possession (a punt, turnover, 4th down or
+#'   touchdown); ncaa.com's `teamId` is wrong on some single lines, so it
+#'   isn't trusted mid-drive.
 #' - ncaa.com leaves out some extra-point kicks. When a touchdown is
 #'   followed by no try line before the next kickoff or snap, and ncaa.com's
 #'   score has risen by exactly 1 by then, a line "kick attempt good [...]"
@@ -493,7 +501,10 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   # for the scoring team only: a good kick whose line ncaa.com dropped (or
   # a re-kick after a "NO PLAY" try). The added line goes after the
   # touchdown's last try line, and the running score is raised from there.
-  is_td <- stringr::str_detect(txt, "\\bTOUCHDOWN\\b") & !stringr::str_detect(txt, stringr::regex("NO PLAY", ignore_case = TRUE))
+  # "TOUCHDOWN nullified by penalty" is not a touchdown
+  live_td <- function(x) stringr::str_detect(x, "\\bTOUCHDOWN\\b(?!\\s+nullified)") &
+    !stringr::str_detect(x, stringr::regex("NO PLAY", ignore_case = TRUE))
+  is_td <- live_td(txt)
   ic <- function(p) stringr::regex(p, ignore_case = TRUE)
   try_pts <- ifelse(is_try & !stringr::str_detect(txt, ic("NO PLAY")) &
                       stringr::str_detect(txt, ic("\\b(good|successful)\\b")) &
@@ -520,7 +531,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     if (length(ti) != 1L) next
     up <- c(hs[j] - hs[i], vs[j] - vs[i])
     # the next kickoff may itself be returned for a touchdown by the other team
-    if (stringr::str_detect(txt[j], "\\bTOUCHDOWN\\b")) {
+    if (live_td(txt[j])) {
       if (up[3L - ti] >= 6L) up[3L - ti] <- up[3L - ti] - 6L else next
     }
     if (up[3L - ti] != 0L || up[ti] - sum(try_pts[tries]) != 1L) next
@@ -575,9 +586,11 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   # goal try, a punt, an interception or fumble), where ncaa.com sometimes
   # has no "drive start" line (a blocked field goal recovered by the defense)
   last_snap <- NA_integer_
+  last_kick <- NA_integer_
   ends_possession <- function(k) {
     !is.na(k) && (dt$down[k] %in% 4L || stringr::str_detect(
-      txt[k], stringr::regex("field goal|\\bpunt\\b|intercepted|fumble|blocked", ignore_case = TRUE)))
+      txt[k], stringr::regex("field goal|\\bpunt\\b|intercepted|fumble|blocked", ignore_case = TRUE)) ||
+      live_td(txt[k]))
   }
   cur_team <- NA_character_
   last_period <- 0L
@@ -590,7 +603,14 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     }
     switch_team <- is_snap[i] && !identical(lines$team_id[i], cur_team) &&
       !stringr::str_detect(txt[i], stringr::regex("\\bpunt\\b", ignore_case = TRUE))
-    new_drive <- is_start[i] || (switch_team && (!has_starts || ends_possession(last_snap)))
+    # a kickoff since the last snap also hands the ball over (some files
+    # have "drive start" lines for only a few drives), and so does the
+    # game's first snap
+    kicked <- !is.na(last_kick) && (is.na(last_snap) || last_kick > last_snap)
+    # each overtime period starts a new possession, with no kickoff
+    new_ot <- lines$period[i] >= 5L && (is.na(last_snap) || lines$period[last_snap] != lines$period[i])
+    new_drive <- is_start[i] ||
+      (switch_team && (!has_starts || is.na(cur_team) || kicked || new_ot || ends_possession(last_snap)))
     if (new_drive && !is.na(lines$team_id[i])) {
       nm <- team_name[[lines$team_id[i]]]
       clk <- stringr::str_match(txt[i], "drive start at (\\d{1,2}:\\d{2})")[, 2]
@@ -600,6 +620,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
       cur_team <- lines$team_id[i]
     }
     if (is_snap[i]) last_snap <- i
+    if (is_kickoff[i]) last_kick <- i
     add(situation[i], txt[i])
     if (as.character(i) %in% names(added)) add("", added[[as.character(i)]])
     changed <- hs[i] != last_hs || vs[i] != last_vs

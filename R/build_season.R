@@ -194,8 +194,12 @@ write_build_report <- function(season, teams, games, built, conf, check_dir, sou
     "## Score reconciliation", "",
     paste0("Points by team from `score_pts` (positive to `pos_team`, negative to `def_pos_team`) vs the final score (",
            if (source == "ncaa") "ncaa.com scoreboard" else "boxscore line score", "). Per-game results: `score_reconciliation.csv`."), "",
-    paste0("**", sum(rec$score_reconciled), " of ", nrow(rec), " built games pass.** Failing games:"), "",
-    md_table(rec[!rec$score_reconciled, , drop = FALSE]), "",
+    # NA (no points could be parsed) counts as not passing
+    paste0("**", sum(rec$score_reconciled %in% TRUE), " of ", nrow(rec), " built games pass.**",
+           if (any(is.na(rec$score_reconciled))) paste0(" ", sum(is.na(rec$score_reconciled)),
+             " could not be checked (blank `score_reconciled`: no points parsed for a team).") else "",
+           " Failing games:"), "",
+    md_table(rec[!(rec$score_reconciled %in% TRUE), , drop = FALSE]), "",
     if (source == "ncaa") "## Conference game: same conference in the regular season vs d3football's \"*\" marker" else
       "## Conference game: d3's \"*\" marker vs shared membership", "",
     paste0(if (nrow(cc)) sum(cc$agree, na.rm = TRUE) else 0, " of ", sum(!is.na(cc$agree)),

@@ -131,3 +131,13 @@ test_that("the conference crosswalk covers every D3 conference tag with a unique
   expect_false(anyDuplicated(tab$conference_code) > 0)
   expect_true(all(c("centennial", "wiac", "njac", "middle-atlantic") %in% tab$ncaa_seo))
 })
+
+test_that("ncaa_lines drops a line ncaa.com repeated verbatim", {
+  pl <- function(t) list(clock = "06:36", driveText = "4 and 14 at 16", homeScore = "0", visitorScore = "0", playText = t)
+  j <- list(periods = list(list(periodNumber = "2", playbyplayStats = list(
+    list(teamId = "543", plays = list(pl("rush for 16 yards loss to the TLU00. SAFETY"),
+                                      pl("rush for 16 yards loss to the TLU00. SAFETY"),
+                                      pl("kickoff 62 yards")))))))
+  l <- ncaa_lines(j)
+  expect_equal(l$text, c("rush for 16 yards loss to the TLU00. SAFETY", "kickoff 62 yards"))
+})
