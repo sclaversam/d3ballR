@@ -20,9 +20,12 @@ Now plays that settle it come first:
 - a false start (always on the offense) moves the ball back.
 
 They decide when a game has them (56 of the 58 ncaa.com Centennial games
-do), must agree at least 3 to 1, and must not contradict a decisive vote,
-or the game stops with an error. Without them the vote decides, with
-sacks, losses, kneel-downs and penalty plays left out. Rebuilding the 58
+do) and they agree at least 3 to 1; a decisive vote that contradicts them
+stops the game with an error. When there are none, or they split (games
+where ncaa.com credits stretches of plays to the wrong team, such as
+`20250906_pzhf` and `20250913_c7zf`), the vote decides, with sacks,
+losses, kneel-downs and penalty plays left out. A touchback on a line that
+also has a penalty (running into the kicker) doesn't count. Rebuilding the 58
 ncaa.com Centennial games and the 133 d3football games gives identical
 CSVs.
 

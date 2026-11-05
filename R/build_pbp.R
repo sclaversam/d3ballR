@@ -253,10 +253,11 @@ parse_situation <- function(df) {
 #' receiving team's 1st down at its own 25 (kickoff) or 20 (punt); a false
 #' start (always on the offense) moves the ball back, so the yard number
 #' goes down on the offense's own side and up on the other. When a game has
-#' such plays they decide, and they must agree (at least 3 to 1) and not
-#' contradict a decisive vote. Only without them does the vote decide, and
-#' then plays whose text says the offense lost ground (sacks, losses,
-#' kneel-downs, penalties) are left out of it.
+#' such plays and they agree (at least 3 to 1) they decide, and must not
+#' contradict a decisive vote. Otherwise (none, or they split) the vote
+#' decides, with plays whose text says the offense lost ground (sacks,
+#' losses, kneel-downs, penalties) left out of it. A touchback line that
+#' also has a penalty doesn't count.
 #'
 #' Scores the two possible pairings (team 1 owns token 1, or team 1 owns
 #' token 2). Stops if the game doesn't have exactly two teams and two
@@ -291,7 +292,9 @@ infer_own_side <- function(df) {
 
   # 1. plays that settle it
   # - a touchback: the next snap is the receiving team's 1st down at its own 25 (kickoff) or 20 (punt)
-  tb <- which(stringr::str_detect(txt, ic("touchback")) & !is.na(nxt))
+  # (not when the same line has a penalty, e.g. running into the kicker
+  # gives the ball back to the punting team)
+  tb <- which(stringr::str_detect(txt, ic("touchback")) & !stringr::str_detect(txt, ic("PENALTY")) & !is.na(nxt))
   tb <- tb[!is.na(df$yard_side[nxt[tb]]) & df$down[nxt[tb]] %in% 1L & df$yard_num[nxt[tb]] %in% c(20L, 25L) &
              !is.na(df$pos_team[nxt[tb]])]
   # - a false start (always on the offense) moves the ball back: the yard
@@ -311,10 +314,10 @@ infer_own_side <- function(df) {
   vote <- tally(df$pos_team[ok], df$yard_side[ok], step[ok] > 0)
   decisive <- function(v) max(v) >= 2 * min(v) && max(v) > 0
 
-  if (sum(anchors) > 0) {
-    if (!decisive(anchors) || min(anchors) > 0 && max(anchors) < 3 * min(anchors)) {
-      stop("Yardline side: the plays that settle it disagree (", anchors[["a"]], " vs ", anchors[["b"]], ").")
-    }
+  # the plays that settle it decide when they agree (at least 3 to 1);
+  # when they split, the vote decides
+  settled <- sum(anchors) > 0 && decisive(anchors) && (min(anchors) == 0 || max(anchors) >= 3 * min(anchors))
+  if (settled) {
     if (decisive(vote) && (vote[["a"]] > vote[["b"]]) != (anchors[["a"]] > anchors[["b"]])) {
       stop("Yardline side: the plays that settle it (", anchors[["a"]], " vs ", anchors[["b"]],
            ") and the yardline vote (", vote[["a"]], " vs ", vote[["b"]], ") disagree.")
