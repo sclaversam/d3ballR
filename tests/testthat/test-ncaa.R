@@ -172,3 +172,35 @@ test_that("a try whose points ncaa.com gives to the defense is labelled a defens
   expect_true(grepl("^Johnson,Jaylen rush attempt Successful\\.", hit))
   expect_true(grepl("defensive two-point conversion", hit, fixed = TRUE))
 })
+
+test_that("a SAFETY marked NO PLAY: running score, then scoring summary, then the safety kick decide", {
+  mk <- function(kick_dt, vis = c(0L, 2L, 2L)) data.frame(
+    period = 1L, team_id = "G", clock = NA_character_,
+    drive_text = c("4 and 7 at 9", "4 and 7 at 9", kick_dt),
+    home_score = c(0L, 0L, 0L), visitor_score = vis,
+    text = c("Shotgun Romano,Caleb pass incomplete short left thrown to GEN14.",
+             "Baker,Evan pass incomplete short middle to Baker,Evan thrown to GEN00. Shenandoah SAFETY, clock 13:50 PENALTY GEN Illegal Forward Pass (Baker,Evan). NO PLAY.",
+             "Reitler,Ryan kickoff 52 yards to the SHE28 Walker,Roge't return 12 yards to the SHE40."))
+  teams <- data.frame(team_id = c("S", "G"), name = c("Shenandoah", "Geneva"), ncaa_home = c(FALSE, TRUE))
+  labelled <- function(lines, scoring = NULL) {
+    tab <- ncaa_play_table(lines, teams, scoring = scoring)
+    grepl(ncaa_safety_label, tab$play[grepl("Illegal Forward Pass", tab$play)], fixed = TRUE)
+  }
+  # 1. running score: decides on its own
+  expect_true(labelled(mk("1 and 10 at 35", vis = c(0L, 2L, 2L))))
+  expect_false(labelled(mk("1 and 10 at 20", vis = c(1L, 1L, 1L))))
+  # 2. no running score: the scoring summary's safety at the same period and clock
+  none <- c(0L, 0L, 0L)
+  summ <- data.frame(period = 1L, quarter = 1L, team_id = "S", time = "13:50", type = "", text = "Team safety.")
+  expect_true(labelled(mk("1 and 10 at 35", vis = none), scoring = summ))
+  # 3. last resort: the safety kick from the 20
+  expect_true(labelled(mk("1 and 10 at 20", vis = none)))
+  expect_false(labelled(mk("1 and 10 at 35", vis = none)))
+})
+
+test_that("ncaa_period_number reads the period title", {
+  expect_equal(ncaa_period_number("3rd Quarter", 2), 3L)
+  expect_equal(ncaa_period_number("OT", 4), 5L)
+  expect_equal(ncaa_period_number("2OT", 5), 6L)
+  expect_equal(ncaa_period_number(NULL, 2), 2L)
+})

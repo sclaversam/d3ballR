@@ -5,6 +5,29 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Safeties on a foul in the end zone count despite "NO PLAY"
+
+Decided by Sam (2026-11-05). Shenandoah at Geneva (`20250913_ss2d`):
+"Baker,Evan pass incomplete ... thrown to GEN00. Shenandoah SAFETY, clock
+13:50 PENALTY GEN Illegal Forward Pass (Baker,Evan). NO PLAY." An illegal
+forward pass from the passer's own end zone is a safety; "NO PLAY" only
+wipes out the pass. ncaa.com's running score gives Shenandoah 2 on that line
+and Geneva free-kicks from its 20 next.
+
+Rule (`ncaa_play_table()`): a line with both "SAFETY" and "NO PLAY" gets
+`ncaa_safety_label` appended, and the parser scores it as a safety (-2)
+despite the no-play (`labelled_safety()`), when:
+1. the game has a running score: it rose by 2 for the defense and 0 for the
+   offense on that line (it alone decides);
+2. no running score: the scoring summary has a safety at the same quarter
+   and clock;
+3. last resort: the next kickoff, with no snap in between, is from the 20.
+
+`penalty_play_text` leaves d3ballR's labels out. `ncaa_scoring_entries()`
+gains `quarter`, the real period read from the summary's title (`period`
+stays the position in the list, which differs when a quarter had no
+scoring). Only `20250913_ss2d` changes; it now reconciles (29-28).
+
 ## Defensive conversions read from ncaa.com's running score
 
 Decided with Sam (2026-11-05). In Lake Forest at Illinois College

@@ -113,6 +113,7 @@ parse_penalties <- function(df, text_team) {
   df$penalized_team <- team
   df$penalty_no_play <- is_no_play(txt)
   df$penalty_declined <- ifelse(flag, declined %in% TRUE, NA)
-  df$penalty_play_text <- clause
+  # d3ballR's own labels ("[d3ballR: ...]") aren't part of the penalty
+  df$penalty_play_text <- stringr::str_trim(stringr::str_remove(clause, "\\s*\\[d3ballR:[^]]*\\]\\s*$"))
   df
 }

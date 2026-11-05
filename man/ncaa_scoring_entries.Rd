@@ -11,7 +11,8 @@ ncaa_scoring_entries(j)
 }
 \value{
 A data frame: \code{period} (1, 2, ... in the summary's order),
-\code{team_id}, \code{time} ("MM:SS", blank on tries), \code{type} ("TD", "XP",
+\code{quarter} (the real period, from the title: 1-4, OT = 5, 2OT = 6;
+differs from \code{period} when a quarter had no scoring), \code{team_id}, \code{time} ("MM:SS", blank on tries), \code{type} ("TD", "XP",
 "TPC", "FG", ...), \code{text}. Only good tries are listed.
 }
 \description{

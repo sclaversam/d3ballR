@@ -45,8 +45,17 @@ score_points <- function(kept) {
     two_good ~ 2L,
     TRUE ~ 0L
   )
-  ifelse(kept$penalty_no_play, 0L, pts)
+  # a safety on a foul in the end zone is scored although the play is a
+  # no-play (labelled by ncaa_play_table())
+  ifelse(kept$penalty_no_play & !labelled_safety(txt), 0L, pts)
 }
+
+#' Rows labelled as a safety on a foul in the end zone
+#'
+#' See [ncaa_safety_label]. These are no-play rows whose safety counts.
+#' @param txt Play text.
+#' @keywords internal
+labelled_safety <- function(txt) stringr::str_detect(txt, stringr::fixed(ncaa_safety_label))
 
 #' Which team scored a touchdown, and whether it came on a return
 #'

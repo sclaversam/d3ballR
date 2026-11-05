@@ -596,6 +596,8 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
   kept <- parse_penalties(kept, text_team)
   kept$yards_gained <- parse_yards_gained(kept$play_text, kept$play_type, kept$penalty_no_play)
   kept <- parse_outcome_flags(kept, text_team)
+  # a labelled safety on a foul in the end zone counts despite "NO PLAY"
+  kept$safety[labelled_safety(kept$play_text)] <- TRUE
   kept <- assign_drives(kept)
 
   # Tier 1 columns

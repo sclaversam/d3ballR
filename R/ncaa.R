@@ -575,6 +575,36 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   }
   # a defensive try earns the scoring team nothing
   try_pts[def_try] <- 0L
+  # A safety the text also marks "NO PLAY": a foul by the offense in its own
+  # end zone (20250913_ss2d: illegal forward pass from the end zone) is a
+  # safety, and "NO PLAY" only wipes out the pass. Decided by Sam
+  # (2026-11-05): ncaa.com's running score decides when the game has one (2
+  # for the defense on that line, 0 for the offense); without one, a safety
+  # entry in the scoring summary at the same period and clock; as a last
+  # resort, the next kickoff (no snap in between) being the safety kick from
+  # the 20. Such lines get `ncaa_safety_label` appended.
+  safety_np <- rep(FALSE, n)
+  cand <- which(stringr::str_detect(txt, "\\bSAFETY\\b") & stringr::str_detect(txt, ic("\\bNO PLAY\\b")))
+  for (i in cand) {
+    if (any(hs_raw > 0L | vs_raw > 0L)) {
+      off_home <- teams$ncaa_home[match(lines$team_id[i], teams$team_id)]
+      if (is.na(off_home)) next
+      prev <- if (i > 1L) c(hs_raw[i - 1L], vs_raw[i - 1L]) else c(0L, 0L)
+      up <- c(hs_raw[i], vs_raw[i]) - prev
+      safety_np[i] <- (if (off_home) up[2] else up[1]) == 2L && (if (off_home) up[1] else up[2]) == 0L
+      next
+    }
+    clk <- dplyr::coalesce(stringr::str_match(txt[i], "clock (\\d{1,2}:\\d{2})")[, 2], lines$clock[i])
+    if (!is.null(scoring) && nrow(scoring)) {
+      norm <- function(x) sub("^0", "", x)
+      q <- if (is.null(scoring$quarter)) scoring$period else scoring$quarter
+      hit <- q == lines$period[i] & !is.na(clk) & norm(scoring$time) == norm(clk) &
+        stringr::str_detect(paste(scoring$type, scoring$text), ic("safety|\\bSF\\b"))
+      if (any(hit)) { safety_np[i] <- TRUE; next }
+    }
+    k <- which(is_kickoff & seq_len(n) > i)[1]
+    if (!is.na(k) && !any(is_snap[seq_len(n) > i & seq_len(n) < k]) && dt$yard[k] %in% 20L) safety_np[i] <- TRUE
+  }
   action <- which(is_kickoff)
   # the rows to add, keyed by the row they follow
   added <- character()
@@ -689,7 +719,8 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     }
     if (is_snap[i]) last_snap <- i
     if (is_kickoff[i]) last_kick <- i
-    add(situation[i], if (def_try[i]) paste(txt[i], ncaa_defensive_try_label) else txt[i])
+    add(situation[i], if (def_try[i]) paste(txt[i], ncaa_defensive_try_label) else
+      if (safety_np[i]) paste(txt[i], ncaa_safety_label) else txt[i])
     if (as.character(i) %in% names(added)) add("", added[[as.character(i)]])
     changed <- hs[i] != last_hs || vs[i] != last_vs
     if (changed && (i == n || !is_try[i + 1])) {
@@ -707,6 +738,15 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
 #' defensive two-point conversion" (see [score_points()]).
 #' @keywords internal
 ncaa_defensive_try_label <- "[d3ballR: ncaa.com's running score gives these 2 points to the defense, so this try was returned by the defense for a defensive two-point conversion]"
+
+#' Label appended to a "SAFETY ... NO PLAY" line that was a safety
+#'
+#' A foul by the offense in its own end zone is a safety; the stat crew marks
+#' the play "NO PLAY" because the play itself doesn't count. The parser
+#' scores a row carrying this label as a safety even though it is a no-play
+#' (see [score_points()]).
+#' @keywords internal
+ncaa_safety_label <- "[d3ballR: a safety on a foul in the end zone; the play is a no-play but the safety counts]"
 
 #' Play text of an extra point added because ncaa.com left it out
 #' @keywords internal
@@ -730,22 +770,42 @@ ncaa_added_two_point_text <- "two-point attempt good [added by d3ballR: ncaa.com
 #'
 #' @param j Parsed JSON of `/game/{contest}/scoring-summary`.
 #' @return A data frame: `period` (1, 2, ... in the summary's order),
-#'   `team_id`, `time` ("MM:SS", blank on tries), `type` ("TD", "XP",
+#'   `quarter` (the real period, from the title: 1-4, OT = 5, 2OT = 6;
+#'   differs from `period` when a quarter had no scoring), `team_id`, `time` ("MM:SS", blank on tries), `type` ("TD", "XP",
 #'   "TPC", "FG", ...), `text`. Only good tries are listed.
 #' @keywords internal
 ncaa_scoring_entries <- function(j) {
   val <- function(x) if (is.null(x)) NA_character_ else as.character(x)
   rows <- list()
   for (p in seq_along(j$periods)) {
+    # `period` is the position in the summary; `quarter` is read from the
+    # title ("3rd Quarter", "OT", "2OT"). They differ when a quarter had no
+    # scoring (20250913_oc57 goes 1st, 3rd, 4th, OT).
+    qtr <- ncaa_period_number(j$periods[[p]]$title, p)
     for (e in j$periods[[p]]$summary) {
       rows[[length(rows) + 1]] <- data.frame(
-        period = p, team_id = val(e$teamId), time = dplyr::coalesce(val(e$time), ""),
+        period = p, quarter = qtr, team_id = val(e$teamId), time = dplyr::coalesce(val(e$time), ""),
         type = val(e$scoreType), text = dplyr::coalesce(val(e$scoreText), ""))
     }
   }
-  if (!length(rows)) return(data.frame(period = integer(), team_id = character(), time = character(),
+  if (!length(rows)) return(data.frame(period = integer(), quarter = integer(), team_id = character(), time = character(),
                                       type = character(), text = character()))
   do.call(rbind, rows)
+}
+
+#' Period number from an ncaa.com period title
+#'
+#' "1st Quarter" .. "4th Quarter" give 1-4, "OT" 5, "2OT" 6, and so on.
+#' @param title Period title.
+#' @param fallback Number to use when the title can't be read.
+#' @keywords internal
+ncaa_period_number <- function(title, fallback) {
+  t <- if (is.null(title)) "" else as.character(title)
+  q <- suppressWarnings(as.integer(stringr::str_match(t, "^(\\d)(?:st|nd|rd|th) Quarter")[, 2]))
+  if (!is.na(q)) return(q)
+  ot <- stringr::str_match(t, "^(\\d*)\\s*OT\\b")
+  if (!is.na(ot[, 1])) return(4L + if (nzchar(ot[, 2])) as.integer(ot[, 2]) else 1L)
+  as.integer(fallback)
 }
 
 #' Which yardline token is each team's own side (ncaa.com lines)
