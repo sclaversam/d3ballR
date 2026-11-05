@@ -323,14 +323,301 @@
 "20250920_yw0g","2025-09-20","regular","Minnesota-Morris","Crown","UMAC","UMAC",TRUE,TRUE,,
 "20250920_yyz1","2025-09-20","regular","St. John Fisher","Rochester","Empire 8","Liberty League",FALSE,FALSE,,
 "20250920_zhnm","2025-09-20","regular","Elmhurst","Illinois Wesleyan","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20250927_03mt","2025-09-27","regular","Springfield","MIT","NEWMAC","NEWMAC",TRUE,TRUE,TRUE,TRUE
+"20250927_08c9","2025-09-27","regular","Wesleyan","Bates","NESCAC","NESCAC",TRUE,TRUE,,
+"20250927_0bun","2025-09-27","regular","Mary Hardin-Baylor","Mars Hill","American Southwest Conference",,FALSE,FALSE,,
+"20250927_0itn","2025-09-27","regular","Eastern","King's","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,TRUE,TRUE
+"20250927_0kna","2025-09-27","regular","New England College","Nichols","Conference of New England","Conference of New England",TRUE,TRUE,,
+"20250927_19x4","2025-09-27","regular","Cal Lutheran","Redlands","SCIAC","SCIAC",TRUE,TRUE,,
+"20250927_1j5p","2025-09-27","regular","Luther","Nebraska Wesleyan","Midwest Conference","American Rivers Conference",FALSE,FALSE,,
+"20250927_1l6g","2025-09-27","regular","Coe","Wartburg","American Rivers Conference","American Rivers Conference",TRUE,TRUE,,
+"20250927_3kfs","2025-09-27","regular","Mass-Dartmouth","Anna Maria","MASCAC",,FALSE,FALSE,,
+"20250927_3u3j","2025-09-27","regular","John Carroll","Kenyon","NCAC","NCAC",TRUE,TRUE,TRUE,TRUE
+"20250927_4d0z","2025-09-27","regular","Alma","Hope","MIAA","MIAA",TRUE,TRUE,,
+"20250927_4g3r","2025-09-27","regular","Buffalo State","Hilbert","Liberty League","Liberty League",TRUE,TRUE,,
+"20250927_4kd8","2025-09-27","regular","Lebanon Valley","Delaware Valley","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,TRUE,TRUE
+"20250927_4w65","2025-09-27","regular","Gustavus Adolphus","Concordia-Moorhead","MIAC","MIAC",TRUE,TRUE,,
+"20250927_5j4f","2025-09-27","regular","Cortland","Morrisville State","Empire 8","Empire 8",TRUE,TRUE,,
+"20250927_6app","2025-09-27","regular","Endicott","Husson","Conference of New England","Conference of New England",TRUE,TRUE,TRUE,TRUE
+"20250927_6ez2","2025-09-27","regular","Mount Union","Baldwin Wallace","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,TRUE,TRUE
+"20250927_6qv6","2025-09-27","regular","Hiram","St. Vincent","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
+"20250927_6vhe","2025-09-27","regular","Macalester","St. Scholastica","MIAC","MIAC",TRUE,TRUE,,
+"20250927_6zcv","2025-09-27","regular","Susquehanna","Christopher Newport","Landmark Conference","NJAC",FALSE,FALSE,FALSE,TRUE
+"20250927_71uh","2025-09-27","regular","William Paterson","Moravian","NJAC","Landmark Conference",FALSE,FALSE,FALSE,TRUE
+"20250927_7aif","2025-09-27","regular","Hartwick","Brockport","Empire 8","Empire 8",TRUE,TRUE,,
+"20250927_9g2q","2025-09-27","regular","Rhodes","Hendrix","Southern Athletic Association","SCAC",FALSE,FALSE,,
+"20250927_9kaf","2025-09-27","regular","Westminster (Mo.)","Lyon","UMAC","SCAC",FALSE,FALSE,,
+"20250927_9q5i","2025-09-27","regular","Waynesburg","Thiel","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,TRUE,TRUE
+"20250927_9sle","2025-09-27","regular","Trinity (Conn.)","Williams","NESCAC","NESCAC",TRUE,TRUE,,
+"20250927_a10w","2025-09-27","regular","Augsburg","St. John's","MIAC","MIAC",TRUE,TRUE,,
+"20250927_amrj","2025-09-27","regular","Tufts","Amherst","NESCAC","NESCAC",TRUE,TRUE,,
+"20250927_ar7z","2025-09-27","regular","Salisbury","Catholic","NJAC","Landmark Conference",FALSE,FALSE,FALSE,TRUE
+"20250927_b1ua","2025-09-27","regular","Alfred State","Utica","Empire 8","Empire 8",TRUE,TRUE,,
+"20250927_bvwf","2025-09-27","regular","Coast Guard","WPI","NEWMAC","NEWMAC",TRUE,TRUE,,
+"20250927_clhh","2025-09-27","regular","St. Lawrence","Union","Liberty League","Liberty League",TRUE,TRUE,TRUE,TRUE
+"20250927_cnfi","2025-09-27","regular","Western New England","University of New England","Conference of New England","Conference of New England",TRUE,TRUE,,
+"20250927_dz2s","2025-09-27","regular","Bridgewater","Averett","ODAC","ODAC",TRUE,TRUE,,
+"20250927_e0ro","2025-09-27","regular","Gallaudet","Roanoke","SCAC","ODAC",FALSE,FALSE,,
+"20250927_egrs","2025-09-27","regular","Millikin","Augustana","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20250927_eir7","2025-09-27","regular","Marietta","Capital","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
+"20250927_ezew","2025-09-27","regular","Bridgewater State","Framingham State","MASCAC","MASCAC",TRUE,TRUE,,
+"20250927_f2rp","2025-09-27","regular","Trine","Albion","MIAA","MIAA",TRUE,TRUE,,
+"20250927_faof","2025-09-27","regular","Simpson","Buena Vista","American Rivers Conference","American Rivers Conference",TRUE,TRUE,,
+"20250927_fbeo","2025-09-27","regular","East Texas Baptist","Texas Lutheran","American Southwest Conference","SCAC",FALSE,FALSE,,
+"20250927_fjhh","2025-09-27","regular","Wilkes","Montclair State","Landmark Conference","NJAC",FALSE,FALSE,FALSE,TRUE
+"20250927_g10s","2025-09-27","regular","Lakeland","Rockford","NACC","NACC",TRUE,TRUE,,
+"20250927_gn4g","2025-09-27","regular","Carroll","Wheaton (Ill.)","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20250927_hr5v","2025-09-27","regular","Concordia-Chicago","Wisconsin Lutheran","NACC","NACC",TRUE,TRUE,,
+"20250927_hrnr","2025-09-27","regular","Denison","Wabash","NCAC","NCAC",TRUE,TRUE,,
+"20250927_i73g","2025-09-27","regular","Widener","Albright","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,,
+"20250927_i8ac","2025-09-27","regular","Pikeville","Maryville (Tenn.)",,"Southern Athletic Association",FALSE,FALSE,,
+"20250927_jqwj","2025-09-27","regular","DePauw","Wittenberg","NCAC","NCAC",TRUE,TRUE,,
+"20250927_jx36","2025-09-27","regular","Stevenson","FDU-Florham","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,,
+"20250927_k6f9","2025-09-27","regular","Illinois Wesleyan","Carthage","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20250927_kqa4","2025-09-27","regular","Dubuque","Central","American Rivers Conference","American Rivers Conference",TRUE,TRUE,,
+"20250927_ky12","2025-09-27","regular","St. Olaf","Carleton","MIAC","MIAC",TRUE,TRUE,,
+"20250927_l291","2025-09-27","regular","Alfred","St. John Fisher","Empire 8","Empire 8",TRUE,TRUE,,
+"20250927_l54d","2025-09-27","regular","Worcester State","Westfield State","MASCAC","MASCAC",TRUE,TRUE,,
+"20250927_lme8","2025-09-27","regular","Rochester","RPI","Liberty League","Liberty League",TRUE,TRUE,,
+"20250927_mren","2025-09-27","regular","Kalamazoo","Calvin","MIAA","MIAA",TRUE,TRUE,,
+"20250927_mzk1","2025-09-27","regular","Hobart","Ithaca","Liberty League","Liberty League",TRUE,TRUE,TRUE,TRUE
+"20250927_n5yi","2025-09-27","regular","Claremont-Mudd-Scripps","Pomona-Pitzer","SCIAC","SCIAC",TRUE,TRUE,,
+"20250927_ncsj","2025-09-27","regular","SUNY-Maritime","Salve Regina","NEWMAC","NEWMAC",TRUE,TRUE,,
+"20250927_ngba","2025-09-27","regular","Massachusetts Maritime","Plymouth State","MASCAC","MASCAC",TRUE,TRUE,,
+"20250927_nk0h","2025-09-27","regular","La Verne","Chapman","SCIAC","SCIAC",TRUE,TRUE,,
+"20250927_noe8","2025-09-27","regular","Washington and Jefferson","Grove City","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
+"20250927_nuea","2025-09-27","regular","Benedictine","Concordia (Wis.)","NACC","NACC",TRUE,TRUE,,
+"20250927_nz64","2025-09-27","regular","Dean","Curry","MASCAC","Conference of New England",FALSE,FALSE,,
+"20250927_oplb","2025-09-27","regular","Ohio Northern","Wilmington","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
+"20250927_orwo","2025-09-27","regular","Apprentice","Methodist",,"USA South",FALSE,FALSE,,
+"20250927_p3f2","2025-09-27","regular","Elmhurst","North Park","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20250927_pqjf","2025-09-27","regular","Adrian","Olivet","MIAA","MIAA",TRUE,TRUE,,
+"20250927_pu6m","2025-09-27","regular","Hampden-Sydney","Guilford","ODAC","ODAC",TRUE,TRUE,,
+"20250927_rg6z","2025-09-27","regular","Bowdoin","Hamilton","NESCAC","NESCAC",TRUE,TRUE,,
+"20250927_rv66","2025-09-27","regular","Case Western Reserve","Bethany","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
+"20250927_s6dy","2025-09-27","regular","Merchant Marine","Norwich","NEWMAC","NEWMAC",TRUE,TRUE,,
+"20250927_st6a","2025-09-27","regular","Middlebury","Colby","NESCAC","NESCAC",TRUE,TRUE,,
+"20250927_swcu","2025-09-27","regular","Washington and Lee","Randolph-Macon","ODAC","ODAC",TRUE,TRUE,TRUE,TRUE
+"20250927_ty65","2025-09-27","regular","Aurora","Eureka","NACC","NACC",TRUE,TRUE,,
+"20250927_ubam","2025-09-27","regular","North Central (Ill.)","Washington U.","College Conference of Illinois and Wisconsin","NCAC",FALSE,FALSE,,
+"20250927_vlh0","2025-09-27","regular","Alvernia","Misericordia","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,TRUE,TRUE
+"20250927_wpcf","2025-09-27","regular","Geneva","Allegheny","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
+"20250927_wr0w","2025-09-27","regular","Western Connecticut","Kean","Landmark Conference","NJAC",FALSE,FALSE,FALSE,TRUE
+"20250927_wvvq","2025-09-27","regular","Bethel","Hamline","MIAC","MIAC",TRUE,TRUE,,
+"20250927_y144","2025-09-27","regular","Muskingum","Otterbein","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
+"20250927_y56g","2025-09-27","regular","Rowan","Lycoming","NJAC","Landmark Conference",FALSE,FALSE,FALSE,TRUE
+"20250927_za9q","2025-09-27","regular","Howard Payne","McMurry","American Southwest Conference","American Southwest Conference",TRUE,TRUE,,
+"20250927_zne4","2025-09-27","regular","Juniata","TCNJ","Landmark Conference","NJAC",FALSE,FALSE,FALSE,TRUE
+"20250927_zvzz","2025-09-27","regular","Wooster","Oberlin","NCAC","NCAC",TRUE,TRUE,,
+"20251003_ktys","2025-10-03","regular","Massachusetts Maritime","Mass-Dartmouth","MASCAC","MASCAC",TRUE,TRUE,,
 "20251003_tcdm","2025-10-03","regular","Dickinson","Johns Hopkins","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE
+"20251004_0t4u","2025-10-04","regular","Montclair State","Kean","NJAC","NJAC",TRUE,TRUE,TRUE,TRUE
+"20251004_1ekt","2025-10-04","regular","Manchester","Bluffton","Heartland Collegiate Athletic Conference","Heartland Collegiate Athletic Conference",TRUE,TRUE,,
+"20251004_1fpd","2025-10-04","regular","Williams","Bowdoin","NESCAC","NESCAC",TRUE,TRUE,,
+"20251004_1gsu","2025-10-04","regular","Tufts","Trinity (Conn.)","NESCAC","NESCAC",TRUE,TRUE,,
+"20251004_1lej","2025-10-04","regular","Pomona-Pitzer","La Verne","SCIAC","SCIAC",TRUE,TRUE,,
+"20251004_1oxb","2025-10-04","regular","RPI","Hobart","Liberty League","Liberty League",TRUE,TRUE,,
+"20251004_1shb","2025-10-04","regular","Northwestern (Minn.)","Crown","UMAC","UMAC",TRUE,TRUE,,
+"20251004_26pc","2025-10-04","regular","Whitworth","Pacific","Northwest Conference","Northwest Conference",TRUE,TRUE,,
+"20251004_271q","2025-10-04","regular","Hilbert","St. Lawrence","Liberty League","Liberty League",TRUE,TRUE,,
+"20251004_2kko","2025-10-04","regular","UW-River Falls","UW-Oshkosh","WIAC","WIAC",TRUE,TRUE,TRUE,TRUE
+"20251004_2ngk","2025-10-04","regular","Vermont State Castleton","William Paterson","NJAC","NJAC",TRUE,TRUE,,
+"20251004_354d","2025-10-04","regular","Lawrence","Illinois College","Midwest Conference","Midwest Conference",TRUE,TRUE,,
+"20251004_3omj","2025-10-04","regular","Wartburg","Luther","American Rivers Conference","Midwest Conference",FALSE,FALSE,,
+"20251004_3puz","2025-10-04","regular","Hartwick","Alfred","Empire 8","Empire 8",TRUE,TRUE,,
+"20251004_3xt3","2025-10-04","regular","Washington and Jefferson","Hiram","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
+"20251004_4bpj","2025-10-04","regular","Puget Sound","Lewis and Clark","Northwest Conference","Northwest Conference",TRUE,TRUE,,
+"20251004_4cgc","2025-10-04","regular","Catholic","Wilkes","Landmark Conference","Landmark Conference",TRUE,TRUE,TRUE,TRUE
+"20251004_53sq","2025-10-04","regular","Westminster (Mo.)","Greenville","UMAC","UMAC",TRUE,TRUE,,
+"20251004_57kf","2025-10-04","regular","Morrisville State","Alfred State","Empire 8","Empire 8",TRUE,TRUE,,
+"20251004_5sdb","2025-10-04","regular","Monmouth","Grinnell","Midwest Conference","Midwest Conference",TRUE,TRUE,,
+"20251004_5zl7","2025-10-04","regular","Nichols","Maine Maritime","Conference of New England","Conference of New England",TRUE,TRUE,,
+"20251004_6011","2025-10-04","regular","Grove City","Geneva","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
+"20251004_60j5","2025-10-04","regular","Claremont-Mudd-Scripps","Cal Lutheran","SCIAC","SCIAC",TRUE,TRUE,,
+"20251004_64vz","2025-10-04","regular","Chicago","Knox","Midwest Conference","Midwest Conference",TRUE,TRUE,TRUE,TRUE
+"20251004_6sus","2025-10-04","regular","UW-La Crosse","UW-Whitewater","WIAC","WIAC",TRUE,TRUE,TRUE,TRUE
+"20251004_7p7e","2025-10-04","regular","Randolph-Macon","Roanoke","ODAC","ODAC",TRUE,TRUE,TRUE,TRUE
+"20251004_83ae","2025-10-04","regular","Carthage","Elmhurst","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20251004_83oi","2025-10-04","regular","Wheaton (Ill.)","North Central (Ill.)","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20251004_8k6r","2025-10-04","regular","Concordia (Wis.)","St. Norbert","NACC","NACC",TRUE,TRUE,,
+"20251004_8kxj","2025-10-04","regular","Western Connecticut","Juniata","Landmark Conference","Landmark Conference",TRUE,TRUE,TRUE,TRUE
+"20251004_97gq","2025-10-04","regular","Buena Vista","Coe","American Rivers Conference","American Rivers Conference",TRUE,TRUE,,
+"20251004_9jc0","2025-10-04","regular","University of New England","Endicott","Conference of New England","Conference of New England",TRUE,TRUE,TRUE,TRUE
+"20251004_9kt1","2025-10-04","regular","Union","Buffalo State","Liberty League","Liberty League",TRUE,TRUE,TRUE,TRUE
+"20251004_9l6i","2025-10-04","regular","St. John's","Bethel","MIAC","MIAC",TRUE,TRUE,,
+"20251004_acvc","2025-10-04","regular","UW-Stevens Point","UW-Platteville","WIAC","WIAC",TRUE,TRUE,,
+"20251004_arrb","2025-10-04","regular","Anna Maria","Westfield State",,"MASCAC",FALSE,FALSE,,
+"20251004_aubs","2025-10-04","regular","Bridgewater","Shenandoah","ODAC","ODAC",TRUE,TRUE,,
+"20251004_awvc","2025-10-04","regular","Greensboro","Southern Virginia","USA South","USA South",TRUE,TRUE,,
+"20251004_az6u","2025-10-04","regular","N.C. Wesleyan","LaGrange","USA South","USA South",TRUE,TRUE,,
+"20251004_b3mj","2025-10-04","regular","Plymouth State","Dean","MASCAC","MASCAC",TRUE,TRUE,,
+"20251004_bnm6","2025-10-04","regular","Rockford","Benedictine","NACC","NACC",TRUE,TRUE,,
+"20251004_bq6e","2025-10-04","regular","Hanover","Rose-Hulman","Heartland Collegiate Athletic Conference","Heartland Collegiate Athletic Conference",TRUE,TRUE,,
+"20251004_c1e5","2025-10-04","regular","Marietta","Ohio Northern","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
+"20251004_cwsy","2025-10-04","regular","UW-Stout","UW-Eau Claire","WIAC","WIAC",TRUE,TRUE,,
+"20251004_e8f2","2025-10-04","regular","Curry","New England College","Conference of New England","Conference of New England",TRUE,TRUE,,
+"20251004_ec6d","2025-10-04","regular","Brevard","Belhaven","USA South","USA South",TRUE,TRUE,,
+"20251004_f375","2025-10-04","regular","Moravian","Lycoming","Landmark Conference","Landmark Conference",TRUE,TRUE,TRUE,TRUE
+"20251004_f7br","2025-10-04","regular","TCNJ","Salisbury","NJAC","NJAC",TRUE,TRUE,TRUE,TRUE
+"20251004_fdfy","2025-10-04","regular","Rhodes","Berry","Southern Athletic Association","Southern Athletic Association",TRUE,TRUE,TRUE,TRUE
+"20251004_ffx2","2025-10-04","regular","Guilford","Gallaudet","ODAC","SCAC",FALSE,FALSE,,
+"20251004_fidj","2025-10-04","regular","Lake Forest","Ripon","Midwest Conference","Midwest Conference",TRUE,TRUE,,
+"20251004_fker","2025-10-04","regular","Amherst","Middlebury","NESCAC","NESCAC",TRUE,TRUE,,
+"20251004_g2xb","2025-10-04","regular","Centenary (La.)","Austin","SCAC","SCAC",TRUE,TRUE,,
+"20251004_gavq","2025-10-04","regular","Augustana","North Park","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20251004_gczt","2025-10-04","regular","Colby","Bates","NESCAC","NESCAC",TRUE,TRUE,,
+"20251004_ghod","2025-10-04","regular","Eureka","Concordia-Chicago","NACC","NACC",TRUE,TRUE,,
 "20251004_gwn0","2025-10-04","regular","McDaniel","Carnegie Mellon","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE
+"20251004_h4xl","2025-10-04","regular","Howard Payne","Hardin-Simmons","American Southwest Conference","American Southwest Conference",TRUE,TRUE,,
+"20251004_h5zy","2025-10-04","regular","Martin Luther","Minnesota-Morris","UMAC","UMAC",TRUE,TRUE,,
+"20251004_hi4i","2025-10-04","regular","MIT","Merchant Marine","NEWMAC","NEWMAC",TRUE,TRUE,,
+"20251004_i1ye","2025-10-04","regular","Mary Hardin-Baylor","East Texas Baptist","American Southwest Conference","American Southwest Conference",TRUE,TRUE,,
+"20251004_itkv","2025-10-04","regular","Wittenberg","Wooster","NCAC","NCAC",TRUE,TRUE,,
+"20251004_iui1","2025-10-04","regular","Linfield","George Fox","Northwest Conference","Northwest Conference",TRUE,TRUE,,
+"20251004_iwy5","2025-10-04","regular","Ithaca","Rochester","Liberty League","Liberty League",TRUE,TRUE,TRUE,TRUE
+"20251004_jdl2","2025-10-04","regular","Illinois Wesleyan","Washington U.","College Conference of Illinois and Wisconsin","NCAC",FALSE,FALSE,,
 "20251004_k167","2025-10-04","regular","Ursinus","Muhlenberg","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE
+"20251004_kvxr","2025-10-04","regular","St. Scholastica","Concordia-Moorhead","MIAC","MIAC",TRUE,TRUE,,
+"20251004_l1s1","2025-10-04","regular","Otterbein","Mount Union","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,TRUE,TRUE
+"20251004_lrtn","2025-10-04","regular","Wabash","John Carroll","NCAC","NCAC",TRUE,TRUE,TRUE,TRUE
+"20251004_m13d","2025-10-04","regular","Millsaps","Centre","Southern Athletic Association","Southern Athletic Association",TRUE,TRUE,,
+"20251004_m1e9","2025-10-04","regular","Ohio Wesleyan","Denison","NCAC","NCAC",TRUE,TRUE,,
+"20251004_m2sf","2025-10-04","regular","Allegheny","Waynesburg","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,TRUE,TRUE
+"20251004_mn95","2025-10-04","regular","Bethany","Westminster (Pa.)","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,TRUE,TRUE
+"20251004_n967","2025-10-04","regular","Cornell","Beloit","Midwest Conference","Midwest Conference",TRUE,TRUE,,
+"20251004_ng1t","2025-10-04","regular","Capital","Heidelberg","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
+"20251004_np44","2025-10-04","regular","Coast Guard","SUNY-Maritime","NEWMAC","NEWMAC",TRUE,TRUE,,
+"20251004_oeoq","2025-10-04","regular","Brockport","St. John Fisher","Empire 8","Empire 8",TRUE,TRUE,,
+"20251004_ouoc","2025-10-04","regular","Willamette","Pacific Lutheran","Northwest Conference","Northwest Conference",TRUE,TRUE,,
+"20251004_p4gx","2025-10-04","regular","Christopher Newport","Rowan","NJAC","NJAC",TRUE,TRUE,TRUE,TRUE
+"20251004_pbxo","2025-10-04","regular","Southwestern","Trinity (Texas)","Southern Athletic Association","Southern Athletic Association",TRUE,TRUE,,
+"20251004_pyut","2025-10-04","regular","Aurora","Lakeland","NACC","NACC",TRUE,TRUE,,
+"20251004_qids","2025-10-04","regular","Washington and Lee","Hampden-Sydney","ODAC","ODAC",TRUE,TRUE,,
+"20251004_quxy","2025-10-04","regular","Bridgewater State","Worcester State","MASCAC","MASCAC",TRUE,TRUE,,
 "20251004_s1ak","2025-10-04","regular","Franklin and Marshall","Gettysburg","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE
+"20251004_shsy","2025-10-04","regular","Franklin","Muskingum","Heartland Collegiate Athletic Conference","Ohio Athletic Conference",FALSE,FALSE,,
+"20251004_sn30","2025-10-04","regular","Calvin","Alma","MIAA","MIAA",TRUE,TRUE,,
+"20251004_t05s","2025-10-04","regular","WPI","Norwich","NEWMAC","NEWMAC",TRUE,TRUE,,
+"20251004_t6zc","2025-10-04","regular","Framingham State","Fitchburg State","MASCAC","MASCAC",TRUE,TRUE,,
+"20251004_tbhu","2025-10-04","regular","Carleton","Gustavus Adolphus","MIAC","MIAC",TRUE,TRUE,,
+"20251004_ti5l","2025-10-04","regular","Case Western Reserve","St. Vincent","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
+"20251004_tufo","2025-10-04","regular","Hope","Trine","MIAA","MIAA",TRUE,TRUE,,
+"20251004_udft","2025-10-04","regular","Anderson","Mount St. Joseph","Heartland Collegiate Athletic Conference","Heartland Collegiate Athletic Conference",TRUE,TRUE,,
+"20251004_uosq","2025-10-04","regular","Methodist","Huntingdon","USA South","USA South",TRUE,TRUE,,
+"20251004_urp0","2025-10-04","regular","Oberlin","DePauw","NCAC","NCAC",TRUE,TRUE,,
+"20251004_uzua","2025-10-04","regular","Salve Regina","Springfield","NEWMAC","NEWMAC",TRUE,TRUE,TRUE,TRUE
+"20251004_v6is","2025-10-04","regular","St. Olaf","Augsburg","MIAC","MIAC",TRUE,TRUE,,
+"20251004_w1sl","2025-10-04","regular","Nebraska Wesleyan","Dubuque","American Rivers Conference","American Rivers Conference",TRUE,TRUE,,
+"20251004_wb7u","2025-10-04","regular","Hamline","Macalester","MIAC","MIAC",TRUE,TRUE,,
+"20251004_x33y","2025-10-04","regular","Redlands","Chapman","SCIAC","SCIAC",TRUE,TRUE,,
+"20251004_xmdh","2025-10-04","regular","Albion","Adrian","MIAA","MIAA",TRUE,TRUE,,
+"20251004_yc5u","2025-10-04","regular","Central","Loras","American Rivers Conference","American Rivers Conference",TRUE,TRUE,,
+"20251004_yy2p","2025-10-04","regular","Carroll","Millikin","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20251004_zedh","2025-10-04","regular","Hamilton","Wesleyan","NESCAC","NESCAC",TRUE,TRUE,,
+"20251004_zlas","2025-10-04","regular","Husson","Western New England","Conference of New England","Conference of New England",TRUE,TRUE,,
+"20251004_ztu6","2025-10-04","regular","Utica","Cortland","Empire 8","Empire 8",TRUE,TRUE,,
+"20251004_zxz4","2025-10-04","regular","Olivet","Kalamazoo","MIAA","MIAA",TRUE,TRUE,,
+"20251010_0ri6","2025-10-10","regular","King's","Stevenson","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,,
+"20251011_0d04","2025-10-11","regular","Allegheny","Case Western Reserve","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
+"20251011_0m1x","2025-10-11","regular","Texas Lutheran","Centenary (La.)","SCAC","SCAC",TRUE,TRUE,,
+"20251011_0pnd","2025-10-11","regular","Bates","Tufts","NESCAC","NESCAC",TRUE,TRUE,,
+"20251011_0yee","2025-10-11","regular","Wesleyan","Colby","NESCAC","NESCAC",TRUE,TRUE,,
+"20251011_1315","2025-10-11","regular","UW-Platteville","UW-River Falls","WIAC","WIAC",TRUE,TRUE,TRUE,TRUE
+"20251011_2llw","2025-10-11","regular","Luther","Buena Vista","Midwest Conference","American Rivers Conference",FALSE,FALSE,,
+"20251011_2r84","2025-10-11","regular","Chapman","Pomona-Pitzer","SCIAC","SCIAC",TRUE,TRUE,,
+"20251011_2x0c","2025-10-11","regular","Trinity (Texas)","Berry","Southern Athletic Association","Southern Athletic Association",TRUE,TRUE,TRUE,TRUE
+"20251011_36q6","2025-10-11","regular","Wilkes","Moravian","Landmark Conference","Landmark Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_3km0","2025-10-11","regular","Redlands","Claremont-Mudd-Scripps","SCIAC","SCIAC",TRUE,TRUE,,
+"20251011_401u","2025-10-11","regular","Millikin","North Central (Ill.)","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20251011_483x","2025-10-11","regular","Washington U.","Carthage","NCAC","College Conference of Illinois and Wisconsin",FALSE,FALSE,,
+"20251011_49vb","2025-10-11","regular","Gustavus Adolphus","St. Olaf","MIAC","MIAC",TRUE,TRUE,,
+"20251011_4csw","2025-10-11","regular","Christopher Newport","Vermont State Castleton","NJAC","NJAC",TRUE,TRUE,TRUE,TRUE
+"20251011_50fr","2025-10-11","regular","Greenville","Northwestern (Minn.)","UMAC","UMAC",TRUE,TRUE,,
+"20251011_5nq8","2025-10-11","regular","UW-Eau Claire","UW-La Crosse","WIAC","WIAC",TRUE,TRUE,TRUE,TRUE
+"20251011_6a94","2025-10-11","regular","Crown","Martin Luther","UMAC","UMAC",TRUE,TRUE,,
+"20251011_6ak2","2025-10-11","regular","Loras","Nebraska Wesleyan","American Rivers Conference","American Rivers Conference",TRUE,TRUE,,
+"20251011_6yv3","2025-10-11","regular","Benedictine","Eureka","NACC","NACC",TRUE,TRUE,,
+"20251011_706s","2025-10-11","regular","Ohio Wesleyan","Wabash","NCAC","NCAC",TRUE,TRUE,,
+"20251011_7v05","2025-10-11","regular","North Park","Carroll","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20251011_93p8","2025-10-11","regular","Bluffton","Anderson","Heartland Collegiate Athletic Conference","Heartland Collegiate Athletic Conference",TRUE,TRUE,,
+"20251011_95sr","2025-10-11","regular","Morrisville State","Utica","Empire 8","Empire 8",TRUE,TRUE,,
 "20251011_98xu","2025-10-11","regular","Gettysburg","Dickinson","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_aosd","2025-10-11","regular","Shenandoah","Guilford","ODAC","ODAC",TRUE,TRUE,,
+"20251011_atry","2025-10-11","regular","Hanover","Mount St. Joseph","Heartland Collegiate Athletic Conference","Heartland Collegiate Athletic Conference",TRUE,TRUE,,
+"20251011_avtg","2025-10-11","regular","Pacific Lutheran","Puget Sound","Northwest Conference","Northwest Conference",TRUE,TRUE,,
+"20251011_azf4","2025-10-11","regular","Waynesburg","Grove City","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_azmf","2025-10-11","regular","Concordia-Moorhead","Hamline","MIAC","MIAC",TRUE,TRUE,,
+"20251011_bn95","2025-10-11","regular","St. Norbert","Wisconsin Lutheran","NACC","NACC",TRUE,TRUE,,
+"20251011_bonl","2025-10-11","regular","Rose-Hulman","Franklin","Heartland Collegiate Athletic Conference","Heartland Collegiate Athletic Conference",TRUE,TRUE,,
+"20251011_bv9l","2025-10-11","regular","William Paterson","TCNJ","NJAC","NJAC",TRUE,TRUE,,
+"20251011_cwfu","2025-10-11","regular","Kenyon","Oberlin","NCAC","NCAC",TRUE,TRUE,,
+"20251011_d947","2025-10-11","regular","Baldwin Wallace","Otterbein","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
+"20251011_dcrz","2025-10-11","regular","Millsaps","Rhodes","Southern Athletic Association","Southern Athletic Association",TRUE,TRUE,,
+"20251011_dfem","2025-10-11","regular","Trinity (Conn.)","Hamilton","NESCAC","NESCAC",TRUE,TRUE,,
+"20251011_dfez","2025-10-11","regular","Lewis and Clark","Willamette","Northwest Conference","Northwest Conference",TRUE,TRUE,,
+"20251011_dpuo","2025-10-11","regular","Kean","Salisbury","NJAC","NJAC",TRUE,TRUE,TRUE,TRUE
+"20251011_e0h0","2025-10-11","regular","Geneva","Thiel","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
+"20251011_e2mj","2025-10-11","regular","Pacific","Linfield","Northwest Conference","Northwest Conference",TRUE,TRUE,,
+"20251011_e3xa","2025-10-11","regular","Denison","Wooster","NCAC","NCAC",TRUE,TRUE,,
+"20251011_efvw","2025-10-11","regular","Wheaton (Ill.)","Illinois Wesleyan","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
+"20251011_etjq","2025-10-11","regular","Capital","Manchester","Ohio Athletic Conference","Heartland Collegiate Athletic Conference",FALSE,FALSE,,
+"20251011_eumc","2025-10-11","regular","Roanoke","Bridgewater","ODAC","ODAC",TRUE,TRUE,,
 "20251011_ew1x","2025-10-11","regular","McDaniel","Ursinus","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_fs81","2025-10-11","regular","Juniata","Catholic","Landmark Conference","Landmark Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_gdtj","2025-10-11","regular","Cal Lutheran","La Verne","SCIAC","SCIAC",TRUE,TRUE,,
+"20251011_h50c","2025-10-11","regular","Centre","Maryville (Tenn.)","Southern Athletic Association","Southern Athletic Association",TRUE,TRUE,,
+"20251011_h6v3","2025-10-11","regular","Southern Virginia","Brevard","USA South","USA South",TRUE,TRUE,,
+"20251011_ho10","2025-10-11","regular","Mary Hardin-Baylor","Hardin-Simmons","American Southwest Conference","American Southwest Conference",TRUE,TRUE,,
+"20251011_iog6","2025-10-11","regular","East Texas Baptist","Howard Payne","American Southwest Conference","American Southwest Conference",TRUE,TRUE,,
+"20251011_ip91","2025-10-11","regular","St. Vincent","Bethany","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
+"20251011_j421","2025-10-11","regular","John Carroll","Wittenberg","NCAC","NCAC",TRUE,TRUE,TRUE,TRUE
+"20251011_j7yv","2025-10-11","regular","Illinois College","Monmouth","Midwest Conference","Midwest Conference",TRUE,TRUE,,
+"20251011_jg99","2025-10-11","regular","Austin","Hendrix","SCAC","SCAC",TRUE,TRUE,,
+"20251011_js9f","2025-10-11","regular","Ithaca","St. Lawrence","Liberty League","Liberty League",TRUE,TRUE,TRUE,TRUE
+"20251011_kfwm","2025-10-11","regular","Minnesota-Morris","Westminster (Mo.)","UMAC","UMAC",TRUE,TRUE,,
 "20251011_kqku","2025-10-11","regular","Muhlenberg","Franklin and Marshall","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_lfb3","2025-10-11","regular","Western Connecticut","New Haven","Landmark Conference",,FALSE,FALSE,FALSE,TRUE
+"20251011_lra0","2025-10-11","regular","St. John Fisher","Hartwick","Empire 8","Empire 8",TRUE,TRUE,,
+"20251011_ls6y","2025-10-11","regular","Lakeland","Concordia (Wis.)","NACC","NACC",TRUE,TRUE,,
+"20251011_m2jr","2025-10-11","regular","UW-Oshkosh","UW-Stout","WIAC","WIAC",TRUE,TRUE,,
+"20251011_m7ii","2025-10-11","regular","Huntingdon","Greensboro","USA South","USA South",TRUE,TRUE,,
+"20251011_mcx6","2025-10-11","regular","Heidelberg","Marietta","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
+"20251011_me37","2025-10-11","regular","Maine Maritime","Curry","Conference of New England","Conference of New England",TRUE,TRUE,,
+"20251011_moak","2025-10-11","regular","Belhaven","N.C. Wesleyan","USA South","USA South",TRUE,TRUE,,
+"20251011_mqjy","2025-10-11","regular","Albright","Alvernia","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_mxk9","2025-10-11","regular","Westminster (Pa.)","Washington and Jefferson","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_n348","2025-10-11","regular","FDU-Florham","Widener","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,,
+"20251011_n6nc","2025-10-11","regular","Lycoming","Susquehanna","Landmark Conference","Landmark Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_navh","2025-10-11","regular","Carleton","St. Scholastica","MIAC","MIAC",TRUE,TRUE,,
+"20251011_ned8","2025-10-11","regular","Misericordia","Lebanon Valley","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_nhzr","2025-10-11","regular","Rowan","Montclair State","NJAC","NJAC",TRUE,TRUE,,
+"20251011_nn8o","2025-10-11","regular","Rockford","Aurora","NACC","NACC",TRUE,TRUE,,
+"20251011_ocff","2025-10-11","regular","Buffalo State","RPI","Liberty League","Liberty League",TRUE,TRUE,,
+"20251011_oo7c","2025-10-11","regular","SUNY-Maritime","Merchant Marine","NEWMAC","NEWMAC",TRUE,TRUE,,
+"20251011_oy5j","2025-10-11","regular","Hobart","Union","Liberty League","Liberty League",TRUE,TRUE,TRUE,TRUE
+"20251011_p8pa","2025-10-11","regular","Lawrence","Chicago","Midwest Conference","Midwest Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_p9g8","2025-10-11","regular","Lyon","McMurry","SCAC","American Southwest Conference",FALSE,FALSE,,
+"20251011_pa8l","2025-10-11","regular","Ohio Northern","Muskingum","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
+"20251011_q2p4","2025-10-11","regular","Gallaudet","Washington and Lee","SCAC","ODAC",FALSE,FALSE,,
+"20251011_q8vo","2025-10-11","regular","Averett","Randolph-Macon","ODAC","ODAC",TRUE,TRUE,TRUE,TRUE
+"20251011_qhn8","2025-10-11","regular","Grinnell","Knox","Midwest Conference","Midwest Conference",TRUE,TRUE,,
+"20251011_qiy9","2025-10-11","regular","Macalester","St. John's","MIAC","MIAC",TRUE,TRUE,,
+"20251011_qp9j","2025-10-11","regular","Beloit","Lake Forest","Midwest Conference","Midwest Conference",TRUE,TRUE,,
+"20251011_qs6v","2025-10-11","regular","Amherst","Bowdoin","NESCAC","NESCAC",TRUE,TRUE,,
+"20251011_rhc9","2025-10-11","regular","Mount Union","Wilmington","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_rvr0","2025-10-11","regular","Bethel","Augsburg","MIAC","MIAC",TRUE,TRUE,,
+"20251011_rvzg","2025-10-11","regular","Dubuque","Wartburg","American Rivers Conference","American Rivers Conference",TRUE,TRUE,,
+"20251011_sg6j","2025-10-11","regular","George Fox","Whitworth","Northwest Conference","Northwest Conference",TRUE,TRUE,,
 "20251011_t8bp","2025-10-11","regular","Carnegie Mellon","Johns Hopkins","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_tjet","2025-10-11","regular","Hilbert","Rochester","Liberty League","Liberty League",TRUE,TRUE,,
+"20251011_tmcs","2025-10-11","regular","LaGrange","Methodist","USA South","USA South",TRUE,TRUE,,
+"20251011_v55d","2025-10-11","regular","Middlebury","Williams","NESCAC","NESCAC",TRUE,TRUE,,
+"20251011_wc5q","2025-10-11","regular","Coe","Simpson","American Rivers Conference","American Rivers Conference",TRUE,TRUE,,
+"20251011_xh02","2025-10-11","regular","Fitchburg State","Worcester State","MASCAC","MASCAC",TRUE,TRUE,,
+"20251011_xu6u","2025-10-11","regular","Sewanee","Southwestern","Southern Athletic Association","Southern Athletic Association",TRUE,TRUE,,
+"20251011_ywlf","2025-10-11","regular","UW-Whitewater","UW-Stevens Point","WIAC","WIAC",TRUE,TRUE,,
+"20251011_zemb","2025-10-11","regular","Delaware Valley","Eastern","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,TRUE,TRUE
+"20251011_zlh0","2025-10-11","regular","Ripon","Cornell","Midwest Conference","Midwest Conference",TRUE,TRUE,,
 "20251018_mhk5","2025-10-18","regular","Muhlenberg","McDaniel","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE
 "20251018_q4jr","2025-10-18","regular","Franklin and Marshall","Dickinson","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE
 "20251018_rd3r","2025-10-18","regular","Ursinus","Johns Hopkins","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE

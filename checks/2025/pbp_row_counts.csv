@@ -323,14 +323,301 @@
 "20250920_yw0g",2025,"2025-09-20",3,"regular","Minnesota-Morris","Crown",147,20,30,20,30,"index",TRUE
 "20250920_yyz1",2025,"2025-09-20",3,"regular","St. John Fisher","Rochester",158,21,28,21,28,"index",TRUE
 "20250920_zhnm",2025,"2025-09-20",3,"regular","Elmhurst","Illinois Wesleyan",149,6,42,6,42,"index",TRUE
+"20250927_03mt",2025,"2025-09-27",4,"regular","Springfield","MIT",147,31,7,31,7,"index",TRUE
+"20250927_08c9",2025,"2025-09-27",4,"regular","Wesleyan","Bates",144,23,7,23,7,"index",TRUE
+"20250927_0bun",2025,"2025-09-27",4,"regular","Mary Hardin-Baylor","Mars Hill",173,7,21,7,21,"index",TRUE
+"20250927_0itn",2025,"2025-09-27",4,"regular","Eastern","King's",161,39,37,39,37,"index",TRUE
+"20250927_0kna",2025,"2025-09-27",4,"regular","New England College","Nichols",152,21,41,21,41,"index",TRUE
+"20250927_19x4",2025,"2025-09-27",4,"regular","Cal Lutheran","Redlands",151,27,10,27,10,"index",TRUE
+"20250927_1j5p",2025,"2025-09-27",4,"regular","Luther","Nebraska Wesleyan",155,7,44,7,44,"index",TRUE
+"20250927_1l6g",2025,"2025-09-27",4,"regular","Coe","Wartburg",143,7,17,7,17,"index",TRUE
+"20250927_3kfs",2025,"2025-09-27",4,"regular","Mass-Dartmouth","Anna Maria",186,43,47,43,47,"index",TRUE
+"20250927_3u3j",2025,"2025-09-27",4,"regular","John Carroll","Kenyon",154,52,0,52,0,"index",TRUE
+"20250927_4d0z",2025,"2025-09-27",4,"regular","Alma","Hope",166,29,26,29,26,"index",TRUE
+"20250927_4g3r",2025,"2025-09-27",4,"regular","Buffalo State","Hilbert",135,15,8,15,8,"index",TRUE
+"20250927_4kd8",2025,"2025-09-27",4,"regular","Lebanon Valley","Delaware Valley",144,21,18,21,18,"index",TRUE
+"20250927_4w65",2025,"2025-09-27",4,"regular","Gustavus Adolphus","Concordia-Moorhead",160,13,14,13,14,"index",TRUE
+"20250927_5j4f",2025,"2025-09-27",4,"regular","Cortland","Morrisville State",161,48,3,48,3,"index",TRUE
+"20250927_6app",2025,"2025-09-27",4,"regular","Endicott","Husson",161,48,14,48,14,"index",TRUE
+"20250927_6ez2",2025,"2025-09-27",4,"regular","Mount Union","Baldwin Wallace",169,42,23,42,23,"index",TRUE
+"20250927_6qv6",2025,"2025-09-27",4,"regular","Hiram","St. Vincent",178,40,38,40,38,"index",TRUE
+"20250927_6vhe",2025,"2025-09-27",4,"regular","Macalester","St. Scholastica",188,34,37,34,37,"index",TRUE
+"20250927_6zcv",2025,"2025-09-27",4,"regular","Susquehanna","Christopher Newport",166,27,41,27,41,"index",TRUE
+"20250927_71uh",2025,"2025-09-27",4,"regular","William Paterson","Moravian",152,38,14,38,14,"index",TRUE
+"20250927_7aif",2025,"2025-09-27",4,"regular","Hartwick","Brockport",148,0,56,0,56,"index",TRUE
+"20250927_9g2q",2025,"2025-09-27",4,"regular","Rhodes","Hendrix",177,28,47,28,47,"index",TRUE
+"20250927_9kaf",2025,"2025-09-27",4,"regular","Westminster (Mo.)","Lyon",171,24,38,24,38,"index",TRUE
+"20250927_9q5i",2025,"2025-09-27",4,"regular","Waynesburg","Thiel",158,45,14,45,14,"index",TRUE
+"20250927_9sle",2025,"2025-09-27",4,"regular","Trinity (Conn.)","Williams",161,34,28,34,28,"index",TRUE
+"20250927_a10w",2025,"2025-09-27",4,"regular","Augsburg","St. John's",166,0,63,0,63,"index",TRUE
+"20250927_amrj",2025,"2025-09-27",4,"regular","Tufts","Amherst",167,14,30,14,30,"index",TRUE
+"20250927_ar7z",2025,"2025-09-27",4,"regular","Salisbury","Catholic",145,55,6,55,6,"index",TRUE
+"20250927_b1ua",2025,"2025-09-27",4,"regular","Alfred State","Utica",165,13,45,13,45,"index",TRUE
+"20250927_bvwf",2025,"2025-09-27",4,"regular","Coast Guard","WPI",186,49,21,49,21,"index",TRUE
+"20250927_clhh",2025,"2025-09-27",4,"regular","St. Lawrence","Union",164,12,44,12,44,"index",TRUE
+"20250927_cnfi",2025,"2025-09-27",4,"regular","Western New England","University of New England",205,31,37,31,37,"index",TRUE
+"20250927_dz2s",2025,"2025-09-27",4,"regular","Bridgewater","Averett",176,41,14,41,14,"index",TRUE
+"20250927_e0ro",2025,"2025-09-27",4,"regular","Gallaudet","Roanoke",150,14,38,14,38,"index",TRUE
+"20250927_egrs",2025,"2025-09-27",4,"regular","Millikin","Augustana",146,6,33,6,33,"index",TRUE
+"20250927_eir7",2025,"2025-09-27",4,"regular","Marietta","Capital",171,24,21,24,21,"index",TRUE
+"20250927_ezew",2025,"2025-09-27",4,"regular","Bridgewater State","Framingham State",179,40,46,40,46,"index",TRUE
+"20250927_f2rp",2025,"2025-09-27",4,"regular","Trine","Albion",190,38,35,38,35,"index",TRUE
+"20250927_faof",2025,"2025-09-27",4,"regular","Simpson","Buena Vista",144,41,0,41,0,"index",TRUE
+"20250927_fbeo",2025,"2025-09-27",4,"regular","East Texas Baptist","Texas Lutheran",169,24,21,24,21,"index",TRUE
+"20250927_fjhh",2025,"2025-09-27",4,"regular","Wilkes","Montclair State",164,24,21,24,21,"index",TRUE
+"20250927_g10s",2025,"2025-09-27",4,"regular","Lakeland","Rockford",187,35,7,35,7,"index",TRUE
+"20250927_gn4g",2025,"2025-09-27",4,"regular","Carroll","Wheaton (Ill.)",180,13,61,13,61,"index",TRUE
+"20250927_hr5v",2025,"2025-09-27",4,"regular","Concordia-Chicago","Wisconsin Lutheran",145,6,28,6,28,"index",TRUE
+"20250927_hrnr",2025,"2025-09-27",4,"regular","Denison","Wabash",162,0,36,0,36,"index",TRUE
+"20250927_i73g",2025,"2025-09-27",4,"regular","Widener","Albright",167,9,35,9,35,"index",TRUE
+"20250927_i8ac",2025,"2025-09-27",4,"regular","Pikeville","Maryville (Tenn.)",196,30,34,30,34,"index",TRUE
+"20250927_jqwj",2025,"2025-09-27",4,"regular","DePauw","Wittenberg",150,28,0,28,0,"index",TRUE
+"20250927_jx36",2025,"2025-09-27",4,"regular","Stevenson","FDU-Florham",178,55,20,55,20,"index",TRUE
+"20250927_k6f9",2025,"2025-09-27",4,"regular","Illinois Wesleyan","Carthage",148,34,10,34,10,"index",TRUE
+"20250927_kqa4",2025,"2025-09-27",4,"regular","Dubuque","Central",178,16,35,16,35,"index",TRUE
+"20250927_ky12",2025,"2025-09-27",4,"regular","St. Olaf","Carleton",170,28,35,28,35,"index",TRUE
+"20250927_l291",2025,"2025-09-27",4,"regular","Alfred","St. John Fisher",151,7,21,7,21,"index",TRUE
+"20250927_l54d",2025,"2025-09-27",4,"regular","Worcester State","Westfield State",163,22,31,22,31,"index",TRUE
+"20250927_lme8",2025,"2025-09-27",4,"regular","Rochester","RPI",166,3,31,3,31,"index",TRUE
+"20250927_mren",2025,"2025-09-27",4,"regular","Kalamazoo","Calvin",192,16,24,16,24,"index",TRUE
+"20250927_mzk1",2025,"2025-09-27",4,"regular","Hobart","Ithaca",133,7,13,7,13,"index",TRUE
+"20250927_n5yi",2025,"2025-09-27",4,"regular","Claremont-Mudd-Scripps","Pomona-Pitzer",174,17,25,17,25,"index",TRUE
+"20250927_ncsj",2025,"2025-09-27",4,"regular","SUNY-Maritime","Salve Regina",163,20,28,20,28,"index",TRUE
+"20250927_ngba",2025,"2025-09-27",4,"regular","Massachusetts Maritime","Plymouth State",137,10,14,10,14,"index",TRUE
+"20250927_nk0h",2025,"2025-09-27",4,"regular","La Verne","Chapman",155,6,56,6,56,"index",TRUE
+"20250927_noe8",2025,"2025-09-27",4,"regular","Washington and Jefferson","Grove City",174,34,14,34,14,"index",TRUE
+"20250927_nuea",2025,"2025-09-27",4,"regular","Benedictine","Concordia (Wis.)",165,20,28,20,28,"index",TRUE
+"20250927_nz64",2025,"2025-09-27",4,"regular","Dean","Curry",158,12,52,12,52,"index",TRUE
+"20250927_oplb",2025,"2025-09-27",4,"regular","Ohio Northern","Wilmington",188,41,35,41,35,"index",TRUE
+"20250927_orwo",2025,"2025-09-27",4,"regular","Apprentice","Methodist",161,19,20,19,20,"index",TRUE
+"20250927_p3f2",2025,"2025-09-27",4,"regular","Elmhurst","North Park",167,6,34,6,34,"index",TRUE
+"20250927_pqjf",2025,"2025-09-27",4,"regular","Adrian","Olivet",180,59,27,59,27,"index",TRUE
+"20250927_pu6m",2025,"2025-09-27",4,"regular","Hampden-Sydney","Guilford",202,69,14,69,14,"index",TRUE
+"20250927_rg6z",2025,"2025-09-27",4,"regular","Bowdoin","Hamilton",163,13,27,13,27,"index",TRUE
+"20250927_rv66",2025,"2025-09-27",4,"regular","Case Western Reserve","Bethany",166,55,0,55,0,"index",TRUE
+"20250927_s6dy",2025,"2025-09-27",4,"regular","Merchant Marine","Norwich",158,49,0,49,0,"index",TRUE
+"20250927_st6a",2025,"2025-09-27",4,"regular","Middlebury","Colby",137,27,17,27,17,"index",TRUE
+"20250927_swcu",2025,"2025-09-27",4,"regular","Washington and Lee","Randolph-Macon",130,6,24,6,24,"index",TRUE
+"20250927_ty65",2025,"2025-09-27",4,"regular","Aurora","Eureka",149,66,0,66,0,"index",TRUE
+"20250927_ubam",2025,"2025-09-27",4,"regular","North Central (Ill.)","Washington U.",173,44,14,44,14,"index",TRUE
+"20250927_vlh0",2025,"2025-09-27",4,"regular","Alvernia","Misericordia",156,10,41,10,41,"index",TRUE
+"20250927_wpcf",2025,"2025-09-27",4,"regular","Geneva","Allegheny",178,28,16,28,16,"index",TRUE
+"20250927_wr0w",2025,"2025-09-27",4,"regular","Western Connecticut","Kean",168,38,7,38,7,"index",TRUE
+"20250927_wvvq",2025,"2025-09-27",4,"regular","Bethel","Hamline",195,62,12,62,12,"index",TRUE
+"20250927_y144",2025,"2025-09-27",4,"regular","Muskingum","Otterbein",157,37,13,37,13,"index",TRUE
+"20250927_y56g",2025,"2025-09-27",4,"regular","Rowan","Lycoming",167,34,23,34,23,"index",TRUE
+"20250927_za9q",2025,"2025-09-27",4,"regular","Howard Payne","McMurry",167,24,31,24,31,"index",TRUE
+"20250927_zne4",2025,"2025-09-27",4,"regular","Juniata","TCNJ",163,0,35,0,35,"index",TRUE
+"20250927_zvzz",2025,"2025-09-27",4,"regular","Wooster","Oberlin",140,38,0,38,0,"index",TRUE
+"20251003_ktys",2025,"2025-10-03",5,"regular","Massachusetts Maritime","Mass-Dartmouth",142,7,31,7,31,"index",TRUE
 "20251003_tcdm",2025,"2025-10-03",5,"regular","Dickinson","Johns Hopkins",152,10,55,10,55,"index",TRUE
+"20251004_0t4u",2025,"2025-10-04",5,"regular","Montclair State","Kean",163,38,28,38,28,"index",TRUE
+"20251004_1ekt",2025,"2025-10-04",5,"regular","Manchester","Bluffton",163,23,39,23,39,"index",TRUE
+"20251004_1fpd",2025,"2025-10-04",5,"regular","Williams","Bowdoin",143,35,17,35,17,"index",TRUE
+"20251004_1gsu",2025,"2025-10-04",5,"regular","Tufts","Trinity (Conn.)",164,14,41,14,41,"index",TRUE
+"20251004_1lej",2025,"2025-10-04",5,"regular","Pomona-Pitzer","La Verne",167,34,12,34,12,"index",TRUE
+"20251004_1oxb",2025,"2025-10-04",5,"regular","RPI","Hobart",151,36,10,36,10,"index",TRUE
+"20251004_1shb",2025,"2025-10-04",5,"regular","Northwestern (Minn.)","Crown",151,3,22,3,22,"index",TRUE
+"20251004_26pc",2025,"2025-10-04",5,"regular","Whitworth","Pacific",162,28,14,28,14,"index",TRUE
+"20251004_271q",2025,"2025-10-04",5,"regular","Hilbert","St. Lawrence",139,14,45,14,45,"index",TRUE
+"20251004_2kko",2025,"2025-10-04",5,"regular","UW-River Falls","UW-Oshkosh",183,17,21,17,21,"index",TRUE
+"20251004_2ngk",2025,"2025-10-04",5,"regular","Vermont State Castleton","William Paterson",160,7,32,7,32,"index",TRUE
+"20251004_354d",2025,"2025-10-04",5,"regular","Lawrence","Illinois College",119,0,59,0,59,"index",TRUE
+"20251004_3omj",2025,"2025-10-04",5,"regular","Wartburg","Luther",165,36,3,36,3,"index",TRUE
+"20251004_3puz",2025,"2025-10-04",5,"regular","Hartwick","Alfred",172,24,45,24,45,"index",TRUE
+"20251004_3xt3",2025,"2025-10-04",5,"regular","Washington and Jefferson","Hiram",195,70,13,70,13,"index",TRUE
+"20251004_4bpj",2025,"2025-10-04",5,"regular","Puget Sound","Lewis and Clark",167,21,58,21,58,"index",TRUE
+"20251004_4cgc",2025,"2025-10-04",5,"regular","Catholic","Wilkes",148,13,15,13,15,"index",TRUE
+"20251004_53sq",2025,"2025-10-04",5,"regular","Westminster (Mo.)","Greenville",161,24,38,24,38,"index",TRUE
+"20251004_57kf",2025,"2025-10-04",5,"regular","Morrisville State","Alfred State",175,21,41,21,41,"index",TRUE
+"20251004_5sdb",2025,"2025-10-04",5,"regular","Monmouth","Grinnell",156,49,9,49,9,"index",TRUE
+"20251004_5zl7",2025,"2025-10-04",5,"regular","Nichols","Maine Maritime",145,49,20,49,20,"index",TRUE
+"20251004_6011",2025,"2025-10-04",5,"regular","Grove City","Geneva",158,22,9,22,9,"index",TRUE
+"20251004_60j5",2025,"2025-10-04",5,"regular","Claremont-Mudd-Scripps","Cal Lutheran",152,17,22,17,22,"index",TRUE
+"20251004_64vz",2025,"2025-10-04",5,"regular","Chicago","Knox",144,52,0,52,0,"index",TRUE
+"20251004_6sus",2025,"2025-10-04",5,"regular","UW-La Crosse","UW-Whitewater",173,23,20,20,20,"index",FALSE
+"20251004_7p7e",2025,"2025-10-04",5,"regular","Randolph-Macon","Roanoke",167,35,17,35,17,"index",TRUE
+"20251004_83ae",2025,"2025-10-04",5,"regular","Carthage","Elmhurst",125,31,7,31,7,"index",TRUE
+"20251004_83oi",2025,"2025-10-04",5,"regular","Wheaton (Ill.)","North Central (Ill.)",143,0,35,0,35,"index",TRUE
+"20251004_8k6r",2025,"2025-10-04",5,"regular","Concordia (Wis.)","St. Norbert",162,24,17,24,17,"index",TRUE
+"20251004_8kxj",2025,"2025-10-04",5,"regular","Western Connecticut","Juniata",170,63,15,62,15,"index",FALSE
+"20251004_97gq",2025,"2025-10-04",5,"regular","Buena Vista","Coe",173,10,37,10,37,"index",TRUE
+"20251004_9jc0",2025,"2025-10-04",5,"regular","University of New England","Endicott",195,14,53,14,53,"index",TRUE
+"20251004_9kt1",2025,"2025-10-04",5,"regular","Union","Buffalo State",137,28,6,28,6,"index",TRUE
+"20251004_9l6i",2025,"2025-10-04",5,"regular","St. John's","Bethel",155,10,17,10,17,"index",TRUE
+"20251004_acvc",2025,"2025-10-04",5,"regular","UW-Stevens Point","UW-Platteville",160,0,52,0,52,"index",TRUE
+"20251004_arrb",2025,"2025-10-04",5,"regular","Anna Maria","Westfield State",153,41,14,41,14,"index",TRUE
+"20251004_aubs",2025,"2025-10-04",5,"regular","Bridgewater","Shenandoah",150,21,24,21,24,"index",TRUE
+"20251004_awvc",2025,"2025-10-04",5,"regular","Greensboro","Southern Virginia",188,22,35,22,35,"index",TRUE
+"20251004_az6u",2025,"2025-10-04",5,"regular","N.C. Wesleyan","LaGrange",174,24,41,24,41,"index",TRUE
+"20251004_b3mj",2025,"2025-10-04",5,"regular","Plymouth State","Dean",140,34,0,34,0,"index",TRUE
+"20251004_bnm6",2025,"2025-10-04",5,"regular","Rockford","Benedictine",156,9,42,9,42,"index",TRUE
+"20251004_bq6e",2025,"2025-10-04",5,"regular","Hanover","Rose-Hulman",162,44,10,44,10,"index",TRUE
+"20251004_c1e5",2025,"2025-10-04",5,"regular","Marietta","Ohio Northern",168,9,42,9,42,"index",TRUE
+"20251004_cwsy",2025,"2025-10-04",5,"regular","UW-Stout","UW-Eau Claire",164,42,17,42,17,"index",TRUE
+"20251004_e8f2",2025,"2025-10-04",5,"regular","Curry","New England College",156,62,7,62,7,"index",TRUE
+"20251004_ec6d",2025,"2025-10-04",5,"regular","Brevard","Belhaven",166,20,23,20,23,"index",TRUE
+"20251004_f375",2025,"2025-10-04",5,"regular","Moravian","Lycoming",145,0,17,0,17,"index",TRUE
+"20251004_f7br",2025,"2025-10-04",5,"regular","TCNJ","Salisbury",148,10,55,10,55,"index",TRUE
+"20251004_fdfy",2025,"2025-10-04",5,"regular","Rhodes","Berry",158,14,54,14,54,"index",TRUE
+"20251004_ffx2",2025,"2025-10-04",5,"regular","Guilford","Gallaudet",168,55,0,55,0,"index",TRUE
+"20251004_fidj",2025,"2025-10-04",5,"regular","Lake Forest","Ripon",157,38,0,38,0,"index",TRUE
+"20251004_fker",2025,"2025-10-04",5,"regular","Amherst","Middlebury",167,27,17,27,17,"index",TRUE
+"20251004_g2xb",2025,"2025-10-04",5,"regular","Centenary (La.)","Austin",179,15,41,15,41,"index",TRUE
+"20251004_gavq",2025,"2025-10-04",5,"regular","Augustana","North Park",158,24,21,24,21,"index",TRUE
+"20251004_gczt",2025,"2025-10-04",5,"regular","Colby","Bates",154,13,6,13,6,"index",TRUE
+"20251004_ghod",2025,"2025-10-04",5,"regular","Eureka","Concordia-Chicago",185,20,49,20,49,"index",TRUE
 "20251004_gwn0",2025,"2025-10-04",5,"regular","McDaniel","Carnegie Mellon",167,7,56,7,56,"index",TRUE
+"20251004_h4xl",2025,"2025-10-04",5,"regular","Howard Payne","Hardin-Simmons",171,14,69,14,69,"index",TRUE
+"20251004_h5zy",2025,"2025-10-04",5,"regular","Martin Luther","Minnesota-Morris",163,28,35,28,35,"index",TRUE
+"20251004_hi4i",2025,"2025-10-04",5,"regular","MIT","Merchant Marine",139,3,6,3,6,"index",TRUE
+"20251004_i1ye",2025,"2025-10-04",5,"regular","Mary Hardin-Baylor","East Texas Baptist",173,42,28,42,28,"index",TRUE
+"20251004_itkv",2025,"2025-10-04",5,"regular","Wittenberg","Wooster",147,12,14,12,14,"index",TRUE
+"20251004_iui1",2025,"2025-10-04",5,"regular","Linfield","George Fox",181,35,17,35,17,"index",TRUE
+"20251004_iwy5",2025,"2025-10-04",5,"regular","Ithaca","Rochester",148,10,6,10,6,"index",TRUE
+"20251004_jdl2",2025,"2025-10-04",5,"regular","Illinois Wesleyan","Washington U.",178,40,42,40,42,"index",TRUE
 "20251004_k167",2025,"2025-10-04",5,"regular","Ursinus","Muhlenberg",191,36,39,36,39,"index",TRUE
+"20251004_kvxr",2025,"2025-10-04",5,"regular","St. Scholastica","Concordia-Moorhead",170,21,49,21,49,"index",TRUE
+"20251004_l1s1",2025,"2025-10-04",5,"regular","Otterbein","Mount Union",153,7,62,7,62,"index",TRUE
+"20251004_lrtn",2025,"2025-10-04",5,"regular","Wabash","John Carroll",161,28,31,28,31,"index",TRUE
+"20251004_m13d",2025,"2025-10-04",5,"regular","Millsaps","Centre",190,36,37,36,37,"index",TRUE
+"20251004_m1e9",2025,"2025-10-04",5,"regular","Ohio Wesleyan","Denison",173,20,35,20,35,"index",TRUE
+"20251004_m2sf",2025,"2025-10-04",5,"regular","Allegheny","Waynesburg",152,21,11,21,11,"index",TRUE
+"20251004_mn95",2025,"2025-10-04",5,"regular","Bethany","Westminster (Pa.)",155,0,52,0,52,"index",TRUE
+"20251004_n967",2025,"2025-10-04",5,"regular","Cornell","Beloit",156,26,19,26,19,"index",TRUE
+"20251004_ng1t",2025,"2025-10-04",5,"regular","Capital","Heidelberg",184,27,30,27,30,"index",TRUE
+"20251004_np44",2025,"2025-10-04",5,"regular","Coast Guard","SUNY-Maritime",172,28,26,28,26,"index",TRUE
+"20251004_oeoq",2025,"2025-10-04",5,"regular","Brockport","St. John Fisher",153,24,31,24,31,"index",TRUE
+"20251004_ouoc",2025,"2025-10-04",5,"regular","Willamette","Pacific Lutheran",175,28,31,28,31,"index",TRUE
+"20251004_p4gx",2025,"2025-10-04",5,"regular","Christopher Newport","Rowan",202,49,41,49,41,"index",TRUE
+"20251004_pbxo",2025,"2025-10-04",5,"regular","Southwestern","Trinity (Texas)",161,14,65,14,65,"index",TRUE
+"20251004_pyut",2025,"2025-10-04",5,"regular","Aurora","Lakeland",183,49,28,49,28,"index",TRUE
+"20251004_qids",2025,"2025-10-04",5,"regular","Washington and Lee","Hampden-Sydney",176,42,34,42,34,"index",TRUE
+"20251004_quxy",2025,"2025-10-04",5,"regular","Bridgewater State","Worcester State",162,10,19,10,19,"index",TRUE
 "20251004_s1ak",2025,"2025-10-04",5,"regular","Franklin and Marshall","Gettysburg",153,35,28,35,28,"index",TRUE
+"20251004_shsy",2025,"2025-10-04",5,"regular","Franklin","Muskingum",189,34,33,34,33,"index",TRUE
+"20251004_sn30",2025,"2025-10-04",5,"regular","Calvin","Alma",187,6,55,6,55,"index",TRUE
+"20251004_t05s",2025,"2025-10-04",5,"regular","WPI","Norwich",159,14,7,14,7,"index",TRUE
+"20251004_t6zc",2025,"2025-10-04",5,"regular","Framingham State","Fitchburg State",168,22,12,22,12,"index",TRUE
+"20251004_tbhu",2025,"2025-10-04",5,"regular","Carleton","Gustavus Adolphus",176,45,28,45,28,"index",TRUE
+"20251004_ti5l",2025,"2025-10-04",5,"regular","Case Western Reserve","St. Vincent",168,42,14,42,14,"index",TRUE
+"20251004_tufo",2025,"2025-10-04",5,"regular","Hope","Trine",196,55,35,55,35,"index",TRUE
+"20251004_udft",2025,"2025-10-04",5,"regular","Anderson","Mount St. Joseph",163,21,41,21,41,"index",TRUE
+"20251004_uosq",2025,"2025-10-04",5,"regular","Methodist","Huntingdon",151,0,26,0,26,"index",TRUE
+"20251004_urp0",2025,"2025-10-04",5,"regular","Oberlin","DePauw",127,0,75,0,75,"index",TRUE
+"20251004_uzua",2025,"2025-10-04",5,"regular","Salve Regina","Springfield",148,14,28,14,28,"index",TRUE
+"20251004_v6is",2025,"2025-10-04",5,"regular","St. Olaf","Augsburg",179,13,44,13,44,"index",TRUE
+"20251004_w1sl",2025,"2025-10-04",5,"regular","Nebraska Wesleyan","Dubuque",170,10,21,10,21,"index",TRUE
+"20251004_wb7u",2025,"2025-10-04",5,"regular","Hamline","Macalester",155,0,29,0,29,"index",TRUE
+"20251004_x33y",2025,"2025-10-04",5,"regular","Redlands","Chapman",151,0,27,0,27,"index",TRUE
+"20251004_xmdh",2025,"2025-10-04",5,"regular","Albion","Adrian",147,7,28,7,28,"index",TRUE
+"20251004_yc5u",2025,"2025-10-04",5,"regular","Central","Loras",193,45,27,45,27,"index",TRUE
+"20251004_yy2p",2025,"2025-10-04",5,"regular","Carroll","Millikin",161,28,17,28,17,"index",TRUE
+"20251004_zedh",2025,"2025-10-04",5,"regular","Hamilton","Wesleyan",153,14,56,14,56,"index",TRUE
+"20251004_zlas",2025,"2025-10-04",5,"regular","Husson","Western New England",151,10,35,10,35,"index",TRUE
+"20251004_ztu6",2025,"2025-10-04",5,"regular","Utica","Cortland",163,13,28,13,28,"index",TRUE
+"20251004_zxz4",2025,"2025-10-04",5,"regular","Olivet","Kalamazoo",192,47,44,47,44,"index",TRUE
+"20251010_0ri6",2025,"2025-10-10",6,"regular","King's","Stevenson",157,35,28,35,28,"index",TRUE
+"20251011_0d04",2025,"2025-10-11",6,"regular","Allegheny","Case Western Reserve",159,21,62,21,62,"index",TRUE
+"20251011_0m1x",2025,"2025-10-11",6,"regular","Texas Lutheran","Centenary (La.)",192,55,27,55,27,"index",TRUE
+"20251011_0pnd",2025,"2025-10-11",6,"regular","Bates","Tufts",168,35,28,35,28,"index",TRUE
+"20251011_0yee",2025,"2025-10-11",6,"regular","Wesleyan","Colby",134,24,7,24,7,"index",TRUE
+"20251011_1315",2025,"2025-10-11",6,"regular","UW-Platteville","UW-River Falls",186,21,31,21,31,"index",TRUE
+"20251011_2llw",2025,"2025-10-11",6,"regular","Luther","Buena Vista",174,7,31,7,31,"index",TRUE
+"20251011_2r84",2025,"2025-10-11",6,"regular","Chapman","Pomona-Pitzer",153,17,10,17,10,"index",TRUE
+"20251011_2x0c",2025,"2025-10-11",6,"regular","Trinity (Texas)","Berry",139,6,29,6,29,"index",TRUE
+"20251011_36q6",2025,"2025-10-11",6,"regular","Wilkes","Moravian",159,26,7,26,7,"index",TRUE
+"20251011_3km0",2025,"2025-10-11",6,"regular","Redlands","Claremont-Mudd-Scripps",166,17,10,17,10,"index",TRUE
+"20251011_401u",2025,"2025-10-11",6,"regular","Millikin","North Central (Ill.)",167,10,59,10,59,"index",TRUE
+"20251011_483x",2025,"2025-10-11",6,"regular","Washington U.","Carthage",170,31,23,31,23,"index",TRUE
+"20251011_49vb",2025,"2025-10-11",6,"regular","Gustavus Adolphus","St. Olaf",190,35,21,35,21,"index",TRUE
+"20251011_4csw",2025,"2025-10-11",6,"regular","Christopher Newport","Vermont State Castleton",150,69,7,69,7,"index",TRUE
+"20251011_50fr",2025,"2025-10-11",6,"regular","Greenville","Northwestern (Minn.)",159,23,20,23,20,"index",TRUE
+"20251011_5nq8",2025,"2025-10-11",6,"regular","UW-Eau Claire","UW-La Crosse",170,21,41,21,41,"index",TRUE
+"20251011_6a94",2025,"2025-10-11",6,"regular","Crown","Martin Luther",144,17,7,17,7,"index",TRUE
+"20251011_6ak2",2025,"2025-10-11",6,"regular","Loras","Nebraska Wesleyan",174,31,28,31,28,"index",TRUE
+"20251011_6yv3",2025,"2025-10-11",6,"regular","Benedictine","Eureka",153,56,0,56,0,"index",TRUE
+"20251011_706s",2025,"2025-10-11",6,"regular","Ohio Wesleyan","Wabash",193,27,44,27,44,"index",TRUE
+"20251011_7v05",2025,"2025-10-11",6,"regular","North Park","Carroll",165,10,24,10,24,"index",TRUE
+"20251011_93p8",2025,"2025-10-11",6,"regular","Bluffton","Anderson",153,49,7,49,7,"index",TRUE
+"20251011_95sr",2025,"2025-10-11",6,"regular","Morrisville State","Utica",171,21,27,21,27,"index",TRUE
 "20251011_98xu",2025,"2025-10-11",6,"regular","Gettysburg","Dickinson",168,21,49,21,49,"index",TRUE
+"20251011_aosd",2025,"2025-10-11",6,"regular","Shenandoah","Guilford",164,45,7,45,7,"index",TRUE
+"20251011_atry",2025,"2025-10-11",6,"regular","Hanover","Mount St. Joseph",159,45,21,45,21,"index",TRUE
+"20251011_avtg",2025,"2025-10-11",6,"regular","Pacific Lutheran","Puget Sound",171,41,27,41,27,"index",TRUE
+"20251011_azf4",2025,"2025-10-11",6,"regular","Waynesburg","Grove City",145,14,24,14,24,"index",TRUE
+"20251011_azmf",2025,"2025-10-11",6,"regular","Concordia-Moorhead","Hamline",171,58,12,58,12,"index",TRUE
+"20251011_bn95",2025,"2025-10-11",6,"regular","St. Norbert","Wisconsin Lutheran",143,17,14,17,14,"index",TRUE
+"20251011_bonl",2025,"2025-10-11",6,"regular","Rose-Hulman","Franklin",174,35,34,35,34,"index",TRUE
+"20251011_bv9l",2025,"2025-10-11",6,"regular","William Paterson","TCNJ",142,0,42,0,42,"index",TRUE
+"20251011_cwfu",2025,"2025-10-11",6,"regular","Kenyon","Oberlin",169,57,2,57,2,"index",TRUE
+"20251011_d947",2025,"2025-10-11",6,"regular","Baldwin Wallace","Otterbein",162,56,14,56,14,"index",TRUE
+"20251011_dcrz",2025,"2025-10-11",6,"regular","Millsaps","Rhodes",171,45,19,45,19,"index",TRUE
+"20251011_dfem",2025,"2025-10-11",6,"regular","Trinity (Conn.)","Hamilton",149,49,0,49,0,"index",TRUE
+"20251011_dfez",2025,"2025-10-11",6,"regular","Lewis and Clark","Willamette",144,28,20,28,20,"index",TRUE
+"20251011_dpuo",2025,"2025-10-11",6,"regular","Kean","Salisbury",150,24,38,24,38,"index",TRUE
+"20251011_e0h0",2025,"2025-10-11",6,"regular","Geneva","Thiel",206,51,38,51,38,"index",TRUE
+"20251011_e2mj",2025,"2025-10-11",6,"regular","Pacific","Linfield",150,6,23,6,23,"index",TRUE
+"20251011_e3xa",2025,"2025-10-11",6,"regular","Denison","Wooster",152,28,7,28,7,"index",TRUE
+"20251011_efvw",2025,"2025-10-11",6,"regular","Wheaton (Ill.)","Illinois Wesleyan",187,65,21,65,21,"index",TRUE
+"20251011_etjq",2025,"2025-10-11",6,"regular","Capital","Manchester",176,52,27,52,27,"index",TRUE
+"20251011_eumc",2025,"2025-10-11",6,"regular","Roanoke","Bridgewater",183,24,14,24,14,"index",TRUE
 "20251011_ew1x",2025,"2025-10-11",6,"regular","McDaniel","Ursinus",162,0,52,0,52,"index",TRUE
+"20251011_fs81",2025,"2025-10-11",6,"regular","Juniata","Catholic",168,17,20,17,20,"index",TRUE
+"20251011_gdtj",2025,"2025-10-11",6,"regular","Cal Lutheran","La Verne",161,23,19,23,19,"index",TRUE
+"20251011_h50c",2025,"2025-10-11",6,"regular","Centre","Maryville (Tenn.)",167,13,33,13,33,"index",TRUE
+"20251011_h6v3",2025,"2025-10-11",6,"regular","Southern Virginia","Brevard",196,32,35,32,35,"index",TRUE
+"20251011_ho10",2025,"2025-10-11",6,"regular","Mary Hardin-Baylor","Hardin-Simmons",163,7,34,7,34,"index",TRUE
+"20251011_iog6",2025,"2025-10-11",6,"regular","East Texas Baptist","Howard Payne",164,18,36,18,36,"index",TRUE
+"20251011_ip91",2025,"2025-10-11",6,"regular","St. Vincent","Bethany",187,57,35,57,35,"index",TRUE
+"20251011_j421",2025,"2025-10-11",6,"regular","John Carroll","Wittenberg",135,44,7,44,7,"index",TRUE
+"20251011_j7yv",2025,"2025-10-11",6,"regular","Illinois College","Monmouth",167,15,48,15,48,"index",TRUE
+"20251011_jg99",2025,"2025-10-11",6,"regular","Austin","Hendrix",208,21,60,21,60,"index",TRUE
+"20251011_js9f",2025,"2025-10-11",6,"regular","Ithaca","St. Lawrence",161,24,7,24,7,"index",TRUE
+"20251011_kfwm",2025,"2025-10-11",6,"regular","Minnesota-Morris","Westminster (Mo.)",147,30,27,30,27,"index",TRUE
 "20251011_kqku",2025,"2025-10-11",6,"regular","Muhlenberg","Franklin and Marshall",175,27,28,27,28,"index",TRUE
+"20251011_lfb3",2025,"2025-10-11",6,"regular","Western Connecticut","New Haven",150,0,69,0,69,"index",TRUE
+"20251011_lra0",2025,"2025-10-11",6,"regular","St. John Fisher","Hartwick",152,35,21,35,21,"index",TRUE
+"20251011_ls6y",2025,"2025-10-11",6,"regular","Lakeland","Concordia (Wis.)",209,34,41,34,41,"index",TRUE
+"20251011_m2jr",2025,"2025-10-11",6,"regular","UW-Oshkosh","UW-Stout",161,16,27,16,27,"index",TRUE
+"20251011_m7ii",2025,"2025-10-11",6,"regular","Huntingdon","Greensboro",146,17,10,17,10,"index",TRUE
+"20251011_mcx6",2025,"2025-10-11",6,"regular","Heidelberg","Marietta",184,30,27,30,27,"index",TRUE
+"20251011_me37",2025,"2025-10-11",6,"regular","Maine Maritime","Curry",129,0,60,0,60,"index",TRUE
+"20251011_moak",2025,"2025-10-11",6,"regular","Belhaven","N.C. Wesleyan",180,41,38,41,38,"index",TRUE
+"20251011_mqjy",2025,"2025-10-11",6,"regular","Albright","Alvernia",156,38,14,38,14,"index",TRUE
+"20251011_mxk9",2025,"2025-10-11",6,"regular","Westminster (Pa.)","Washington and Jefferson",159,7,24,7,24,"index",TRUE
+"20251011_n348",2025,"2025-10-11",6,"regular","FDU-Florham","Widener",168,17,20,17,20,"index",TRUE
+"20251011_n6nc",2025,"2025-10-11",6,"regular","Lycoming","Susquehanna",179,7,69,7,69,"index",TRUE
+"20251011_navh",2025,"2025-10-11",6,"regular","Carleton","St. Scholastica",169,41,14,41,14,"index",TRUE
+"20251011_ned8",2025,"2025-10-11",6,"regular","Misericordia","Lebanon Valley",142,23,21,23,21,"index",TRUE
+"20251011_nhzr",2025,"2025-10-11",6,"regular","Rowan","Montclair State",160,38,26,38,26,"index",TRUE
+"20251011_nn8o",2025,"2025-10-11",6,"regular","Rockford","Aurora",166,0,48,0,48,"index",TRUE
+"20251011_ocff",2025,"2025-10-11",6,"regular","Buffalo State","RPI",161,13,57,13,57,"index",TRUE
+"20251011_oo7c",2025,"2025-10-11",6,"regular","SUNY-Maritime","Merchant Marine",145,34,14,34,14,"index",TRUE
+"20251011_oy5j",2025,"2025-10-11",6,"regular","Hobart","Union",146,16,33,16,33,"index",TRUE
+"20251011_p8pa",2025,"2025-10-11",6,"regular","Lawrence","Chicago",139,0,66,0,66,"index",TRUE
+"20251011_p9g8",2025,"2025-10-11",6,"regular","Lyon","McMurry",184,7,65,7,65,"index",TRUE
+"20251011_pa8l",2025,"2025-10-11",6,"regular","Ohio Northern","Muskingum",166,54,16,54,16,"index",TRUE
+"20251011_q2p4",2025,"2025-10-11",6,"regular","Gallaudet","Washington and Lee",147,0,45,0,45,"index",TRUE
+"20251011_q8vo",2025,"2025-10-11",6,"regular","Averett","Randolph-Macon",181,20,77,20,77,"index",TRUE
+"20251011_qhn8",2025,"2025-10-11",6,"regular","Grinnell","Knox",146,17,20,17,20,"index",TRUE
+"20251011_qiy9",2025,"2025-10-11",6,"regular","Macalester","St. John's",146,0,70,0,70,"index",TRUE
+"20251011_qp9j",2025,"2025-10-11",6,"regular","Beloit","Lake Forest",151,0,59,0,59,"index",TRUE
+"20251011_qs6v",2025,"2025-10-11",6,"regular","Amherst","Bowdoin",158,34,7,34,7,"index",TRUE
+"20251011_rhc9",2025,"2025-10-11",6,"regular","Mount Union","Wilmington",170,59,0,59,0,"index",TRUE
+"20251011_rvr0",2025,"2025-10-11",6,"regular","Bethel","Augsburg",183,56,7,56,7,"index",TRUE
+"20251011_rvzg",2025,"2025-10-11",6,"regular","Dubuque","Wartburg",169,7,33,7,33,"index",TRUE
+"20251011_sg6j",2025,"2025-10-11",6,"regular","George Fox","Whitworth",168,16,40,16,40,"index",TRUE
 "20251011_t8bp",2025,"2025-10-11",6,"regular","Carnegie Mellon","Johns Hopkins",160,27,28,27,28,"index",TRUE
+"20251011_tjet",2025,"2025-10-11",6,"regular","Hilbert","Rochester",140,0,38,0,38,"index",TRUE
+"20251011_tmcs",2025,"2025-10-11",6,"regular","LaGrange","Methodist",162,26,7,26,7,"index",TRUE
+"20251011_v55d",2025,"2025-10-11",6,"regular","Middlebury","Williams",158,17,24,17,24,"index",TRUE
+"20251011_wc5q",2025,"2025-10-11",6,"regular","Coe","Simpson",154,34,7,34,7,"index",TRUE
+"20251011_xh02",2025,"2025-10-11",6,"regular","Fitchburg State","Worcester State",156,21,6,21,6,"index",TRUE
+"20251011_xu6u",2025,"2025-10-11",6,"regular","Sewanee","Southwestern",159,31,39,31,39,"index",TRUE
+"20251011_ywlf",2025,"2025-10-11",6,"regular","UW-Whitewater","UW-Stevens Point",163,45,14,45,14,"index",TRUE
+"20251011_zemb",2025,"2025-10-11",6,"regular","Delaware Valley","Eastern",139,20,37,20,37,"index",TRUE
+"20251011_zlh0",2025,"2025-10-11",6,"regular","Ripon","Cornell",162,22,14,22,14,"index",TRUE
 "20251018_mhk5",2025,"2025-10-18",7,"regular","Muhlenberg","McDaniel",153,56,7,56,7,"index",TRUE
 "20251018_q4jr",2025,"2025-10-18",7,"regular","Franklin and Marshall","Dickinson",168,23,20,23,20,"index",TRUE
 "20251018_rd3r",2025,"2025-10-18",7,"regular","Ursinus","Johns Hopkins",170,21,52,21,52,"index",TRUE
