@@ -64,7 +64,8 @@ game. NJAC teams, whose name was pending a d3football fetch, now read
 ncaa.com's final scores. Not built:
 - one is pending (ncaa.com 502);
 - two are non-NCAA bowls that ncaa.com doesn't have;
-- the Stagg Bowl, whose ncaa.com file tags every line with one team.
+- the national semifinal at UW-River Falls (`20251220_vlfc`), whose
+  ncaa.com file tags every line with one team.
 
 On the 7,136 rows whose play text matches the d3football build:
 - `pos_team`, `score_pts`, `yards_gained`, the penalty columns and

@@ -65,8 +65,13 @@ filter or `season`, not a new pipeline.
     id), so drives open at "drive start" lines.
   - Some kickoffs are dropped; no drive footers ("N plays, Y yards").
   - Some playoff games are a different StatCrew file from d3football's.
-  - Stagg Bowl 2025 (contest 6529905) tags every line with one team and is
-    missing lines: not buildable.
+  - The 2025 national semifinal Johns Hopkins at UW-River Falls (contest
+    6529905, `20251220_vlfc`) tags every line with one team and has no
+    drive-start lines or running score, so possession can't be read. Its
+    plays are all there.
+  - The season index (and the cached ncaa.com scoreboards) end on
+    2025-12-20, so the 2025 Stagg Bowl (UW-River Falls vs North Central) is
+    not in the game list yet.
 - **Conferences come from ncaa.com's scoreboards:** each team's
   `conferences[].conferenceSeo` tag, named through
   `data-raw/ncaa/conference_names.csv` (d3football's names and codes).

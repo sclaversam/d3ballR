@@ -12,8 +12,10 @@ the source was d3football.com; those builds are kept in
   Conference team, 9,447 rows and 1,300 drives, in `pbp/2025/`. Not built:
   - `20250905_8wt2`: pending (ncaa.com answered 502, no play-by-play yet).
   - `20251122_6buh`, `20251122_a800`: not on ncaa.com (non-NCAA bowl games).
-  - `20251220_vlfc` (Stagg Bowl): ncaa.com's file tags every line with one
-    team and is missing lines, so possession can't be read.
+  - `20251220_vlfc` (national semifinal, Johns Hopkins at UW-River Falls):
+    ncaa.com's file tags every line with one team and has no drive-start
+    lines or running score, so possession can't be read. All its plays are
+    there.
 - **Reconciled:** all 58 match ncaa.com's final scores.
 - **Against d3football:** on the 7,136 rows whose play text matches the
   d3football build, `pos_team`, `score_pts`, `yards_gained`, the penalty
@@ -122,8 +124,11 @@ first-down exclusivity and placement.
   ncaa.com and are added, labelled in `play_text`: 91 proved by the running
   score, 9 (CMU home games, no running score) by ncaa.com's scoring summary.
   The final-score fallback is not needed in Centennial 2025.
-- **Games ncaa.com can't give:** non-NCAA bowl games, and the 2025 Stagg
-  Bowl (broken file). Both are listed in the build report.
+- **Games ncaa.com can't give:** non-NCAA bowl games, and the 2025 national
+  semifinal `20251220_vlfc` (every play tagged with one team). Both are
+  listed in the build report.
+- **The 2025 Stagg Bowl isn't in the game list:** the season index and the
+  cached ncaa.com scoreboards stop at 2025-12-20.
 - **`yards_gained` on a lateral** reads only the first yardage segment. So a
   first down earned after a lateral is missed (1 series in 2025).
 - **`yards_gained` is not defined** for interceptions, punts, field goals,
