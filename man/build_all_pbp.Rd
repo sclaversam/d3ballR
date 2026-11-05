@@ -4,11 +4,18 @@
 \alias{build_all_pbp}
 \title{Build and write every game's play-by-play table}
 \usage{
-build_all_pbp(game_urls, out_dir, check_dir, conf = NULL)
+build_all_pbp(
+  game_urls,
+  out_dir,
+  check_dir,
+  conf = NULL,
+  loader = NULL,
+  season = NULL
+)
 }
 \arguments{
-\item{game_urls}{Character vector of boxscore URLs (any teams, any
-seasons).}
+\item{game_urls}{Character vector of d3football boxscore URLs (any
+teams, any seasons), or of game ids when \code{loader} is given.}
 
 \item{out_dir}{Directory to write per-game CSVs into.}
 
@@ -16,6 +23,12 @@ seasons).}
 
 \item{conf}{Conference data from \code{\link[=build_conference_table]{build_conference_table()}} (else the
 cached files are used).}
+
+\item{loader}{NULL to read d3football pages, or a function taking a game
+id and returning the game (\code{\link[=fetch_game]{fetch_game()}}'s shape), e.g. a wrapper
+around \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}.}
+
+\item{season}{With \code{loader}: the games' season (for the season index).}
 }
 \value{
 Invisibly, a named list of the per-game tibbles (by \code{game_id}).

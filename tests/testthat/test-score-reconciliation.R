@@ -1,21 +1,22 @@
 # Data test: every built game's points by team (from score_pts) must equal
 # the boxscore's line-score final, recorded in
 # checks/{season}/pbp_row_counts.csv by build_all_pbp(). Runs on
-# every season folder in pbp/.
+# every season folder in pbp/ (ncaa.com) and pbp/d3football/.
 
 test_that("sum of score_pts by team equals the boxscore final score, for every built game", {
-  root <- test_path("../..")
-  seasons <- list.files(file.path(root, "pbp"), pattern = "^\\d{4}$")
-  skip_if(!length(seasons), "no built seasons")
-  for (season in seasons) {
-    counts_file <- file.path(root, "checks", season, "pbp_row_counts.csv")
+  top <- test_path("../..")
+  found <- unlist(lapply(c("pbp", "pbp/d3football"), function(d) list.files(file.path(top, d), pattern = "^\\d{4}$")))
+  skip_if(!length(found), "no built seasons")
+  for (src in c("", "d3football")) for (season in list.files(file.path(top, "pbp", src), pattern = "^\\d{4}$")) {
+    pbp_dir <- file.path(top, "pbp", src, season)
+    counts_file <- file.path(top, "checks", src, season, "pbp_row_counts.csv")
     expect_true(file.exists(counts_file), label = paste(season, "pbp_row_counts.csv exists"))
     if (!file.exists(counts_file)) next
     counts <- utils::read.csv(counts_file, na.strings = "", colClasses = c(game_id = "character"))
-    built <- sub("\\.csv$", "", list.files(file.path(root, "pbp", season), pattern = "\\.csv$"))
+    built <- sub("\\.csv$", "", list.files(pbp_dir, pattern = "\\.csv$"))
     expect_setequal(counts$game_id, built)
     for (i in seq_len(nrow(counts))) {
-      g <- utils::read.csv(file.path(root, "pbp", season, paste0(counts$game_id[i], ".csv")), na.strings = "")
+      g <- utils::read.csv(file.path(pbp_dir, paste0(counts$game_id[i], ".csv")), na.strings = "")
       expect_identical(team_points(g, counts$away[i]), as.integer(counts$away_final[i]),
                        label = paste(counts$game_id[i], counts$away[i], "points"))
       expect_identical(team_points(g, counts$home[i]), as.integer(counts$home_final[i]),

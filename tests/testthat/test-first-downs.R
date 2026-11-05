@@ -74,7 +74,9 @@ test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {
   dir <- test_path("../../pbp")
   files <- list.files(dir, pattern = "\\.csv$", recursive = TRUE, full.names = TRUE)
   skip_if(!length(files), "no built games")
-  g1 <- files[basename(files) == "20250906_e064.csv"]
+  # the play numbers below are d3football's (ncaa.com's rows can differ)
+  d3 <- files[grepl("d3football", files)]
+  g1 <- d3[basename(d3) == "20250906_e064.csv"]
   if (length(g1)) {
     g <- utils::read.csv(g1, na.strings = "")
     # play 11 (10-yard catch + face mask) causes a new series; play 12 starts
@@ -84,7 +86,7 @@ test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {
     expect_false(r$firstD_by_penalty)
     expect_equal(r$down, 1L)
   }
-  hz <- files[basename(files) == "20250904_hz19.csv"]
+  hz <- d3[basename(d3) == "20250904_hz19.csv"]
   if (length(hz)) {
     g <- utils::read.csv(hz, na.strings = "")
     # play 15: F&M punt; play 16: LVC false start (NO PLAY) = first snap row of

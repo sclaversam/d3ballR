@@ -9,8 +9,9 @@ build_season(
   teams = NULL,
   max_requests = Inf,
   delay = 6,
-  out_dir = file.path("pbp", season),
-  check_dir = file.path("checks", season)
+  source = c("ncaa", "d3football"),
+  out_dir = NULL,
+  check_dir = NULL
 )
 }
 \arguments{
@@ -23,9 +24,14 @@ the whole season.}
 
 \item{delay}{Seconds between requests.}
 
-\item{out_dir}{Per-game CSVs (\verb{pbp/\{season\}/}).}
+\item{source}{"ncaa" (default) or "d3football".}
 
-\item{check_dir}{Reports (\verb{checks/\{season\}/}).}
+\item{out_dir}{Per-game CSVs. NULL means \verb{pbp/\{season\}/} for ncaa.com
+and \verb{pbp/d3football/\{season\}/} for d3football, so the two sources never
+mix in one folder.}
+
+\item{check_dir}{Reports. NULL means \verb{checks/\{season\}/} or
+\verb{checks/d3football/\{season\}/} likewise.}
 }
 \value{
 Invisibly, the list of built games.
@@ -33,23 +39,29 @@ Invisibly, the list of built games.
 \description{
 One pipeline for every stage of the roadmap. The games come from the
 season index (\code{\link[=build_season_index]{build_season_index()}}): with \code{teams = NULL}, every game
-with a d3football boxscore; with \code{teams}, only games involving one of
-them (e.g. a conference's members: any of their games, including
-non-conference, playoff and bowl games). Games already in \code{out_dir} are
-always rebuilt too, so \code{out_dir} and the reports in \code{check_dir} always
-cover every game built so far for the season.
+in the index; with \code{teams}, only games involving one of them (e.g. a
+conference's members: any of their games, including non-conference,
+playoff and bowl games). Games already in \code{out_dir} are always rebuilt
+too, so \code{out_dir} and the reports in \code{check_dir} always cover every game
+built so far for the season.
 }
 \details{
-Steps: fetch every game page not yet cached (\code{\link[=prefetch_games]{prefetch_games()}}), then
-the team-to-conference table for every team in those games
-(\code{\link[=build_conference_table]{build_conference_table()}}), then build each game (\code{\link[=build_all_pbp]{build_all_pbp()}}),
-then the build report (\code{\link[=write_build_report]{write_build_report()}}). Game pages come first so a
-capped run spends its budget on games; conference columns are NA for
-teams not yet looked up and fill in on a later run.
+The play-by-play comes from ncaa.com (\code{source = "ncaa"}, the default)
+through a local ncaa-api server (see \code{\link[=fetch_ncaa_json]{fetch_ncaa_json()}}): each index
+game is matched to its ncaa.com contest (\code{\link[=map_ncaa_contests]{map_ncaa_contests()}}), its
+play-by-play is fetched (\code{\link[=prefetch_ncaa_games]{prefetch_ncaa_games()}}) and rebuilt into the
+play table the parser reads (\code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}). \code{source = "d3football"} reads d3football boxscore pages instead, which now works
+only from pages already in the cache (d3football's firewall blocks
+scripts).
 
-Fetching is cached (a page is never requested twice), throttled
-(\code{delay} seconds apart), capped (\code{max_requests} new requests per call),
-and stops at the first sign of rate limiting (after that the run builds
-only from the cache). Anything not fetched is reported as pending, so
-calling \code{build_season()} again picks up where the last call stopped.
+Steps: fetch every game not yet cached, then the team-to-conference
+table for every team in those games (\code{\link[=build_conference_table]{build_conference_table()}}), then
+build each game (\code{\link[=build_all_pbp]{build_all_pbp()}}), then the build report
+(\code{\link[=write_build_report]{write_build_report()}}). Conference columns are NA for teams not yet
+looked up and fill in on a later run.
+
+Fetching is cached (nothing is requested twice), throttled (\code{delay}
+seconds apart) and capped (\code{max_requests} new requests per call).
+Anything not fetched is reported as pending, so calling \code{build_season()}
+again picks up where the last call stopped.
 }

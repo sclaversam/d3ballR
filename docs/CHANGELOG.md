@@ -5,6 +5,79 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Source switched to ncaa.com (Centennial 2025 rebuilt)
+
+Decided by Sam (2026-11-04): d3football's firewall now serves scripts a
+bot challenge, so the play-by-play comes from ncaa.com, read as JSON
+through a local `henrygd/ncaa-api` server. Sam will reassess the columns
+and accuracy later. The 71 columns are unchanged.
+
+**How:** ncaa.com's play text is the same StatCrew text as d3football's,
+so the parser is unchanged. New `R/ncaa.R` maps each season-index game to
+its ncaa.com contest (`map_ncaa_contests()`) and rebuilds d3football's
+(situation, play) table from the JSON (`fetch_ncaa_game()`,
+`ncaa_play_table()`). `build_season()` gains `source = c("ncaa",
+"d3football")`. `game_id` is still d3football's id.
+
+**Layout:** ncaa.com builds go to `pbp/{season}/` and `checks/{season}/`.
+The 133 d3football games moved to `pbp/d3football/2025/` and
+`checks/d3football/2025/` (`season_index.md` stays in `checks/2025/`).
+
+**Labelled additions:** ncaa.com drops many extra-point lines. When the
+running score rises by exactly one point more than the try lines account
+for, an extra point is added after the touchdown, with `play_text` "kick
+attempt good [added by d3ballR: ...]". Some host schools' files (CMU home
+games) have no running score at all. For those, Sam suggested checking
+ncaa.com's box score and scoring summary. The scoring summary lists every
+good try after its touchdown, so it decides: a good kick or two-point try is
+added when it lists one, and nothing when it doesn't. A final-score rule
+(short by exactly one point per try-less touchdown) is kept only as a
+fallback for touchdowns the summary doesn't list. The box score's
+`patAttempted` was 0 next to 5 made, so it isn't used. Centennial 2025 has
+100 added extra points: 91 from the running score and 9 from the scoring
+summary. d3football's copies agree on all 8 of those 9 it has.
+
+**Conferences from ncaa.com** (asked by Sam): d3football's team pages
+are blocked, so for ncaa.com builds each team's conference comes from
+ncaa.com's scoreboards, which tag every team in every game (29 D3
+conferences; every team has the same tag all season). Names and codes
+follow d3football's (`data-raw/ncaa/conference_names.csv`). ncaa.com has
+no conference-game marker, so `conference_game` is a regular-season game
+between two teams of the same conference. It matches d3football's "*"
+marker on all 58 Centennial games, and on 292 of the 293 games with a
+cached marker. The exception is Gallaudet, which ncaa.com tags SCAC while
+d3football counted its game with Randolph-Macon (ODAC) as a conference
+game. NJAC teams, whose name was pending a d3football fetch, now read
+"NJAC".
+
+**Shared parser changes** (both sources):
+- `try_phase_team()` (rule 1) uses a kickoff only if it comes before the
+  next live snap. Otherwise, when ncaa.com dropped a kickoff, the try was
+  given the team of a kickoff much later in the half.
+- `derive_clock()`: a play also opens a new drive's clock when its
+  possession differs from the last play's, not only after a drive footer
+  or kickoff. ncaa.com has no drive footers ("N plays, Y yards").
+- Rebuilding the 133 cached d3football games with both changes gives
+  byte-identical CSVs.
+
+**Centennial 2025 from ncaa.com:** 58 of 62 games built, and all 58 match
+ncaa.com's final scores. Not built:
+- one is pending (ncaa.com 502);
+- two are non-NCAA bowls that ncaa.com doesn't have;
+- the national semifinal at UW-River Falls (`20251220_vlfc`), whose
+  ncaa.com file tags every line with one team.
+
+On the 7,136 rows whose play text matches the d3football build:
+- `pos_team`, `score_pts`, `yards_gained`, the penalty columns and
+  `td_team` agree 100%;
+- down, distance, yards to goal, drive number and `clock_start` agree
+  99.5-99.7%.
+
+The `first_downs.md` series check has 21 exceptions in 58 games. 5 are
+the same as in the d3football build. The other 16 are not yet explained:
+the one traced follows a kickoff ncaa.com dropped, and most are in games
+whose ncaa.com file differs from d3football's.
+
 ## Return-touchdown columns (69 → 71 columns)
 
 Decided by Sam (2026-11-04). Added nflfastR's `return_touchdown` and

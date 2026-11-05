@@ -168,13 +168,18 @@ derive_clock <- function(full, kept) {
   scoring <- kept$touchdown | kept$field_goal_made | kept$safety
 
   # drive-opening markers: a header/start row with no snap since the last
-  # drive footer or kickoff (restatements mid-drive are bounds only)
+  # drive footer or kickoff, or one naming a different team from the last
+  # snap (a source with no drive footers, like ncaa.com, opens a drive after
+  # a punt or turnover that way). Restatements mid-drive are bounds only.
   rt <- full$row_type
   marker <- which(rt %in% c("drive_header", "drive_start"))
+  poss <- if (!is.null(full$possession)) full$possession else rep(NA_character_, nrow(full))
   opening <- vapply(marker, function(m) {
     back <- which(rt[seq_len(m - 1)] %in% c("drive_footer", "kickoff"))
     from <- if (length(back)) back[length(back)] else 0L
-    !any(rt[seq_len(m - 1)][seq_along(rt[seq_len(m - 1)]) > from] == "play")
+    plays <- which(rt[seq_len(m - 1)] == "play")
+    plays <- plays[plays > from]
+    !length(plays) || isTRUE(poss[m] != poss[plays[length(plays)]])
   }, logical(1))
   opening_rows <- marker[opening]
 

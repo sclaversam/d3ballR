@@ -3,8 +3,9 @@ Title: Division III College Football Play-by-Play Scraper
 Version: 0.1.0
 Authors@R:
     person("Sam", "Sclaver", email = "sclaversam@gmail.com", role = c("aut", "cre"))
-Description: Scrapes and parses NCAA Division III college football play-by-play
-    data from d3football.com into tidy, per-play tables. Fills a gap in the
+Description: Builds NCAA Division III college football play-by-play into
+    tidy, per-play tables, from ncaa.com (through a local ncaa-api server)
+    or from cached d3football.com boxscore pages. Fills a gap in the
     existing ecosystem (cfbfastR and CollegeFootballData cover only Division I).
     Output follows cfbfastR conventions; validated on the 2025 Centennial
     Conference season.
@@ -15,6 +16,7 @@ RoxygenNote: 7.3.3
 Imports:
     dplyr,
     httr2,
+    jsonlite,
     rvest,
     stringr,
     tibble,

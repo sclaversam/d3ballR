@@ -7,7 +7,9 @@
 build_pbp(game_url, index = NULL, season_dates = NULL, conf = NULL)
 }
 \arguments{
-\item{game_url}{Boxscore URL without the \verb{?view=} suffix.}
+\item{game_url}{A d3football boxscore URL without the \verb{?view=} suffix
+(the page is read with \code{\link[=fetch_game]{fetch_game()}}), or a game already read, as a
+list in \code{\link[=fetch_game]{fetch_game()}}'s shape (e.g. from \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}).}
 
 \item{index}{Season index for the game's season. If NULL, the cached
 \verb{data-raw/index/\{season\}.csv} is used when present (no network);
