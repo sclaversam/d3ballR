@@ -23,11 +23,11 @@ cfbfastR also puts `firstD_by_poss`, `firstD_by_yards`, `firstD_by_penalty` on t
 
 | flag | rows |
 |---|---|
-| firstD_by_kickoff | 1981 |
-| firstD_by_poss | 2730 |
-| firstD_by_yards | 5915 |
-| firstD_by_penalty | 580 |
-| new_series | 11206 |
+| firstD_by_kickoff | 1986 |
+| firstD_by_poss | 2750 |
+| firstD_by_yards | 5934 |
+| firstD_by_penalty | 587 |
+| new_series | 11257 |
 
 Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
@@ -35,7 +35,7 @@ Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**11217 series; 11128 have exactly one `new_series` row on their first snap row; 89 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 1241.
+**11268 series; 11179 have exactly one `new_series` row on their first snap row; 89 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 1246.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | first_row_text |
 |---|---|---|---|---|---|---|---|---|
