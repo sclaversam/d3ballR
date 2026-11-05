@@ -35,7 +35,7 @@ Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**37638 series; 37381 have exactly one `new_series` row on their first snap row; 257 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 3919.
+**37637 series; 37381 have exactly one `new_series` row on their first snap row; 256 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 3919.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | first_row_text |
 |---|---|---|---|---|---|---|---|---|
@@ -186,8 +186,7 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 20251004_1fpd | 133 | 135 | Bowdoin | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Peter Macaulay pass incomplete. |
 | 20251004_3puz | 99 | 102 | Hartwick | 1 & 10 | 99, 100 | more than one new_series row | unexplained | Dennis Riordan pass complete to Miles Perry for 40 yards to the ALFRED33 (Malik Alexander). |
 | 20251004_3puz | 135 | 136 | Hartwick | 1 & 10 | none | no new_series row | unexplained | Akil Williams rush for 8 yards to the HARTWICK33 (TJ Marsh). |
-| 20251004_6sus | 163 | 165 | UW-La Crosse | 1 & 10 | none | no new_series row | unexplained | Shotgun Stanton,Brian rush middle for 1 yard gain to the UWL24 (Winters,Aaron). |
-| 20251004_6sus | 167 | 169 | UW-Whitewater | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Vasey,Tyler rush right for 0 yards to the UWL25 (Ott,Ben). |
+| 20251004_6sus | 168 | 170 | UW-Whitewater | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Vasey,Tyler rush right for 0 yards to the UWL25 (Ott,Ben). |
 | 20251004_7p7e | 21 | 21 | Roanoke | 1 & 10 | none | no new_series row | unexplained | Nicklas,Zach punt 33 yards to the RMC01. |
 | 20251004_8kxj | 101 | 104 | Juniata | 1 & 10 | none | no new_series row | unexplained | Ethan Eisenberg sacked for loss of 3 yards to the JUNIATA22 (Eamon Moran; Amir Gharbi). |
 | 20251004_8kxj | 105 | 108 | Juniata | 1 & 10 | none | no new_series row | unexplained | Ethan Eisenberg sacked for loss of 10 yards to the JUNIATA15 (Eamon Moran). |
@@ -350,8 +349,8 @@ First snap row of an overtime possession (`firstD_by_poss`): 60.
 | 20250927_nuea | 154 | 5 | Concordia (Wis.) | rush | No Huddle Espinoza,Caleb rush middle for 9 yards gain to the BEN31 (Baugh,Corey). |
 | 20250927_nuea | 162 | 5 | Benedictine | sack | No Huddle-Shotgun Moses,Jack sacked for loss of 6 yards to the CUW18 (Birch,Ben, Sellers,Marquiton). |
 | 20251004_6sus | 160 | 5 | UW-La Crosse | pass_incomplete | No Huddle-Shotgun Haas,Kyle pass incomplete deep middle to Janke,Jack thrown to UWW00. |
-| 20251004_6sus | 166 | 5 | UW-Whitewater | field_goal_good | Adams,Seth field goal attempt from 37 yards GOOD (H: Tackett,Dylan, LS: Ross,Owen), clock 00:00. |
-| 20251004_6sus | 170 | 5 | UW-La Crosse | rush | No Huddle-Shotgun Lynch,Gabe rush right for 1 yard gain to the UWW24 (Gallagher,Ethan). |
+| 20251004_6sus | 164 | 5 | UW-Whitewater | rush | Shotgun Stanton,Brian rush middle for 1 yard gain to the UWL24 (Winters,Aaron). |
+| 20251004_6sus | 171 | 5 | UW-La Crosse | rush | No Huddle-Shotgun Lynch,Gabe rush right for 1 yard gain to the UWW24 (Gallagher,Ethan). |
 | 20251004_ec6d | 159 | 5 | Brevard | rush | Shotgun Deaton,Jadien rush middle for 3 yards gain to the BEL22 (Chaffier,Tre). |
 | 20251004_ec6d | 162 | 5 | Belhaven | rush | No Huddle Gallashaw,Caleb rush left for 5 yards gain to the BREV20 (Ramey,Baylee). |
 | 20251004_gczt | 143 | 5 | Colby | rush | Antone Moreis rush for no gain to the BATES25 (Brooks Potter). |
