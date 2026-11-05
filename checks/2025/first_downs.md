@@ -73,10 +73,10 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 20250913_2k0r | 58 | 61 | Olivet | 1 & 10 | 58, 61 | more than one new_series row | unexplained | Daniel Avila pass incomplete to Wade Brashears (Corey Watkins). |
 | 20250913_2k0r | 145 | 146 | Olivet | 1 & 10 | 145, 146 | more than one new_series row | unexplained | Daniel Avila pass complete to Julian Toscano for 24 yards to the OLIVET49, 1ST DOWN OLIVET (Corey Watkins;Rees |
 | 20250913_5ivd | 20 | 23 | Bluffton | 1 & 15 | none | no new_series row | unexplained | Tywuan Clark rush for no gain to the BUFB20 (Kamron Jones). |
-| 20250913_5ivd | 55 | 58 | Bluffton | 1 & 10 | none | no new_series row | unexplained | Tywuan Clark pass complete to Cameron Paige for 5 yards to the BUFB30 (M. Baxtresser). |
-| 20250913_5ivd | 64 | 67 | Bluffton | 1 & 10 | none | no new_series row | unexplained | Tywuan Clark sacked for loss of 3 yards to the BUFB22 (Joshua Campeau). |
-| 20250913_5ivd | 173 | 177 | Bluffton | 1 & 10 | 173, 175 | more than one new_series row | unexplained | Tywuan Clark rush for 4 yards to the ALBION21 (Jimmy Bona). |
-| 20250913_5ivd | 179 | 183 | Bluffton | 1 & 10 | none | no new_series row | unexplained | Tywuan Clark pass incomplete to Jaivon Hudson (Alex Olenik). |
+| 20250913_5ivd | 56 | 59 | Bluffton | 1 & 10 | none | no new_series row | unexplained | Tywuan Clark pass complete to Cameron Paige for 5 yards to the BUFB30 (M. Baxtresser). |
+| 20250913_5ivd | 65 | 68 | Bluffton | 1 & 10 | none | no new_series row | unexplained | Tywuan Clark sacked for loss of 3 yards to the BUFB22 (Joshua Campeau). |
+| 20250913_5ivd | 174 | 178 | Bluffton | 1 & 10 | 174, 176 | more than one new_series row | unexplained | Tywuan Clark rush for 4 yards to the ALBION21 (Jimmy Bona). |
+| 20250913_5ivd | 180 | 184 | Bluffton | 1 & 10 | none | no new_series row | unexplained | Tywuan Clark pass incomplete to Jaivon Hudson (Alex Olenik). |
 | 20250913_6y5g | 1 | 4 | Alfred | 1 & 10 | none | no new_series row | unexplained | Tommy Nyquist rush for 3 yards to the ALFRED28 (Ryan Burns). |
 | 20250913_6y5g | 16 | 20 | Alfred | 1 & 10 | none | no new_series row | unexplained | Tommy Nyquist rush for 5 yards to the ALFRED30 (Ryan Burns3a Sam Tourangeau). |
 | 20250913_6y5g | 102 | 106 | Alfred | 1 & 10 | none | no new_series row | unexplained | Chris Kelly pass complete to Jonye Rosebury Jr for loss of 1 yard to the ALFRED24 (Aidan Carrazana). |
@@ -84,8 +84,8 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 20250913_77cq | 104 | 104 | Williams | 1 & 10 | none | no new_series row | unexplained | Jon Oris rush for 11 yards to the WILLIAMS36 (Mat Bucher). |
 | 20250913_7myh | 129 | 129 | Pacific Lutheran | 1 & 10 | none | no new_series row | unexplained | Shotgun Chaffin,Darius pass complete short right to Bauldree,Jesse caught at PLU40, for 16 yards to the SIMP44 |
 | 20250913_8770 | 77 | 78 | John Carroll | 1 & 10 | 77, 78 | more than one new_series row | unexplained | No Huddle-Shotgun Semptimphelter,Nick pass complete short right to Montgomery,Tyren caught at JHU42, for 16 ya |
-| 20250913_8l2c | 21 | 25 | Western New England | 1 & 10 | 21, 23 | more than one new_series row | unexplained | Paul Gorry rush for 8 yards to the SRU20 (Brody McKenna; Chris Stowell). |
-| 20250913_8l2c | 78 | 79 | Western New England | 1 & 10 | none | no new_series row | unexplained | Paul Gorry pass incomplete to James Burg (Jesse Hayes). |
+| 20250913_8l2c | 22 | 26 | Western New England | 1 & 10 | 22, 24 | more than one new_series row | unexplained | Paul Gorry rush for 8 yards to the SRU20 (Brody McKenna; Chris Stowell). |
+| 20250913_8l2c | 80 | 81 | Western New England | 1 & 10 | none | no new_series row | unexplained | Paul Gorry pass incomplete to James Burg (Jesse Hayes). |
 | 20250913_8wzq | 130 | 130 | Buffalo State | 1 & 6 | none | no new_series row | unexplained | Massetta,Steven field goal attempt from 16 yards NO GOOD blocked by McNeilly,Brennan (H: Romeo,John, LS: Kimbl |
 | 20250913_8x3b | 143 | 147 | Westfield State | 1 & 10 | 143, 146 | more than one new_series row | unexplained | Miles Foerster pass incomplete to Nate Moreira. |
 | 20250913_a8k7 | 66 | 69 | St. Xavier | 1 & 10 | none | no new_series row | unexplained | Tyreese Lee rush for no gain to the SXU25 (Karsten Libby). |
@@ -132,11 +132,11 @@ First snap row of an overtime possession (`firstD_by_poss`): 15.
 | 20250906_vvrk | 186 | 5 | Simpson | rush | Shotgun Thoreson,Jayden rush middle for 3 yards loss to the AUG28, End Of Play. |
 | 20250913_2te5 | 161 | 5 | Worcester State | pass_complete | No Huddle-Shotgun Ayotte,Cam pass complete short right to James,Sy'air caught at PSU22, for 4 yards to the PSU |
 | 20250913_2te5 | 166 | 5 | Plymouth State | rush | Walker,Greg rush middle for 11 yards gain to the WOR14 (Winco,Nathan), 1ST DOWN. |
-| 20250913_5ivd | 168 | 5 | Albion | rush | Ali Murray rush for 8 yards to the BUFB17 (Travion Curry). |
-| 20250913_5ivd | 173 | 5 | Bluffton | rush | Tywuan Clark rush for 4 yards to the ALBION21 (Jimmy Bona). |
-| 20250913_5ivd | 184 | 5 | Albion | pass_complete | Ali Murray pass complete to Cameron Moore for 1 yard to the BUFB24 (Ryan Bourke;Devin Hogan). |
-| 20250913_8l2c | 163 | 5 | Western New England | rush | Paul Gorry rush for 9 yards to the SRU16 (Michael Rutstei). |
-| 20250913_8l2c | 167 | 5 | Salve Regina | rush | Justan Luzzi rush for 6 yards to the WNE19 (Ryan Clark). |
+| 20250913_5ivd | 169 | 5 | Albion | rush | Ali Murray rush for 8 yards to the BUFB17 (Travion Curry). |
+| 20250913_5ivd | 174 | 5 | Bluffton | rush | Tywuan Clark rush for 4 yards to the ALBION21 (Jimmy Bona). |
+| 20250913_5ivd | 185 | 5 | Albion | pass_complete | Ali Murray pass complete to Cameron Moore for 1 yard to the BUFB24 (Ryan Bourke;Devin Hogan). |
+| 20250913_8l2c | 165 | 5 | Western New England | rush | Paul Gorry rush for 9 yards to the SRU16 (Michael Rutstei). |
+| 20250913_8l2c | 169 | 5 | Salve Regina | rush | Justan Luzzi rush for 6 yards to the WNE19 (Ryan Clark). |
 | 20251115_2lnx | 159 | 5 | Johns Hopkins | rush | No Huddle-Shotgun Schroeder,Geoff rush middle for 24 yards gain to the F&M21 (Hille,Connor), 1ST DOWN. |
 | 20251115_2lnx | 166 | 5 | Franklin and Marshall | rush | No Huddle-Shotgun Tremba,Ty rush middle for 3 yards gain to the JHU22 (Smith,Jackson). |
 
