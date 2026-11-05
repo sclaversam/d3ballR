@@ -5,6 +5,20 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Scoring summary: match by real quarter, and only trust a complete summary's silence
+
+- Extra points ncaa.com dropped (games with no running score) are matched
+  to the scoring summary by `quarter` (read from the period title) instead
+  of the summary's position, which shifts when a quarter had no scoring.
+  Four games now match their touchdowns to the summary; their added kicks
+  are unchanged, only the label now says the summary lists them
+  (`20250905_0otb`, `20250913_77cq`, `20250913_crwv`, `20250920_lsyc`).
+- A try the summary leaves out is evidence it failed only if the summary is
+  complete for that team: at least as many good tries and field goals as
+  the play text shows. `20250913_oxzn`'s summary lists none of Amherst's
+  tries or its field goal, so the final-score rule decides there, as before,
+  and the game still reconciles.
+
 ## Safeties on a foul in the end zone count despite "NO PLAY"
 
 Decided by Sam (2026-11-05). Shenandoah at Geneva (`20250913_ss2d`):

@@ -204,3 +204,20 @@ test_that("ncaa_period_number reads the period title", {
   expect_equal(ncaa_period_number("2OT", 5), 6L)
   expect_equal(ncaa_period_number(NULL, 2), 2L)
 })
+
+test_that("a scoring summary missing a team's tries isn't evidence that a try failed", {
+  lines <- data.frame(
+    period = 3L, team_id = c("A", "A", "A", "A", "B"), clock = NA_character_,
+    drive_text = c("1 and 10 at 5", "1 and 10 at 35", "1 and 10 at 5", "1 and 0 at 3", "1 and 10 at 25"),
+    home_score = 0L, visitor_score = 0L,
+    text = c("Hill rush for 5 yards to the BATES00, TOUCHDOWN, clock 03:00.",
+             "Fulcher kickoff 65 yards to the BATES00, touchback.",
+             "Hill pass complete to Jung for 5 yards to the BATES00, TOUCHDOWN, clock 01:56.",
+             "Fulcher kick attempt good.",
+             "Perry rush for 4 yards to the AMHERST29."))
+  teams <- data.frame(team_id = c("A", "B"), name = c("Amherst", "Bates"), ncaa_home = c(FALSE, TRUE))
+  # the summary lists both touchdowns but neither try, though the text has one good kick
+  summ <- data.frame(period = 1L, quarter = 3L, team_id = "A", time = c("03:00", "01:56"), type = "TD", text = "")
+  tab <- ncaa_play_table(lines, teams, final_total = 14L, scoring = summ)
+  expect_true(any(tab$play == ncaa_added_try_text_final))
+})

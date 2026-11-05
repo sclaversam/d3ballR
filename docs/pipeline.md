@@ -210,7 +210,8 @@ section after every batch.
 | A printed per-play clock 1-2 s past the official "drive start at" reading | clock test allows 2 s | `20250913_npl1`, `20250913_vg5b`, `20250920_a8p2` |
 | A defensive two-point return written as the offense's try ("Johnson,Jaylen rush attempt Successful", Johnson being a defender) | `ncaa_play_table()`: a try line where ncaa.com's running score rises by 2 for the defense and 0 for the scoring team gets a "[d3ballR: ...]" label, read as a defensive conversion | `20250913_oc57` |
 | A safety on a foul in the end zone written "SAFETY ... PENALTY ... NO PLAY" (illegal forward pass from the end zone) | `ncaa_play_table()` labels it and the parser scores it although it's a no-play: the running score decides (2 for the defense on that line); without one, a safety in the scoring summary at the same quarter and clock; last resort, the safety kick from the 20 | `20250913_ss2d` |
-| Scoring summary periods are numbered by position, so a quarter with no scoring shifts the rest | `ncaa_scoring_entries()` adds `quarter` from the title (used by the safety rule). The extra-point matching still uses `period`; switching it changes 5 games (one, `20250913_oxzn`, has a summary missing a team's tries), so it's left for a separate decision | `20250913_oc57` |
+| Scoring summary periods are numbered by position, so a quarter with no scoring shifts the rest | `ncaa_scoring_entries()` adds `quarter` from the title; the safety rule and the extra-point matching use it | `20250913_oc57` |
+| A scoring summary that leaves out a team's tries and field goals | a try missing from the summary only counts as evidence for a team the summary is complete for (as many good tries and field goals as the play text); otherwise the final-score rule decides | `20250913_oxzn` |
 | Index `week` restarts at 1 in the postseason | filter on `season_type == "regular"` when fetching by week | batch 2 fetched 28 playoff games by mistake |
 
 ## Roadmap

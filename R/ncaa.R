@@ -647,14 +647,27 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     if (!is.null(scoring) && nrow(scoring)) {
       td_clock <- dplyr::coalesce(stringr::str_match(txt, "clock (\\d{1,2}:\\d{2})")[, 2], lines$clock)
       norm <- function(x) sub("^0", "", x)
+      # A summary that leaves out a team's scores (20250913_oxzn lists none of
+      # Amherst's tries or its field goal, though the text has them) says
+      # nothing by leaving out a try: for such a team only a listed try counts
+      # as evidence. Complete for a team = it lists at least as many good
+      # tries and field goals for it as the play text has.
+      fg_good <- stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("NO GOOD|NO PLAY"))
+      complete <- function(tid) {
+        sum(scoring$team_id == tid & scoring$type %in% c("XP", "TPC")) >= sum(try_pts > 0L & lines$team_id %in% tid) &&
+          sum(scoring$team_id == tid & scoring$type %in% "FG") >= sum(fg_good & lines$team_id %in% tid)
+      }
+      s_qtr <- if (is.null(scoring$quarter)) scoring$period else scoring$quarter
       for (i in tryless) {
-        k <- which(scoring$type == "TD" & scoring$period == lines$period[i] &
+        # quarter, not position: a quarter with no scoring is left out of
+        # the summary (see ncaa_scoring_entries())
+        k <- which(scoring$type == "TD" & s_qtr == lines$period[i] &
                      norm(scoring$time) == norm(td_clock[i]))
         if (length(k) != 1L) next
         nxt <- scoring$type[k + 1L]
         if (nxt %in% "XP") added[as.character(i)] <- ncaa_added_try_text_summary
         if (nxt %in% "TPC") added[as.character(i)] <- ncaa_added_two_point_text
-        unmatched <- setdiff(unmatched, i)
+        if (nxt %in% c("XP", "TPC") || complete(scoring$team_id[k])) unmatched <- setdiff(unmatched, i)
       }
     }
     if (length(unmatched) && !is.null(final_total)) {
