@@ -237,3 +237,21 @@ test_that("ncaa_unswap_team_ids swaps ids that are attached to the wrong team", 
   expect_equal(ncaa_unswap_team_ids(ids, starts, tm), c("39", "39", "1774", "39", "1774"))
   expect_equal(ncaa_unswap_team_ids(c("39", "39", "1774", "39", "1774"), starts, tm), c("39", "39", "1774", "39", "1774"))
 })
+
+test_that("a field goal ncaa.com left out is added where the running score rises by 3", {
+  mk <- function(home_after) data.frame(
+    period = 5L, team_id = c("L", "L", "W", "W"), clock = NA_character_,
+    drive_text = c("2 and 10 at 25", "3 and 6 at 21", "1 and 10 at 25", "2 and 9 at 24"),
+    home_score = c(17L, 17L, 17L, 17L), visitor_score = c(17L, 17L, home_after, home_after),
+    text = c("No Huddle-Shotgun Lynch,Gabe rush middle for 4 yards gain to the UWW21 (Gallagher,Ethan).",
+             "No Huddle-Shotgun Haas,Kyle pass incomplete short left to Mitchell,Najeh thrown to UWW15.",
+             "Shotgun Stanton,Brian rush middle for 1 yard gain to the UWL24 (Winters,Aaron).",
+             "Shotgun Klinkner,Justin pass incomplete deep middle to Vasey,Tyler thrown to UWL00."))
+  teams <- data.frame(team_id = c("L", "W"), name = c("UW-La Crosse", "UW-Whitewater"), ncaa_home = c(FALSE, TRUE))
+  tab <- ncaa_play_table(mk(20L), teams)
+  k <- which(grepl(ncaa_added_fg_text, tab$play, fixed = TRUE))
+  expect_length(k, 1L)
+  expect_equal(tab$situation[k], "4th and 6 at UWW21")
+  expect_true(k < which(grepl("Stanton,Brian", tab$play)))
+  expect_false(any(grepl(ncaa_added_fg_text, ncaa_play_table(mk(17L), teams)$play, fixed = TRUE)))
+})

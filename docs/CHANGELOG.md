@@ -5,6 +5,25 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Field goals ncaa.com left out are added
+
+Decided by Sam (2026-11-05). UW-La Crosse at UW-Whitewater
+(`20251004_6sus`): ncaa.com has no line for La Crosse's first-overtime
+field goal; its running score goes 17-17 to 20-17 on Whitewater's next
+snap, and its scoring summary lists the field goal ("Stack,Michael field
+goal is good.").
+
+Rule (`ncaa_play_table()`): where a non-scoring line raises one team's
+running score by exactly 3 (and the other's by 0), and that team has the
+ball, a row "[kicker] field goal attempt GOOD" plus `ncaa_added_fg_text`
+is added before the line. Its down, distance and spot are rebuilt from the
+previous snap (`ncaa_next_situation()`); the kicker comes from a cached
+scoring summary. A field-goal line since the last score change means the
+score only lagged a line, and nothing is added. Games with no running score
+use the scoring summary's unmatched field goals, only when the final score
+is short by exactly 3 per field goal. Only `20251004_6sus` changes (now
+23-20).
+
 ## Batch 3 (2025 weeks 4-6): swapped team ids, wrong drive starts, safeties, team-code spellings
 
 Fixes from the third all-D3 batch (2026-11-05); see "Lessons from each

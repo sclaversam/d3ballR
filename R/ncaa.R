@@ -721,6 +721,60 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     }
   }
 
+  # --- field goals ncaa.com left out --------------------------------------
+  # Decided by Sam (2026-11-05, 20251004_6sus: La Crosse's first-overtime
+  # field goal has no line; the running score rises by 3 on the next,
+  # Whitewater, snap). With a running score: a line that isn't a scoring
+  # play on which one team's score rises by exactly 3 and the other's not
+  # at all gets a labelled "field goal ... GOOD" row added before it, for
+  # the team in possession, which must be the team whose score rose. The
+  # kicker comes from the scoring summary when it lists that field goal
+  # (same quarter and team). Without a running score: a summary field goal
+  # with no field-goal line at its quarter and clock, only when the final
+  # score is short by exactly 3 per such field goal.
+  fg_line <- stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("NO GOOD|NO PLAY"))
+  score_line_txt <- is_td | fg_line | is_try | stringr::str_detect(txt, "\\bSAFETY\\b")
+  s_qtr_all <- if (!is.null(scoring) && nrow(scoring)) (if (is.null(scoring$quarter)) scoring$period else scoring$quarter) else integer()
+  summary_kicker <- function(per, tid) {
+    if (!length(s_qtr_all)) return(NA_character_)
+    k <- which(scoring$type %in% "FG" & s_qtr_all == per & scoring$team_id == tid)
+    if (length(k) < 1L) return(NA_character_)
+    stringr::str_trim(stringr::str_match(scoring$text[k[1]], "^(.*?)\\s+field goal")[, 2])
+  }
+  dropped_fg <- character()   # keyed by the line it goes before; value = team id
+  if (any(hs_raw > 0L | vs_raw > 0L)) {
+    for (i in which(!score_line_txt)[-1]) {
+      if (i < 2L) next
+      up <- c(hs_raw[i], vs_raw[i]) - c(hs_raw[i - 1L], vs_raw[i - 1L])
+      if (!(sort(up)[1] == 0L && max(up) == 3L)) next
+      # ncaa.com's score can lag a line behind: a field-goal line since the
+      # last score change already accounts for these 3 (20251122_6ygb)
+      changed <- which(c(FALSE, diff(hs_raw) != 0L | diff(vs_raw) != 0L) & seq_len(n) < i)
+      last_change <- if (length(changed)) max(changed) else 0L
+      if (any(fg_line[seq_len(n) > last_change & seq_len(n) <= i])) next
+      home_up <- up[1] == 3L
+      tid <- teams$team_id[teams$ncaa_home == home_up]
+      if (length(tid) == 1L) dropped_fg[as.character(i)] <- tid
+    }
+  } else if (length(s_qtr_all) && !is.null(final_total)) {
+    clk <- dplyr::coalesce(stringr::str_match(txt, "clock (\\d{1,2}:\\d{2})")[, 2], lines$clock)
+    norm <- function(x) sub("^0", "", x)
+    cand <- which(scoring$type %in% "FG")
+    cand <- cand[!vapply(cand, function(k) any(fg_line & lines$period == s_qtr_all[k] & norm(clk) %in% norm(scoring$time[k])), logical(1))]
+    text_pts <- 6L * sum(is_td) + 3L * sum(fg_line) +
+      2L * sum(stringr::str_detect(txt, "\\bSAFETY\\b") & !stringr::str_detect(txt, ic("NO PLAY"))) +
+      sum(try_pts) + sum(ifelse(added == ncaa_added_two_point_text, 2L, 1L))
+    if (length(cand) && final_total - text_pts == 3L * length(cand)) {
+      secs <- function(x) { p <- strsplit(x, ":"); vapply(p, function(v) if (length(v) == 2) as.integer(v[1]) * 60L + as.integer(v[2]) else NA_integer_, integer(1)) }
+      for (k in cand) {
+        t_k <- secs(norm(scoring$time[k]))
+        later <- which(lines$period == s_qtr_all[k] & !is.na(clk) & secs(norm(clk)) < t_k)
+        at <- if (length(later)) later[1] else utils::tail(which(lines$period == s_qtr_all[k]), 1L) + 1L
+        if (length(at) && !is.na(at) && at <= n) dropped_fg[as.character(at)] <- scoring$team_id[k]
+      }
+    }
+  }
+
   # --- drive starts that name the wrong team ----------------------------
   normn <- function(x) gsub("[^a-z0-9]", "", tolower(x))
   start_name <- normn(stringr::str_match(txt, stringr::regex("^(.*?) drive start at", ignore_case = TRUE))[, 2])
@@ -786,6 +840,16 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
       last_period <- lines$period[i]
       add(period_label(last_period), period_label(last_period))
     }
+    fg_before <- FALSE
+    if (as.character(i) %in% names(dropped_fg)) {
+      tid <- dropped_fg[[as.character(i)]]
+      if (identical(cur_team, tid) || !has_running_score) {
+        kicker <- summary_kicker(lines$period[i], tid)
+        add(ncaa_next_situation(situation, txt, which(is_snap & seq_len(n) < i)),
+            paste0(if (!is.na(kicker)) paste0(kicker, " ") else "", "field goal attempt GOOD ", ncaa_added_fg_text))
+        fg_before <- TRUE
+      }
+    }
     switch_team <- is_snap[i] && !identical(lines$team_id[i], cur_team) &&
       !stringr::str_detect(txt[i], stringr::regex("\\bpunt\\b", ignore_case = TRUE))
     # a kickoff since the last snap also hands the ball over (some files
@@ -795,7 +859,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     # each overtime period starts a new possession, with no kickoff
     new_ot <- lines$period[i] >= 5L && (is.na(last_snap) || lines$period[last_snap] != lines$period[i])
     new_drive <- is_start[i] ||
-      (switch_team && (!has_starts || is.na(cur_team) || kicked || new_ot || ends_possession(last_snap)))
+      (switch_team && (!has_starts || is.na(cur_team) || kicked || new_ot || fg_before || ends_possession(last_snap)))
     if (new_drive && !is.na(lines$team_id[i])) {
       nm <- team_name[[lines$team_id[i]]]
       clk <- stringr::str_match(txt[i], "drive start at (\\d{1,2}:\\d{2})")[, 2]
@@ -852,6 +916,35 @@ ncaa_offense_safety_label <- "[d3ballR: ncaa.com's running score gives this safe
 #' Label on a drive start added when ncaa.com's names the wrong team
 #' @keywords internal
 ncaa_wrong_start_label <- "[added by d3ballR: the drive start line before names the other team; this team snaps]"
+
+#' The down, distance and spot after the last snap (for an added play)
+#'
+#' The next down at the spot where the last snap ended (its last "to the
+#' XX21" spot, else its own spot), with the distance shortened by the gain;
+#' "Goal" stays "Goal". Used for a field goal ncaa.com left out, which
+#' otherwise has no situation.
+#' @param situation Rebuilt situations ("3rd and 6 at UWW21").
+#' @param txt Line texts.
+#' @param prev Indices of earlier snaps.
+#' @return A situation string, or "" when there is no earlier snap.
+#' @keywords internal
+ncaa_next_situation <- function(situation, txt, prev) {
+  if (!length(prev)) return("")
+  k <- prev[length(prev)]
+  m <- stringr::str_match(situation[k], "^([1-4])(?:st|nd|rd|th) and (Goal|\\d+) at ([A-Za-z&.' -]*?)(\\d+)$")
+  if (is.na(m[1, 1])) return("")
+  down <- min(as.integer(m[1, 2]) + 1L, 4L)
+  tok <- m[1, 4]
+  yard <- as.integer(m[1, 5])
+  end <- stringr::str_match_all(txt[k], paste0("to the ", stringr::str_replace_all(tok, "([.&])", "\\\\\\1"), "(\\d{1,2})\\b"))[[1]]
+  new_yard <- if (nrow(end)) as.integer(end[nrow(end), 2]) else yard
+  dist <- if (m[1, 3] == "Goal") "Goal" else as.character(max(1L, as.integer(m[1, 3]) - (yard - new_yard)))
+  paste0(c("1st", "2nd", "3rd", "4th")[down], " and ", dist, " at ", tok, new_yard)
+}
+
+#' Label of a field goal added because ncaa.com left it out
+#' @keywords internal
+ncaa_added_fg_text <- "[added by d3ballR: ncaa.com has no line for this field goal; its running score (or, without one, its scoring summary and the final score) shows it. Down, distance and spot are rebuilt from the previous snap]"
 
 #' Play text of an extra point added because ncaa.com left it out
 #' @keywords internal

@@ -227,6 +227,7 @@ section after every batch.
 | Team codes with an apostrophe or two words ("King's42", "Cal Lu10", "NEB W.30") | token patterns accept both; keywords are word-anchored and can't be a code ("Deion at UMHB31") | `20250927_0itn`, `20251004_60j5`; fixed `yards_to_goal` on 41 rows of `20250920_5bx0` |
 | One settling play against a decisive yardline vote | a single touchback / false start doesn't overrule a decisive vote | `20250927_ezew` |
 | Source gap: try lines missing and an incomplete scoring summary | `known_exceptions.csv` | `20251004_8kxj` |
+| A field goal with no line (the running score rises by 3 on the next, non-scoring, line) | Sam's decision: a labelled "field goal attempt GOOD" row is added before that line, for the team in possession, with down and distance rebuilt from the previous snap and the kicker from the scoring summary when cached; skipped when a field-goal line since the last score change already accounts for it (ncaa.com's score can lag a line). Without a running score, a summary field goal with no matching line is added only when the final is short by exactly 3 per such field goal | `20251004_6sus` |
 | Index `week` and season type | fetch by `season_type == "regular"` (batch 2's lesson) held: no playoff games fetched | |
 
 ## Roadmap
