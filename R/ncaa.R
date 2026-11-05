@@ -333,7 +333,7 @@ ncaa_has_running_score <- function(j) {
 #'   absent), `yard` (integer).
 #' @keywords internal
 parse_ncaa_drive_text <- function(x) {
-  m <- stringr::str_match(x, "^\\s*([1-4]) and (\\S*) at ([A-Za-z&.' ]*?)\\s*(\\d{1,2})\\s*$")
+  m <- stringr::str_match(x, "^\\s*([1-4]) and (\\S*) at ([A-Za-z&.' -]*?)\\s*(\\d{1,2})\\s*$")
   dist <- m[, 3]
   dist <- ifelse(dist %in% c("0", "true"), "Goal", ifelse(grepl("^-?\\d+$", dist), dist, NA_character_))
   tok <- ifelse(is.na(m[, 4]) | m[, 4] %in% c("", "-"), NA_character_, m[, 4])
@@ -346,7 +346,7 @@ parse_ncaa_drive_text <- function(x) {
 #' "to the RMCFB29", "at DCFB47", "from JHU35". The letters are whatever the
 #' stat crew uses (they can differ from the down-and-distance tokens).
 #' @keywords internal
-ncaa_spot_pattern <- "(thrown to|caught at|to the|at the|at|from|to|on) ([A-Z][A-Za-z&.]*?) ?(\\d{1,2})\\b"
+ncaa_spot_pattern <- "(thrown to|caught at|to the|at the|at|from|to|on) ([A-Za-z][A-Za-z&.-]*?) ?(\\d{1,2})\\b"
 
 #' Rebuild d3football-style situations and table rows from ncaa.com lines
 #'
@@ -572,8 +572,11 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     if (length(ti) != 1L) next
     up <- c(hs[j] - hs[i], vs[j] - vs[i])
     # the next kickoff may itself be returned for a touchdown by the other team
+    # (or recovered by the kicking team, a muff or fumble, and scored)
     if (live_td(txt[j])) {
-      if (up[3L - ti] >= 6L) up[3L - ti] <- up[3L - ti] - 6L else next
+      if (up[3L - ti] >= 6L) up[3L - ti] <- up[3L - ti] - 6L
+      else if (up[ti] >= 6L) up[ti] <- up[ti] - 6L
+      else next
     }
     if (up[3L - ti] != 0L || up[ti] - sum(try_pts[tries]) != 1L) next
     at <- max(c(i, tries))

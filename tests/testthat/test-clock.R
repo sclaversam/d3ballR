@@ -34,7 +34,10 @@ test_that("built games: clock columns are consistent and the seconds columns mir
     # A printed clock that contradicts an official reading is discarded
     # (e.g. 20250904_zik0: printed 14:48, timeout 13:59, printed 14:15), so
     # allow a few: at most 1, or 2% of the game's printed clocks
-    ok <- is.na(p) | !reg | p <= mx
+    # A printed clock can run 1-2 s ahead of the official "drive start at"
+    # reading on the first snap after a kick (two stopwatches; batch 2:
+    # 20250913_npl1, 20250913_vg5b, 20250920_a8p2), so allow 2 s
+    ok <- is.na(p) | !reg | p <= mx + 2
     expect_true(sum(!ok) <= max(1, 0.02 * sum(!is.na(p))),
                 label = paste(basename(f), "printed clocks within the snap range (allowing discarded typos)"))
   }

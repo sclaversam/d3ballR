@@ -150,3 +150,8 @@ test_that("fetch_ncaa_json doesn't retry a path that returned an HTTP error this
   expect_equal(n_requests(), 0L)
   reset_fetch_state()
 })
+
+test_that("parse_coin_deferrer reads the toss winner who defers", {
+  expect_equal(parse_coin_deferrer("Martin Luther wins toss and defers; WEC will receive; MLC will defend West end-zone."), "Martin Luther")
+  expect_true(is.na(parse_coin_deferrer("Westfield won the coin toss and elected to receive.")))
+})

@@ -5,6 +5,35 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Batch 2 (2025 weeks 2-3): defensive PAT wording, kicker-recovered kickoff TDs, coin-toss deferrer, token spellings
+
+Fixes from the second all-D3 batch (2026-11-05):
+
+- **"returned by NAME for defensive PAT"** (no "Successful") now scores 2
+  for the defense (`score_points()`). Fixes `20250920_2fq2` and
+  `20250906_wk1h`, which batch 1 had listed as a source gap; it is off
+  `known_exceptions.csv` now.
+- **Dropped extra point before a kicker-recovered kickoff touchdown**: when
+  the kickoff after a touchdown is itself a touchdown by the kicking team,
+  its 6 points are taken off that team's score rise before checking for a
+  missing kick (`ncaa_play_table()`). Fixes `20250920_3awh`.
+- **Coin toss with an unmatched receiver code** ("Martin Luther wins toss
+  and defers; WEC will receive"): the toss winner who defers kicks
+  (`parse_coin_deferrer()`). Fixes the opening kickoff-return touchdown of
+  `20250920_ev5d`. In the d3football checks, `kickoff_possession.csv` now
+  names this context for two games' opening kickoffs (`20250905_jdn4`,
+  `20250906_3hu1`); their play-by-play is unchanged.
+- **Team codes in lowercase or with a hyphen** ("cen49", "Rose-H46"): the
+  yardline token patterns accept both. `20250920_t60m` and `20250920_upco`
+  now build and reconcile.
+- The clock test allows a printed per-play clock up to 2 s past the
+  official reading (two stopwatches).
+
+Left for Sam (judgment calls, not changed): `20250913_oc57`, where
+ncaa.com's running score and final credit Lake Forest's two-point try to
+Illinois College; and `20250913_ss2d`, a safety on an illegal forward pass
+from the end zone written "SAFETY ... PENALTY ... NO PLAY".
+
 ## Learning from batch 1: fetching, clocks, known source exceptions
 
 Asked by Sam (2026-11-05): fold each batch's fixes into the pipeline so

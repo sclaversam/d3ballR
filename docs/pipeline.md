@@ -197,7 +197,18 @@ section after every batch.
 | HTTP 500 / 502 retried by the build, eating the budget | `fetch_ncaa_json()` remembers HTTP errors for the run and doesn't retry | 6 week-1 games |
 | "(00:00)" printed on nearly every play | `stated_clock_anchors()`: when most printed clocks are 00:00, every 00:00 reading in that game is dropped | `20250906_pzhf` |
 | Punt "Touchback" with a penalty in the same line | touchback clues skip lines that have a penalty | `20250906_8o5p` |
-| Source gaps: play-by-play ends after Q3; game called off for weather | listed in `known_exceptions.csv` | `20250906_hbla`, `20250906_wk1h` |
+| Source gap: play-by-play ends after Q3 | listed in `known_exceptions.csv` | `20250906_hbla` (`20250906_wk1h` was listed too; batch 2's defensive-PAT rule fixed it) |
+
+### Batch 2 (2025 weeks 2-3, 180 new games, 2026-11-05)
+
+| Quirk | Generic rule now | First seen |
+|---|---|---|
+| Blocked try "returned by NAME for defensive PAT" (no "Successful") | `score_points()` counts it as the defense's 2 points | `20250920_2fq2`, `20250906_wk1h` (wrongly listed as a source gap in batch 1) |
+| Kickoff after a touchdown recovered by the kicking team and scored hid a dropped extra point | `ncaa_play_table()`: a kickoff touchdown is taken off whichever team's score rose by 6 | `20250920_3awh` |
+| Coin toss names the receiver with a code no other row uses ("WEC will receive") | `parse_coin_deferrer()`: the toss winner who defers kicks | `20250920_ev5d` |
+| Team codes in lowercase ("cen49") or with a hyphen ("Rose-H46") | token patterns accept a lowercase first letter and "-" | `20250920_t60m`, `20250920_upco` |
+| A printed per-play clock 1-2 s past the official "drive start at" reading | clock test allows 2 s | `20250913_npl1`, `20250913_vg5b`, `20250920_a8p2` |
+| Index `week` restarts at 1 in the postseason | filter on `season_type == "regular"` when fetching by week | batch 2 fetched 28 playoff games by mistake |
 
 ## Roadmap
 

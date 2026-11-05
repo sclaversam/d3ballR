@@ -27,9 +27,10 @@ score_points <- function(kept) {
       (pt == "kickoff" & kept$kicker_recovered)
   )
   # a blocked / failed try returned by the defense: "... defensive PAT
-  # Successful."
+  # Successful." or "returned by Neiman Sullen for defensive PAT"
   defensive_try <- pt %in% c("extra_point", "two_point") &
-    stringr::str_detect(txt, ic("\\bdefensive (PAT|two[- ]point|2[- ]?pt|conversion)\\b.*\\bsuccessful\\b"))
+    (stringr::str_detect(txt, ic("\\bdefensive (PAT|two[- ]point|2[- ]?pt|conversion)\\b.*\\bsuccessful\\b")) |
+       stringr::str_detect(txt, ic("\\breturned by .* for (a )?defensive (PAT|two[- ]point|2[- ]?pt|conversion)\\b")))
   pat_good <- pt == "extra_point" & stringr::str_detect(txt, ic("\\bgood\\b")) &
     !stringr::str_detect(txt, ic("no good|failed|blocked"))
   two_good <- pt == "two_point" & stringr::str_detect(txt, ic("\\b(good|successful)\\b")) &

@@ -19,6 +19,19 @@ parse_coin_receiver <- function(text) {
   stringr::str_trim(ref)
 }
 
+#' Read the toss winner who defers (and so kicks off) off a coin-toss row
+#'
+#' "Martin Luther wins toss and defers; WEC will receive" gives "Martin
+#' Luther". Used when the receiver's reference can't be matched to a team.
+#'
+#' @param text Coin-toss row text.
+#' @return The winner's reference as written, or NA.
+#' @keywords internal
+parse_coin_deferrer <- function(text) {
+  ref <- stringr::str_match(text, stringr::regex("^(.*?)\\s+wins (?:the )?(?:coin )?toss,?\\s+(?:and\\s+)?(?:defers|elects to kick|will kick)", ignore_case = TRUE))[, 2]
+  stringr::str_trim(ref)
+}
+
 #' Decide the kicking and receiving team of every kickoff
 #'
 #' cfbfastR convention: on a kickoff `pos_team` is the RECEIVING team. Per
@@ -96,9 +109,20 @@ assign_kickoffs <- function(full, teams, team_map, own_side, text_team, scores) 
         refs <- refs[!is.na(refs)]
         if (length(refs)) resolve_team(refs[length(refs)], team_map, own_side, text_team) else NA_character_
       } else NA_character_
+      # the receiver's reference can be a code no other row uses ("WEC will
+      # receive"); then the toss winner who defers kicks ("Martin Luther wins
+      # toss and defers")
+      kick_ref <- if (is.na(recv) && length(coin)) {
+        k_refs <- vapply(full$play[coin], parse_coin_deferrer, character(1))
+        k_refs <- k_refs[!is.na(k_refs)]
+        if (length(k_refs)) resolve_team(k_refs[length(k_refs)], team_map, own_side, text_team) else NA_character_
+      } else NA_character_
       if (!is.na(recv)) {
         context_kicker <- other_team(recv, teams)
         context_source <- "coin toss"
+      } else if (!is.na(kick_ref)) {
+        context_kicker <- kick_ref
+        context_source <- "coin toss (winner defers)"
       } else if (h == 2 && !is.na(first_half_receiver)) {
         context_kicker <- first_half_receiver
         context_source <- "second half: first-half receiver kicks"

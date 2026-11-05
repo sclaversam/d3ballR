@@ -202,7 +202,7 @@ kept_row_types <- c("play", "kickoff", "extra_point", "two_point", "penalty_no_p
 #' negative distance (d3 printed "4th and -2" once in 2025) is kept as
 #' printed rather than dropping the down.
 #' @keywords internal
-situation_pattern <- "^([1-4])(?:st|nd|rd|th)\\s+and\\s+(Goal|-?\\d+)\\s+at\\s+([A-Za-z&.' ]*?)\\s*(\\d+)$"
+situation_pattern <- "^([1-4])(?:st|nd|rd|th)\\s+and\\s+(Goal|-?\\d+)\\s+at\\s+([A-Za-z&.' -]*?)\\s*(\\d+)$"
 
 #' Parse down, distance, yard_side, yard_num from `situation`
 #'
