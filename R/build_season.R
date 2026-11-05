@@ -199,7 +199,7 @@ write_build_report <- function(season, teams, games, built, conf, check_dir, sou
     if (source == "ncaa") "## Conference game: same conference in the regular season vs d3football's \"*\" marker" else
       "## Conference game: d3's \"*\" marker vs shared membership", "",
     paste0(if (nrow(cc)) sum(cc$agree, na.rm = TRUE) else 0, " of ", sum(!is.na(cc$agree)),
-           " games agree (", sum(is.na(cc$agree)),
+           if (source == "ncaa") " games agree (" else " games with known conferences agree (", sum(is.na(cc$agree)),
            if (source == "ncaa") " with no cached d3football marker). Disagreements:" else " not checkable yet). Disagreements:"), "",
     md_table(if (nrow(cc)) cc[cc$agree %in% FALSE, ] else cc), "",
     "## Failed games", "",
