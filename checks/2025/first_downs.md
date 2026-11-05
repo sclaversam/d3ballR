@@ -23,11 +23,11 @@ cfbfastR also puts `firstD_by_poss`, `firstD_by_yards`, `firstD_by_penalty` on t
 
 | flag | rows |
 |---|---|
-| firstD_by_kickoff | 3738 |
-| firstD_by_poss | 5183 |
-| firstD_by_yards | 11306 |
-| firstD_by_penalty | 1064 |
-| new_series | 21291 |
+| firstD_by_kickoff | 3777 |
+| firstD_by_poss | 5240 |
+| firstD_by_yards | 11417 |
+| firstD_by_penalty | 1069 |
+| new_series | 21503 |
 
 Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
@@ -35,7 +35,7 @@ Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**21356 series; 21201 have exactly one `new_series` row on their first snap row; 155 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 2255.
+**21568 series; 21411 have exactly one `new_series` row on their first snap row; 157 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 2270.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | first_row_text |
 |---|---|---|---|---|---|---|---|---|
@@ -138,6 +138,8 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 20250920_wxmp | 25 | 28 | Averett | 1 & 10 | 25, 27 | more than one new_series row | unexplained | Deaken Nodine rush for 7 yards to the GAL47 (B. Heffelfinger). |
 | 20250920_wzcm | 135 | 138 | Pomona-Pitzer | 1 & 10 | none | no new_series row | unexplained | Kim,Nick pass incomplete short right to Sobota,Jack. |
 | 20250920_yf1s | 54 | 55 | Ithaca | 1 & 10 | none | no new_series row | unexplained | No Huddle Parker,Matthew pass complete short left to Reed,Michael caught at HIL34, for 7 yards to the HIL28 (W |
+| 20250920_yw0g | 135 | 136 | Crown | 1 & 10 | none | no new_series row | unexplained | Courtney,Jamarrius rush middle for 4 yards gain to the Polars49 (Saenz,Arian; Young,Dylan). |
+| 20250920_yyz1 | 149 | 153 | St. John Fisher | 1 & 10 | 149, 151 | more than one new_series row | unexplained | No Huddle-Shotgun Lister,Mason pass complete short middle to Cusack,Jackson caught at ROC44, for 6 yards to th |
 | 20251004_gwn0 | 59 | 60 | McDaniel | 1 & 10 | none | no new_series row | unexplained | Micajah Cobbs rush for 4 yards to the MCD29 (Amani Tchamwa; Lucas Hazard). |
 | 20251004_k167 | 150 | 155 | Muhlenberg | 1 & 10 | 150, 152, 154 | more than one new_series row | unexplained | Dante Mahaffey pass complete to Aidan Mack for 7 yards to the MUHL18 (Anthony Esposit). |
 | 20251018_uxv5 | 58 | 58 | Gettysburg | 1 & 10 | none | no new_series row | unexplained | Landon Hunt rush for 18 yards to the GC43 (Victor Ruhland; Archie Lawler). |
