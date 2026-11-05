@@ -80,11 +80,13 @@ cache_key <- function(url) {
 #' @keywords internal
 n_requests <- function() if (is.null(.d3_state$n_requests)) 0L else .d3_state$n_requests
 
-#' Reset the request counter and the "refused" flag (start of a run)
+#' Reset the request counter, the "refused" flag and the list of ncaa.com
+#' paths that returned an HTTP error (start of a run)
 #' @export
 reset_fetch_state <- function() {
   .d3_state$n_requests <- 0L
   .d3_state$refused <- FALSE
+  .d3_state$http_failed <- character()
   invisible(NULL)
 }
 

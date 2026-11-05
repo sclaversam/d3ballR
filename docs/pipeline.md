@@ -175,6 +175,30 @@ d3football's, so these still apply:
   offense), and prints "1st and 10" after some dead-ball offensive penalties.
   Both are flagged in `first_downs.md`.
 
+## Lessons from each batch
+
+Every batch of new games turns up StatCrew / ncaa.com quirks. Each one gets
+a **generic** rule in the code (never a per-team or per-game rule), a
+CHANGELOG entry, and a line here, so later batches don't repeat the miss.
+Source gaps that no rule can fix go in `data-raw/ncaa/known_exceptions.csv`
+instead (listed apart in the build report; the score test skips them and
+fails if one starts reconciling, so the list can't go stale). Update this
+section after every batch.
+
+### Batch 1 (2025 weeks 1-2, 144 new games, 2026-11-05)
+
+| Quirk | Generic rule now | First seen |
+|---|---|---|
+| Many sacks / losses outvote gains in the yardline-side vote | `infer_own_side()`: settle from touchbacks and false starts first; the vote leaves out sacks, losses, kneel-downs and penalty plays | `20250906_nidd` |
+| "drive start" lines on only a few drives, or none for the first | `ncaa_play_table()`: a different team snapping opens a drive after a kickoff, on the game's first snap, after a touchdown, and on each overtime period's first snap | `20250906_pzhf`, `20250913_2k0r`, `20250913_c7zf`, `20250913_5ivd` |
+| Kickoff return "TOUCHDOWN nullified by penalty" hid a dropped extra point | `live_td` in `ncaa_play_table()` ignores nullified touchdowns | `20250906_8o5p` |
+| ncaa.com repeats a line verbatim (a safety counted twice) | `ncaa_lines()` drops a line identical to the one before | `20250904_zik0` (12 games) |
+| No running score and the scoring summary not fetched | `prefetch_ncaa_games()` fetches the summary right after any such game's play-by-play, within the budget | `20250913_5ivd`, `20250913_8l2c` |
+| HTTP 500 / 502 retried by the build, eating the budget | `fetch_ncaa_json()` remembers HTTP errors for the run and doesn't retry | 6 week-1 games |
+| "(00:00)" printed on nearly every play | `stated_clock_anchors()`: when most printed clocks are 00:00, every 00:00 reading in that game is dropped | `20250906_pzhf` |
+| Punt "Touchback" with a penalty in the same line | touchback clues skip lines that have a penalty | `20250906_8o5p` |
+| Source gaps: play-by-play ends after Q3; game called off for weather | listed in `known_exceptions.csv` | `20250906_hbla`, `20250906_wk1h` |
+
 ## Roadmap
 
 1. **CMU 2025** (validation set): done.

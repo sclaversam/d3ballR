@@ -81,24 +81,39 @@ build_season <- function(season, teams = NULL, max_requests = Inf, delay = 6,
 #' Fetch (and cache) the ncaa.com play-by-play of games not yet cached
 #'
 #' Stops when the request budget is reached or the run is offline. A game
-#' ncaa.com has no play-by-play for (HTTP 502) is skipped and stays pending.
+#' ncaa.com has no play-by-play for (HTTP 500 / 502) is skipped, stays
+#' pending, and is not requested again in the same run (see
+#' [fetch_ncaa_json()]). Right after a game's play-by-play is in the cache,
+#' if it has no running score (some host schools' files), its scoring
+#' summary is fetched too, within the same budget: [fetch_ncaa_game()]
+#' needs it to tell which extra points were good. Games cached by earlier
+#' runs that still lack their summary get it here as well.
 #'
 #' @param contests ncaa.com contest ids.
-#' @return Invisibly, the number fetched.
+#' @return Invisibly, the number of play-by-play pages fetched.
 #' @keywords internal
 prefetch_ncaa_games <- function(contests) {
-  paths <- paste0("/game/", stats::na.omit(contests), "/play-by-play")
+  contests <- unique(stats::na.omit(contests))
   cache_dir <- getOption("d3ballR.ncaa_cache_dir", "data-raw/cache/ncaa")
-  todo <- paths[!file.exists(file.path(cache_dir, vapply(paths, ncaa_cache_key, character(1))))]
-  message(length(todo), " ncaa.com games not yet cached")
+  cached <- function(p) file.exists(file.path(cache_dir, ncaa_cache_key(p)))
+  pbp <- paste0("/game/", contests, "/play-by-play")
+  summ <- paste0("/game/", contests, "/scoring-summary")
+  message(sum(!vapply(pbp, cached, logical(1))), " ncaa.com games not yet cached")
+  stop_now <- function() n_requests() >= getOption("d3ballR.max_requests", Inf) ||
+    isTRUE(getOption("d3ballR.offline", FALSE)) || grepl("unreachable", geterrmessage())
+  try_fetch <- function(p) tryCatch({ fetch_ncaa_json(p); TRUE }, error = function(e) { message(conditionMessage(e)); FALSE })
   got <- 0L
-  for (p in todo) {
-    ok <- tryCatch({ fetch_ncaa_json(p); TRUE }, error = function(e) { message(conditionMessage(e)); FALSE })
-    if (!ok && (n_requests() >= getOption("d3ballR.max_requests", Inf) ||
-                isTRUE(getOption("d3ballR.offline", FALSE)) ||
-                grepl("unreachable", geterrmessage()))) break
-    if (ok) got <- got + 1L
-    if (ok && got %% 25L == 0L) message(format(Sys.time(), "%H:%M:%S"), " fetched ", got, " games")
+  for (k in seq_along(contests)) {
+    if (!cached(pbp[k])) {
+      ok <- try_fetch(pbp[k])
+      if (!ok && stop_now()) break
+      if (!ok) next
+      got <- got + 1L
+      if (got %% 25L == 0L) message(format(Sys.time(), "%H:%M:%S"), " fetched ", got, " games")
+    }
+    if (!cached(summ[k]) && !ncaa_has_running_score(fetch_ncaa_json(pbp[k]))) {
+      if (!try_fetch(summ[k]) && stop_now()) break
+    }
   }
   message("fetched ", got, " ncaa.com games this run")
   invisible(got)
@@ -155,6 +170,12 @@ write_build_report <- function(season, teams, games, built, conf, check_dir, sou
   unclassified <- do.call(rbind, lapply(built, attr, "unclassified"))
   if (is.null(unclassified)) unclassified <- data.frame()
   rec <- utils::read.csv(file.path(check_dir, "score_reconciliation.csv"), na.strings = "")
+  exc <- if (source == "ncaa") load_known_exceptions() else load_known_exceptions(file = "")
+  not_ok <- rec[!(rec$score_reconciled %in% TRUE), , drop = FALSE]
+  is_known <- not_ok$game_id %in% exc$game_id
+  rec_fail <- not_ok[!is_known, , drop = FALSE]
+  rec_known <- not_ok[is_known, , drop = FALSE]
+  rec_known$reason <- exc$reason[match(rec_known$game_id, exc$game_id)]
   fail <- utils::read.csv(file.path(check_dir, "build_failures.csv"), na.strings = "")
   pending <- fail[grepl("^Not fetched", fail$error), ]
   absent <- fail[grepl("^Not on ncaa", fail$error), ]
@@ -198,8 +219,11 @@ write_build_report <- function(season, teams, games, built, conf, check_dir, sou
     paste0("**", sum(rec$score_reconciled %in% TRUE), " of ", nrow(rec), " built games pass.**",
            if (any(is.na(rec$score_reconciled))) paste0(" ", sum(is.na(rec$score_reconciled)),
              " could not be checked (blank `score_reconciled`: no points parsed for a team).") else "",
+           if (nrow(rec_known)) paste0(" ", nrow(rec_known), " of the rest are known source gaps (listed below).") else "",
            " Failing games:"), "",
-    md_table(rec[!(rec$score_reconciled %in% TRUE), , drop = FALSE]), "",
+    md_table(rec_fail), "",
+    if (nrow(rec_known)) c("Known source exceptions (`data-raw/ncaa/known_exceptions.csv`: ncaa.com's data is incomplete or inconsistent, not a parser error):", "",
+                           md_table(rec_known), "") else NULL,
     if (source == "ncaa") "## Conference game: same conference in the regular season vs d3football's \"*\" marker" else
       "## Conference game: d3's \"*\" marker vs shared membership", "",
     paste0(if (nrow(cc)) sum(cc$agree, na.rm = TRUE) else 0, " of ", sum(!is.na(cc$agree)),

@@ -2,10 +2,12 @@
 % Please edit documentation in R/scrape_plays.R
 \name{reset_fetch_state}
 \alias{reset_fetch_state}
-\title{Reset the request counter and the "refused" flag (start of a run)}
+\title{Reset the request counter, the "refused" flag and the list of ncaa.com
+paths that returned an HTTP error (start of a run)}
 \usage{
 reset_fetch_state()
 }
 \description{
-Reset the request counter and the "refused" flag (start of a run)
+Reset the request counter, the "refused" flag and the list of ncaa.com
+paths that returned an HTTP error (start of a run)
 }

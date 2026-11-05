@@ -26,6 +26,8 @@ Some stat crews also print a clock at the start of each play's text
 ("(11:25) Shotgun ..."). Checked against the other readings, it always
 falls between the play's snap and its end (often equal to the snap,
 sometimes a few seconds later), so it is placed between them (\code{pos = row + 0.25}, kind "printed") and used as a bound: a minimum for that snap and a
-maximum for every later one.
+maximum for every later one. When most of a game's printed clocks are
+"(00:00)" (some files print it on nearly every play), every 00:00
+reading in that game's text is dropped as meaningless.
 }
 \keyword{internal}

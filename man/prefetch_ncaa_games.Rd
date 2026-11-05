@@ -10,10 +10,16 @@ prefetch_ncaa_games(contests)
 \item{contests}{ncaa.com contest ids.}
 }
 \value{
-Invisibly, the number fetched.
+Invisibly, the number of play-by-play pages fetched.
 }
 \description{
 Stops when the request budget is reached or the run is offline. A game
-ncaa.com has no play-by-play for (HTTP 502) is skipped and stays pending.
+ncaa.com has no play-by-play for (HTTP 500 / 502) is skipped, stays
+pending, and is not requested again in the same run (see
+\code{\link[=fetch_ncaa_json]{fetch_ncaa_json()}}). Right after a game's play-by-play is in the cache,
+if it has no running score (some host schools' files), its scoring
+summary is fetched too, within the same budget: \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}
+needs it to tell which extra points were good. Games cached by earlier
+runs that still lack their summary get it here as well.
 }
 \keyword{internal}

@@ -15,13 +15,39 @@ test_that("sum of score_pts by team equals the boxscore final score, for every b
     counts <- utils::read.csv(counts_file, na.strings = "", colClasses = c(game_id = "character"))
     built <- sub("\\.csv$", "", list.files(pbp_dir, pattern = "\\.csv$"))
     expect_setequal(counts$game_id, built)
-    for (i in seq_len(nrow(counts))) {
+    # games listed as known source gaps are checked in their own test below
+    known <- if (src == "") load_known_exceptions(file.path(top, "data-raw/ncaa/known_exceptions.csv"))$game_id else character()
+    for (i in which(!counts$game_id %in% known)) {
       g <- utils::read.csv(file.path(pbp_dir, paste0(counts$game_id[i], ".csv")), na.strings = "")
       expect_identical(team_points(g, counts$away[i]), as.integer(counts$away_final[i]),
                        label = paste(counts$game_id[i], counts$away[i], "points"))
       expect_identical(team_points(g, counts$home[i]), as.integer(counts$home_final[i]),
                        label = paste(counts$game_id[i], counts$home[i], "points"))
     }
+  }
+})
+
+# Known source exceptions (data-raw/ncaa/known_exceptions.csv): skipped with
+# the reason, but a listed game that now reconciles fails, so the list
+# doesn't go stale.
+local({
+  top <- test_path("../..")
+  exc <- load_known_exceptions(file.path(top, "data-raw/ncaa/known_exceptions.csv"))
+  for (k in seq_len(nrow(exc))) {
+    id <- exc$game_id[k]
+    test_that(paste("known source exception", id), {
+      season <- substr(id, 1, 4)
+      f <- file.path(top, "pbp", season, paste0(id, ".csv"))
+      skip_if(!file.exists(f), paste(id, "not built"))
+      counts <- utils::read.csv(file.path(top, "checks", season, "pbp_row_counts.csv"), na.strings = "",
+                                colClasses = c(game_id = "character"))
+      r <- counts[counts$game_id == id, ]
+      g <- utils::read.csv(f, na.strings = "")
+      ok <- identical(team_points(g, r$away), as.integer(r$away_final)) &&
+        identical(team_points(g, r$home), as.integer(r$home_final))
+      expect_false(ok, label = paste(id, "reconciles now: remove it from known_exceptions.csv"))
+      skip(paste0(id, " is a known source gap: ", exc$reason[k]))
+    })
   }
 })
 

@@ -141,3 +141,12 @@ test_that("ncaa_lines drops a line ncaa.com repeated verbatim", {
   l <- ncaa_lines(j)
   expect_equal(l$text, c("rush for 16 yards loss to the TLU00. SAFETY", "kickoff 62 yards"))
 })
+
+test_that("fetch_ncaa_json doesn't retry a path that returned an HTTP error this run", {
+  reset_fetch_state()
+  withr::local_options(d3ballR.offline = FALSE, d3ballR.ncaa_cache_dir = withr::local_tempdir())
+  assign("http_failed", c("/game/1/play-by-play" = "502"), envir = d3ballR:::.d3_state)
+  expect_error(fetch_ncaa_json("/game/1/play-by-play"), "earlier this run; not retried")
+  expect_equal(n_requests(), 0L)
+  reset_fetch_state()
+})

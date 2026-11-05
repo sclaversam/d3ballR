@@ -27,7 +27,9 @@ fmt_clock <- function(s) {
 #' falls between the play's snap and its end (often equal to the snap,
 #' sometimes a few seconds later), so it is placed between them (`pos = row +
 #' 0.25`, kind "printed") and used as a bound: a minimum for that snap and a
-#' maximum for every later one.
+#' maximum for every later one. When most of a game's printed clocks are
+#' "(00:00)" (some files print it on nearly every play), every 00:00
+#' reading in that game's text is dropped as meaningless.
 #'
 #' @param full Classified rows with `row`, `row_type`, `play`, `quarter`.
 #' @return Data frame: `row`, `pos`, `quarter`, `secs`, `kind` ("end" for
@@ -53,6 +55,15 @@ stated_clock_anchors <- function(full) {
   # them (pos = row + 0.25)
   pre <- stringr::str_match(txt, "^\\((\\d{1,2}:\\d{2})\\)")[, 2]
   rp <- which(!is.na(pre) & full$row_type %in% kept_row_types)
+  # some files print "(00:00)" on nearly every play (a stat-crew setting,
+  # e.g. 20250906_pzhf): when most printed clocks are 00:00, those 00:00
+  # readings carry no information and are dropped, along with the file's
+  # other 00:00 readings ("TOUCHDOWN, clock 00:00", "drive start at 00:00")
+  zero <- clock_secs(pre[rp]) == 0
+  if (length(rp) >= 10 && mean(zero) > 0.5) {
+    rp <- rp[!zero]
+    stated <- stated[stated$secs != 0, , drop = FALSE]
+  }
   printed <- data.frame(
     row = full$row[rp], pos = full$row[rp] + 0.25, quarter = full$quarter_num[rp],
     secs = clock_secs(pre[rp]), kind = rep("printed", length(rp)), text = txt[rp]

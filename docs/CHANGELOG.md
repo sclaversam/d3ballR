@@ -5,6 +5,31 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Learning from batch 1: fetching, clocks, known source exceptions
+
+Asked by Sam (2026-11-05): fold each batch's fixes into the pipeline so
+later batches make fewer mistakes. "Lessons from each batch" in
+`pipeline.md` now lists every quirk, its generic rule and where it was
+first seen.
+
+- `prefetch_ncaa_games()` fetches ncaa.com's scoring summary for any game
+  whose play-by-play has no running score, right after that game, within
+  the same request budget (and for cached games still missing it). With it,
+  `20250913_5ivd` (Albion 45, Bluffton 39) and `20250913_8l2c` (Western New
+  England 28, Salve Regina 34) reconcile.
+- `fetch_ncaa_json()` doesn't retry a path that returned an HTTP error
+  earlier in the run (ncaa.com's 500 / 502: no play-by-play yet); the game
+  stays pending for the next run. In batch 1 the retries used up the budget.
+- Per-play printed clocks: when most of a game's are "(00:00)"
+  (`20250906_pzhf` prints it on nearly every play), every 00:00 reading in
+  that game is dropped. Only `20250906_pzhf` changes.
+- `data-raw/ncaa/known_exceptions.csv` lists source gaps:
+  `20250906_hbla` (play-by-play ends after Q3) and `20250906_wk1h` (called
+  off for storms; ncaa.com's final matches neither the plays nor its own
+  scoring summary). The build report lists them apart from failures; the
+  score test skips them with the reason and fails if one starts to
+  reconcile.
+
 ## ncaa.com play table: possession after kickoffs and in overtime, nullified and repeated lines
 
 Fixing the score misses from the first all-D3 batch (2026-11-05, asked by

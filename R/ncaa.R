@@ -39,6 +39,12 @@ fetch_ncaa_json <- function(path, refresh = FALSE) {
   if (isTRUE(getOption("d3ballR.offline", FALSE))) {
     stop("Not fetched: offline (option d3ballR.offline = TRUE): ", path, call. = FALSE)
   }
+  # a path that already returned an HTTP error this run (ncaa.com's 500 /
+  # 502: no play-by-play yet) is not requested again until the next run
+  failed <- .d3_state$http_failed
+  if (!is.null(failed) && path %in% names(failed)) {
+    stop("Not fetched: ncaa-api HTTP ", failed[[path]], " for ", path, " (earlier this run; not retried)", call. = FALSE)
+  }
   budget <- getOption("d3ballR.max_requests", Inf)
   if (n_requests() >= budget) stop("Not fetched: request budget (", budget, ") reached: ", path, call. = FALSE)
   throttle()
@@ -53,7 +59,10 @@ fetch_ncaa_json <- function(path, refresh = FALSE) {
                              " (is the Docker container running?): ", conditionMessage(e), call. = FALSE)
   )
   status <- httr2::resp_status(resp)
-  if (status != 200) stop("Not fetched: ncaa-api HTTP ", status, " for ", path, call. = FALSE)
+  if (status != 200) {
+    .d3_state$http_failed <- c(.d3_state$http_failed, stats::setNames(as.character(status), path))
+    stop("Not fetched: ncaa-api HTTP ", status, " for ", path, call. = FALSE)
+  }
   body <- httr2::resp_body_string(resp)
   dir.create(cache_dir, showWarnings = FALSE, recursive = TRUE)
   writeLines(body, file, useBytes = TRUE)
@@ -276,6 +285,38 @@ ncaa_lines <- function(j) {
   key <- do.call(paste, c(out, sep = "\r"))
   dup <- c(FALSE, key[-1] == key[-nrow(out)]) & nzchar(out$text)
   out[!dup, , drop = FALSE]
+}
+
+#' Games whose score can't reconcile because of a gap in the source
+#'
+#' `data-raw/ncaa/known_exceptions.csv` (`game_id`, `reason`) lists games
+#' where ncaa.com's own data is incomplete or inconsistent (a play-by-play
+#' that stops early, a game called off with a final that doesn't match its
+#' plays). The build report lists them apart from real failures, and the
+#' score test skips them with the reason. Only source gaps belong here;
+#' anything the parser can fix gets a generic fix instead.
+#'
+#' @param file Path to the CSV.
+#' @return A data frame with `game_id` and `reason` (no rows if the file is
+#'   missing).
+#' @keywords internal
+load_known_exceptions <- function(file = "data-raw/ncaa/known_exceptions.csv") {
+  if (!file.exists(file)) return(data.frame(game_id = character(), reason = character()))
+  utils::read.csv(file, colClasses = "character")
+}
+
+#' Does an ncaa.com play-by-play carry a running score?
+#'
+#' Some host schools' files leave `homeScore` / `visitorScore` at 0 or null
+#' on every line; those games need the scoring summary to tell which extra
+#' points were good (see [ncaa_play_table()]).
+#'
+#' @param j Parsed play-by-play JSON.
+#' @return TRUE or FALSE.
+#' @keywords internal
+ncaa_has_running_score <- function(j) {
+  l <- ncaa_lines(j)
+  nrow(l) > 0 && any(l$home_score > 0L | l$visitor_score > 0L, na.rm = TRUE)
 }
 
 #' Parse ncaa.com's `driveText`
@@ -735,7 +776,7 @@ fetch_ncaa_game <- function(game_id, contests, index) {
   # with no running score, ncaa.com's scoring summary says which tries were
   # good (one more request; NULL if it can't be had, e.g. offline and not cached)
   scoring <- NULL
-  if (!any(lines$home_score > 0L | lines$visitor_score > 0L, na.rm = TRUE)) {
+  if (!ncaa_has_running_score(j)) {
     scoring <- tryCatch(ncaa_scoring_entries(fetch_ncaa_json(paste0("/game/", hit$contest, "/scoring-summary"))),
                         error = function(e) NULL)
   }
