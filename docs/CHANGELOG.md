@@ -5,6 +5,24 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Defensive conversions read from ncaa.com's running score
+
+Decided with Sam (2026-11-05). In Lake Forest at Illinois College
+(`20250913_oc57`) the play text has Lake Forest's 4:04 try as "Johnson,
+Jaylen rush attempt Successful", but Jaylen Johnson is an Illinois College
+defender (he makes tackles on Lake Forest's drives), ncaa.com's running
+score gives those 2 points to Illinois College, its scoring summary lists
+no good try after that touchdown, and only that reading ties regulation
+22-22, as the overtime requires. So it was a defensive return.
+
+Rule (`ncaa_play_table()`): on a try line where ncaa.com's running score
+rises by 2 for the defending team and not at all for the scoring team, the
+raw text is kept and `ncaa_defensive_try_label` ("[d3ballR: ncaa.com's
+running score gives these 2 points to the defense, ...]") is appended; the
+parser scores it as a defensive conversion (-2). Lines that already say
+"defensive" are left alone. In the 380 built 2025 games it touches only
+`20250913_oc57`, which now reconciles (28-25).
+
 ## Batch 2 (2025 weeks 2-3): defensive PAT wording, kicker-recovered kickoff TDs, coin-toss deferrer, token spellings
 
 Fixes from the second all-D3 batch (2026-11-05):

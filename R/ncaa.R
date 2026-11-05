@@ -529,6 +529,8 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   known <- !is.na(hs) & !is.na(vs)
   hs <- cummax(ifelse(known, hs, 0L))
   vs <- cummax(ifelse(known, vs, 0L))
+  hs_raw <- hs
+  vs_raw <- vs
   # homeScore / visitorScore follow ncaa.com's own home team
   home <- teams$name[teams$ncaa_home]
   away <- teams$name[!teams$ncaa_home]
@@ -551,6 +553,28 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
                       stringr::str_detect(txt, ic("\\b(good|successful)\\b")) &
                       !stringr::str_detect(txt, ic("no good|failed")),
                     ifelse(stringr::str_detect(txt, ic("kick attempt")), 1L, 2L), 0L)
+  # A try line where ncaa.com's running score rises by 2 for the defending
+  # team and not at all for the scoring team was returned by the defense,
+  # whatever the text says (20250913_oc57: "rush attempt Successful", but
+  # the 2 points went to the other team, which is what the overtime needs).
+  # Such lines get `ncaa_defensive_try_label` appended, which the parser
+  # reads as a defensive conversion; the raw text stays in front of it.
+  def_try <- rep(FALSE, n)
+  if (any(hs_raw > 0L | vs_raw > 0L)) {
+    already <- stringr::str_detect(txt, ic("\\bdefensive\\b"))
+    for (i in which(is_try & !already & !stringr::str_detect(txt, ic("NO PLAY")))) {
+      td <- utils::tail(which(is_td & seq_len(n) < i), 1L)
+      if (!length(td)) next
+      before_td <- if (td > 1L) c(hs_raw[td - 1L], vs_raw[td - 1L]) else c(0L, 0L)
+      ti <- which(c(hs_raw[td], vs_raw[td]) - before_td >= 6L)
+      if (length(ti) != 1L) next
+      prev <- c(hs_raw[i - 1L], vs_raw[i - 1L])
+      up <- c(hs_raw[i], vs_raw[i]) - prev
+      if (up[ti] == 0L && up[3L - ti] == 2L) def_try[i] <- TRUE
+    }
+  }
+  # a defensive try earns the scoring team nothing
+  try_pts[def_try] <- 0L
   action <- which(is_kickoff)
   # the rows to add, keyed by the row they follow
   added <- character()
@@ -665,7 +689,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     }
     if (is_snap[i]) last_snap <- i
     if (is_kickoff[i]) last_kick <- i
-    add(situation[i], txt[i])
+    add(situation[i], if (def_try[i]) paste(txt[i], ncaa_defensive_try_label) else txt[i])
     if (as.character(i) %in% names(added)) add("", added[[as.character(i)]])
     changed <- hs[i] != last_hs || vs[i] != last_vs
     if (changed && (i == n || !is_try[i + 1])) {
@@ -676,6 +700,13 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   }
   tibble::tibble(situation = out_sit, play = out_play)
 }
+
+#' Label appended to a try line that ncaa.com's score shows the defense returned
+#'
+#' The parser's defensive-conversion rule reads "returned by ... for a
+#' defensive two-point conversion" (see [score_points()]).
+#' @keywords internal
+ncaa_defensive_try_label <- "[d3ballR: ncaa.com's running score gives these 2 points to the defense, so this try was returned by the defense for a defensive two-point conversion]"
 
 #' Play text of an extra point added because ncaa.com left it out
 #' @keywords internal

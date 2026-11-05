@@ -155,3 +155,20 @@ test_that("parse_coin_deferrer reads the toss winner who defers", {
   expect_equal(parse_coin_deferrer("Martin Luther wins toss and defers; WEC will receive; MLC will defend West end-zone."), "Martin Luther")
   expect_true(is.na(parse_coin_deferrer("Westfield won the coin toss and elected to receive.")))
 })
+
+test_that("a try whose points ncaa.com gives to the defense is labelled a defensive conversion", {
+  lines <- data.frame(
+    period = 4L, team_id = c("A", "A", "A", "A", "B"), clock = NA_character_,
+    drive_text = c("1 and 10 at 3", "1 and 0 at 3", "1 and 10 at 35", "- and - at 35", "1 and 10 at 25"),
+    home_score = c(14L, 14L, 16L, 16L, 16L), visitor_score = c(14L, 20L, 20L, 20L, 20L),
+    text = c("Shotgun Clark,Joseph rush middle for 3 yards gain to the IC03.",
+             "Shotgun Clark,Joseph rush middle for 3 yards gain to the IC00 TOUCHDOWN, clock 04:04.",
+             "Johnson,Jaylen rush attempt Successful.",
+             "Schambach,Hudson kickoff 65 yards to the IC00, Touchback.",
+             "Shotgun Elliott,Tyson rush right for 8 yards gain to the IC33."))
+  teams <- data.frame(team_id = c("A", "B"), name = c("Lake Forest", "Illinois College"), ncaa_home = c(FALSE, TRUE))
+  tab <- ncaa_play_table(lines, teams)
+  hit <- tab$play[grepl("Johnson,Jaylen", tab$play)]
+  expect_true(grepl("^Johnson,Jaylen rush attempt Successful\\.", hit))
+  expect_true(grepl("defensive two-point conversion", hit, fixed = TRUE))
+})

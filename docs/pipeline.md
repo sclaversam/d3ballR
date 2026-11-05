@@ -208,6 +208,7 @@ section after every batch.
 | Coin toss names the receiver with a code no other row uses ("WEC will receive") | `parse_coin_deferrer()`: the toss winner who defers kicks | `20250920_ev5d` |
 | Team codes in lowercase ("cen49") or with a hyphen ("Rose-H46") | token patterns accept a lowercase first letter and "-" | `20250920_t60m`, `20250920_upco` |
 | A printed per-play clock 1-2 s past the official "drive start at" reading | clock test allows 2 s | `20250913_npl1`, `20250913_vg5b`, `20250920_a8p2` |
+| A defensive two-point return written as the offense's try ("Johnson,Jaylen rush attempt Successful", Johnson being a defender) | `ncaa_play_table()`: a try line where ncaa.com's running score rises by 2 for the defense and 0 for the scoring team gets a "[d3ballR: ...]" label, read as a defensive conversion | `20250913_oc57` |
 | Index `week` restarts at 1 in the postseason | filter on `season_type == "regular"` when fetching by week | batch 2 fetched 28 playoff games by mistake |
 
 ## Roadmap
