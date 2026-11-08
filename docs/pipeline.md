@@ -239,12 +239,27 @@ section after every batch.
 | A field goal with no line (the running score rises by 3 on the next, non-scoring, line) | Sam's decision: a labelled "field goal attempt GOOD" row is added before that line, for the team in possession, with down and distance rebuilt from the previous snap and the kicker from the scoring summary when cached; skipped when a field-goal line since the last score change already accounts for it (ncaa.com's score can lag a line). Without a running score, a summary field goal with no matching line is added only when the final is short by exactly 3 per such field goal | `20251004_6sus` |
 | Index `week` and season type | fetch by `season_type == "regular"` (batch 2's lesson) held: no playoff games fetched | |
 
+### Batch 4 (2025 weeks 7-8, 220 new games, 2026-11-08)
+
+Week 7 was already cached; week 8 was the first batch fetched straight
+from ncaa.com in R (no ncaa-api server): 124 requests (112 play-by-play,
+12 scoring summaries), no failures.
+
+| Quirk | Generic rule now | First seen |
+|---|---|---|
+| A replay-review note after the play ("MSU is challenging the ruling on the field - \"Fumble\". PLAY STANDS.") hid the "recovered by" before it, so a lost fumble wasn't a turnover | `strip_review_note()`: the fumble and recovery search ignores the note (and any "(Original Play: ...)"); the play before it is the final ruling | `20251018_c2vg` (fumble-return TD credited to the fumbling team); also fixed `20250906_2lhd`, `20251011_36q6`, `20251025_yvrv` |
+| Pass direction before the result ("pass short right complete to ...") | pass verbs accept up to two direction words between "pass" and complete / incomplete / intercepted | `20251018_6y68` (39 passes had been dropped as unclassified) |
+| A return touchdown whose try has no kicker named, no kickoff line after it and no running score went to the scoring play's offense (the punting team) | `scoring_team()`: a first pass of the outcome flags and points says who scored; `try_phase_team()`'s last rule uses it | `20251025_eeno` (blocked punt returned for a touchdown) |
+| Open: ncaa.com lists a try and its kickoff before the touchdown they follow (an interception return) | not fixed: reordering ncaa.com's lines is a judgment call for Sam | `20251129_57m9` |
+
 ## Roadmap
 
 1. **CMU 2025** (validation set): done.
 2. **Centennial 2025**: done; rebuilt from ncaa.com on 2026-11-04.
-3. **All of D3 2025 from ncaa.com** (next): `build_season(2025)`. About
-   1,180 more games, fetched in capped runs with Sam's go-ahead.
+3. **All of D3 2025 from ncaa.com** (in progress): `build_season(2025)`.
+   891 games built through week 8 (2026-11-08); weeks 9-11 (about 335
+   games), 11 playoff games and 6 week-1 retries remain, fetched in capped
+   runs with Sam's go-ahead.
    Conferences come from ncaa.com's scoreboards for every team. Expect new
    StatCrew formats to surface. The score-reconciliation test and the
    `first_downs.md` series check are the main guards.

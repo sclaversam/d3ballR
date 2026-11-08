@@ -5,6 +5,32 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Batch 4 (2025 weeks 7-8): review notes, pass wording, tries after return touchdowns
+
+Fixes from the fourth all-D3 batch (2026-11-08); see "Lessons from each
+batch" in `pipeline.md`. 891 games built; 888 reconcile (2 known source
+gaps, and `20251129_57m9`, open).
+
+- Fumble recoveries are read with any replay-review note at the end of the
+  line removed (`strip_review_note()`). `20251018_c2vg` now credits
+  Salisbury's fumble-return touchdown to Salisbury. Three lost fumbles in
+  games that reconciled before are now turnovers (`turnover`,
+  `drive_result` "FUMBLE"): `20250906_2lhd`, `20251011_36q6`,
+  `20251025_yvrv`.
+- "pass short right complete" (direction before result) is a pass
+  (`verb_pattern`, `parse_play_type()`); `20251018_6y68` gains its 39
+  passes.
+- The try after a return touchdown, with no kicker named and no kickoff or
+  running score to go by, goes to the team that scored (`scoring_team()`
+  in `try_phase_team()`); `20251025_eeno` reconciles.
+- Build report: "Source: ncaa.com" (no longer "via ncaa-api") unless an
+  ncaa-api server is set.
+
+Open for Sam: `20251129_57m9` (Hardin-Simmons 24, Trinity (Texas) 34;
+parsed 25-33). ncaa.com lists Trinity's extra point and kickoff before the
+interception-return touchdown they follow (lines 160-162 of contest
+6529878), so the point lands on Hardin-Simmons' drive.
+
 ## ncaa.com is requested directly, without the ncaa-api server
 
 Asked by Sam (2026-11-08), after his professor suggested the package
