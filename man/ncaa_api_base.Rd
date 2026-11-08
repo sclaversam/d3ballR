@@ -2,16 +2,21 @@
 % Please edit documentation in R/ncaa.R
 \name{ncaa_api_base}
 \alias{ncaa_api_base}
-\title{Base URL of the ncaa-api server}
+\title{Where ncaa.com's data is requested from}
 \usage{
 ncaa_api_base()
 }
 \value{
-Character scalar, no trailing slash.
+The ncaa-api server's address (no trailing slash), or NULL for
+direct requests.
 }
 \description{
-The play-by-play comes from ncaa.com through the open-source ncaa-api
-wrapper (github.com/henrygd/ncaa-api), run locally in Docker. Set
-\code{options(d3ballR.ncaa_api = "...")} to point somewhere else.
+By default d3ballR asks ncaa.com's own data server
+(\verb{https://sdataprod.ncaa.com/}) directly, the same requests ncaa.com's
+game pages make (see \code{\link[=ncaa_direct_request]{ncaa_direct_request()}}). Nothing else needs to be
+running. To go through an ncaa-api server instead
+(github.com/henrygd/ncaa-api, e.g. run locally in Docker), set
+\code{options(d3ballR.ncaa_api = "http://127.0.0.1:3000")}; both give the
+same cached files.
 }
 \keyword{internal}
