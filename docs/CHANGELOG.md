@@ -5,6 +5,17 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## ncaa.com is requested directly, without the ncaa-api server
+
+Asked by Sam (2026-11-08), after his professor suggested the package
+shouldn't depend on another API. `fetch_ncaa_json()` now sends the
+requests the henrygd/ncaa-api wrapper used to send for us straight to
+ncaa.com's data server (`ncaa_direct_request()`), and stores the same JSON
+the wrapper returned, so existing caches keep working. The wrapper can
+still be used with `options(d3ballR.ncaa_api = ...)`. The play-by-play
+output does not change. Research behind it:
+`/mnt/project-files/d3ballr/ncaa-fetch-options.md` (project files).
+
 ## Field goals ncaa.com left out are added
 
 Decided by Sam (2026-11-05). UW-La Crosse at UW-Whitewater

@@ -2,12 +2,12 @@
 % Please edit documentation in R/ncaa.R
 \name{fetch_ncaa_json}
 \alias{fetch_ncaa_json}
-\title{Fetch an ncaa-api path as parsed JSON (cached, throttled)}
+\title{Fetch an ncaa.com path as parsed JSON (cached, throttled)}
 \usage{
 fetch_ncaa_json(path, refresh = FALSE)
 }
 \arguments{
-\item{path}{API path, starting with "/".}
+\item{path}{Path, starting with "/".}
 
 \item{refresh}{Re-fetch even if cached.}
 }
@@ -16,12 +16,20 @@ The parsed JSON (a list, from \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON(
 \code{simplifyVector = FALSE}).
 }
 \description{
+Paths are named the way ncaa-api names them (they are also the cache
+file names): \verb{/scoreboard/football/d3/\{year\}/\{week\}/all-conf},
+\verb{/game/\{contest\}/play-by-play}, \verb{/game/\{contest\}/scoring-summary}.
+By default each is requested from ncaa.com directly
+(\code{\link[=ncaa_direct_request]{ncaa_direct_request()}}); with \code{options(d3ballR.ncaa_api = ...)} from
+an ncaa-api server (\code{\link[=ncaa_api_base]{ncaa_api_base()}}). Both store the same JSON.
+}
+\details{
 Same rules as \code{\link[=fetch_html]{fetch_html()}}: every response is cached on disk
 (\code{getOption("d3ballR.ncaa_cache_dir")}, default \verb{data-raw/cache/ncaa/},
 gitignored) and never requested twice; requests are at least
 \code{d3ballR.delay} seconds apart and count against \code{d3ballR.max_requests};
 with \code{options(d3ballR.offline = TRUE)} nothing is requested. A failed
-request (ncaa.com answers HTTP 502 for a game it has no play-by-play for)
-is an error starting "Not fetched:" and is not cached.
+request (no play-by-play for the game yet: HTTP 502, as ncaa-api
+reports it) is an error starting "Not fetched:" and is not cached.
 }
 \keyword{internal}

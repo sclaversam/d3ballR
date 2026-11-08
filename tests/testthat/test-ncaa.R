@@ -255,3 +255,51 @@ test_that("a field goal ncaa.com left out is added where the running score rises
   expect_true(k < which(grepl("Stanton,Brian", tab$play)))
   expect_false(any(grepl(ncaa_added_fg_text, ncaa_play_table(mk(17L), teams)$play, fixed = TRUE)))
 })
+
+test_that("ncaa_gql_scoreboard gives the layout ncaa_scoreboard_week reads", {
+  contests <- list(
+    list(contestId = 6461490L, startDate = "09/04/2025", gameState = "F", roundNumber = NULL,
+         teams = list(
+           list(isHome = FALSE, isWinner = TRUE, score = 41L, nameShort = "SUNY Brockport", seoname = "brockport", conferenceSeo = "empire-8"),
+           list(isHome = TRUE, isWinner = FALSE, score = 0L, nameShort = "Buffalo St.", seoname = "buffalo-st", conferenceSeo = "empire-8"))),
+    list(contestId = 1L, startDate = "09/04/2025", teams = list(list(isHome = TRUE, nameShort = "Only Home"))))
+  sb <- ncaa_gql_scoreboard(contests)
+  expect_length(sb$games, 1L)
+  dir <- withr::local_tempdir()
+  writeLines(ncaa_to_json(sb), file.path(dir, ncaa_cache_key("/scoreboard/football/d3/2025/01/all-conf")))
+  withr::local_options(d3ballR.offline = TRUE, d3ballR.ncaa_cache_dir = dir)
+  wk <- ncaa_scoreboard_week(2025, 1)
+  expect_equal(wk$contest, "6461490")
+  expect_equal(wk$date, as.Date("2025-09-04"))
+  expect_equal(c(wk$away, wk$home), c("SUNY Brockport", "Buffalo St."))
+  expect_equal(c(wk$away_score, wk$home_score), c(41L, 0L))
+  expect_equal(wk$bracket_round, "")
+  expect_equal(wk$home_conference, "empire-8")
+})
+
+test_that("ncaa_direct_request asks ncaa.com's data server and keeps data$playbyplay", {
+  seen <- NULL
+  reply <- list(data = list(playbyplay = list(contestId = "6461490", periods = list(list(
+    periodNumber = "1", playbyplayStats = list(list(teamId = "543", plays = list(list(playText = "kickoff 62 yards")))))))))
+  httr2::local_mocked_responses(function(req) {
+    seen <<- req$url
+    httr2::response(200, headers = "Content-Type: application/json", body = charToRaw(ncaa_to_json(reply)))
+  })
+  res <- ncaa_direct_request("/game/6461490/play-by-play")
+  expect_equal(res$status, 200L)
+  expect_equal(jsonlite::fromJSON(res$body, simplifyVector = FALSE), reply$data$playbyplay)
+  q <- httr2::url_parse(seen)$query
+  expect_match(q$extensions, ncaa_query_hashes[["play_by_play"]], fixed = TRUE)
+  expect_equal(jsonlite::fromJSON(q$variables), list(contestId = "6461490", staticTestEnv = NULL))
+})
+
+test_that("ncaa_direct_request reports an empty game or a stale query id as HTTP 502", {
+  httr2::local_mocked_responses(function(req) httr2::response(200, headers = "Content-Type: application/json",
+    body = charToRaw('{"data":{"playbyplay":{"periods":[{"playbyplayStats":[{"__typename":"PlayByPlayFootball"}]}]}}}')))
+  expect_equal(ncaa_direct_request("/game/1/play-by-play")$status, 502L)
+  httr2::local_mocked_responses(function(req) httr2::response(200, headers = "Content-Type: application/json",
+    body = charToRaw('{"errors":[{"message":"PersistedQueryNotFound"}]}')))
+  res <- ncaa_direct_request("/game/1/scoring-summary")
+  expect_equal(res$status, 502L)
+  expect_match(res$why, "PersistedQueryNotFound")
+})

@@ -33,10 +33,12 @@ filter or `season`, not a new pipeline.
 ## Source facts (confirmed, do not re-litigate)
 
 - **ncaa.com is the source** (decided by Sam, 2026-11-04). Play-by-play is
-  read as JSON through the open-source `henrygd/ncaa-api` wrapper, run
-  locally on Sam's Mac as the Docker container `ncaa-api` on
-  `127.0.0.1:3000` (`R/ncaa.R`, `fetch_ncaa_json()`). Endpoints:
-  `/scoreboard/football/d3/{year}/{week}/all-conf` and
+  read as JSON straight from ncaa.com's data server, `sdataprod.ncaa.com`
+  (`R/ncaa.R`: `fetch_ncaa_json()`, `ncaa_direct_request()`), with the
+  requests the `henrygd/ncaa-api` wrapper makes; until 2026-11-08 it went
+  through that wrapper in Docker, still possible with
+  `options(d3ballR.ncaa_api = "http://127.0.0.1:3000")`. Paths (also the
+  cache file names): `/scoreboard/football/d3/{year}/{week}/all-conf`,
   `/game/{contest}/play-by-play`. Every response is cached in
   `data-raw/cache/ncaa/` (gitignored). An ncaa.com 502 means the game's
   play-by-play isn't available yet; it stays pending.

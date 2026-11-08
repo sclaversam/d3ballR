@@ -2,14 +2,14 @@
 % Please edit documentation in R/ncaa.R
 \name{ncaa_cache_key}
 \alias{ncaa_cache_key}
-\title{File name for a cached ncaa-api path}
+\title{File name for a cached ncaa.com path}
 \usage{
 ncaa_cache_key(path)
 }
 \arguments{
-\item{path}{API path, e.g. "/game/6461399/play-by-play".}
+\item{path}{ncaa-api style path, e.g. "/game/6461399/play-by-play".}
 }
 \description{
-File name for a cached ncaa-api path
+File name for a cached ncaa.com path
 }
 \keyword{internal}

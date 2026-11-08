@@ -29,9 +29,10 @@ the source was d3football.com; those builds are kept in
 
 ## Running it
 
-The ncaa-api server must be running (Docker container `ncaa-api` on
-`127.0.0.1:3000`; set `options(d3ballR.ncaa_api = ...)` for another
-address). Cached runs (`OFFLINE=1`) don't need it.
+Nothing else needs to be running: d3ballR asks ncaa.com's data server
+directly. To go through an ncaa-api server instead (the Docker container
+used until 2026-11-08), set `options(d3ballR.ncaa_api =
+"http://127.0.0.1:3000")`. Cached runs (`OFFLINE=1`) make no requests.
 
 ```r
 devtools::load_all()
@@ -80,7 +81,15 @@ roadmap stages differ only in its arguments: a `teams` filter, or the `season`.
 
 ## Fetching
 
-**ncaa.com** (the source) is read through the local ncaa-api server. The
+**ncaa.com** (the source) is read straight from its data server,
+`sdataprod.ncaa.com`, with the same requests ncaa.com's own game pages
+make (`ncaa_direct_request()` in `R/ncaa.R`): a GET with a "persisted
+query" id and the game's contest id, no cookies, no browser headers. The
+answer is reshaped exactly as ncaa-api reshapes it, so old and new cache
+files are interchangeable. The query ids are in `ncaa_query_hashes`; if
+ncaa.com redeploys and changes one, every request of that kind fails with
+"PersistedQueryNotFound" in the error, and the fix is to copy the new id
+from ncaa.com's page source (or henrygd/ncaa-api's `src/codes.ts`). The
 rules:
 - **Cache:** every response is cached in `data-raw/cache/ncaa/` and never
   requested twice. Copy that folder between machines to rebuild offline.

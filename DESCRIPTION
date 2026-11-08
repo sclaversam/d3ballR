@@ -4,7 +4,7 @@ Version: 0.1.0
 Authors@R:
     person("Sam", "Sclaver", email = "sclaversam@gmail.com", role = c("aut", "cre"))
 Description: Builds NCAA Division III college football play-by-play into
-    tidy, per-play tables, from ncaa.com (through a local ncaa-api server)
+    tidy, per-play tables, from ncaa.com (requested directly from its data server)
     or from cached d3football.com boxscore pages. Fills a gap in the
     existing ecosystem (cfbfastR and CollegeFootballData cover only Division I).
     Output follows cfbfastR conventions; validated on the 2025 Centennial

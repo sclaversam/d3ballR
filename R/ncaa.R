@@ -1,33 +1,62 @@
-#' Base URL of the ncaa-api server
+#' Where ncaa.com's data is requested from
 #'
-#' The play-by-play comes from ncaa.com through the open-source ncaa-api
-#' wrapper (github.com/henrygd/ncaa-api), run locally in Docker. Set
-#' `options(d3ballR.ncaa_api = "...")` to point somewhere else.
+#' By default d3ballR asks ncaa.com's own data server
+#' (`https://sdataprod.ncaa.com/`) directly, the same requests ncaa.com's
+#' game pages make (see [ncaa_direct_request()]). Nothing else needs to be
+#' running. To go through an ncaa-api server instead
+#' (github.com/henrygd/ncaa-api, e.g. run locally in Docker), set
+#' `options(d3ballR.ncaa_api = "http://127.0.0.1:3000")`; both give the
+#' same cached files.
 #'
-#' @return Character scalar, no trailing slash.
+#' @return The ncaa-api server's address (no trailing slash), or NULL for
+#'   direct requests.
 #' @keywords internal
 ncaa_api_base <- function() {
-  sub("/+$", "", getOption("d3ballR.ncaa_api", "http://127.0.0.1:3000"))
+  api <- getOption("d3ballR.ncaa_api", NULL)
+  if (is.null(api) || !nzchar(api)) return(NULL)
+  sub("/+$", "", api)
 }
 
-#' File name for a cached ncaa-api path
-#' @param path API path, e.g. "/game/6461399/play-by-play".
+#' Query ids of ncaa.com's data server
+#'
+#' ncaa.com's pages ask `sdataprod.ncaa.com` for named, pre-registered
+#' ("persisted") GraphQL queries, each identified by a sha256 hash. These
+#' are copied from ncaa.com's page source (via henrygd/ncaa-api's
+#' `src/codes.ts`, 2026-11-08). When ncaa.com redeploys, a hash can change
+#' and every request of that kind fails ("PersistedQueryNotFound"); the fix
+#' is to update the hash here.
+#' @keywords internal
+ncaa_query_hashes <- c(
+  scoreboard = "7287cda610a9326931931080cb3a604828febe6fe3c9016a7e4a36db99efdb7c",
+  play_by_play = "47928f2cabc7a164f0de0ed535a623bdf5a852cce7c30d6a6972a38609ba46a2",
+  scoring_summary = "7f86673d4875cd18102b7fa598e2bc5da3f49d05a1c15b1add0e2367ee890198"
+)
+
+#' File name for a cached ncaa.com path
+#' @param path ncaa-api style path, e.g. "/game/6461399/play-by-play".
 #' @keywords internal
 ncaa_cache_key <- function(path) {
   paste0(gsub("[^A-Za-z0-9._-]+", "_", sub("^/+", "", path)), ".json")
 }
 
-#' Fetch an ncaa-api path as parsed JSON (cached, throttled)
+#' Fetch an ncaa.com path as parsed JSON (cached, throttled)
+#'
+#' Paths are named the way ncaa-api names them (they are also the cache
+#' file names): `/scoreboard/football/d3/{year}/{week}/all-conf`,
+#' `/game/{contest}/play-by-play`, `/game/{contest}/scoring-summary`.
+#' By default each is requested from ncaa.com directly
+#' ([ncaa_direct_request()]); with `options(d3ballR.ncaa_api = ...)` from
+#' an ncaa-api server ([ncaa_api_base()]). Both store the same JSON.
 #'
 #' Same rules as [fetch_html()]: every response is cached on disk
 #' (`getOption("d3ballR.ncaa_cache_dir")`, default `data-raw/cache/ncaa/`,
 #' gitignored) and never requested twice; requests are at least
 #' `d3ballR.delay` seconds apart and count against `d3ballR.max_requests`;
 #' with `options(d3ballR.offline = TRUE)` nothing is requested. A failed
-#' request (ncaa.com answers HTTP 502 for a game it has no play-by-play for)
-#' is an error starting "Not fetched:" and is not cached.
+#' request (no play-by-play for the game yet: HTTP 502, as ncaa-api
+#' reports it) is an error starting "Not fetched:" and is not cached.
 #'
-#' @param path API path, starting with "/".
+#' @param path Path, starting with "/".
 #' @param refresh Re-fetch even if cached.
 #' @return The parsed JSON (a list, from [jsonlite::fromJSON()] with
 #'   `simplifyVector = FALSE`).
@@ -39,34 +68,156 @@ fetch_ncaa_json <- function(path, refresh = FALSE) {
   if (isTRUE(getOption("d3ballR.offline", FALSE))) {
     stop("Not fetched: offline (option d3ballR.offline = TRUE): ", path, call. = FALSE)
   }
-  # a path that already returned an HTTP error this run (ncaa.com's 500 /
-  # 502: no play-by-play yet) is not requested again until the next run
+  # a path that already returned an HTTP error this run (no play-by-play
+  # yet) is not requested again until the next run
   failed <- .d3_state$http_failed
   if (!is.null(failed) && path %in% names(failed)) {
-    stop("Not fetched: ncaa-api HTTP ", failed[[path]], " for ", path, " (earlier this run; not retried)", call. = FALSE)
+    stop("Not fetched: ncaa.com HTTP ", failed[[path]], " for ", path, " (earlier this run; not retried)", call. = FALSE)
   }
   budget <- getOption("d3ballR.max_requests", Inf)
   if (n_requests() >= budget) stop("Not fetched: request budget (", budget, ") reached: ", path, call. = FALSE)
   throttle()
   .d3_state$n_requests <- n_requests() + 1L
-  resp <- tryCatch(
-    httr2::request(paste0(ncaa_api_base(), path)) |>
+  api <- ncaa_api_base()
+  res <- if (is.null(api)) ncaa_direct_request(path) else ncaa_api_request(api, path)
+  if (is.null(res$body)) {
+    .d3_state$http_failed <- c(.d3_state$http_failed, stats::setNames(as.character(res$status), path))
+    stop("Not fetched: ncaa.com HTTP ", res$status, " for ", path,
+         if (!is.null(res$why)) paste0(" (", res$why, ")"), call. = FALSE)
+  }
+  dir.create(cache_dir, showWarnings = FALSE, recursive = TRUE)
+  writeLines(res$body, file, useBytes = TRUE)
+  jsonlite::fromJSON(res$body, simplifyVector = FALSE)
+}
+
+# one GET; a network failure is an error whose message contains
+# "unreachable" (prefetch_ncaa_games() stops on it)
+ncaa_get <- function(req, where) {
+  tryCatch(
+    req |>
       httr2::req_user_agent("d3ballR (CMU student research)") |>
       httr2::req_error(is_error = function(r) FALSE) |>
       httr2::req_timeout(60) |>
       httr2::req_perform(),
-    error = function(e) stop("Not fetched: ncaa-api unreachable at ", ncaa_api_base(),
-                             " (is the Docker container running?): ", conditionMessage(e), call. = FALSE)
+    error = function(e) stop("Not fetched: ", where, " unreachable: ", conditionMessage(e), call. = FALSE)
   )
+}
+
+#' Request a path from an ncaa-api server
+#' @return A list: `body` (JSON text, or NULL on failure) and `status`.
+#' @keywords internal
+ncaa_api_request <- function(api, path) {
+  resp <- ncaa_get(httr2::request(paste0(api, path)),
+                   paste0("ncaa-api at ", api, " (is the Docker container running?)"))
   status <- httr2::resp_status(resp)
-  if (status != 200) {
-    .d3_state$http_failed <- c(.d3_state$http_failed, stats::setNames(as.character(status), path))
-    stop("Not fetched: ncaa-api HTTP ", status, " for ", path, call. = FALSE)
+  list(body = if (status == 200) httr2::resp_body_string(resp), status = status)
+}
+
+#' Request a path from ncaa.com's data server directly
+#'
+#' Builds the request ncaa.com's own pages make: a GET to
+#' `https://sdataprod.ncaa.com/` (option `d3ballR.ncaa_data_url`) with a
+#' persisted-query id ([ncaa_query_hashes]) and the query's variables, no
+#' cookies and no browser headers. The answer is reshaped exactly as
+#' ncaa-api reshapes it, so caches from either are interchangeable:
+#' - play-by-play: the reply's `data$playbyplay`;
+#' - scoring summary: `data$scoringSummary`;
+#' - scoreboard (`week`, `seasonYear`, sport "MFB", division 3): the
+#'   contests as ncaa-api's older `games[].game` layout
+#'   ([ncaa_gql_scoreboard()]).
+#' An empty answer (a game with no play-by-play yet) is reported as HTTP
+#' 502, the status ncaa-api gives it.
+#'
+#' @param path An ncaa-api style path (see [fetch_ncaa_json()]).
+#' @return A list: `body` (JSON text, or NULL on failure), `status`, and
+#'   `why` (why it failed, or NULL).
+#' @keywords internal
+ncaa_direct_request <- function(path) {
+  m_game <- regmatches(path, regexec("^/game/([0-9]+)/(play-by-play|scoring-summary)$", path))[[1]]
+  m_sb <- regmatches(path, regexec("^/scoreboard/football/d3/([0-9]{4})/([0-9]{1,2})/all-conf$", path))[[1]]
+  if (length(m_game)) {
+    kind <- if (m_game[3] == "play-by-play") "play_by_play" else "scoring_summary"
+    vars <- list(contestId = m_game[2], staticTestEnv = NULL)
+  } else if (length(m_sb)) {
+    kind <- "scoreboard"
+    vars <- list(sportCode = "MFB", division = 3L, seasonYear = as.integer(m_sb[2]), week = as.integer(m_sb[3]))
+  } else {
+    stop("ncaa_direct_request() doesn't know the path ", path, call. = FALSE)
   }
-  body <- httr2::resp_body_string(resp)
-  dir.create(cache_dir, showWarnings = FALSE, recursive = TRUE)
-  writeLines(body, file, useBytes = TRUE)
-  jsonlite::fromJSON(body, simplifyVector = FALSE)
+  js <- function(x) as.character(jsonlite::toJSON(x, auto_unbox = TRUE, null = "null"))
+  url <- getOption("d3ballR.ncaa_data_url", "https://sdataprod.ncaa.com/")
+  req <- httr2::request(url) |>
+    httr2::req_url_query(
+      extensions = js(list(persistedQuery = list(version = 1L, sha256Hash = ncaa_query_hashes[[kind]]))),
+      variables = js(vars))
+  resp <- ncaa_get(req, "ncaa.com")
+  status <- httr2::resp_status(resp)
+  if (status != 200) return(list(body = NULL, status = status, why = NULL))
+  j <- tryCatch(jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = FALSE),
+                error = function(e) NULL)
+  errs <- vapply(j$errors, function(e) if (is.null(e$message)) "" else as.character(e$message), character(1))
+  if (length(errs)) {
+    # an unknown query id means ncaa.com changed it: update ncaa_query_hashes
+    return(list(body = NULL, status = 502L, why = paste(unique(errs), collapse = "; ")))
+  }
+  out <- switch(kind,
+    play_by_play = {
+      p <- j$data$playbyplay
+      first <- p$periods[[1]]$playbyplayStats[[1]]
+      if (length(first) < 2) NULL else p
+    },
+    scoring_summary = j$data$scoringSummary,
+    scoreboard = if (is.list(j$data$contests)) ncaa_gql_scoreboard(j$data$contests)
+  )
+  if (is.null(out)) return(list(body = NULL, status = 502L, why = "no data in ncaa.com's answer"))
+  list(body = ncaa_to_json(out), status = 200L, why = NULL)
+}
+
+# JSON text from a list parsed with simplifyVector = FALSE (round-trips:
+# scalars stay scalars, NULLs stay null, numbers keep their digits)
+ncaa_to_json <- function(x) {
+  as.character(jsonlite::toJSON(x, auto_unbox = TRUE, null = "null", na = "null", digits = NA))
+}
+
+#' ncaa.com scoreboard contests in ncaa-api's `games[].game` layout
+#'
+#' Mirrors `convertToOldFormat()` in henrygd/ncaa-api
+#' (`src/scoreboard/scoreboard.ts`) for the fields d3ballR reads:
+#' `gameID`, `startDate` (as ncaa.com gives it, "MM/DD/YYYY"),
+#' `bracketRound` (the contest's `roundNumber`, "" if none), and per team
+#' `score` (text, "" if none), `names` (`short`, `char6`, `seo`), `winner`,
+#' `seed`, `rank`, and `conferences[[1]]$conferenceSeo`. A contest without
+#' both a home and an away team is dropped, as ncaa-api does.
+#'
+#' @param contests The reply's `data$contests` (a list).
+#' @return A list with element `games`.
+#' @keywords internal
+ncaa_gql_scoreboard <- function(contests) {
+  txt <- function(x) if (is.null(x)) "" else as.character(x)
+  team <- function(t) list(
+    score = txt(t$score),
+    names = list(char6 = txt(t$name6Char), short = txt(t$nameShort), seo = txt(t$seoname), full = ""),
+    winner = isTRUE(t$isWinner),
+    seed = txt(t$seed),
+    description = "",
+    rank = txt(t$teamRank),
+    conferences = list(list(conferenceName = "", conferenceSeo = txt(t$conferenceSeo)))
+  )
+  games <- lapply(contests, function(cn) {
+    home <- Filter(function(t) isTRUE(t$isHome), cn$teams)
+    away <- Filter(function(t) isFALSE(t$isHome) || is.null(t$isHome), cn$teams)
+    if (!length(home) || !length(away)) return(NULL)
+    list(game = list(
+      gameID = txt(cn$contestId),
+      away = team(away[[1]]),
+      finalMessage = txt(cn$finalMessage),
+      home = team(home[[1]]),
+      gameState = switch(txt(cn$gameState), F = "final", I = "live", "pre"),
+      startDate = txt(cn$startDate),
+      bracketRound = txt(cn$roundNumber)
+    ))
+  })
+  list(games = Filter(Negate(is.null), games))
 }
 
 #' One week of the ncaa.com Division III football scoreboard
