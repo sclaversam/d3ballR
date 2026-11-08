@@ -47,7 +47,8 @@ built so far for the season.
 }
 \details{
 The play-by-play comes from ncaa.com (\code{source = "ncaa"}, the default)
-through a local ncaa-api server (see \code{\link[=fetch_ncaa_json]{fetch_ncaa_json()}}): each index
+requested directly from R (see \code{\link[=fetch_ncaa_json]{fetch_ncaa_json()}}; an ncaa-api server
+is optional): each index
 game is matched to its ncaa.com contest (\code{\link[=map_ncaa_contests]{map_ncaa_contests()}}), its
 play-by-play is fetched (\code{\link[=prefetch_ncaa_games]{prefetch_ncaa_games()}}) and rebuilt into the
 play table the parser reads (\code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}). \code{source = "d3football"} reads d3football boxscore pages instead, which now works

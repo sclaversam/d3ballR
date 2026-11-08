@@ -188,3 +188,24 @@ test_that("infer_own_side: plays that settle it decide, losses don't vote", {
   df <- rbind(df, data.frame(pos_team = "B", yard_side = "BB", yard_num = 30L, down = 1L, play_text = "Doe rush for 3 yards."))
   expect_equal(infer_own_side(df), c(A = "AA", B = "BB"))
 })
+
+test_that("a replay-review note doesn't hide a fumble recovery (20251018_c2vg)", {
+  txt <- c(
+    "Henrich,Luke pass complete to Rodriguez,Alex for 5 yards to the MSU46 fumbled by Rodriguez,Alex at MSU46 recovered by SALIS Mack,Kilo at MSU46 Mack,Kilo return 46 yards to the MSU00 TOUCHDOWN, clock 01:05. MSU is challenging the ruling on the field - \"Fumble\". PLAY STANDS.",
+    "Romano,Caleb pass incomplete short right. WIDU is challenging the ruling on the field - \"Incomplete pass\". PLAY OVERTURNED. (Original Play: Romano pass complete).",
+    "Tremba,Ty rush middle for 6 yards. play is under automatic review - \"Targeting\". PLAY STANDS.",
+    "Smith rush for 3 yards to the AA40."
+  )
+  expect_equal(strip_review_note(txt), c(
+    "Henrich,Luke pass complete to Rodriguez,Alex for 5 yards to the MSU46 fumbled by Rodriguez,Alex at MSU46 recovered by SALIS Mack,Kilo at MSU46 Mack,Kilo return 46 yards to the MSU00 TOUCHDOWN, clock 01:05.",
+    "Romano,Caleb pass incomplete short right.",
+    "Tremba,Ty rush middle for 6 yards.",
+    "Smith rush for 3 yards to the AA40."
+  ))
+  df <- data.frame(play_text = txt[1], play_type = "pass_complete", pos_team = "Montclair State",
+                   def_pos_team = "Salisbury", down = 1L, distance = 10L, yards_gained = 5L,
+                   penalty_no_play = FALSE, kicker_recovered = FALSE)
+  out <- parse_outcome_flags(df, c(SALIS = "Salisbury", MSU = "Montclair State"))
+  expect_true(out$turnover)
+  expect_equal(out$recovering_team, "Salisbury")
+})

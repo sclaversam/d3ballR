@@ -17,5 +17,7 @@ one of complete/incomplete/intercepted/attempt right after it -- a bare
 \verb{\\\\bpass\\\\b} also matches the word "Pass" inside a penalty name (e.g.
 "PENALTY CMU Pass Interference ... NO PLAY."), which wrongly typed three
 dead-ball penalty rows as \code{play} instead of \code{penalty_no_play}.
+Up to two direction words may come between: most hosts write "pass
+complete short right", some "pass short right complete" (20251018_6y68).
 }
 \keyword{internal}

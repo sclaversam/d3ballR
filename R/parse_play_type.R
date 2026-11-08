@@ -44,6 +44,9 @@ parse_play_type <- function(classified) {
   p <- classified$play
   is_play <- classified$row_type == "play"
   ic <- function(pattern) stringr::regex(pattern, ignore_case = TRUE)
+  # up to two direction words before the result: "pass short right complete"
+  # (20251018_6y68) as well as the usual "pass complete short right"
+  pass_dir <- "(?: (?:short|deep|outside|middle|left|right)){0,2}"
 
   play_type <- dplyr::case_when(
     !is_play ~ NA_character_,
@@ -55,9 +58,9 @@ parse_play_type <- function(classified) {
     stringr::str_detect(p, ic("\\bpunt\\b")) & stringr::str_detect(p, ic("return")) ~ "punt_with_return",
     stringr::str_detect(p, ic("\\bpunt\\b")) ~ "punt_no_return",
     stringr::str_detect(p, ic("\\bsacked\\b")) ~ "sack",
-    stringr::str_detect(p, ic("pass intercepted")) ~ "pass_intercepted",
-    stringr::str_detect(p, ic("pass complete")) ~ "pass_complete",
-    stringr::str_detect(p, ic("pass incomplete")) ~ "pass_incomplete",
+    stringr::str_detect(p, ic(paste0("pass", pass_dir, " intercepted"))) ~ "pass_intercepted",
+    stringr::str_detect(p, ic(paste0("pass", pass_dir, " complete"))) ~ "pass_complete",
+    stringr::str_detect(p, ic(paste0("pass", pass_dir, " incomplete"))) ~ "pass_incomplete",
     stringr::str_detect(p, ic("\\brush\\b")) ~ "rush",
     # no play verb, just "TEAM SAFETY" (e.g. an intentional safety)
     stringr::str_detect(p, "\\bSAFETY\\b") ~ "safety",
