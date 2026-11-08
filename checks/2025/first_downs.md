@@ -23,11 +23,11 @@ cfbfastR also puts `firstD_by_poss`, `firstD_by_yards`, `firstD_by_penalty` on t
 
 | flag | rows |
 |---|---|
-| firstD_by_kickoff | 6648 |
-| firstD_by_poss | 9073 |
-| firstD_by_yards | 19928 |
-| firstD_by_penalty | 1874 |
-| new_series | 37523 |
+| firstD_by_kickoff | 8965 |
+| firstD_by_poss | 12017 |
+| firstD_by_yards | 26468 |
+| firstD_by_penalty | 2469 |
+| new_series | 49919 |
 
 Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
@@ -35,7 +35,7 @@ Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**37637 series; 37381 have exactly one `new_series` row on their first snap row; 256 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 3919.
+**50074 series; 49731 have exactly one `new_series` row on their first snap row; 343 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 5197.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | first_row_text |
 |---|---|---|---|---|---|---|---|---|
@@ -241,13 +241,100 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 20251011_v55d | 75 | 78 | Middlebury | 1 & 10 | none | no new_series row | unexplained | Brian Moran rush for 4 yards to the MIDDLEBU29, out-of-bounds. |
 | 20251011_xh02 | 119 | 120 | Fitchburg State | 1 & 10 | none | no new_series row | unexplained | Reshawn Stewart rush for 9 yards to the WORCESTE31 (Tridell Sharpe). |
 | 20251011_xh02 | 146 | 148 | Fitchburg State | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Reshawn Stewart rush for 6 yards to the FITCHBUR21 (Cam Goodrich; Carron Dawson). |
+| 20251016_hzlo | 27 | 30 | Olivet | 1 & 10 | 27, 29 | more than one new_series row | unexplained | Jaylan Johnson rush for 2 yards to the OLIVET37 (Cole Basey). |
+| 20251016_hzlo | 63 | 65 | Olivet | 1 & 10 | none | no new_series row | unexplained | J. Spencer rush for 4 yards to the OLIVET29 (Kanaan Jewett), PENALTY OLIVET unsportsmanlike conduct (Rashawn M |
+| 20251018_2cx8 | 77 | 82 | Loras | 1 & 10 | 77, 80 | more than one new_series row | unexplained | No Huddle-Shotgun Phillips,Will pass incomplete short left to Couch,Brock thrown to WAR34 broken up by Roose,S |
+| 20251018_366o | 93 | 97 | Luther | 1 & 14 | none | no new_series row | unexplained | Shotgun Hiner,Christian pass complete short left to Glaspie,Bryce caught at LUT43, for 5 yards to the LUT48 (M |
+| 20251018_4y5d | 126 | 131 | Bridgewater | 1 & 10 | 126, 129 | more than one new_series row | unexplained | No Huddle-Shotgun Jervis,Wyatt rush middle for 5 yards gain to the Bison19 (Adams,Trevin; Castillo,Darico) PEN |
+| 20251018_6y68 | 41 | 41 | Fitchburg State | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Anthony Oquendo rush left for 18 yards to the FITCHBUR26 (Stephen Jurbala), out-of-bounds. |
+| 20251018_7zbg | 75 | 79 | Texas Wesleyan | 1 & 10 | 75, 76 | more than one new_series row | unexplained | No Huddle-Shotgun Francis,Cole pass complete short middle to Smith,Sean caught at UMHB18, for 16 yards to the  |
+| 20251018_8333 | 41 | 44 | Marietta | 1 & 10 | 41, 43 | more than one new_series row | unexplained | Benny Lewis rush for 9 yards to the MUSK48 (Antwan Murphy). |
+| 20251018_8qq8 | 10 | 10 | Juniata | 1 & 10 | none | no new_series row | unexplained | Ivan Foreman rush for 15 yards to the JUNIATA40 (Steven Seibert). |
+| 20251018_8qq8 | 17 | 18 | Susquehanna | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Rahshan LaMons rush for 5 yards to the SUSQUEHA26 (Dillon Wakefiel). |
+| 20251018_8qq8 | 71 | 74 | Juniata | 1 & 10 | none | no new_series row | unexplained | Talan Middleton rush for 3 yards to the JUNIATA28 (Jesse Ruisch). |
+| 20251018_8qq8 | 126 | 127 | Susquehanna | 1 & 10 | none | no new_series row | unexplained | PENALTY SUSQUEHA personal foul off-setting, PENALTY JUNIATA personal foul off-setting, NO PLAY. |
+| 20251018_acf5 | 151 | 151 | La Verne | 1 & 10 | none | no new_series row | unexplained | Brian Rudden pass incomplete, PENALTY CMS pass interference (Jack Davis) 15 yards to the CMS10. |
+| 20251018_acf5 | 156 | 158 | Claremont-Mudd-Scripps | 1 & 10 | none | no new_series row | unexplained | Cooper Nixon rush for 7 yards to the LAVERNE18 (John Whisnant v). |
+| 20251018_b1o8 | 141 | 141 | Framingham State | 1 & 10 | none | no new_series row | unexplained | Scotty Brown punt 45 yards to the WEST35, Brandon Paquette return 15 yards to the 50 yardline (Josiah Mitchell |
+| 20251018_c1xh | 76 | 79 | McMurry | 1 & 10 | 76, 77 | more than one new_series row | unexplained | DYLAN PLAKE pass complete to Karmelus Card for 11 yards to the AC44 (Eazy Robertson). |
+| 20251018_cgxl | 108 | 111 | Dean | 1 & 10 | 108, 110 | more than one new_series row | unexplained | Brayden Prasse rush for 8 yards to the DEAN35 (Victor Martinez). |
+| 20251018_g1cw | 11 | 12 | Nichols | 1 & 10 | none | no new_series row | unexplained | Evan Toth rush for 9 yards to the NICHOLS34 (Shane Field). |
+| 20251018_g1cw | 84 | 85 | Nichols | 1 & 10 | none | no new_series row | unexplained | Jack Morvan rush for loss of 3 yards to the NICHOLS22 (Leo Yardumian). |
+| 20251018_g1cw | 92 | 94 | Nichols | 1 & 10 | none | no new_series row | unexplained | Ethan LaGuardia sacked for loss of 3 yards to the NICHOLS22 (Zachary Wilson). |
+| 20251018_g1cw | 103 | 106 | Nichols | 1 & 10 | none | no new_series row | unexplained | Ricardo Navedo rush for 1 yard to the NICHOLS26 (Shane Field). |
+| 20251018_g1cw | 145 | 148 | Nichols | 1 & 10 | none | no new_series row | unexplained | Ricardo Navedo rush for no gain to the NICHOLS25 (Domenic Papa). |
+| 20251018_g1cw | 151 | 152 | Nichols | 1 & 10 | none | no new_series row | unexplained | Carson Clark rush for 5 yards to the NICHOLS30 (Shane Field). |
+| 20251018_lqes | 42 | 43 | Kean | 1 & 10 | none | no new_series row | unexplained | Ty Kline pass complete to Jaylen Gundy for 7 yards to the KEAN32 (Masi Bruning). |
+| 20251018_nvy4 | 61 | 62 | Millsaps | 1 & 2 | none | no new_series row | unexplained | No Huddle-Shotgun Bizjack,Grant rush right for 1 yard gain to the MU01 (Carter,Seth; Giger,Noah). |
+| 20251018_nwu9 | 157 | 157 | Greensboro | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Altis,Chase pass intercepted by Hardy,Miles at BEL48 QB hurried by Jones,Colton Hardy,Miles  |
+| 20251018_p22v | 119 | 122 | Vermont State Castleton | 1 & 10 | 119, 120 | more than one new_series row | unexplained | Jhai Vellon pass complete to Braden Lankarge for 14 yards to the CASTLE47. |
+| 20251018_q584 | 1 | 4 | Pomona-Pitzer | 1 & 10 | none | no new_series row | unexplained | Mit Rodenbaugh rush for 7 yards to the POMONAP32 (Enrique Ybanez), out-of-bounds. |
+| 20251018_q584 | 20 | 21 | Pomona-Pitzer | 1 & 10 | none | no new_series row | unexplained | Grady Russo pass complete to Nick Matthews for 6 yards to the POMONAP31 (Adrian Silva). |
+| 20251018_q584 | 41 | 45 | Pomona-Pitzer | 1 & 10 | 41, 44 | more than one new_series row | unexplained | Grady Russo sacked for loss of 5 yards to the POMONAP20 (Tate Keddington). |
+| 20251018_q584 | 129 | 130 | Redlands | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Jakai Torres rush for 1 yard to the REDLANDS12 (Cole Krawiec). |
+| 20251018_qo69 | 1 | 1 | Hamilton | 1 & 10 | none | no new_series row | unexplained | Luke Kurzum pass complete to Alastair Orr for 22 yards to the HAMILTON47 (Cameron Pineda), out-of-bounds. |
+| 20251018_tkfi | 124 | 128 | Averett | 1 & 10 | none | no new_series row | unexplained | (05:53) Shotgun Hoffman,Brock rush middle for 3 yards gain to the HSC25 (Abdussalaam,Nadir). |
+| 20251018_uba5 | 89 | 89 | Washington and Jefferson | 1 & 10 | none | no new_series row | unexplained | PENALTY SVC unsportmanlike conduct (Patrick Connolly) 10 yards to the SVC10. |
+| 20251018_uba5 | 90 | 90 | St. Vincent | 1 & 20 | none | no new_series row | unexplained | Jake Phillips pass complete to Tristan Doy for 16 yards to the SVC26. |
+| 20251018_uba5 | 91 | 92 | St. Vincent | 1 & 10 | none | no new_series row | unexplained | Jake Phillips sacked for loss of 7 yards to the SVC19 (Antoine Smith). |
+| 20251018_uba5 | 99 | 99 | St. Vincent | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Julian Walker rush for no gain to the SVC20 (Tyler Primrose). |
+| 20251018_uba5 | 101 | 102 | Washington and Jefferson | 1 & 10 | none | no new_series row | unexplained | Andrew Sharp rush for 6 yards to the WJC46 (Keegan O'Brien). |
+| 20251018_uba5 | 107 | 108 | St. Vincent | 1 & 10 | none | no new_series row | unexplained | Jake Phillips pass complete to Chris Downs for 6 yards to the SVC31 (Dante DeRubbo). |
 | 20251018_uxv5 | 58 | 58 | Gettysburg | 1 & 10 | none | no new_series row | unexplained | Landon Hunt rush for 18 yards to the GC43 (Victor Ruhland; Archie Lawler). |
 | 20251018_uxv5 | 89 | 92 | Gettysburg | 1 & 10 | none | no new_series row | unexplained | Michael Zrelak rush for 2 yards to the GC27 (Bennett Grace). |
 | 20251018_uxv5 | 111 | 113 | Gettysburg | 1 & 10 | none | no new_series row | unexplained | Sean Clark pass complete to Landon Hunt for 5 yards to the GC30 (Luke Wiedau). |
+| 20251018_w9wb | 81 | 84 | Trinity (Texas) | 1 & 10 | 81, 84 | more than one new_series row | unexplained | No Huddle-Shotgun Franklin,Hondo pass incomplete short left to Tavarez,Alejandro thrown to RC50. |
+| 20251018_wysz | 1 | 3 | Amherst | 1 & 10 | none | no new_series row | unexplained | Marek Hill pass incomplete to Sam Gerber, dropped pass. |
+| 20251018_y29z | 82 | 82 | Buena Vista | 1 & 10 | none | no new_series row | unexplained | PENALTY BVU Personal Foul (Obregon,Meven) 15 yards from BVU35 to BVU20. NO PLAY. |
+| 20251018_z2v9 | 107 | 109 | Bluffton | 1 & 10 | none | no new_series row | unexplained | Damien Brockington rush for 2 yards to the BLUFFTON27 (Brock Harris; Hunter Sohns). |
+| 20251018_zqor | 7 | 10 | Otterbein | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Griffin,Matt rush middle for 6 yards gain to the OTT26 (Wroten,Luke). |
+| 20251025_0m5o | 83 | 85 | Western New England | 1 & 10 | none | no new_series row | unexplained | Paul Gorry pass incomplete to Jova'N Hill. |
+| 20251025_0m5o | 122 | 125 | Western New England | 1 & 10 | none | no new_series row | unexplained | Matt Lamontagne rush for 3 yards to the WESTERN28 (Shane Field). |
+| 20251025_0m5o | 157 | 160 | Western New England | 1 & 10 | 157, 158 | more than one new_series row | unexplained | Drew Caouette pass complete to Kevin Acosta for 29 yards to the CURRY06 (Mekhi Lumsden). |
 | 20251025_3c40 | 58 | 60 | Carnegie Mellon | 1 & 10 | 58, 59 | more than one new_series row | unexplained | Joey McGinnis I pass complete to Reece Kolke for 11 yards to the CMU38, 1ST DOWN CMU (Thomas Cerruti). |
 | 20251025_3c40 | 92 | 98 | Muhlenberg | 1 & 10 | 92, 95 | more than one new_series row | unexplained | Luke Spang pass incomplete to Logan Nordeck. |
 | 20251025_3c40 | 158 | 160 | Carnegie Mellon | 2 & 10 | 158, 160 | more than one new_series row | unexplained | Joey McGinnis I pass complete to Reece Kolke for 8 yards to the CMU29 (Jeffrey Lopez), out-of-bounds. |
 | 20251025_3c40 | 164 | 169 | Carnegie Mellon | 1 & 10 | 164, 167 | more than one new_series row | unexplained | Joey McGinnis I pass incomplete to Reece Kolke. |
+| 20251025_6c4m | 167 | 170 | MIT | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Kulhan,Andrew rush middle for 5 yards gain to the MIT25 (Minotti,James). |
+| 20251025_7l5n | 14 | 17 | Mount St. Joseph | 1 & 4 | none | no new_series row | unexplained | No Huddle-Shotgun Napier,Steven rush middle for 3 yards loss to the FC07 (Servies,Drew; Young,Adam). |
+| 20251025_7l5n | 58 | 59 | Mount St. Joseph | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Schreiber,Jaxon pass complete short left to Hunkus,Michael caught at FC30, for 9 yards to th |
+| 20251025_7l5n | 60 | 62 | Mount St. Joseph | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Schreiber,Jaxon pass incomplete short right to Hunkus,Michael thrown to FC25 QB hurried by B |
+| 20251025_7l5n | 154 | 154 | Mount St. Joseph | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Napier,Steven rush middle for 13 yards gain to the FC13 (Bulmer,Haidyn; Loehmer,Michael), 1S |
+| 20251025_7qws | 55 | 58 | Dean | 1 & 10 | 55, 57 | more than one new_series row | unexplained | J'Shaun Reddin pass incomplete to Yasir Moses. |
+| 20251025_9prp | 71 | 72 | Anna Maria | 1 & 15 | none | no new_series row | unexplained | Nikolay Boyce pass complete to Jeremiah Cadet for 7 yards to the ANNAMAR20 (Emmanuel Cano; Camren Topkin). |
+| 20251025_9prp | 171 | 171 | Fitchburg State | 1 & 10 | none | no new_series row | unexplained | Colby Catterton pass intercepted by Tyler Thibodeau at the ANNAMAR20, Tyler Thibodeau return 0 yards to the AN |
+| 20251025_9prp | 172 | 174 | Anna Maria | 1 & 10 | 172, 174 | more than one new_series row | unexplained | Jeremiah Cadet rush for 2 yards to the ANNAMAR22 (Andrew Novak; Emmanuel Cano). |
+| 20251025_bmll | 1 | 2 | Hamilton | 1 & 10 | none | no new_series row | unexplained | Luke Kurzum pass complete to Jack Hoag for 7 yards to the HAMILTON32 (Lincoln Merrill). |
+| 20251025_bmll | 34 | 38 | Hamilton | 1 & 10 | 34, 36 | more than one new_series row | unexplained | Luke Kurzum rush for 4 yards to the COLBY21 (Nicholas Cox). |
+| 20251025_cd1m | 45 | 45 | McMurry | 1 & 10 | none | no new_series row | unexplained | PENALTY CENTENAR false start 5 yards to the CENTENAR32. |
+| 20251025_cd1m | 46 | 49 | Centenary (La.) | 1 & 15 | none | no new_series row | unexplained | C. Jackson rush for 4 yards to the CENTENAR36 (REED JOHNSON). |
+| 20251025_cei1 | 52 | 52 | Salisbury | 1 & 3 | none | no new_series row | unexplained | McGowan,SyRus pass complete short right to Hutchins,Ben caught at SAL49, for 3 yards to the SAL49 (Derameaux,G |
+| 20251025_cei1 | 152 | 152 | Salisbury | 1 & 10 | none | no new_series row | unexplained | Fisher,Mason rush right for 53 yards gain to the ROW02, End Of Play, 1ST DOWN. |
+| 20251025_depj | 107 | 110 | Amherst | 1 & 10 | none | no new_series row | unexplained | Shotgun Hill,Marek rush left for 4 yards gain to the AMH22 (Minnick,Dylan; Solimando,Mike). |
+| 20251025_eeno | 1 | 3 | Bowdoin | 1 & 10 | none | no new_series row | unexplained | Soren Hummel rush for loss of 1 yard to the BOWDOIN24 (Luke Ventura). |
+| 20251025_eeno | 40 | 43 | Bowdoin | 1 & 10 | none | no new_series row | unexplained | Soren Hummel pass complete to Ty Connolly for loss of 5 yards to the BOWDOIN20 (Ethan Krauss). |
+| 20251025_gdc7 | 104 | 106 | Linfield | 1 & 10 | 104, 105 | more than one new_series row | unexplained | Shotgun McNabb,Luke pass complete short right to Bareng,Jayce caught at PLU11, for 18 yards to the PLU11 (Kana |
+| 20251025_h5ma | 8 | 11 | Mass-Dartmouth | 1 & 10 | 8, 10 | more than one new_series row | unexplained | Mekhi Wilson rush for no gain to the BSU47 (Mark DeGirolamo;Joseph Parisi). |
+| 20251025_hcz5 | 158 | 159 | Redlands | 1 & 10 | none | no new_series row | unexplained | (00:00) Shotgun Schmidt,Tobey pass complete short left to Walker,Julian caught at CLU20, for 9 yards to the CL |
+| 20251025_k7jb | 47 | 50 | Roanoke | 1 & 10 | none | no new_series row | unexplained | (10:19) No Huddle-Shotgun Hill,Kam pass incomplete short left to Camper,Jack thrown to HSC00. |
+| 20251025_kvj1 | 140 | 142 | Plymouth State | 1 & 6 | none | no new_series row | unexplained | PENALTY PLYMOUTH delay of game 5 yards to the WESTFIEL11. |
+| 20251025_mc26 | 184 | 187 | Rose-Hulman | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Yue,Adam pass incomplete short right to Cody,Avery thrown to BU15 QB hurried by Wright,Dh'ma |
+| 20251025_mmln | 23 | 23 | Minnesota-Morris | 1 & 2 | none | no new_series row | unexplained | No Huddle-Shotgun Chinanga,Sean-Keley rush middle for 2 yards gain to the GU00 TOUCHDOWN, clock 05:51. |
+| 20251025_n5hm | 162 | 162 | Chapman | 1 & 10 | none | no new_series row | unexplained | (00:00) No Huddle-Shotgun Pacheco,Tyler rush right for 24 yards gain to the CMS01 (Davis,Jack), out of bounds, |
+| 20251025_ojtk | 28 | 31 | Illinois College | 1 & 10 | none | no new_series row | unexplained | Shotgun Elliott,Tyson pass incomplete short right to Stuart,Cole thrown to RIP25 broken up by Doster,Napolean. |
+| 20251025_pp9h | 71 | 73 | WPI | 1 & 10 | 71, 72 | more than one new_series row | unexplained | Jack Schuck pass complete to Michael Krevosk for 10 yards to the MARITIME28 (Karym Cruz). |
+| 20251025_pp9h | 137 | 139 | WPI | 1 & 10 | 137, 138 | more than one new_series row | unexplained | Jack Schuck pass complete to Ty Csencsits for 13 yards to the MARITIME18 (Aidan Griffin), out-of-bounds. |
+| 20251025_pp9h | 147 | 151 | WPI | 1 & 10 | 147, 149 | more than one new_series row | unexplained | Jack Schuck pass complete to Ty Csencsits for 7 yards to the MARITIME35 (Dennis Matich). |
+| 20251025_q9bp | 1 | 3 | Rhodes | 1 & 10 | none | no new_series row | unexplained | Robert Daniel rush for 4 yards to the RHODES29 (Isaiah Copeland;Drew Rozier). |
+| 20251025_q9bp | 134 | 138 | Rhodes | 1 & 10 | 134, 138 | more than one new_series row | unexplained | Taylor Haas pass incomplete to Willem Griego. |
+| 20251025_t9ss | 84 | 84 | Rockford | 1 & 10 | none | no new_series row | unexplained | PENALTY RFD Delay Of Game (Finnestad,Kaden) 5 yards from RFD35 to RFD30. NO PLAY. |
+| 20251025_tehf | 91 | 94 | Martin Luther | 1 & 10 | none | no new_series row | unexplained | (09:13) Shotgun Turriff,Brady sacked for loss of 8 yards to the MLC45 (Belizaire,Jeremiah). |
+| 20251025_tfdo | 136 | 136 | Hobart | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Shotgun Styles,Tru pass complete short middle to Hescock,Luke caught at SLU39, for 17 yards to the SLU37 (Twom |
+| 20251025_uy5n | 49 | 53 | Alfred | 1 & 10 | 49, 52 | more than one new_series row | unexplained | Chris Kelly pass incomplete to Jack Buchsbaum. |
+| 20251025_uzzr | 57 | 60 | Methodist | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Ferguson,CJ rush middle for 3 yards gain to the BEL36 (Thomas,Avery). |
+| 20251025_vnjk | 138 | 142 | UW-Eau Claire | 1 & 10 | none | no new_series row | unexplained | (06:46) Shotgun Rothmeier,Paxton rush left for 2 yards gain to the UWEC30 (Klefstad,John; Timm,Gage). |
+| 20251025_ws2j | 38 | 42 | Whitworth | 1 & 10 | 38, 41 | more than one new_series row | unexplained | No Huddle-Shotgun Lacio,Logan pass incomplete short right to Wells,Taylor thrown to L&C43 QB hurried by Warren |
+| 20251025_z43s | 153 | 155 | Ohio Wesleyan | 1 & 10 | 153, 154 | more than one new_series row | unexplained | No Huddle-Shotgun Jackson,C.J. rush right for 12 yards gain to the Kenyon39 (Finnerty,Sam), out of bounds, 1ST |
 | 20251108_3ubg | 105 | 107 | Franklin and Marshall | 1 & 10 | none | no new_series row | unexplained | Ty Tremba pass incomplete to Jack Harrison (Mitchell Stokey). |
 | 20251108_3ubg | 137 | 140 | Franklin and Marshall | 1 & 10 | 137, 138 | more than one new_series row | unexplained | Anthony Valdez rush for 18 yards to the F&M45 (Connor Warren). |
 | 20251115_bpex | 129 | 130 | Dickinson | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Ben Klassen rush for 3 yards to the DSON16 (CJ Kearney). |
@@ -305,7 +392,7 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 
 ## Edge cases
 
-First snap row of an overtime possession (`firstD_by_poss`): 60.
+First snap row of an overtime possession (`firstD_by_poss`): 75.
 
 | game_id | play_index | period | pos_team | play_type | play_text |
 |---|---|---|---|---|---|
@@ -367,6 +454,21 @@ First snap row of an overtime possession (`firstD_by_poss`): 60.
 | 20251011_ls6y | 204 | 5 | Lakeland | pass_incomplete | No Huddle-Shotgun Michael,Robby pass incomplete deep right to Kleparski,Caden thrown to CUW00 QB hurried by Ir |
 | 20251011_n348 | 159 | 5 | FDU-Florham | pass_incomplete | No Huddle-Shotgun Sconza,Jake pass incomplete short right to Dunleavy,Brian thrown to WIDU12 QB hurried by Kuh |
 | 20251011_n348 | 166 | 5 | Widener | rush | No Huddle-Shotgun Leszczynski,Caiden rush left for 1 yard gain to the FDU24 (Noufal,Adam). |
+| 20251018_g4pd | 201 | 5 | Moravian | rush | No Huddle-Shotgun McCarthy,Declan rush right for 6 yards gain to the CathU19 (Desir,Maximus; Cavallaro,William |
+| 20251018_g4pd | 207 | 5 | Catholic | rush | No Huddle-Shotgun Harvin,Daequan rush right for 1 yard gain to the Morav24 (Johnson,Isaiah). |
+| 20251018_w6gx | 176 | 5 | Centenary (La.) | rush | No Huddle-Shotgun Butler,Obadiah rush middle for 14 yards gain to the LYON11 (Stubbs,Trampas), 1ST DOWN. |
+| 20251018_w6gx | 184 | 5 | Lyon | rush | No Huddle-Shotgun Williams,Jacobi rush middle for 10 yards gain to the CENT15 (Mills Jr.,Dwayne), 1ST DOWN. |
+| 20251025_5bk6 | 156 | 5 | Bridgewater | rush | No Huddle-Shotgun Robinson,Brendan rush middle for 3 yards gain to the WLU22 (Rivers,Israel). |
+| 20251025_5bk6 | 160 | 5 | Washington and Lee | pass_complete | No Huddle-Shotgun Collins,Ty pass complete deep right to Small,Fidel caught at BC00, for 25 yards to the BC00  |
+| 20251025_hcz5 | 148 | 5 | Cal Lutheran | rush | (00:00) Shotgun Sumlin,JD rush left for 7 yards gain to the RED18 (Keddington,Tate; Williams,Laurence). |
+| 20251025_hcz5 | 155 | 5 | Redlands | sack | (00:00) No Huddle-Shotgun Schmidt,Tobey sacked for loss of 2 yards to the CLU12 (Bowers,Logan). |
+| 20251025_hcz5 | 171 | 5 | Cal Lutheran | rush | (00:00) Shotgun Sumlin,JD rush left for 2 yards gain to the RED23 (Muniz,Aaron). |
+| 20251025_mc26 | 175 | 5 | Bluffton | pass_complete | No Huddle-Shotgun Clark,Tywuan pass complete short left to Cannon,Connor caught at RHIT15, for 20 yards to the |
+| 20251025_mc26 | 180 | 5 | Rose-Hulman | rush | No Huddle-Shotgun Smith,Jay rush middle for 2 yards gain to the BU23 (Bourke,Ryan; Stribling,Tre). |
+| 20251025_mc26 | 188 | 5 | Bluffton | pass_complete | No Huddle-Shotgun Clark,Tywuan pass complete deep right to Payne,Niegel caught at RHIT00, for 25 yards to the  |
+| 20251025_n5hm | 154 | 5 | Claremont-Mudd-Scripps | rush | (00:00) No Huddle-Shotgun Nixon,Cooper rush left for 18 yards gain to the CHAP07 (Post,Kaulin), out of bounds, |
+| 20251025_n5hm | 159 | 5 | Chapman | rush | (00:00) No Huddle-Shotgun Latu,Andrew rush left for 20 yards gain to the CMS05 (Kruger,George; Hamlin,Tarius), |
+| 20251025_n5hm | 166 | 5 | Claremont-Mudd-Scripps | pass_complete | (00:00) No Huddle-Shotgun Boehm,Peter pass complete short right to Schwartz,Wilson caught at CHAP15, for 11 ya |
 | 20251115_2lnx | 159 | 5 | Johns Hopkins | rush | No Huddle-Shotgun Schroeder,Geoff rush middle for 24 yards gain to the F&M21 (Hille,Connor), 1ST DOWN. |
 | 20251115_2lnx | 166 | 5 | Franklin and Marshall | rush | No Huddle-Shotgun Tremba,Ty rush middle for 3 yards gain to the JHU22 (Smith,Jackson). |
 
