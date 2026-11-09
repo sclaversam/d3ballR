@@ -4,7 +4,14 @@
 \alias{try_phase_team}
 \title{Possession on try-phase rows: the team that just scored}
 \usage{
-try_phase_team(kept, scores, teams, kickoffs = NULL, actor_map = character())
+try_phase_team(
+  kept,
+  scores,
+  teams,
+  kickoffs = NULL,
+  actor_map = character(),
+  scorer = NULL
+)
 }
 \arguments{
 \item{kept}{Kept rows with \code{row}, \code{try_phase}, \code{play_type}, \code{play_text},
@@ -17,6 +24,9 @@ try_phase_team(kept, scores, teams, kickoffs = NULL, actor_map = character())
 \item{kickoffs}{Output of \code{\link[=assign_kickoffs]{assign_kickoffs()}} (refined by the kicker).}
 
 \item{actor_map}{Output of \code{\link[=build_actor_map]{build_actor_map()}}.}
+
+\item{scorer}{Output of \code{\link[=scoring_team]{scoring_team()}}: the team that scored each row's
+points (NULL: the scoring play's offense is used in rule 3).}
 }
 \value{
 Character vector: the corrected \code{pos_team}.
@@ -29,7 +39,7 @@ passer, rusher) decides when their team is known (\code{\link[=build_actor_map]{
 Otherwise the scorer is the team that kicks off next in the same half (its teams come from the
 next drive header); if no kickoff follows (end of half, overtime), the
 first score line after the scoring play (after a safety, the team that
-conceded), else the scoring play's own offense. Score lines are not the
+conceded), else the team that scored the scoring play (\code{\link[=scoring_team]{scoring_team()}}). Score lines are not the
 first choice because d3 sometimes skips one and the rest lag a score
 behind (Dean at Fitchburg State, 2025). This fixes the try after a
 defensive touchdown, which otherwise inherits the team that was scored

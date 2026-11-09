@@ -1,8 +1,8 @@
 # Build a season's play-by-play into pbp/{season}/ with reports in
 # checks/{season}/ (pbp/d3football/{season}/ and checks/d3football/{season}/
 # with --source d3football). Thin wrapper around build_season(). The play-by-play
-# comes from ncaa.com through the local ncaa-api server (Docker container
-# "ncaa-api" on 127.0.0.1:3000); add --source d3football to read cached
+# is requested from ncaa.com directly (no server needed; see
+# fetch_ncaa_json()); add --source d3football to read cached
 # d3football pages instead.
 #
 #   Rscript scripts/build_season.R 2025                      # every game

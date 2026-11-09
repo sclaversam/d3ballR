@@ -9,7 +9,8 @@
 #' built so far for the season.
 #'
 #' The play-by-play comes from ncaa.com (`source = "ncaa"`, the default)
-#' through a local ncaa-api server (see [fetch_ncaa_json()]): each index
+#' requested directly from R (see [fetch_ncaa_json()]; an ncaa-api server
+#' is optional): each index
 #' game is matched to its ncaa.com contest ([map_ncaa_contests()]), its
 #' play-by-play is fetched ([prefetch_ncaa_games()]) and rebuilt into the
 #' play table the parser reads ([fetch_ncaa_game()]). `source =
@@ -183,7 +184,7 @@ write_build_report <- function(season, teams, games, built, conf, check_dir, sou
   pending_teams <- setdiff(unique(c(games$home, games$away)), conf$table$team)
   unnamed <- unique(stats::na.omit(conf$table$conference_code[is.na(conf$table$conference)]))
 
-  src <- if (source == "ncaa") "ncaa.com (via ncaa-api)" else "d3football boxscore pages"
+  src <- if (source != "ncaa") "d3football boxscore pages" else if (is.null(ncaa_api_base())) "ncaa.com" else "ncaa.com (via ncaa-api)"
   scope <- if (is.null(teams)) "every game in the season index" else
     paste0("games involving: ", paste(sort(teams), collapse = ", "))
   out <- c(

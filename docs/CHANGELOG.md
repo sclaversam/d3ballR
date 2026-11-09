@@ -5,6 +5,71 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Batch 5 (2025 weeks 9-10): silent onside recoveries, dropped two-point tries, "Toscano good"
+
+Fixes from the fifth all-D3 batch (2026-11-09); see "Lessons from each
+batch" in `pipeline.md`. 1,113 games built; 1,111 reconcile (the other 2
+are known source gaps).
+
+- An onside kick with no recovery text that lands on the kicking team's
+  own side, with the kicking team on the next drive, is a kicker recovery
+  (`assign_kickoffs()`): `20251101_y8ak` (Shenandoah's tries now count for
+  Shenandoah) and `20251018_lsn7` (Knox's opening onside kick is now a
+  turnover, its own drive with `drive_result` "ONSIDE").
+- A dropped try is added as a two-point conversion when the running score
+  rose by 2 and the touchdown has no try line
+  (`ncaa_added_two_point_text_score`; `20251101_nl0h`).
+- "no good", "failed", "blocked", "missed" and "NO PLAY" are matched as
+  whole words, so "pass attempt to Julian Toscano good" scores 2
+  (`20251108_vzlp`).
+- A touchdown's try window ends at the next touchdown, so a try that
+  ncaa.com dropped (with its kickoff) isn't hidden by the other team's
+  next try (`20251108_vzlp`).
+
+No other game's output changed.
+
+## A touchdown ncaa.com printed after its own try is moved back in front of it
+
+Decided by Sam (2026-11-09). Hardin-Simmons at Trinity (Texas), 2025
+playoffs second round (`20251129_57m9`, contest 6529878): ncaa.com lists
+"J.Runyan kick attempt good" (running score 28-24), the kickoff, and only
+then the interception Trinity returned 70 yards for a touchdown (34-24).
+Read in that order, the extra point fell on Hardin-Simmons' drive (parsed
+25-33, final 24-34).
+
+Rule (`ncaa_move_late_touchdowns()`, run by `ncaa_lines()`): a try line
+with no touchdown before it, followed within 3 lines by a touchdown with
+only kickoffs (or empty lines) between, has the touchdown line moved in
+front of it, labelled `ncaa_moved_td_label` ("[d3ballR: moved up; ...]")
+in `play_text`. Where there is a running score it must confirm (the try
+raises one team by 1 or 2, the touchdown the same team by 6), and the two
+lines' scores are swapped into play order. It fires on one line in all
+cached 2025 games; only `20251129_57m9` changes, and now reconciles
+(889 of 891; the other 2 are known source gaps).
+
+## Batch 4 (2025 weeks 7-8): review notes, pass wording, tries after return touchdowns
+
+Fixes from the fourth all-D3 batch (2026-11-08); see "Lessons from each
+batch" in `pipeline.md`. 891 games built; 888 reconcile (2 known source
+gaps, and `20251129_57m9`, fixed in the entry above).
+
+- Fumble recoveries are read with any replay-review note at the end of the
+  line removed (`strip_review_note()`). `20251018_c2vg` now credits
+  Salisbury's fumble-return touchdown to Salisbury. Three lost fumbles in
+  games that reconciled before are now turnovers (`turnover`,
+  `drive_result` "FUMBLE"): `20250906_2lhd`, `20251011_36q6`,
+  `20251025_yvrv`.
+- "pass short right complete" (direction before result) is a pass
+  (`verb_pattern`, `parse_play_type()`); `20251018_6y68` gains its 39
+  passes.
+- The try after a return touchdown, with no kicker named and no kickoff or
+  running score to go by, goes to the team that scored (`scoring_team()`
+  in `try_phase_team()`); `20251025_eeno` reconciles.
+- Build report: "Source: ncaa.com" (no longer "via ncaa-api") unless an
+  ncaa-api server is set.
+
+`20251129_57m9` was left open here; see the entry above.
+
 ## ncaa.com is requested directly, without the ncaa-api server
 
 Asked by Sam (2026-11-08), after his professor suggested the package

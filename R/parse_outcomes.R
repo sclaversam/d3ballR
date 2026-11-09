@@ -127,7 +127,12 @@ parse_outcome_flags <- function(df, text_team) {
   completion <- pt == "pass_complete"
   sack <- pt == "sack"
   int <- pt == "pass_intercepted"
-  fumble <- stringr::str_detect(txt, ic("\\b(fumbled?|muffed|muff)\\b"))
+  # the fumble search ignores a replay-review note at the end of the line
+  # ("MSU is challenging the ruling on the field - \"Fumble\". PLAY STANDS."):
+  # its quoted ruling is not a fumble of its own, and it would hide the
+  # "recovered by" before it
+  play_txt <- strip_review_note(txt)
+  fumble <- stringr::str_detect(play_txt, ic("\\b(fumbled?|muffed|muff)\\b"))
   # upper-case only: scores are always "TOUCHDOWN"; the lower-case word
   # appears in "Penalty after touchdown before PAT" marker rows
   touchdown <- stringr::str_detect(txt, "\\bTOUCHDOWN\\b") &
@@ -135,7 +140,7 @@ parse_outcome_flags <- function(df, text_team) {
   safety <- stringr::str_detect(txt, ic("\\bsafety\\b"))
 
   # last recovery after the last mention of a fumble
-  after_fumble <- stringr::str_replace(txt, ic("^.*\\b(fumbled?|muffed|muff)\\b"), "")
+  after_fumble <- stringr::str_replace(play_txt, ic("^.*\\b(fumbled?|muffed|muff)\\b"), "")
   recov_token <- vapply(
     stringr::str_match_all(after_fumble, paste0("recovered by ", token_regex(names(text_team)), "\\b")),
     function(m) if (nrow(m)) m[nrow(m), 2] else NA_character_, character(1)
@@ -174,4 +179,26 @@ parse_outcome_flags <- function(df, text_team) {
                 downs_turnover = downs_turnover, touchdown = touchdown, safety = safety)
   for (nm in names(flags)) df[[nm]] <- flags[[nm]] & !no_play
   df
+}
+
+#' Drop a replay-review note from the end of a play line
+#'
+#' StatCrew appends the review of a play after the play itself:
+#' "MSU is challenging the ruling on the field - \"Fumble\". PLAY STANDS."
+#' or "play is under automatic review - \"Targeting\". PLAY STANDS.",
+#' sometimes followed by "(Original Play: ...)" when the ruling was
+#' overturned. The play before the note is the final ruling. The note
+#' quotes the ruling under review ("Fumble", "Interception"), which
+#' must not be read as part of the play.
+#'
+#' @param x Character vector of play text.
+#' @return `x` with everything from the review note on removed (unchanged
+#'   when there is no note).
+#' @keywords internal
+strip_review_note <- function(x) {
+  stringr::str_replace(
+    x,
+    stringr::regex("\\s*(\\S+ is challenging the ruling|play is under automatic review)\\b.*$", ignore_case = TRUE),
+    ""
+  )
 }
