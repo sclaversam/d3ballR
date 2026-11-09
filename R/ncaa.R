@@ -820,7 +820,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   try_safety <- is_try & stringr::str_detect(txt, ic("\\bsafety\\b"))
   try_pts <- ifelse(try_safety, 1L, 0L) + ifelse(!try_safety & is_try & !stringr::str_detect(txt, ic("NO PLAY")) &
                       stringr::str_detect(txt, ic("\\b(good|successful)\\b")) &
-                      !stringr::str_detect(txt, ic("no good|failed")),
+                      !stringr::str_detect(txt, ic("\\b(no good|failed)\\b")),
                     ifelse(stringr::str_detect(txt, ic("kick attempt")), 1L, 2L), 0L)
   # A try line where ncaa.com's running score rises by 2 for the defending
   # team and not at all for the scoring team was returned by the defense,
@@ -885,6 +885,11 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     other_snap <- which(is_snap & seq_len(n) > i & lines$team_id != lines$team_id[i])[1]
     if (!is.na(other_snap) && (is.na(j) || other_snap < j)) j <- NA
     end <- if (is.na(j)) (if (is.na(other_snap)) n else other_snap - 1L) else j - 1L
+    # ... and at the next touchdown: when ncaa.com drops a try and the
+    # kickoff after it, the other team's try must not count for this one
+    # (20251108_vzlp: Albion's punt-return touchdown, then Olivet's)
+    next_td <- which(is_td & seq_len(n) > i)[1]
+    if (!is.na(next_td) && next_td <= end) end <- next_td - 1L
     between <- if (end > i) (i + 1L):end else integer()
     tries <- between[is_try[between]]
     if (!length(tries)) tryless <- c(tryless, i)
@@ -905,11 +910,15 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
       else if (up[ti] >= 6L) up[ti] <- up[ti] - 6L
       else next
     }
-    if (up[3L - ti] != 0L || up[ti] - sum(try_pts[tries]) != 1L) next
+    # missing points: 1 = a kick; 2 = a two-point conversion, only when the
+    # touchdown has no try line at all (20251101_nl0h: 16 to 18 on the
+    # kickoff line)
+    missing <- up[ti] - sum(try_pts[tries])
+    if (up[3L - ti] != 0L || !(missing == 1L || (missing == 2L && !length(tries)))) next
     at <- max(c(i, tries))
-    added[as.character(at)] <- ncaa_added_try_text
+    added[as.character(at)] <- if (missing == 2L) ncaa_added_two_point_text_score else ncaa_added_try_text
     gap <- at:(if (!is.na(j)) j - 1L else ref)
-    if (ti == 1L) hs[gap] <- hs[gap] + 1L else vs[gap] <- vs[gap] + 1L
+    if (ti == 1L) hs[gap] <- hs[gap] + missing else vs[gap] <- vs[gap] + missing
   }
   # No running score at all (some host schools' files): when the final
   # score is short by exactly one point per touchdown with no try line, a
@@ -925,7 +934,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
       # nothing by leaving out a try: for such a team only a listed try counts
       # as evidence. Complete for a team = it lists at least as many good
       # tries and field goals for it as the play text has.
-      fg_good <- stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("NO GOOD|NO PLAY"))
+      fg_good <- stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("\\b(NO GOOD|NO PLAY)\\b"))
       complete <- function(tid) {
         sum(scoring$team_id == tid & scoring$type %in% c("XP", "TPC")) >= sum(try_pts > 0L & lines$team_id %in% tid) &&
           sum(scoring$team_id == tid & scoring$type %in% "FG") >= sum(fg_good & lines$team_id %in% tid)
@@ -945,9 +954,9 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     }
     if (length(unmatched) && !is.null(final_total)) {
       text_pts <- 6L * sum(is_td) +
-        3L * sum(stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("NO GOOD|NO PLAY"))) +
+        3L * sum(stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("\\b(NO GOOD|NO PLAY)\\b"))) +
         2L * sum(stringr::str_detect(txt, "\\bSAFETY\\b") & !stringr::str_detect(txt, ic("NO PLAY"))) +
-        sum(try_pts) + sum(ifelse(added == ncaa_added_two_point_text, 2L, 1L))
+        sum(try_pts) + sum(ifelse(added %in% c(ncaa_added_two_point_text, ncaa_added_two_point_text_score), 2L, 1L))
       if (final_total - text_pts == length(unmatched)) {
         added[as.character(unmatched)] <- ncaa_added_try_text_final
       }
@@ -965,7 +974,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   # (same quarter and team). Without a running score: a summary field goal
   # with no field-goal line at its quarter and clock, only when the final
   # score is short by exactly 3 per such field goal.
-  fg_line <- stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("NO GOOD|NO PLAY"))
+  fg_line <- stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("\\b(NO GOOD|NO PLAY)\\b"))
   score_line_txt <- is_td | fg_line | is_try | stringr::str_detect(txt, "\\bSAFETY\\b")
   s_qtr_all <- if (!is.null(scoring) && nrow(scoring)) (if (is.null(scoring$quarter)) scoring$period else scoring$quarter) else integer()
   summary_kicker <- function(per, tid) {
@@ -996,7 +1005,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     cand <- cand[!vapply(cand, function(k) any(fg_line & lines$period == s_qtr_all[k] & norm(clk) %in% norm(scoring$time[k])), logical(1))]
     text_pts <- 6L * sum(is_td) + 3L * sum(fg_line) +
       2L * sum(stringr::str_detect(txt, "\\bSAFETY\\b") & !stringr::str_detect(txt, ic("NO PLAY"))) +
-      sum(try_pts) + sum(ifelse(added == ncaa_added_two_point_text, 2L, 1L))
+      sum(try_pts) + sum(ifelse(added %in% c(ncaa_added_two_point_text, ncaa_added_two_point_text_score), 2L, 1L))
     if (length(cand) && final_total - text_pts == 3L * length(cand)) {
       secs <- function(x) { p <- strsplit(x, ":"); vapply(p, function(v) if (length(v) == 2) as.integer(v[1]) * 60L + as.integer(v[2]) else NA_integer_, integer(1)) }
       for (k in cand) {
@@ -1190,6 +1199,13 @@ ncaa_added_try_text_final <- "kick attempt good [added by d3ballR: ncaa.com has 
 #' Play text of an extra point added from ncaa.com's scoring summary
 #' @keywords internal
 ncaa_added_try_text_summary <- "kick attempt good [added by d3ballR: ncaa.com has no line for this try and no running score; its scoring summary lists the extra point as good]."
+
+#' Play text of a two-point try added from ncaa.com's running score
+#'
+#' The touchdown has no try line and the running score rose by 2 before the
+#' next kickoff. It doesn't say whether it was a run or a pass.
+#' @keywords internal
+ncaa_added_two_point_text_score <- "two-point attempt good [added by d3ballR: ncaa.com has no line for this try; its score rose by 2 after the touchdown]."
 
 #' Play text of a two-point try added from ncaa.com's scoring summary
 #'

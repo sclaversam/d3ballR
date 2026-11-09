@@ -5,6 +5,29 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Batch 5 (2025 weeks 9-10): silent onside recoveries, dropped two-point tries, "Toscano good"
+
+Fixes from the fifth all-D3 batch (2026-11-09); see "Lessons from each
+batch" in `pipeline.md`. 1,113 games built; 1,111 reconcile (the other 2
+are known source gaps).
+
+- An onside kick with no recovery text that lands on the kicking team's
+  own side, with the kicking team on the next drive, is a kicker recovery
+  (`assign_kickoffs()`): `20251101_y8ak` (Shenandoah's tries now count for
+  Shenandoah) and `20251018_lsn7` (Knox's opening onside kick is now a
+  turnover, its own drive with `drive_result` "ONSIDE").
+- A dropped try is added as a two-point conversion when the running score
+  rose by 2 and the touchdown has no try line
+  (`ncaa_added_two_point_text_score`; `20251101_nl0h`).
+- "no good", "failed", "blocked", "missed" and "NO PLAY" are matched as
+  whole words, so "pass attempt to Julian Toscano good" scores 2
+  (`20251108_vzlp`).
+- A touchdown's try window ends at the next touchdown, so a try that
+  ncaa.com dropped (with its kickoff) isn't hidden by the other team's
+  next try (`20251108_vzlp`).
+
+No other game's output changed.
+
 ## A touchdown ncaa.com printed after its own try is moved back in front of it
 
 Decided by Sam (2026-11-09). Hardin-Simmons at Trinity (Texas), 2025

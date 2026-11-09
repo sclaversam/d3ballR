@@ -27,7 +27,9 @@ kickoff, in order:
 \enumerate{
 \item \strong{override} -- the text shows the kicking team recovered (onside kick,
 or a return fumble/muff recovered by the kicker). The receiving team is
-the other team, and the play is a turnover.
+the other team, and the play is a turnover. An onside kick printed with
+no recovery counts too when it landed on the kicking team's own side
+and the kicking team has the next drive (20251101_y8ak).
 \item \strong{header} -- otherwise, the team named on the next drive header/start
 row after the kickoff (before the next kickoff, same half).
 \item \strong{fallback} -- no drive row follows (e.g. a kickoff-return TD): the

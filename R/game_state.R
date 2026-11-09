@@ -32,9 +32,9 @@ score_points <- function(kept) {
     (stringr::str_detect(txt, ic("\\bdefensive (PAT|two[- ]point|2[- ]?pt|conversion)\\b.*\\bsuccessful\\b")) |
        stringr::str_detect(txt, ic("\\breturned by .* for (a )?defensive (PAT|two[- ]point|2[- ]?pt|conversion)\\b")))
   pat_good <- pt == "extra_point" & stringr::str_detect(txt, ic("\\bgood\\b")) &
-    !stringr::str_detect(txt, ic("no good|failed|blocked"))
+    !stringr::str_detect(txt, ic("\\b(no good|failed|blocked)\\b"))
   two_good <- pt == "two_point" & stringr::str_detect(txt, ic("\\b(good|successful)\\b")) &
-    !stringr::str_detect(txt, ic("failed|no good"))
+    !stringr::str_detect(txt, ic("\\b(failed|no good)\\b"))
   # a safety on a try ("[Hampden-Sydney PAT safety]") is 1 point for the
   # trying team (NCAA rules)
   try_safety <- pt %in% c("extra_point", "two_point") & stringr::str_detect(txt, ic("\\bsafety\\b"))

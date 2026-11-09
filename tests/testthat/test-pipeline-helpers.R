@@ -209,3 +209,12 @@ test_that("a replay-review note doesn't hide a fumble recovery (20251018_c2vg)",
   expect_true(out$turnover)
   expect_equal(out$recovering_team, "Salisbury")
 })
+
+test_that("a player name ending in 'no' doesn't make a good try 'no good' (20251108_vzlp)", {
+  t <- c("Daniel Avila pass attempt to Julian Toscano good.", "Avila pass attempt failed.",
+         "Grwinski kick attempt no good.", "Moreno kick attempt good.")
+  k <- data.frame(play_type = c("two_point", "two_point", "extra_point", "extra_point"), play_text = t,
+                  touchdown = FALSE, turnover = FALSE, safety = FALSE, kicker_recovered = FALSE,
+                  penalty_no_play = FALSE, recovering_team = NA, pos_team = "a")
+  expect_equal(score_points(k), c(2L, 0L, 0L, 1L))
+})

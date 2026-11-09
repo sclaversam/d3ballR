@@ -52,7 +52,7 @@ parse_play_type <- function(classified) {
     !is_play ~ NA_character_,
     stringr::str_detect(p, ic("kneel down")) ~ "kneel",
     stringr::str_detect(p, ic("field goal attempt")) & stringr::str_detect(p, ic("blocked")) ~ "field_goal_blocked",
-    stringr::str_detect(p, ic("field goal attempt")) & stringr::str_detect(p, ic("no good|missed")) ~ "field_goal_missed",
+    stringr::str_detect(p, ic("field goal attempt")) & stringr::str_detect(p, ic("\\b(no good|missed)\\b")) ~ "field_goal_missed",
     stringr::str_detect(p, ic("field goal attempt")) & stringr::str_detect(p, ic("\\bgood\\b")) ~ "field_goal_good",
     stringr::str_detect(p, ic("\\bpunt\\b")) & stringr::str_detect(p, ic("blocked")) ~ "punt_blocked",
     stringr::str_detect(p, ic("\\bpunt\\b")) & stringr::str_detect(p, ic("return")) ~ "punt_with_return",
