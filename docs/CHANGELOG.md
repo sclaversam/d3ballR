@@ -5,11 +5,30 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## A touchdown ncaa.com printed after its own try is moved back in front of it
+
+Decided by Sam (2026-11-09). Hardin-Simmons at Trinity (Texas), 2025
+playoffs second round (`20251129_57m9`, contest 6529878): ncaa.com lists
+"J.Runyan kick attempt good" (running score 28-24), the kickoff, and only
+then the interception Trinity returned 70 yards for a touchdown (34-24).
+Read in that order, the extra point fell on Hardin-Simmons' drive (parsed
+25-33, final 24-34).
+
+Rule (`ncaa_move_late_touchdowns()`, run by `ncaa_lines()`): a try line
+with no touchdown before it, followed within 3 lines by a touchdown with
+only kickoffs (or empty lines) between, has the touchdown line moved in
+front of it, labelled `ncaa_moved_td_label` ("[d3ballR: moved up; ...]")
+in `play_text`. Where there is a running score it must confirm (the try
+raises one team by 1 or 2, the touchdown the same team by 6), and the two
+lines' scores are swapped into play order. It fires on one line in all
+cached 2025 games; only `20251129_57m9` changes, and now reconciles
+(889 of 891; the other 2 are known source gaps).
+
 ## Batch 4 (2025 weeks 7-8): review notes, pass wording, tries after return touchdowns
 
 Fixes from the fourth all-D3 batch (2026-11-08); see "Lessons from each
 batch" in `pipeline.md`. 891 games built; 888 reconcile (2 known source
-gaps, and `20251129_57m9`, open).
+gaps, and `20251129_57m9`, fixed in the entry above).
 
 - Fumble recoveries are read with any replay-review note at the end of the
   line removed (`strip_review_note()`). `20251018_c2vg` now credits
@@ -26,10 +45,7 @@ gaps, and `20251129_57m9`, open).
 - Build report: "Source: ncaa.com" (no longer "via ncaa-api") unless an
   ncaa-api server is set.
 
-Open for Sam: `20251129_57m9` (Hardin-Simmons 24, Trinity (Texas) 34;
-parsed 25-33). ncaa.com lists Trinity's extra point and kickoff before the
-interception-return touchdown they follow (lines 160-162 of contest
-6529878), so the point lands on Hardin-Simmons' drive.
+`20251129_57m9` was left open here; see the entry above.
 
 ## ncaa.com is requested directly, without the ncaa-api server
 

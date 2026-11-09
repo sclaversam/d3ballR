@@ -435,7 +435,89 @@ ncaa_lines <- function(j) {
   # distance, score); a play can't happen twice, so the copy is dropped
   key <- do.call(paste, c(out, sep = "\r"))
   dup <- c(FALSE, key[-1] == key[-nrow(out)]) & nzchar(out$text)
-  out[!dup, , drop = FALSE]
+  ncaa_move_late_touchdowns(out[!dup, , drop = FALSE])
+}
+
+#' Label on a touchdown line moved in front of its try
+#' @keywords internal
+ncaa_moved_td_label <- "[d3ballR: moved up; ncaa.com listed this play after the lines that follow it]"
+
+#' Put a touchdown ncaa.com printed after its own try back in front of it
+#'
+#' ncaa.com sometimes prints a touchdown a line or two late, after the try
+#' and kickoff that follow it (`20251129_57m9`: "J.Runyan kick attempt
+#' good", the kickoff, then the interception returned for the touchdown).
+#' A try can't come before its touchdown, so when a try line does not follow
+#' a touchdown, and a touchdown comes within the next three lines with only
+#' kickoffs (or empty lines) in between, the touchdown line is moved in
+#' front of the try and labelled ([ncaa_moved_td_label]).
+#'
+#' Where ncaa.com has a running score it must agree: the try raises one
+#' team's score by 1 or 2 and the touchdown then raises the same team's by
+#' 6. The two lines' scores are then swapped into play order (the
+#' touchdown gets the score before the try plus 6, the try the total), so
+#' the running score still only goes up. Without a running score the order
+#' of the lines alone decides.
+#'
+#' @param lines Output of [ncaa_lines()] before this step.
+#' @return `lines`, reordered where needed.
+#' @keywords internal
+ncaa_move_late_touchdowns <- function(lines) {
+  ic <- function(pattern) stringr::regex(pattern, ignore_case = TRUE)
+  txt <- lines$text
+  is_td <- stringr::str_detect(txt, "\\bTOUCHDOWN\\b") & !stringr::str_detect(txt, ic("touchdown nullified"))
+  is_try <- stringr::str_detect(txt, ic("\\b(kick|pass|rush) attempt\\b")) &
+    !stringr::str_detect(txt, ic("field goal"))
+  is_kickoff <- stringr::str_detect(txt, ic("\\bkickoff\\b"))
+  # the last line with a score before each line (NA if none)
+  last_score <- function(i, col) {
+    v <- lines[[col]][seq_len(i - 1)]
+    v <- v[!is.na(v)]
+    if (length(v)) v[length(v)] else NA_integer_
+  }
+  i <- 1L
+  while (i <= nrow(lines)) {
+    if (is_try[i]) {
+      prev <- which(nzchar(lines$text[seq_len(i - 1)]))
+      after_td <- length(prev) && is_td[prev[length(prev)]]
+      later <- seq.int(i + 1L, length.out = min(3L, nrow(lines) - i))
+      t <- later[is_td[later]]
+      t <- if (length(t)) t[1] else NA_integer_
+      between <- if (!is.na(t)) seq.int(i + 1L, length.out = t - i - 1L) else integer()
+      ok <- !after_td && !is.na(t) &&
+        all(is_kickoff[between] | !nzchar(lines$text[between]))
+      if (ok) {
+        sc <- c("home_score", "visitor_score")
+        before <- vapply(sc, function(col) last_score(i, col), integer(1))
+        at_try <- unlist(lines[i, sc])
+        at_td <- unlist(lines[t, sc])
+        has_score <- !anyNA(c(before, at_try, at_td))
+        if (has_score) {
+          d_try <- at_try - before
+          d_td <- at_td - at_try
+          ok <- sum(d_try > 0) == 1L && max(d_try) %in% 1:2 && all(d_td[d_try == 0] == 0) &&
+            d_td[d_try > 0] == 6L
+        }
+        if (ok) {
+          moved <- lines[t, ]
+          moved$text <- paste(moved$text, ncaa_moved_td_label)
+          if (has_score) {
+            moved[sc] <- as.list(at_td - d_try)
+            lines[i, sc] <- as.list(at_td)
+          }
+          lines <- rbind(lines[seq_len(i - 1), ], moved, lines[setdiff(seq.int(i, nrow(lines)), t), ])
+          txt <- lines$text
+          is_td <- c(is_td[seq_len(i - 1)], TRUE, is_td[setdiff(seq.int(i, length(is_td)), t)])
+          is_try <- c(is_try[seq_len(i - 1)], FALSE, is_try[setdiff(seq.int(i, length(is_try)), t)])
+          is_kickoff <- c(is_kickoff[seq_len(i - 1)], FALSE, is_kickoff[setdiff(seq.int(i, length(is_kickoff)), t)])
+          i <- i + 1L
+        }
+      }
+    }
+    i <- i + 1L
+  }
+  rownames(lines) <- NULL
+  lines
 }
 
 #' Games whose score can't reconcile because of a gap in the source

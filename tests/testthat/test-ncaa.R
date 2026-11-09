@@ -303,3 +303,32 @@ test_that("ncaa_direct_request reports an empty game or a stale query id as HTTP
   expect_equal(res$status, 502L)
   expect_match(res$why, "PersistedQueryNotFound")
 })
+
+test_that("a touchdown printed after its own try is moved in front of it (20251129_57m9)", {
+  mk <- function(text, home, vis) data.frame(period = 4L, team_id = "1", clock = "00:00", drive_text = NA_character_,
+                                             home_score = home, visitor_score = vis, text = text)
+  lines <- rbind(
+    mk("K.Brown pass incomplete short left to K.Sims thrown to TU20", NA, NA),
+    mk("J.Runyan kick attempt good (H: T.Hancock, LS: J.Dioli)", 28L, 24L),
+    mk("J.Runyan kickoff 60 yards to the HSU05 G.Powell return 8 yards to the HSU13", NA, NA),
+    mk("K.Brown pass intercepted by T.Scannell at TU30 T.Scannell return 70 yards to the HSU00 TOUCHDOWN, clock 00:59", 34L, 24L),
+    mk("J.Runyan kickoff 55 yards to the HSU15, out of bounds at HSU15", NA, NA)
+  )
+  lines <- rbind(mk("earlier play", 27L, 24L), lines)
+  out <- ncaa_move_late_touchdowns(lines)
+  expect_match(out$text[3], "TOUCHDOWN")
+  expect_match(out$text[3], "moved up", fixed = TRUE)
+  expect_match(out$text[4], "kick attempt good")
+  expect_equal(out$home_score[3:4], c(33L, 34L))
+  expect_equal(nrow(out), nrow(lines))
+
+  # a try right after its touchdown is left alone
+  normal <- lines[c(1, 5, 3, 4, 6), ]
+  normal$home_score <- c(27L, 33L, 34L, NA, NA)
+  expect_identical(ncaa_move_late_touchdowns(normal)$text, normal$text)
+
+  # a running score that contradicts the move keeps ncaa.com's order
+  bad <- lines
+  bad$home_score[5] <- 31L
+  expect_identical(ncaa_move_late_touchdowns(bad)$text, bad$text)
+})
