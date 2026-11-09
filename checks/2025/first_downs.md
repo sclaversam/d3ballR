@@ -35,7 +35,7 @@ Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**50074 series; 49731 have exactly one `new_series` row on their first snap row; 343 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 5197.
+**50073 series; 49731 have exactly one `new_series` row on their first snap row; 342 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 5197.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | first_row_text |
 |---|---|---|---|---|---|---|---|---|
@@ -363,7 +363,6 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 20251129_4bix | 92 | 92 | Salisbury | 1 & 10 | none | no new_series row | unexplained | PENALTY EC False Start (D.Sydney) 5 yards from EC 28 to EC 23. NO PLAY |
 | 20251129_4bix | 93 | 95 | Endicott | 1 & 10 | 95 | new_series not on the first snap row | unexplained | No Huddle-Shotgun B.Metayer rush middle for 1 yard gain to the EC 24 (C.Sollenberger; J.Celentano) |
 | 20251129_57m9 | 75 | 77 | Hardin-Simmons | 1 & 10 | 75, 76 | more than one new_series row | unexplained | No Huddle-Shotgun K.Brown pass incomplete short right thrown to TU45 QB hurried by J.Nwobodo PENALTY TU Roughi |
-| 20251129_57m9 | 155 | 155 | Hardin-Simmons | 4 & 37 | none | no new_series row | unexplained | No Huddle-Shotgun K.Brown pass intercepted by T.Scannell at TU30 broken up by A.Njoku T.Scannell return 70 yar |
 | 20251129_admb | 7 | 7 | Berry | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun J.Rogers rush middle for 24 yards gain to the LCF48 (J.Sanders), 1ST DOWN |
 | 20251129_admb | 34 | 35 | LaGrange | 1 & 10 | none | no new_series row | unexplained | Shotgun T.Bozeman rush right for 1 yard loss to the LCF49 (C.Lewis) |
 | 20251129_admb | 67 | 71 | Berry | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | No Huddle-Shotgun A.Hunter pass complete short left to K.Smith caught at BCF42, for 9 yards to the BCF42, End  |
