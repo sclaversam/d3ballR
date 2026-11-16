@@ -40,8 +40,7 @@ flag_try_phase <- function(kept) {
 #' @keywords internal
 is_scoring_snap <- function(kept) {
   txt <- kept$play_text
-  td <- stringr::str_detect(txt, "\\bTOUCHDOWN\\b") &
-    !stringr::str_detect(txt, stringr::regex("touchdown nullified", ignore_case = TRUE))
+  td <- has_touchdown(txt)
   sf <- stringr::str_detect(txt, stringr::regex("\\bsafety\\b", ignore_case = TRUE))
   (td | kept$play_type == "field_goal_good" | sf) & !kept$penalty_no_play &
     !kept$play_type %in% c("extra_point", "two_point")

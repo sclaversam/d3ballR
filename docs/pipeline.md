@@ -136,8 +136,18 @@ first-down exclusivity and placement.
 - **Games ncaa.com can't give:** non-NCAA bowl games, and the 2025 national
   semifinal `20251220_vlfc` (every play tagged with one team). Both are
   listed in the build report.
-- **The 2025 Stagg Bowl isn't in the game list:** the season index and the
-  cached ncaa.com scoreboards stop at 2025-12-20.
+- **The 2025 Stagg Bowl isn't in the game list:** the season index stops
+  at 2025-12-20 (d3football's scoreboards can no longer be read). ncaa.com
+  has it: week 19 of its scoreboard (cached) lists UW-River Falls 24,
+  North Central (Ill.) 14 on 2026-01-04 as contest 6534822 (and a
+  duplicate, 6529906, dated 2025), and contest 6534822's play-by-play is
+  cached (202 lines, normal format). Adding it needs a decision on its
+  `game_id`, since there is no d3football boxscore id for it.
+- **Dead-ball penalties before a kickoff in tournament files** ("PENALTY
+  CROWN Personal Foul 15 yards from WHEIL35 to WHEIL50. NO PLAY", driveText
+  "- and -") have no situation, so they are unclassified and dropped
+  (`20251122_667w`, `20251122_dfrn`, `20251129_ghzw`; 6 rows). The kickoff
+  text still shows the new spot.
 - **`yards_gained` on a lateral** reads only the first yardage segment. So a
   first down earned after a lateral is missed (1 series in 2025).
 - **`yards_gained` is not defined** for interceptions, punts, field goals,
@@ -265,14 +275,35 @@ fixes.
 | "pass attempt to Julian Toscano good" read as "no good" | "no good" / "failed" / "blocked" / "missed" / "NO PLAY" are matched as words | `20251108_vzlp` |
 | A try and the kickoff after it both dropped, the other team scoring on its next snap: the other team's try was taken for this touchdown's | a touchdown's try window ends at the next touchdown | `20251108_vzlp` (Albion's punt-return touchdown) |
 
+### Batch 6 (2025 week 11 and the playoffs, 117 new games, 2026-11-16)
+
+Fetched straight from ncaa.com in R: 135 requests (115 play-by-play, 14
+scoring summaries, 6 week-1 retries that came back empty), plus 1 for the
+Stagg Bowl. Week 11: 108 of 108 built and reconciled. Playoffs: 45 of the
+51 index games built (5 non-NCAA bowls aren't on ncaa.com; `vlfc` can't be
+read), 44 reconcile (`msui` is a source gap).
+
+| Quirk | Generic rule now | First seen |
+|---|---|---|
+| A touchdown overturned on review still scored: the "(Original Play: ... TOUCHDOWN)" after "PLAY OVERTURNED" was read as the play | `has_touchdown()` drops the review note before looking for "TOUCHDOWN", everywhere (batch 4's `strip_review_note()` covered only fumbles) | `20251115_aunt` |
+| Tournament files spell the sides differently in driveText and play text ("CHA36" / "CHAP36", "WRF" / "UWRF", "CRO" / "CROWN"; codes padded "  U35"), so the side recovery mixed four codes | `ncaa_spot_token_map()`: a yardline vote renames driveText's codes to the play text's; driveText codes are trimmed | `20251122_667w`, `20251129_3gqf` (failed since batch 1, never listed); 6 playoff games tidied |
+| A garbled kickoff-return touchdown named the kicking team's kicker ("Adrogue onside kickoff ... TOUCHDOWN", then Adrogue's try), so the points went to the receiver | `refine_kickoffs_by_kicker()`: on a kickoff touchdown, a try by the kicking team's kicker right after it means the kicking team recovered | `20251115_effl` |
+| "rush for 22 yards to the DEAN00, TOUCHDOWN, fumble by ... recovered by DEAN" read as a defensive touchdown | a fumble printed after "TOUCHDOWN" on a scrimmage play is never lost | `20251115_m5el` |
+| A try printed away from its touchdown (ncaa.com put the touchdown at the end of the game) went to the offense on the field | a try outside any try phase goes to its kicker's team when known | `20251206_rxq5` |
+| An empty game (`periods: []`) raised "subscript out of bounds" | `ncaa_direct_request()` returns 502 (pending) | the 6 week-1 retries |
+| Source gap: a DePauw touchdown has no line (running score +6 on a drive-start line) | listed in `known_exceptions.csv` | `20251206_msui` |
+| Source quirk: in some host files the down counter rises on every snap and resets only on a printed "1ST DOWN" (a 15-yard gain shows "2 and ...") | labelled, not fixed: these games carry most of the batch's 83 new `first_downs.md` series exceptions | `20251206_msui`, `20251206_bkyu`, `20251206_v1xq`, `20251206_snpc` |
+
 ## Roadmap
 
 1. **CMU 2025** (validation set): done.
 2. **Centennial 2025**: done; rebuilt from ncaa.com on 2026-11-04.
-3. **All of D3 2025 from ncaa.com** (in progress): `build_season(2025)`.
-   1,113 games built through week 10 (2026-11-09); week 11 (about 104
-   games), 11 playoff games and 6 week-1 retries remain, fetched in capped
-   runs with Sam's go-ahead.
+3. **All of D3 2025 from ncaa.com** (done as far as ncaa.com has it,
+   2026-11-16): `build_season(2025)`. 1,230 games built, 1,227 reconcile
+   (3 known source gaps). Not built: 6 week-1 games ncaa.com still has no
+   play-by-play for (`8wt2`, `jir1`, `qsmw`, `lq0t`, `wf4k`, `yr0t`;
+   retried in batch 6), 6 non-NCAA bowls, the national semifinal `vlfc`,
+   and the Stagg Bowl (not in the season index; see Known issues).
    Conferences come from ncaa.com's scoreboards for every team. Expect new
    StatCrew formats to surface. The score-reconciliation test and the
    `first_downs.md` series check are the main guards.

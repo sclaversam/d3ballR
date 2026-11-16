@@ -44,5 +44,7 @@ first choice because d3 sometimes skips one and the rest lag a score
 behind (Dean at Fitchburg State, 2025). This fixes the try after a
 defensive touchdown, which otherwise inherits the team that was scored
 on.
+A try outside any try phase (its score printed elsewhere) goes to its
+kicker's team when that is known.
 }
 \keyword{internal}

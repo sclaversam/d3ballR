@@ -468,6 +468,8 @@ pbp_columns <- c(
 #' behind (Dean at Fitchburg State, 2025). This fixes the try after a
 #' defensive touchdown, which otherwise inherits the team that was scored
 #' on.
+#' A try outside any try phase (its score printed elsewhere) goes to its
+#' kicker's team when that is known.
 #'
 #' @param kept Kept rows with `row`, `try_phase`, `play_type`, `play_text`,
 #'   `penalty_no_play`, `pos_team`.
@@ -527,6 +529,12 @@ try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = cha
       out[i] <- if (!is.null(scorer) && !is.na(scorer[s])) scorer[s] else kept$pos_team[s]
     }
   }
+  # a try printed away from its score (no score before it in the try phase:
+  # ncaa.com moved the touchdown elsewhere, 20251206_rxq5) belongs to its
+  # kicker's / passer's team when that is known; otherwise it keeps the
+  # offense on the field
+  orphan <- which(!kept$try_phase & kept$play_type %in% c("extra_point", "two_point") & !is.na(actor_team))
+  out[orphan] <- actor_team[orphan]
   out
 }
 

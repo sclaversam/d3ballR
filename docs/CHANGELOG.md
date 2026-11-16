@@ -5,6 +5,56 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Batch 6 (2025 week 11 and the playoffs): overturned touchdowns, tournament side codes, kickoff-return tries
+
+Fixes from the sixth all-D3 batch (2026-11-16), which finishes the 2025
+season as far as ncaa.com has it; see "Lessons from each batch" in
+`pipeline.md`. 1,230 games built; 1,227 reconcile (the other 3 are known
+source gaps).
+
+- A touchdown overturned on replay review ("pass incomplete ... PLAY
+  OVERTURNED. (Original Play: ... TOUCHDOWN)") no longer scores:
+  `has_touchdown()` reads the line without its review note, everywhere a
+  touchdown is looked for (outcome flags, try phase, ncaa.com's added
+  tries and moved touchdowns). `20251115_aunt`.
+- Tournament files that spell the field sides one way in `driveText`
+  ("CHA36", "WRF41", "  U35") and another in the play text ("CHAP36",
+  "UWRF41") are reconciled by a yardline vote (`ncaa_spot_token_map()`):
+  driveText's codes are renamed to the play text's spelling, and padded
+  codes are trimmed. Two playoff games that had failed since batch 1 now
+  build and reconcile (`20251122_667w` Crown at Wheaton, `20251129_3gqf`
+  Chapman at UW-River Falls). Six playoff games built before change on 22
+  rows: midfield rows now name a side ("at TU50", as in 30 other
+  tournament games; `yards_to_goal` unchanged) and 9 rows whose side was
+  guessed or mixed now follow ncaa.com's driveText (`20251122_dfrn`,
+  `20251122_p9ff`, `20251129_57m9`, `20251129_p6rx`, `20251129_t77k`,
+  `20251129_y0qp`; e.g. y0qp "2nd and -29 at UWW18" is now "2nd and 35 at
+  DEPAUW18").
+- A kickoff touchdown whose next line is a try by the kicking team's own
+  kicker is a kicking-team recovery (`refine_kickoffs_by_kicker()`):
+  "Adrogue,Matias onside kickoff 2 yards to the WASHU37 TOUCHDOWN" then
+  "Adrogue,Matias kick attempt good" (`20251115_effl`).
+- On a scrimmage play a fumble printed after the play's "TOUCHDOWN" is
+  never lost: the ball was dead at the score ("rush for 22 yards to the
+  DEAN00, TOUCHDOWN, fumble by ... recovered by DEAN", `20251115_m5el`).
+  The only such line in 2025.
+- A try outside any try phase (its touchdown printed elsewhere in the
+  file) goes to its kicker's team when that is known
+  (`try_phase_team()`; `20251206_rxq5`, where ncaa.com printed
+  Susquehanna's fumble-return touchdown at the very end of the game).
+- `ncaa_direct_request()`: an answer with no periods at all is "no
+  play-by-play yet" (502), not an R error. The six week-1 retries all
+  came back that way.
+- New known source exception `20251206_msui` (Wheaton at DePauw): no line
+  for a DePauw touchdown; the running score rises by 6 on a "drive start"
+  line.
+
+The d3football rebuild (`pbp/d3football/2025/`) also changed on 2 games and
+1 kickoff row (`20250906_2lhd`, `20251025_yvrv`: batch 4's review-note
+fumble rule; `20250906_09bx`'s onside kick: batch 5's rule). Those outputs
+had not been rebuilt since; all 133 still reconcile. No other game's output
+changed.
+
 ## Batch 5 (2025 weeks 9-10): silent onside recoveries, dropped two-point tries, "Toscano good"
 
 Fixes from the fifth all-D3 batch (2026-11-09); see "Lessons from each

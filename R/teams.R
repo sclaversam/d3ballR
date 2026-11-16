@@ -153,7 +153,11 @@ build_actor_map <- function(kept, kickoffs) {
 #' the next drive belongs to that same team, the kicking team recovered (an
 #' onside kick, or a return fumble), even when the text never says
 #' "recovered by". Example: "Jesch,Mateo onside kickoff 12 yards to the
-#' WHE47." followed by a Wheaton drive.
+#' WHE47." followed by a Wheaton drive. A kickoff touchdown has no next
+#' drive: there the try right after it decides, when its kicker (or passer /
+#' rusher) is on the kicking team ("Adrogue,Matias onside kickoff 2 yards to
+#' the WASHU37 TOUCHDOWN" then "Adrogue,Matias kick attempt good",
+#' 20251115_effl).
 #'
 #' @param kickoffs Output of [assign_kickoffs()].
 #' @param kept Kept rows with `row`, `play_text`.
@@ -164,10 +168,18 @@ build_actor_map <- function(kept, kickoffs) {
 #'   decides.
 #' @keywords internal
 refine_kickoffs_by_kicker <- function(kickoffs, kept, actor_map, teams) {
-  kicker <- play_actor(kept$play_text[match(kickoffs$row, kept$row)])
+  pos <- match(kickoffs$row, kept$row)
+  kicker <- play_actor(kept$play_text[pos])
   kt <- unname(actor_map[kicker])
+  # a kickoff touchdown has no next drive; the try after it says who scored
+  nxt <- ifelse(is.na(pos), NA_integer_, pos + 1L)
+  nxt[nxt > nrow(kept)] <- NA_integer_
+  try_team <- ifelse(!is.na(nxt) & kept$play_type[nxt] %in% c("extra_point", "two_point"),
+                     unname(actor_map[play_actor(kept$play_text[nxt])]), NA_character_)
+  ko_td <- !is.na(pos) & has_touchdown(dplyr::coalesce(kept$play_text[pos], ""))
   for (i in which(!is.na(kt))) {
-    recovered <- isTRUE(kickoffs$header_team[i] == kt[i]) || kickoffs$kicker_recovered[i]
+    recovered <- isTRUE(kickoffs$header_team[i] == kt[i]) || kickoffs$kicker_recovered[i] ||
+      (ko_td[i] && isTRUE(try_team[i] == kt[i]))
     if (!identical(kickoffs$kicking_team[i], kt[i]) || recovered != kickoffs$kicker_recovered[i]) {
       kickoffs$disagreement[i] <- paste0("kicker ", kicker[i], " is ", kt[i], "; was ", kickoffs$rule[i],
                                          " (kicking ", kickoffs$kicking_team[i], ")")

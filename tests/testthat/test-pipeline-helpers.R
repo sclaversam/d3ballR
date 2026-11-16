@@ -218,3 +218,13 @@ test_that("a player name ending in 'no' doesn't make a good try 'no good' (20251
                   penalty_no_play = FALSE, recovering_team = NA, pos_team = "a")
   expect_equal(score_points(k), c(2L, 0L, 0L, 1L))
 })
+
+test_that("a touchdown overturned on review is not a touchdown (20251115_aunt)", {
+  x <- c(
+    "pass incomplete short left to Balson,Xavier thrown to HEID00. HEID is challenging the ruling on the field - \"Incomplete pass\". PLAY OVERTURNED. (Original Play: pass complete short left to X.Balson caught at HEID00, for 14 yards to the HEID00 TOUCHDOWN, clock 06:27, 1ST DOWN).",
+    "rush middle for 1 yard gain to the HEID00 TOUCHDOWN, clock 10:57.",
+    "rush for 3 yards TOUCHDOWN nullified by penalty",
+    "Penalty after touchdown before PAT"
+  )
+  expect_equal(has_touchdown(x), c(FALSE, TRUE, FALSE, FALSE))
+})

@@ -163,7 +163,8 @@ ncaa_direct_request <- function(path) {
   out <- switch(kind,
     play_by_play = {
       p <- j$data$playbyplay
-      first <- p$periods[[1]]$playbyplayStats[[1]]
+      # no periods at all (or an empty first one): no play-by-play yet
+      first <- if (length(p$periods) && length(p$periods[[1]]$playbyplayStats)) p$periods[[1]]$playbyplayStats[[1]]
       if (length(first) < 2) NULL else p
     },
     scoring_summary = j$data$scoringSummary,
@@ -465,7 +466,7 @@ ncaa_moved_td_label <- "[d3ballR: moved up; ncaa.com listed this play after the 
 ncaa_move_late_touchdowns <- function(lines) {
   ic <- function(pattern) stringr::regex(pattern, ignore_case = TRUE)
   txt <- lines$text
-  is_td <- stringr::str_detect(txt, "\\bTOUCHDOWN\\b") & !stringr::str_detect(txt, ic("touchdown nullified"))
+  is_td <- has_touchdown(txt)
   is_try <- stringr::str_detect(txt, ic("\\b(kick|pass|rush) attempt\\b")) &
     !stringr::str_detect(txt, ic("field goal"))
   is_kickoff <- stringr::str_detect(txt, ic("\\bkickoff\\b"))
@@ -602,7 +603,9 @@ parse_ncaa_drive_text <- function(x) {
   m <- stringr::str_match(x, "^\\s*([1-4]) and (\\S*) at ([A-Za-z&.' -]*?)\\s*(\\d{1,2})\\s*$")
   dist <- m[, 3]
   dist <- ifelse(dist %in% c("0", "true"), "Goal", ifelse(grepl("^-?\\d+$", dist), dist, NA_character_))
-  tok <- ifelse(is.na(m[, 4]) | m[, 4] %in% c("", "-"), NA_character_, m[, 4])
+  # tokens can come padded ("at  TU35", "at   U35")
+  tok <- trimws(m[, 4])
+  tok <- ifelse(is.na(tok) | tok %in% c("", "-"), NA_character_, tok)
   data.frame(down = suppressWarnings(as.integer(m[, 2])), dist = dist, token = tok,
              yard = suppressWarnings(as.integer(m[, 5])))
 }
@@ -613,6 +616,49 @@ parse_ncaa_drive_text <- function(x) {
 #' stat crew uses (they can differ from the down-and-distance tokens).
 #' @keywords internal
 ncaa_spot_pattern <- "\\b(thrown to|caught at|to the|at the|at|from|to|on) (?!(?:at|to|the|on|from)\\b)([A-Za-z][A-Za-z&.'-]*?(?: [A-Z][A-Za-z&.'-]{0,9})?) ?(\\d{1,2})\\b"
+
+#' Pair driveText's yardline tokens with the play text's spelling
+#'
+#' Some ncaa.com files (tournament games) name the field sides in
+#' `driveText` with one code ("1 and 10 at CHA36", "WRF41", "  U35") and in
+#' the play text with another ("to the CHAP36", "UWRF41", "UWP35"). The two
+#' are paired by a vote, as [infer_text_team()] does for d3football: when a
+#' line's last spot is "CHAP36" and the next line's driveText reads "at
+#' CHA36", the same yard number (not 50) pairs CHA with CHAP. Of the two
+#' pairings of driveText's two tokens with the play text's two most frequent
+#' ones, the one with at least 3 votes and at least 3 times the other's
+#' wins, and driveText's tokens are renamed to the play text's (the
+#' spelling the rest of the pipeline reads). When the two already agree,
+#' or the vote isn't clear, nothing is renamed.
+#'
+#' @param spots `str_match_all(txt, ncaa_spot_pattern)`, one per line.
+#' @param dt Output of [parse_ncaa_drive_text()] for the same lines.
+#' @return Named character vector: names are driveText tokens, values the
+#'   play-text token to use instead (empty when nothing is renamed).
+#' @keywords internal
+ncaa_spot_token_map <- function(spots, dt) {
+  none <- stats::setNames(character(), character())
+  d <- names(sort(table(stats::na.omit(dt$token)), decreasing = TRUE))
+  if (length(d) < 2) return(none)
+  d <- d[1:2]
+  t <- names(sort(table(unlist(lapply(spots, function(s) s[, 3]))), decreasing = TRUE))
+  if (length(t) < 2) return(none)
+  t <- t[1:2]
+  if (setequal(t, d)) return(none)
+  last <- function(k) vapply(spots, function(s) if (nrow(s)) s[nrow(s), k] else NA_character_, character(1))
+  end_tok <- last(3)
+  end_num <- suppressWarnings(as.integer(last(4)))
+  nxt_tok <- c(dt$token[-1], NA)
+  nxt_num <- c(dt$yard[-1], NA)
+  ok <- !is.na(end_tok) & !is.na(nxt_tok) & !is.na(end_num) & !is.na(nxt_num) &
+    end_num == nxt_num & end_num != 50L & end_tok %in% t & nxt_tok %in% d
+  same <- sum(ok & ((end_tok == t[1] & nxt_tok == d[1]) | (end_tok == t[2] & nxt_tok == d[2])))
+  swap <- sum(ok & ((end_tok == t[1] & nxt_tok == d[2]) | (end_tok == t[2] & nxt_tok == d[1])))
+  if (max(same, swap) < 3 || max(same, swap) < 3 * min(same, swap)) return(none)
+  target <- if (same > swap) t else rev(t)
+  keep <- d != target
+  stats::setNames(target[keep], d[keep])
+}
 
 #' Rebuild d3football-style situations and table rows from ncaa.com lines
 #'
@@ -694,6 +740,11 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   # on a play wiped out by a penalty only the enforcement counts
   no_play <- stringr::str_detect(txt, stringr::regex("\\bNO PLAY\\b", ignore_case = TRUE))
   end_spots <- stringr::str_match_all(ifelse(no_play, stringr::str_extract(txt, "PENALTY.*$"), txt), ncaa_spot_pattern)
+  # tournament files can spell the sides one way in driveText ("CHA36")
+  # and another in the play text ("CHAP36"): use the play text's spelling
+  tok_map <- ncaa_spot_token_map(spots, dt)
+  renamed <- dt$token %in% names(tok_map)
+  dt$token[renamed] <- unname(tok_map[dt$token[renamed]])
   all_tok <- unlist(lapply(spots, function(s) s[, 3]))
   tokens <- names(sort(table(c(all_tok, stats::na.omit(dt$token))), decreasing = TRUE))[1:2]
   if (anyNA(tokens)) stop("Could not find two yardline team tokens in the ncaa.com text.")
@@ -811,7 +862,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   # a re-kick after a "NO PLAY" try). The added line goes after the
   # touchdown's last try line, and the running score is raised from there.
   # "TOUCHDOWN nullified by penalty" is not a touchdown
-  live_td <- function(x) stringr::str_detect(x, "\\bTOUCHDOWN\\b(?!\\s+nullified)") &
+  live_td <- function(x) has_touchdown(x) &
     !stringr::str_detect(x, stringr::regex("NO PLAY", ignore_case = TRUE))
   is_td <- live_td(txt)
   ic <- function(p) stringr::regex(p, ignore_case = TRUE)

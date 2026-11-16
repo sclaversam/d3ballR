@@ -297,6 +297,10 @@ test_that("ncaa_direct_request reports an empty game or a stale query id as HTTP
   httr2::local_mocked_responses(function(req) httr2::response(200, headers = "Content-Type: application/json",
     body = charToRaw('{"data":{"playbyplay":{"periods":[{"playbyplayStats":[{"__typename":"PlayByPlayFootball"}]}]}}}')))
   expect_equal(ncaa_direct_request("/game/1/play-by-play")$status, 502L)
+  # no periods at all (the week-1 games still missing in batch 6)
+  httr2::local_mocked_responses(function(req) httr2::response(200, headers = "Content-Type: application/json",
+    body = charToRaw('{"data":{"playbyplay":{"contestId":6461900,"periods":[]}}}')))
+  expect_equal(ncaa_direct_request("/game/6461900/play-by-play")$status, 502L)
   httr2::local_mocked_responses(function(req) httr2::response(200, headers = "Content-Type: application/json",
     body = charToRaw('{"errors":[{"message":"PersistedQueryNotFound"}]}')))
   res <- ncaa_direct_request("/game/1/scoring-summary")
@@ -331,4 +335,25 @@ test_that("a touchdown printed after its own try is moved in front of it (202511
   bad <- lines
   bad$home_score[5] <- 31L
   expect_identical(ncaa_move_late_touchdowns(bad)$text, bad$text)
+})
+
+test_that("driveText side codes are paired with the play text's by a yardline vote (20251129_3gqf)", {
+  txt <- c("kickoff 53 yards to the UWRF12 D.Stokes return 24 yards to the UWRF36",
+           "pass complete to B.Wesolowski caught at UWRF41, for 5 yards to the UWRF41",
+           "rush middle for 19 yards gain to the CHAP40, 1ST DOWN",
+           "pass complete to T.Asher for 4 yards to the CHAP36",
+           "pass complete to T.Asher for 8 yards to the CHAP28, 1ST DOWN",
+           "rush middle for 5 yards gain to the CHAP23")
+  dt <- parse_ncaa_drive_text(c("- and - at CHA35", "1 and  at WRF36", "2 and  at WRF41",
+                                "1 and  at CHA40", "2 and  at CHA36", "1 and  at CHA28"))
+  spots <- stringr::str_match_all(txt, ncaa_spot_pattern)
+  expect_equal(ncaa_spot_token_map(spots, dt), c(CHA = "CHAP", WRF = "UWRF"))
+  # padded driveText codes are trimmed ("at   U35")
+  expect_equal(parse_ncaa_drive_text("1 and 10 at   U35")$token, "U")
+
+  # play text already in driveText's spelling: nothing to rename
+  same <- stringr::str_match_all(gsub("CHAP", "CHA", gsub("UWRF", "WRF", txt)), ncaa_spot_pattern)
+  expect_length(ncaa_spot_token_map(same, dt), 0)
+  # no driveText tokens (the regular format): nothing to rename
+  expect_length(ncaa_spot_token_map(spots, parse_ncaa_drive_text(rep("1 and 10 at 35", 6))), 0)
 })
