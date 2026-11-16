@@ -255,7 +255,7 @@
 "20250906_09bx",101,3,"Mount Union","Wheaton (Ill.)","header","Wheaton (Ill.)","Mount Union","after score",,FALSE,,"Maric,Ivan kickoff 63 yards to the WHE02 Reeves,Eli return 13 yards to the WHE15 (Krivosh,Timmy)."
 "20250906_09bx",107,3,"Mount Union","Wheaton (Ill.)","header","Wheaton (Ill.)","Mount Union","after score",,FALSE,,"Rafferty,Connell kickoff 62 yards to the WHE03 Reeves,Eli return 22 yards to the WHE25 (Merchant,Jerry)."
 "20250906_09bx",134,4,"Wheaton (Ill.)","Mount Union","header","Mount Union","Wheaton (Ill.)","after score",,FALSE,,"Jesch,Mateo kickoff 64 yards to the MTU01, out of bounds at MTU01."
-"20250906_09bx",153,4,"Wheaton (Ill.)","Mount Union","kicker","Wheaton (Ill.)","Wheaton (Ill.)","after score",,TRUE,"kicker Jesch,Mateo is Wheaton (IL); was header (kicking Mount Union)","Jesch,Mateo onside kickoff 12 yards to the WHE47."
+"20250906_09bx",153,4,"Wheaton (Ill.)","Mount Union","override","Wheaton (Ill.)","Wheaton (Ill.)","after score","Wheaton (Ill.)",TRUE,,"Jesch,Mateo onside kickoff 12 yards to the WHE47."
 "20250906_09bx",161,4,"Wheaton (Ill.)","Mount Union","header","Mount Union","Wheaton (Ill.)","after score",,FALSE,,"Jesch,Mateo kickoff 57 yards to the MTU08 fair catch by Williams,Darnell at MTU08."
 "20250906_10mp",1,1,"Beloit","Rockford","header","Rockford","Beloit","coin toss",,FALSE,,"Ladd,Ian kickoff 54 yards to the RU11 Key,William return 18 yards to the RU29 (Henderson,Elijah)."
 "20250906_10mp",31,1,"Rockford","Beloit","header","Beloit","Rockford","after safety",,FALSE,,"Finnestad,Kaden kickoff 45 yards to the BC35 Floyd,Amani return 11 yards to the BC46 (Harris,Joshua; Hill,Matthew)."
