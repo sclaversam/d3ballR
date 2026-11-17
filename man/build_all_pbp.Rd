@@ -5,31 +5,33 @@
 \title{Build and write every game's play-by-play table}
 \usage{
 build_all_pbp(
-  game_urls,
+  game_ids,
+  season,
   out_dir,
   check_dir,
   conf = NULL,
   loader = NULL,
-  season = NULL,
   index = NULL
 )
 }
 \arguments{
-\item{game_urls}{Character vector of d3football boxscore URLs (any
-teams, any seasons), or of game ids when \code{loader} is given.}
+\item{game_ids}{Game ids (ncaa.com contest ids) of one season.}
+
+\item{season}{The games' season.}
 
 \item{out_dir}{Directory to write per-game CSVs into.}
 
 \item{check_dir}{Directory for the validation reports.}
 
-\item{conf}{Conference data from \code{\link[=build_conference_table]{build_conference_table()}} (else the
+\item{conf}{Conference data from \code{\link[=ncaa_conference_table]{ncaa_conference_table()}} (else the
 cached files are used).}
 
-\item{loader}{NULL to read d3football pages, or a function taking a game
-id and returning the game (\code{\link[=fetch_game]{fetch_game()}}'s shape), e.g. a wrapper
-around \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}.}
+\item{loader}{A function taking a game id and returning the game, e.g.
+\code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}} or \code{\link[=fetch_stats_ncaa_game]{fetch_stats_ncaa_game()}}. NULL means
+\code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}} with the game list's contests.}
 
-\item{season}{With \code{loader}: the games' season (for the season index).}
+\item{index}{The season's game list (\code{\link[=ncaa_season_games]{ncaa_season_games()}}); NULL reads
+the saved one (\code{\link[=load_cached_index]{load_cached_index()}}).}
 }
 \value{
 Invisibly, a named list of the per-game tibbles (by \code{game_id}).
@@ -41,7 +43,6 @@ Usually called by \code{\link[=build_season]{build_season()}}. Writes one CSV pe
 parsed points per team, \code{score_reconciled}), and the validation reports
 to \code{check_dir} (see \code{\link[=write_pbp_checks]{write_pbp_checks()}}), plus \code{score_reconciliation.csv}
 and \code{build_failures.csv}. A game that fails to build is logged in
-\code{build_failures.csv} and skipped, so one bad page doesn't stop the batch. Each game's season
-index is loaded once per season, via \code{\link[=build_season_index]{build_season_index()}} (cached;
-scraped only if no cache exists). Prints the per-game counts.
+\code{build_failures.csv} and skipped, so one bad game doesn't stop the batch.
+Prints the per-game counts.
 }

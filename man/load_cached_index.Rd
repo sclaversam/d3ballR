@@ -2,19 +2,19 @@
 % Please edit documentation in R/build_pbp.R
 \name{load_cached_index}
 \alias{load_cached_index}
-\title{Read a cached season index without touching the network}
+\title{Read a saved game list without touching the network}
 \usage{
-load_cached_index(season, cache_dir = "data-raw/index")
+load_cached_index(season, dir = "data-raw/ncaa")
 }
 \arguments{
 \item{season}{Season year.}
 
-\item{cache_dir}{Cache directory used by \code{\link[=build_season_index]{build_season_index()}}.}
+\item{dir}{Folder \code{\link[=ncaa_season_games]{ncaa_season_games()}} writes to.}
 }
 \value{
-The index, or NULL if no cache exists.
+The game list, or NULL if none is saved.
 }
 \description{
-Read a cached season index without touching the network
+Read a saved game list without touching the network
 }
 \keyword{internal}

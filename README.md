@@ -1,7 +1,7 @@
 # d3ballR
 
-Play-by-play data for **NCAA Division III football**, scraped from
-d3football.com into tidy, cfbfastR-style tables.
+Play-by-play data for **NCAA Division III football**, read from ncaa.com
+into tidy, cfbfastR-style tables.
 
 The college football data ecosystem stops at Division I: `cfbfastR` and the
 CollegeFootballData API cover only FBS and FCS. Division II and III are absent
@@ -9,16 +9,18 @@ from every published dataset
 ([coverage audit](docs/cfbfastr_d2_d3_coverage_audit.Rmd)). d3ballR fills that
 gap for Division III.
 
-## Status: checkpoint Centennial Conference 2025
+## Status: all of Division III 2025
 
-- **Coverage:** every 2025 game involving a Centennial Conference team, 62 games
-  (10 postseason, 1 overtime). That's 10,149 rows across 36 teams.
-- **Shape:** one row per event, 67 columns. Names follow cfbfastR where an
+- **Coverage:** every 2025 D3 game on ncaa.com's scoreboards: 1,263 games
+  (49 postseason), 206,666 rows, 280 teams. 9 games ncaa.com can't give are
+  built from stats.ncaa.org pages saved by hand.
+- **Shape:** one row per event, 71 columns. Names follow cfbfastR where an
   equivalent exists.
-- **Checks:** every game's play-by-play points reconcile with its boxscore
-  final score, and every validation report is clean or explains its exceptions.
-- **Generic:** nothing assumes a team or season. Building all of D3 2025 is
-  the same call without a filter.
+- **Checks:** 1,262 of 1,263 games' play-by-play points reconcile with the
+  final score. The one that doesn't (Case Western Reserve at Rowan) is
+  missing its 4th quarter on both sites.
+- **Generic:** nothing assumes a team or season. Another season is the same
+  call with a different `season`.
 
 ## Quick start
 
@@ -26,15 +28,17 @@ gap for Division III.
 # install.packages("devtools")
 devtools::load_all()
 
-# one game
-g <- build_pbp("https://www.d3football.com/seasons/2025/boxscores/20250906_e064.xml")
-
 # a season, or the games involving some teams
-members <- conference_members(2025, "CC")$team
-build_season(2025, teams = members)   # writes pbp/2025/ and checks/2025/
+build_season(2025)                    # writes pbp/2025/ and checks/2025/
+conf <- load_cached_conferences(2025)$table
+build_season(2025, teams = conf$team[conf$conference_code %in% "CC"])
+
+# one game (ncaa.com contest id)
+games <- ncaa_season_games(2025)
+g <- build_pbp(fetch_ncaa_game("6461445", ncaa_contest_table(games), games))
 ```
 
-Or read the built CSVs directly: `read.csv("pbp/2025/20250906_e064.csv",
+Or read the built CSVs directly: `read.csv("pbp/2025/6461445.csv",
 na.strings = "")`.
 
 ## What's in each row
@@ -56,10 +60,10 @@ Every column is defined in **[docs/schema.md](docs/schema.md)**.
 ```
 R/                 package code (pipeline stages; see docs/pipeline.md)
 tests/testthat/    unit tests + data tests over every built game
-scripts/           build_season.R, season_index_report.R
+scripts/           build_season.R
 pbp/{season}/      built play-by-play, one CSV per game
 checks/{season}/   validation reports for that season
-data-raw/          season dates, season index, conference tables (page cache: gitignored)
+data-raw/          season dates, ncaa.com game lists and conference tables, saved stats.ncaa.org pages (ncaa.com cache: gitignored)
 docs/              schema.md, pipeline.md, CHANGELOG.md, coverage audit
 ```
 
@@ -74,5 +78,5 @@ docs/              schema.md, pipeline.md, CHANGELOG.md, coverage audit
 
 ## Roadmap
 
-CMU 2025 (done) → Centennial 2025 (done, this checkpoint) → all of D3 2025 →
-other seasons.
+CMU 2025 (done) → Centennial 2025 (done) → all of D3 2025 (done) → other
+seasons.

@@ -78,8 +78,8 @@ toss_pattern <- "wins (the )?toss|will receive|will defend|to receive and defen[
 #' - `drive_start` is checked before `drive_header`, so
 #'   "TEAM drive start at MM:SS." doesn't fall through to the header rule.
 #'
-#' @param plays A tibble with `situation` and `play` columns, as returned by
-#'   [scrape_plays()].
+#' @param plays A tibble with `situation` and `play` columns, the `plays`
+#'   of a game from [fetch_ncaa_game()] or [fetch_stats_ncaa_game()].
 #' @return `plays` with an added `row_type` column (character).
 #' @export
 classify_plays <- function(plays) {

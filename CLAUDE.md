@@ -6,7 +6,8 @@ it points to.
 ## What this project is
 
 `d3ballR` scrapes and parses **NCAA Division III** football play-by-play from
-d3football.com into tidy, cfbfastR-style tables. `cfbfastR` and the
+ncaa.com into tidy, cfbfastR-style tables. (It started on d3football.com;
+that code was removed on 2026-11-17, see below.) `cfbfastR` and the
 CollegeFootballData API cover only Division I; D2 and D3 are absent from every
 published dataset (`docs/cfbfastr_d2_d3_coverage_audit.Rmd`).
 
@@ -51,13 +52,12 @@ filter or `season`, not a new pipeline.
   dated outside the season and second listings of the same game are
   dropped. `week` and `season_type` keep d3football's convention; team names
   keep d3football's spelling (`team_names.csv`). The old d3football id is
-  the `d3football_id` column of the game list (crosswalk from
-  `map_ncaa_contests()`, `{season}_contests.csv`). Notes written before
-  2026-11-16 use the old ids. The d3football source (`pbp/d3football/`)
-  keeps its old ids and the d3football index.
-- **ncaa.com's play text is the same StatCrew text** as d3football's, so the
-  parser is unchanged: `ncaa_play_table()` rebuilds d3football's
-  (situation, play) table from the JSON. Its quirks, all handled there:
+  the `d3football_id` column of the game list (from the frozen 2025
+  crosswalk `{season}_contests.csv`). Notes written before 2026-11-16 use
+  the old ids.
+- **ncaa.com's play text is StatCrew text** (the same text d3football
+  printed, which the parser was first written for): `ncaa_play_table()`
+  rebuilds a (situation, play) table from the JSON for the parser. Its quirks, all handled there:
   - `driveText` ("2 and 9 at 28") has no yardline team; the side is recovered
     from spots in the play text. Tournament games use "2 and  at JHU13"
     (distance often blank, recomputed from the line to gain).
@@ -91,15 +91,14 @@ filter or `season`, not a new pipeline.
   `conferences[].conferenceSeo` tag, named through
   `data-raw/ncaa/conference_names.csv` (d3football's names and codes).
   ncaa.com has no conference-game marker, so a conference game is a
-  regular-season game between two teams of the same conference; it matches
+  regular-season game between two teams of the same conference; it matched
   d3football's "*" marker on all 58 Centennial 2025 games.
-- **d3football.com is now cache-only.** Its firewall serves scripts a
-  JavaScript bot challenge. Do not try to get around it: no browser
-  automation, no reusing browser cookies such as `aws-waf-token`.
-  `build_season(..., source = "d3football")` still rebuilds the 133 cached
-  2025 games into `pbp/d3football/2025/` (kept for comparison).
-- **User-Agent:** `fetch_html()` sends a browser one (d3football);
-  `fetch_ncaa_json()` sends "d3ballR (CMU student research)".
+- **d3football.com is no longer used** (code removed 2026-11-17, Sam; the
+  last d3football build is in git history and at tag
+  `checkpoint-centennial-2025`). Its firewall serves scripts a JavaScript
+  bot challenge. Do not try to get around it: no browser automation, no
+  reusing browser cookies such as `aws-waf-token`.
+- **User-Agent:** `fetch_ncaa_json()` sends "d3ballR (CMU student research)".
 - **Rate limiting:** fetch in capped batches (`max_requests`), 6 s apart.
   Prefer `OFFLINE=1` / the cache when iterating on parsing, and don't run
   large fetches without Sam's go-ahead.
@@ -110,9 +109,8 @@ filter or `season`, not a new pipeline.
 ## Working rules
 
 - **Validate against the data, not one game.** After any parser change,
-  rebuild from the cache (`OFFLINE=1 Rscript scripts/build_season.R 2025
-  --conference CC`, and `--source d3football` for the cached d3football
-  games) and check `checks/2025/` and `checks/d3football/2025/` (score
+  rebuild from the cache (`OFFLINE=1 Rscript scripts/build_season.R 2025`)
+  and check `checks/2025/` (score
   reconciliation must stay 100%; the series and clock checks must stay clean
   or explained), then run `devtools::test()`. Run R with a UTF-8 locale
   (`LC_ALL=C.UTF-8` in the cloud) or accented names are written as

@@ -43,8 +43,8 @@ test_that("built games: clock columns are consistent and the seconds columns mir
   }
 })
 
-test_that("bounds meeting pins clock_start (McDaniel game: printed clocks tighten the range)", {
-  f <- test_path("../../pbp/d3football/2025/20251025_mepx.csv")
+test_that("bounds meeting pins clock_start (McDaniel at Dickinson: printed clocks tighten the range)", {
+  f <- test_path("../../pbp/2025/6462426.csv")
   skip_if_not(file.exists(f))
   g <- utils::read.csv(f, na.strings = "")
   r <- g[g$play_index == 162, ]

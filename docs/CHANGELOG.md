@@ -5,6 +5,38 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## d3football code removed: d3ballR is ncaa.com-only
+
+Sam's plan (2026-11-08), done once all of 2025 was on ncaa.com
+(2026-11-17). **The play-by-play output is unchanged.**
+
+- **Removed:** the d3football page reader and scraper (`fetch_html()`,
+  `scrape_plays()`, `fetch_game()` and the line-score readers), the
+  d3football season index (`build_season_index()` and its scoreboard
+  parser), the d3football conference pages (`build_conference_table()`,
+  `conference_members()`), `map_ncaa_contests()` (the one-time 2025 match
+  of d3football games to ncaa.com contests), `build_season()`'s
+  `source` argument, `scripts/season_index_report.R`, and the d3football
+  data and comparison builds: `pbp/d3football/`, `checks/d3football/`,
+  `data-raw/index/`, `data-raw/conferences/`, `checks/2025/season_index.md`.
+  All of it is in git history.
+- **Kept:** `data-raw/ncaa/2025_contests.csv`, so the 2025 game list keeps
+  its `d3football_id` column; the season-dates table and week numbering
+  (now `R/season_dates.R`); team names in d3football's spelling
+  (`team_names.csv`).
+- **Moved:** the request counter and throttle shared by every request now
+  live in `R/fetch.R` (they were in `scrape_plays.R`).
+- **API:** `build_pbp()` takes a game already read (from
+  `fetch_ncaa_game()` or `fetch_stats_ncaa_game()`), not a URL.
+  `build_all_pbp(game_ids, season, ...)` takes ncaa.com game ids, with
+  `fetch_ncaa_game()` as the default loader. With no `conf` /
+  `index`, `build_pbp()` reads the saved `data-raw/ncaa/{season}_games.csv`
+  and `{season}_conferences.csv`.
+- **Reports:** `build_failures.csv` names its id column `game_id` (was
+  `game_url`). `conference_check.csv` and the build report no longer
+  compare `conference_game` with d3football's "*" marker (it agreed on all
+  58 Centennial 2025 games).
+
 ## Two known source gaps fixed from stats.ncaa.org
 
 Sam's go-ahead (2026-11-17): the stats.ncaa.org rule also covers a game

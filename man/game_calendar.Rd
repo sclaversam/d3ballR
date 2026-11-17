@@ -2,14 +2,14 @@
 % Please edit documentation in R/build_pbp.R
 \name{game_calendar}
 \alias{game_calendar}
-\title{Look a game up in its season index}
+\title{Look a game up in its season's game list}
 \usage{
 game_calendar(game, index, season_dates)
 }
 \arguments{
-\item{game}{A list from \code{\link[=fetch_game]{fetch_game()}}.}
+\item{game}{A game from \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}} or \code{\link[=fetch_stats_ncaa_game]{fetch_stats_ncaa_game()}}.}
 
-\item{index}{A season index from \code{\link[=build_season_index]{build_season_index()}}, or NULL.}
+\item{index}{The season's game list from \code{\link[=ncaa_season_games]{ncaa_season_games()}}, or NULL.}
 
 \item{season_dates}{Output of \code{\link[=read_season_dates]{read_season_dates()}}.}
 }
@@ -20,9 +20,9 @@ boxscore header's), \code{season}, \code{game_date}, \code{week}, \code{season_t
 }
 \description{
 Returns \code{season}, \code{game_date} (ISO), \code{week}, \code{season_type} for the game.
-If the game isn't in the index (or no index is available), falls back to
-the boxscore id's date (else the header date), \code{\link[=classify_season_type]{classify_season_type()}},
-and a date-based Sunday-to-Saturday week (\code{\link[=date_based_week]{date_based_week()}}), and logs
-a message saying so.
+If the game isn't in the game list (or no list is available), falls back
+to the game's date (\code{header_date}), \code{\link[=classify_season_type]{classify_season_type()}}, and a
+date-based Sunday-to-Saturday week (\code{\link[=date_based_week]{date_based_week()}}), and logs a
+message saying so.
 }
 \keyword{internal}

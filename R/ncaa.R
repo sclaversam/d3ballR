@@ -48,7 +48,7 @@ ncaa_cache_key <- function(path) {
 #' ([ncaa_direct_request()]); with `options(d3ballR.ncaa_api = ...)` from
 #' an ncaa-api server ([ncaa_api_base()]). Both store the same JSON.
 #'
-#' Same rules as [fetch_html()]: every response is cached on disk
+#' Every response is cached on disk
 #' (`getOption("d3ballR.ncaa_cache_dir")`, default `data-raw/cache/ncaa/`,
 #' gitignored) and never requested twice; requests are at least
 #' `d3ballR.delay` seconds apart and count against `d3ballR.max_requests`;
@@ -264,19 +264,20 @@ conf_seo <- function(team) {
 #' (d3football's names and codes, e.g. "Centennial Conference", "CC").
 #' Tags not in that table (non-D3 conferences such as "nec", and
 #' "diii-independent") and blank tags give NA, as for an independent or a
-#' non-D3 opponent. The scoreboards are the ones [map_ncaa_contests()]
+#' non-D3 opponent. The scoreboards are the ones [ncaa_season_games()]
 #' reads, so nothing new is fetched once they are cached.
 #'
 #' ncaa.com has no conference-game marker, so `conference_marker` is TRUE
-#' for a regular-season game (the season index's `season_type`) between two
-#' teams of the same conference. Playoff and bowl games are FALSE.
+#' for a regular-season game (the game list's `season_type`) between two
+#' teams of the same conference ([ncaa_conference_markers()]). Playoff and
+#' bowl games are FALSE.
 #'
 #' @param season Season year.
-#' @param index The season index ([build_season_index()]).
+#' @param index The season's game list ([ncaa_season_games()]).
 #' @param weeks ncaa.com week numbers to read.
 #' @param dir Where `conference_names.csv` is, and where
 #'   `{season}_conferences.csv` is written.
-#' @return The same shape as [build_conference_table()]: a list with
+#' @return A list with
 #'   `table` (`season`, `team`, `conference`, `conference_code`,
 #'   `ncaa_conference`) and `markers` (`season`, `team`, `game_id`,
 #'   `conference_marker`; one row per index game, `team` is the home team).
@@ -303,12 +304,26 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
   utils::write.csv(tab[order(tab$conference_code, tab$team), ], file.path(dir, paste0(season, "_conferences.csv")),
                    row.names = FALSE, na = "")
 
-  games <- index[!is.na(index$game_id), ]
+  list(table = tab, markers = ncaa_conference_markers(tab, index))
+}
+
+#' Which games are conference games
+#'
+#' ncaa.com has no conference-game marker, so a game is a conference game
+#' when it is a regular-season game between two teams of the same
+#' conference.
+#'
+#' @param tab Team-to-conference table (`team`, `conference_code`).
+#' @param games The season's game list ([ncaa_season_games()]).
+#' @return A data frame: `season`, `team` (the home team), `game_id`,
+#'   `conference_marker`.
+#' @keywords internal
+ncaa_conference_markers <- function(tab, games) {
+  games <- games[!is.na(games$game_id), ]
   hc <- tab$conference_code[match(games$home, tab$team)]
   ac <- tab$conference_code[match(games$away, tab$team)]
-  markers <- data.frame(season = as.integer(season), team = games$home, game_id = games$game_id,
-                        conference_marker = games$season_type %in% "regular" & !is.na(hc) & !is.na(ac) & hc == ac)
-  list(table = tab, markers = markers)
+  data.frame(season = as.integer(games$season), team = games$home, game_id = games$game_id,
+             conference_marker = games$season_type %in% "regular" & !is.na(hc) & !is.na(ac) & hc == ac)
 }
 
 #' The season's game list from ncaa.com's Division III scoreboards
@@ -425,8 +440,9 @@ ncaa_season_games <- function(season, weeks = 1:20, dir = "data-raw/ncaa", seaso
 #' so this is the identity mapping.
 #'
 #' @param games Output of [ncaa_season_games()].
-#' @return A data frame like [map_ncaa_contests()]'s.
-#' @keywords internal
+#' @return A data frame: `game_id`, `contest`, `ncaa_away`, `ncaa_home`,
+#'   `ncaa_away_score`, `ncaa_home_score`, `home_away_flip`, `date_diff`.
+#' @export
 ncaa_contest_table <- function(games) {
   data.frame(game_id = games$game_id, contest = games$game_id,
              ncaa_away = games$away, ncaa_home = games$home,
@@ -450,75 +466,6 @@ ncaa_to_index_name <- function(x, file = "data-raw/ncaa/team_names.csv") {
   tab <- utils::read.csv(file, na.strings = "")
   m <- tab$index_name[match(x, tab$ncaa_name)]
   ifelse(is.na(m), x, m)
-}
-
-#' Match the season index's games to ncaa.com contest ids
-#'
-#' Reads the ncaa.com scoreboard week by week (cached) and pairs each
-#' ncaa.com game with an index game: same two teams (after
-#' [ncaa_to_index_name()]) and game dates at most one day apart (closest
-#' first). Tournament (bracket) entries are matched first, since ncaa.com
-#' lists a few of them twice. Home and away are compared but not required
-#' to agree (ncaa.com lists Salisbury at Johns Hopkins, Dec 6 2025, the
-#' other way round); `home_away_flip` records it.
-#'
-#' The result is written to `data-raw/ncaa/{season}_contests.csv` and read
-#' back from there on later calls (pass `refresh = TRUE` to rebuild it).
-#' Weeks the run can't fetch (offline, budget) are skipped with a message,
-#' so a partial table can be completed later.
-#'
-#' @param season Season year.
-#' @param index The season index ([build_season_index()]).
-#' @param weeks ncaa.com week numbers to read.
-#' @param dir Where the contest table is kept.
-#' @param refresh Rebuild the table even if it exists.
-#' @return A data frame: `game_id` (index id), `contest`, `ncaa_away`,
-#'   `ncaa_home`, `ncaa_away_score`, `ncaa_home_score`, `home_away_flip`,
-#'   `date_diff` (days).
-#' @export
-map_ncaa_contests <- function(season, index, weeks = 1:20, dir = "data-raw/ncaa", refresh = FALSE) {
-  f <- file.path(dir, paste0(season, "_contests.csv"))
-  if (!refresh && file.exists(f)) {
-    return(utils::read.csv(f, na.strings = "", colClasses = c(game_id = "character", contest = "character")))
-  }
-  sb <- list()
-  for (w in weeks) {
-    x <- tryCatch(ncaa_scoreboard_week(season, w), error = function(e) {
-      message("ncaa.com scoreboard week ", w, " not read: ", conditionMessage(e))
-      NULL
-    })
-    if (!is.null(x)) sb[[length(sb) + 1]] <- x
-  }
-  sb <- do.call(rbind, sb)
-  sb <- sb[!duplicated(sb$contest), ]
-  sb$a <- ncaa_to_index_name(sb$away)
-  sb$h <- ncaa_to_index_name(sb$home)
-  sb <- sb[order(sb$bracket_round == "", sb$contest), ]
-
-  idx <- index[!is.na(index$game_id), ]
-  idx_date <- as.Date(idx$game_date)
-  used <- rep(FALSE, nrow(idx))
-  out <- list()
-  for (i in seq_len(nrow(sb))) {
-    pair <- (idx$away == sb$a[i] & idx$home == sb$h[i]) | (idx$away == sb$h[i] & idx$home == sb$a[i])
-    dd <- abs(as.numeric(idx_date - sb$date[i]))
-    cand <- which(pair & dd <= 1 & !used)
-    if (!length(cand)) next
-    k <- cand[which.min(dd[cand])]
-    used[k] <- TRUE
-    out[[length(out) + 1]] <- data.frame(
-      game_id = idx$game_id[k], contest = sb$contest[i],
-      ncaa_away = sb$away[i], ncaa_home = sb$home[i],
-      ncaa_away_score = sb$away_score[i], ncaa_home_score = sb$home_score[i],
-      home_away_flip = sb$h[i] != idx$home[k], date_diff = dd[k]
-    )
-  }
-  out <- do.call(rbind, out)
-  out <- out[order(out$game_id), ]
-  dir.create(dir, showWarnings = FALSE, recursive = TRUE)
-  utils::write.csv(out, f, row.names = FALSE, na = "")
-  message(season, ": ", nrow(out), " of ", nrow(idx), " index games matched to ncaa.com contests")
-  out
 }
 
 #' Flatten an ncaa.com play-by-play JSON into one row per line
@@ -843,7 +790,7 @@ ncaa_spot_token_map <- function(spots, dt) {
 #'   running score (see above), or NULL.
 #' @param scoring ncaa.com's scoring summary as [ncaa_scoring_entries()]
 #'   returns it, for games with no running score, or NULL.
-#' @return A tibble with `situation` and `play`, as [find_plays()] returns.
+#' @return A tibble with `situation` and `play` (the table [build_pbp()] reads).
 #' @keywords internal
 ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   n <- nrow(lines)
@@ -1451,21 +1398,20 @@ ncaa_own_token <- function(team_id, token, yard, tokens) {
   if (a >= b) stats::setNames(tokens, ids) else stats::setNames(rev(tokens), ids)
 }
 
-#' Fetch one game from ncaa.com in the shape [fetch_game()] returns
+#' Fetch one game from ncaa.com, ready for [build_pbp()]
 #'
-#' Looks the game up in the contest table ([map_ncaa_contests()]), fetches
-#' its play-by-play (cached), and rebuilds the d3football-style play table
-#' with [ncaa_play_table()]. Home and away follow the season index (which
-#' differs from ncaa.com in one 2025 game). The final score is ncaa.com's
+#' Looks the game up in the contest table ([ncaa_contest_table()]), fetches
+#' its play-by-play (cached), and rebuilds the (situation, play) table the
+#' parser reads with [ncaa_play_table()]. The final score is ncaa.com's
 #' scoreboard score, else its last running score.
 #'
-#' @param game_id Game id: the ncaa.com contest id, e.g. "6461490" (or,
-#'   with [map_ncaa_contests()]'s table, an old d3football id).
-#' @param contests Contest table: [ncaa_contest_table()] of the game list,
-#'   or [map_ncaa_contests()]'s.
-#' @param index The game list ([ncaa_season_games()]) or the season index.
-#' @return A list like [fetch_game()]'s: `game_id`, `season`, `teams`,
-#'   `finals`, `matchup`, `header_date`, `plays`, plus `contest`.
+#' @param game_id Game id: the ncaa.com contest id, e.g. "6461490".
+#' @param contests Contest table: [ncaa_contest_table()] of the game list.
+#' @param index The season's game list ([ncaa_season_games()]).
+#' @return A list: `game_id`, `season`, `teams` (away, home), `finals`
+#'   (final scores named by team), `matchup` (`c(away, home)`),
+#'   `header_date` (the game's date), `plays` (tibble with `situation` /
+#'   `play`), `contest`.
 #' @export
 fetch_ncaa_game <- function(game_id, contests, index) {
   hit <- contests[contests$game_id == game_id, ]
@@ -1515,11 +1461,11 @@ fetch_ncaa_game <- function(game_id, contests, index) {
   }
   list(
     game_id = game_id,
-    season = if (nrow(row)) as.integer(row$season) else as.integer(substr(game_id, 1, 4)),
+    season = if (nrow(row)) as.integer(row$season) else NA_integer_,
     teams = c(away, home),
     finals = stats::setNames(as.integer(c(fin_a, fin_h)), c(away, home)),
     matchup = c(away = away, home = home),
-    header_date = if (nrow(row)) as.Date(row$game_date) else as.Date(substr(game_id, 1, 8), format = "%Y%m%d"),
+    header_date = if (nrow(row)) as.Date(row$game_date) else as.Date(NA),
     plays = ncaa_play_table(lines, teams, final_total = fin_a + fin_h, scoring = scoring),
     contest = hit$contest
   )

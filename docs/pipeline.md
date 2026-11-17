@@ -2,8 +2,9 @@
 
 How a season of play-by-play from ncaa.com becomes the CSVs in
 `pbp/{season}/`, how it is checked, and what comes next. (Until 2026-11-04
-the source was d3football.com; those builds are kept in
-`pbp/d3football/{season}/`.) Column definitions are in
+the source was d3football.com. Its code and its comparison builds,
+`pbp/d3football/`, were removed on 2026-11-17; they are in git history.)
+Column definitions are in
 [`schema.md`](schema.md).
 
 ## Status (2026-11-04: Centennial 2025 rebuilt from ncaa.com)
@@ -21,8 +22,6 @@ the source was d3football.com; those builds are kept in
   d3football build, `pos_team`, `score_pts`, `yards_gained`, the penalty
   columns and `td_team` agree 100%; down, distance, yards to goal, drive
   number and `clock_start` agree 99.5-99.7%.
-- **d3football (old source):** the 133 cached 2025 games still rebuild,
-  byte-identical, into `pbp/d3football/2025/`.
 - **Tests:** the test suite passes.
 - **Generic:** nothing in `R/` assumes a team or season. Centennial 2025 is
   just `build_season(2025, teams = <the 8 members>)`.
@@ -36,11 +35,11 @@ used until 2026-11-08), set `options(d3ballR.ncaa_api =
 
 ```r
 devtools::load_all()
-members <- conference_members(2025, "CC")$team
+conf <- load_cached_conferences(2025)$table
+members <- conf$team[conf$conference_code %in% "CC"]
 build_season(2025, teams = members)          # one conference's games
 build_season(2025)                           # every 2025 game
 build_season(2025, max_requests = 100)       # cap new requests this run
-build_season(2025, source = "d3football")    # old source, cached pages only
 ```
 
 From the command line:
@@ -48,9 +47,7 @@ From the command line:
 ```sh
 Rscript scripts/build_season.R 2025 --conference CC
 Rscript scripts/build_season.R 2025 --max-requests 100
-OFFLINE=1 Rscript scripts/build_season.R 2025 --conference CC   # cache only
-OFFLINE=1 Rscript scripts/build_season.R 2025 --source d3football
-Rscript scripts/season_index_report.R              # season index check (no requests)
+OFFLINE=1 Rscript scripts/build_season.R 2025   # cache only
 ```
 
 In the cloud, prefix R commands with `LC_ALL=C.UTF-8` so accented names are
@@ -65,14 +62,13 @@ ncaa.com yet) are listed as pending, and the next run continues from there.
 
 | Stage | What it does | Code | Output |
 |---|---|---|---|
-| Season dates | Regular-season end date per season (2019-2025 seeded and verified). A missing season is read from its Wikipedia infobox and logged for checking. | `R/season_index.R` (`ensure_season_dates`, `check_season_dates`) | `data-raw/season_dates.csv` |
+| Season dates | Regular-season end date per season (2019-2025 seeded and verified). A missing season is read from its Wikipedia infobox and logged for checking. | `R/season_dates.R` (`ensure_season_dates`, `check_season_dates`) | `data-raw/season_dates.csv` |
 | Game list | Every game of a season from ncaa.com's weekly D3 scoreboards (cached): `game_id` = contest id, date, week and regular/postseason in d3football's convention, teams in d3football's spelling, final score, and the old d3football id. Placeholder and duplicate contests are dropped (logged). | `R/ncaa.R` (`ncaa_season_games`) | `data-raw/ncaa/{season}_games.csv` |
-| Season index (d3football source only) | Every game of a season from d3's weekly scoreboard pages: date, week, regular/postseason, teams, boxscore URL. The game list for `source = "d3football"`; cache only now. | `R/season_index.R` (`build_season_index`) | `data-raw/index/{season}.csv` |
-| Conferences | Each team's conference that season, from ncaa.com's scoreboard tags (already read for the contest map, so no new requests); conference game = same conference, regular season. (d3football source: the team pages and their "*" marker.) | `R/ncaa.R` (`ncaa_conference_table`); `R/conferences.R` (`build_conference_table`) | `data-raw/ncaa/{season}_conferences.csv`; `data-raw/conferences/{season}*.csv` |
-| Old-id crosswalk | Each d3football index game's ncaa.com contest id (team names through `team_names.csv`, dates at most a day apart). Built once for 2025; `ncaa_season_games()` reads it for `d3football_id`. Historical notes in this file and the CHANGELOG before 2026-11-16 use the old ids. | `R/ncaa.R` (`map_ncaa_contests`) | `data-raw/ncaa/{season}_contests.csv`, `data-raw/ncaa/team_names.csv` |
+| Conferences | Each team's conference that season, from ncaa.com's scoreboard tags (already read for the game list, so no new requests); conference game = same conference, regular season. | `R/ncaa.R` (`ncaa_conference_table`, `ncaa_conference_markers`); `R/conferences.R` (`game_conferences`) | `data-raw/ncaa/{season}_conferences.csv` |
+| Old-id crosswalk | Each 2025 game's old d3football id, matched once in 2025 (the matching code was removed with the d3football code on 2026-11-17). `ncaa_season_games()` reads it for `d3football_id`; other seasons have none. Historical notes in this file and the CHANGELOG before 2026-11-16 use the old ids. | | `data-raw/ncaa/2025_contests.csv` |
 | stats.ncaa.org fallback | For the games ncaa.com can't give (no play-by-play, or a file that can't be built: `pull_from_stats_ncaa` TRUE in `{season}_stats_ncaa_candidates.csv`), a stats.ncaa.org "Play By Play" page Sam saved from his browser is read into ncaa.com's line table and built the same way. Pages are matched to games by date and teams, whatever their file name. The build report lists them under "Built from stats.ncaa.org". | `R/stats_ncaa.R` (`stats_ncaa_games`, `stats_ncaa_files`, `stats_ncaa_lines`, `fetch_stats_ncaa_game`) | `data-raw/stats_ncaa/*.html` (committed) |
-| Fetch | Each game's play-by-play JSON from ncaa.com (or, for `source = "d3football"`, its cached boxscore page). Cached and throttled. | `R/ncaa.R` (`fetch_ncaa_json`), `R/scrape_plays.R` (`fetch_html`) | `data-raw/cache/ncaa/`, `data-raw/cache/` (gitignored) |
-| Rebuild table | ncaa.com's lines become d3football's (situation, play) table: situations from `driveText` with the yardline side recovered, quarter markers, drive headers, score lines, and labelled extra points ncaa.com left out. | `R/ncaa.R` (`fetch_ncaa_game`, `ncaa_play_table`) | |
+| Fetch | Each game's play-by-play JSON from ncaa.com. Cached and throttled; the request counter and throttle shared by every request are in `R/fetch.R`. | `R/ncaa.R` (`fetch_ncaa_json`), `R/fetch.R` (`throttle`, `n_requests`, `reset_fetch_state`) | `data-raw/cache/ncaa/` (gitignored) |
+| Rebuild table | ncaa.com's lines become the (situation, play) table the parser reads (d3football's layout, which the parser was written for): situations from `driveText` with the yardline side recovered, quarter markers, drive headers, score lines, and labelled extra points ncaa.com left out. | `R/ncaa.R` (`fetch_ncaa_game`, `ncaa_play_table`) | |
 | Classify | Label every row of the page: snap, kickoff, try, dead-ball penalty, or one of the non-play types (drive header / footer, quarter marker, timeout, ...). | `R/classify.R`, `R/parse_play_type.R` | |
 | Derive | Period, possession, team names, kickoff teams, drives, down / distance / yards to goal, penalties, outcome flags, score, first downs and series, clock. | `R/build_pbp.R` and the files it calls: `teams.R`, `kickoffs.R`, `drives.R`, `scores.R`, `parse_penalties.R`, `parse_outcomes.R`, `game_state.R`, `parse_clock.R` | |
 | Assemble | One 71-column table per game. | `R/build_pbp.R` (`build_pbp`, `build_all_pbp`) | `pbp/{season}/{game_id}.csv` |
@@ -104,26 +100,24 @@ rules:
   play-by-play the way other public R packages do is fine. Requests stay
   few, cached and throttled, with a go-ahead before large runs.
 
-**d3football** (the old source) now serves scripts a JavaScript bot
-challenge. Its pages are read from the cache only; do not try to get past
-the challenge (no browser automation, no reused browser cookies).
+**d3football** (the old source) serves scripts a JavaScript bot challenge,
+and its code was removed on 2026-11-17. Do not try to get past the
+challenge (no browser automation, no reused browser cookies).
 
 ## Validation
 
-Run on every build; reports in `checks/{season}/` (ncaa.com) and
-`checks/d3football/{season}/` (old source). The 2025 results below are for
-the ncaa.com Centennial build:
+Run on every build; reports in `checks/{season}/`. The 2025 results below
+are for the ncaa.com Centennial build:
 
 | Report | Checks | 2025 result |
 |---|---|---|
-| `build_report.md`, `score_reconciliation.csv` | Every game's points by team, summed from `score_pts`, equal the final (ncaa.com scoreboard, or the d3football line score). Also lists pending, not-on-ncaa.com and failed games, and unclassified rows. | 58 of 58 |
-| `conference_check.csv` | ncaa.com builds: our conference-game rule vs d3football's cached "*" marker. (d3football builds: the marker vs shared membership.) | 58 of 58 agree. |
+| `build_report.md`, `score_reconciliation.csv` | Every game's points by team, summed from `score_pts`, equal the final (ncaa.com scoreboard). Also lists pending, not-on-ncaa.com and failed games, and unclassified rows. | 58 of 58 |
+| `conference_check.csv` | Each built game's conferences, `conference_game` and `shared_conference`. (Until 2026-11-17 it also compared `conference_game` with d3football's "*" marker: 58 of 58 Centennial games agreed.) | |
 | `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: cfbfastR comparison and edge cases. | 3,267 of 3,288. 5 of the 21 exceptions are the same as in the d3football build (labelled); the other 16 are new and not yet explained. The one traced (`20251018_uxv5`) follows a kickoff ncaa.com dropped. Most of the rest are in games where ncaa.com's file differs from d3football's. |
 | `kickoff_possession.csv` | Each kickoff's kicking and receiving team, the rule that decided it, and any disagreement. | No disagreements. |
 | `clock_bounds.csv` | No missing or inverted clock range in regulation, and `clock_start` inside its range. | Empty. |
 | `drive_footer_clock.csv` | Each d3 drive's start clock plus "MM:SS elapsed" vs the drive's end. | Not applicable: ncaa.com has no drive footers. |
 | `end_state.csv` | Every change of possession with the next snap's own down / distance / yards to goal, labeled by team. | |
-| `season_index.md` | How d3 numbers weeks; the season's game count; scoreboard week vs date-based week. | 1,260 games; no week disagreements. |
 
 `tests/testthat/` holds unit tests for every parsing rule and data tests that
 run over every built game: score reconciliation, the clock invariants, and

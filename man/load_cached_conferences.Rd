@@ -2,19 +2,19 @@
 % Please edit documentation in R/build_pbp.R
 \name{load_cached_conferences}
 \alias{load_cached_conferences}
-\title{Read cached conference data without touching the network}
+\title{Read saved conference data without touching the network}
 \usage{
-load_cached_conferences(season, cache_dir = "data-raw/conferences")
+load_cached_conferences(season, dir = "data-raw/ncaa")
 }
 \arguments{
 \item{season}{Season year.}
 
-\item{cache_dir}{Directory used by \code{\link[=build_conference_table]{build_conference_table()}}.}
+\item{dir}{Folder \code{\link[=ncaa_conference_table]{ncaa_conference_table()}} writes to.}
 }
 \value{
 A list (\code{table}, \code{markers}) or NULL.
 }
 \description{
-Read cached conference data without touching the network
+The team-to-conference table \code{\link[=ncaa_conference_table]{ncaa_conference_table()}} saved, with each
+game's conference-game marker worked out from the saved game list.
 }
-\keyword{internal}

@@ -1,9 +1,8 @@
 # Play-by-play schema (71 columns)
 
 Every column of the per-game play-by-play CSVs in `pbp/{season}/{game_id}.csv`
-(built from ncaa.com) and `pbp/d3football/{season}/{game_id}.csv` (built from
-d3football.com, the old source), and the conventions needed to read them. The
-columns are the same for both sources. How the files are built and checked
+(built from ncaa.com, plus a few games from saved stats.ncaa.org pages), and
+the conventions needed to read them. How the files are built and checked
 is in [`pipeline.md`](pipeline.md); how the schema got here is in
 [`CHANGELOG.md`](CHANGELOG.md).
 
@@ -157,16 +156,16 @@ clock and seconds columns are NA in periods 5+.
 
 | # | column | type | definition | NA behavior | notes |
 |---|---|---|---|---|---|
-| 1 | `game_id` | character | ncaa.com builds (`pbp/{season}/`): the ncaa.com contest id, e.g. `"6461490"` (since 2026-11-16). d3football builds (`pbp/d3football/`): the d3football boxscore id, e.g. `"20250906_e064"`. | Never NA. | Constant per file; the file name. Joins to the game list `data-raw/ncaa/{season}_games.csv`, whose `d3football_id` column is the old id. Read it as character. |
+| 1 | `game_id` | character | The ncaa.com contest id, e.g. `"6461490"` (since 2026-11-16; before, the d3football boxscore id, e.g. `"20250906_e064"`). | Never NA. | Constant per file; the file name. Joins to the game list `data-raw/ncaa/{season}_games.csv`, whose `d3football_id` column is the old id. Read it as character. |
 | 2 | `season` | integer | Season year. | Never NA. | From the boxscore URL path, never the date. |
 | 3 | `game_date` | character | Game date, `YYYY-MM-DD`. | Never NA. | |
 | 4 | `week` | integer | Week of the season. | Never NA. | d3football's (and cfbfastR's) convention: regular weeks count from the week of the first Saturday in September (a game before it is week 0); postseason restarts at 1 and counts the postseason weeks with games (the tournament rounds; the Stagg Bowl is 6). Not ncaa.com's week number (regular week + 1 in 2025). |
 | 5 | `season_type` | character | `"regular"` or `"postseason"`. | Never NA. | Postseason for NCAA tournament games and any game after the regular-season end date (`data-raw/season_dates.csv`). All 2020 games are regular. |
 | 6 | `home` | character | Home team. | Never NA. | ncaa.com's home team, d3football's spelling. |
 | 7 | `away` | character | Away team. | Never NA. | ncaa.com's away team, d3football's spelling. |
-| 8 | `home_team_conference` | character | Home team's conference that season, e.g. `"Centennial Conference"`. ncaa.com builds: from ncaa.com's scoreboard tag, named as d3football names it (`data-raw/ncaa/conference_names.csv`). | NA for a team with no D3 conference that season (independent, non-D3) or not yet looked up. | Membership is per season (Carnegie Mellon: PAC through 2024, Centennial from 2025). cfbfastR name. |
+| 8 | `home_team_conference` | character | Home team's conference that season, e.g. `"Centennial Conference"`. From ncaa.com's scoreboard tag, named as d3football names it (`data-raw/ncaa/conference_names.csv`). | NA for a team with no D3 conference that season (independent, non-D3) or not yet looked up. | Membership is per season (Carnegie Mellon: PAC through 2024, Centennial from 2025). cfbfastR name. |
 | 9 | `away_team_conference` | character | Away team's conference that season. | As `home_team_conference`. | cfbfastR name. |
-| 10 | `conference_game` | logical | ncaa.com builds: a regular-season game between two teams of the same conference. d3football builds: d3football marks it a conference game ("*" on the team schedule). | d3football builds: NA if neither team's schedule has been read. | Playoff and bowl games between members are FALSE either way. The ncaa.com rule matches d3football's marker on all 58 Centennial 2025 games. cfbfastR name. |
+| 10 | `conference_game` | logical | A regular-season game between two teams of the same conference. | NA if the game has no conference data. | Playoff and bowl games between members are FALSE. The rule matched d3football's marker on all 58 Centennial 2025 games. cfbfastR name. |
 | 11 | `play_index` | integer | Row order within the game, 1..N. | Never NA. | |
 | 12 | `drive_number` | integer | Drive within the game, 1..N. | Never NA. | The opening kickoff starts drive 1. |
 | 13 | `drive_play_number` | integer | Row's position within its drive, from 1. | Never NA. | A kickoff is always 1. |

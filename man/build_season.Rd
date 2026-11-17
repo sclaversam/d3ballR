@@ -9,7 +9,6 @@ build_season(
   teams = NULL,
   max_requests = Inf,
   delay = 6,
-  source = c("ncaa", "d3football"),
   out_dir = NULL,
   check_dir = NULL
 )
@@ -24,37 +23,31 @@ the whole season.}
 
 \item{delay}{Seconds between requests.}
 
-\item{source}{"ncaa" (default) or "d3football".}
+\item{out_dir}{Per-game CSVs. NULL means \verb{pbp/\{season\}/}.}
 
-\item{out_dir}{Per-game CSVs. NULL means \verb{pbp/\{season\}/} for ncaa.com
-and \verb{pbp/d3football/\{season\}/} for d3football, so the two sources never
-mix in one folder.}
-
-\item{check_dir}{Reports. NULL means \verb{checks/\{season\}/} or
-\verb{checks/d3football/\{season\}/} likewise.}
+\item{check_dir}{Reports. NULL means \verb{checks/\{season\}/}.}
 }
 \value{
 Invisibly, the list of built games.
 }
 \description{
 One pipeline for every stage of the roadmap. The games come from
-ncaa.com's scoreboards (\code{\link[=ncaa_season_games]{ncaa_season_games()}}; for \code{source = "d3football"}, the season index \code{\link[=build_season_index]{build_season_index()}}): with \code{teams = NULL}, every game in the list; with \code{teams}, only games involving one of them (e.g. a
+ncaa.com's scoreboards (\code{\link[=ncaa_season_games]{ncaa_season_games()}}): with \code{teams = NULL}, every game in the list; with \code{teams}, only games involving one of them (e.g. a
 conference's members: any of their games, including non-conference,
 playoff and bowl games). Games already in \code{out_dir} are always rebuilt
 too, so \code{out_dir} and the reports in \code{check_dir} always cover every game
 built so far for the season.
 }
 \details{
-The play-by-play comes from ncaa.com (\code{source = "ncaa"}, the default)
-requested directly from R (see \code{\link[=fetch_ncaa_json]{fetch_ncaa_json()}}; an ncaa-api server
-is optional): each game's (contest's)
-play-by-play is fetched (\code{\link[=prefetch_ncaa_games]{prefetch_ncaa_games()}}) and rebuilt into the
-play table the parser reads (\code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}). \code{source = "d3football"} reads d3football boxscore pages instead, which now works
-only from pages already in the cache (d3football's firewall blocks
-scripts).
+The play-by-play comes from ncaa.com, requested directly from R (see
+\code{\link[=fetch_ncaa_json]{fetch_ncaa_json()}}; an ncaa-api server is optional): each game's
+(contest's) play-by-play is fetched (\code{\link[=prefetch_ncaa_games]{prefetch_ncaa_games()}}) and rebuilt
+into the play table the parser reads (\code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}). Games
+ncaa.com can't give are built from stats.ncaa.org pages saved by hand
+(\code{\link[=stats_ncaa_games]{stats_ncaa_games()}}).
 
 Steps: fetch every game not yet cached, then the team-to-conference
-table for every team in those games (\code{\link[=build_conference_table]{build_conference_table()}}), then
+table (\code{\link[=ncaa_conference_table]{ncaa_conference_table()}}), then
 build each game (\code{\link[=build_all_pbp]{build_all_pbp()}}), then the build report
 (\code{\link[=write_build_report]{write_build_report()}}). Conference columns are NA for teams not yet
 looked up and fill in on a later run.

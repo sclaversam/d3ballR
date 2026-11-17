@@ -11,7 +11,6 @@ write_build_report(
   built,
   conf,
   check_dir,
-  source = "ncaa",
   out_dir = file.path("pbp", season),
   stats_games = character()
 )
@@ -21,24 +20,24 @@ write_build_report(
 
 \item{teams}{Filter used, or NULL.}
 
-\item{games}{Index rows in scope.}
+\item{games}{Game-list rows in scope.}
 
 \item{built}{Output of \code{\link[=build_all_pbp]{build_all_pbp()}}.}
 
-\item{conf}{Output of \code{\link[=build_conference_table]{build_conference_table()}} or \code{\link[=ncaa_conference_table]{ncaa_conference_table()}}.}
+\item{conf}{Output of \code{\link[=ncaa_conference_table]{ncaa_conference_table()}}.}
 
 \item{check_dir}{Report directory.}
 
-\item{source}{"ncaa" or "d3football" (wording of the report).}
-
 \item{out_dir}{Where the per-game CSVs are (named in the report).}
+
+\item{stats_games}{Games built from saved stats.ncaa.org pages: file
+paths named by game id (\code{\link[=stats_ncaa_games]{stats_ncaa_games()}}).}
 }
 \description{
 \code{{check_dir}/build_report.md}: scope, how many games are built / pending
 (not fetched yet) / failed (fetched but did not parse), the score
-reconciliation (every game's points by team vs the boxscore final), and
-the conference cross-check (d3's "*" marker vs shared membership, also
-written to \code{conference_check.csv}). Per-game detail is in
+reconciliation (every game's points by team vs the final score), and
+each built game's conferences (\code{conference_check.csv}). Per-game detail is in
 \code{score_reconciliation.csv} and \code{build_failures.csv}.
 }
 \keyword{internal}

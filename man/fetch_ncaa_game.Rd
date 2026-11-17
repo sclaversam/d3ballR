@@ -2,27 +2,26 @@
 % Please edit documentation in R/ncaa.R
 \name{fetch_ncaa_game}
 \alias{fetch_ncaa_game}
-\title{Fetch one game from ncaa.com in the shape \code{\link[=fetch_game]{fetch_game()}} returns}
+\title{Fetch one game from ncaa.com, ready for \code{\link[=build_pbp]{build_pbp()}}}
 \usage{
 fetch_ncaa_game(game_id, contests, index)
 }
 \arguments{
-\item{game_id}{Game id: the ncaa.com contest id, e.g. "6461490" (or,
-with \code{\link[=map_ncaa_contests]{map_ncaa_contests()}}'s table, an old d3football id).}
+\item{game_id}{Game id: the ncaa.com contest id, e.g. "6461490".}
 
-\item{contests}{Contest table: \code{\link[=ncaa_contest_table]{ncaa_contest_table()}} of the game list,
-or \code{\link[=map_ncaa_contests]{map_ncaa_contests()}}'s.}
+\item{contests}{Contest table: \code{\link[=ncaa_contest_table]{ncaa_contest_table()}} of the game list.}
 
-\item{index}{The game list (\code{\link[=ncaa_season_games]{ncaa_season_games()}}) or the season index.}
+\item{index}{The season's game list (\code{\link[=ncaa_season_games]{ncaa_season_games()}}).}
 }
 \value{
-A list like \code{\link[=fetch_game]{fetch_game()}}'s: \code{game_id}, \code{season}, \code{teams},
-\code{finals}, \code{matchup}, \code{header_date}, \code{plays}, plus \code{contest}.
+A list: \code{game_id}, \code{season}, \code{teams} (away, home), \code{finals}
+(final scores named by team), \code{matchup} (\code{c(away, home)}),
+\code{header_date} (the game's date), \code{plays} (tibble with \code{situation} /
+\code{play}), \code{contest}.
 }
 \description{
-Looks the game up in the contest table (\code{\link[=map_ncaa_contests]{map_ncaa_contests()}}), fetches
-its play-by-play (cached), and rebuilds the d3football-style play table
-with \code{\link[=ncaa_play_table]{ncaa_play_table()}}. Home and away follow the season index (which
-differs from ncaa.com in one 2025 game). The final score is ncaa.com's
+Looks the game up in the contest table (\code{\link[=ncaa_contest_table]{ncaa_contest_table()}}), fetches
+its play-by-play (cached), and rebuilds the (situation, play) table the
+parser reads with \code{\link[=ncaa_play_table]{ncaa_play_table()}}. The final score is ncaa.com's
 scoreboard score, else its last running score.
 }

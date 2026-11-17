@@ -7,8 +7,8 @@
 classify_plays(plays)
 }
 \arguments{
-\item{plays}{A tibble with \code{situation} and \code{play} columns, as returned by
-\code{\link[=scrape_plays]{scrape_plays()}}.}
+\item{plays}{A tibble with \code{situation} and \code{play} columns, the \code{plays}
+of a game from \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}} or \code{\link[=fetch_stats_ncaa_game]{fetch_stats_ncaa_game()}}.}
 }
 \value{
 \code{plays} with an added \code{row_type} column (character).

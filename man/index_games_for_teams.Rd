@@ -2,12 +2,12 @@
 % Please edit documentation in R/conferences.R
 \name{index_games_for_teams}
 \alias{index_games_for_teams}
-\title{Every game involving a set of teams, from a season index}
+\title{Every game involving a set of teams, from a game list}
 \usage{
 index_games_for_teams(index, teams)
 }
 \arguments{
-\item{index}{Output of \code{\link[=build_season_index]{build_season_index()}}.}
+\item{index}{The season's game list (\code{\link[=ncaa_season_games]{ncaa_season_games()}}).}
 
 \item{teams}{Team names (scoreboard spelling).}
 }
