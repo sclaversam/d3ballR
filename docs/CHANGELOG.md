@@ -5,6 +5,31 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Team names, weeks and ids follow ncaa.com
+
+Sam's choice (2026-11-17), with d3football gone. **This changes the output.**
+
+- **Team names** (`home`, `away`, `pos_team`, `def_pos_team`,
+  `penalized_team`) are ncaa.com's short names ("Alfred St.", "CWRU",
+  "Augustana (IL)"), not d3football's ("Alfred State", "Case Western
+  Reserve", "Augustana"). `inst/extdata/team_names.csv` and
+  `ncaa_to_index_name()` are removed. Reason: d3football is blocked, so a
+  team new in a later season could never get a d3football spelling, and
+  seasons would mix the two. Conference names stay as they were
+  (`conference_names.csv`), since ncaa.com only gives tags like
+  "centennial".
+- **`week`** is ncaa.com's scoreboard week. It used to be d3football's (and
+  cfbfastR's) count: regular season from the first Saturday in September,
+  postseason restarting at 1. 2025 now reads regular season weeks 1-12
+  (each game one higher than before; the week-0 game is week 1),
+  tournament weeks 13-17, Stagg Bowl 19. `season_type` still separates
+  regular season from postseason. The game list's `ncaa_week` column is
+  gone (it is `week` now), and so is `date_based_week()`.
+- **`d3football_id`** is gone from the game list, with
+  `data-raw/ncaa/2025_contests.csv` (the crosswalk it came from) and the
+  `old_d3football_id` column of `2025_stats_ncaa_candidates.csv`. Notes
+  from before 2026-11-16 use the old ids; the crosswalk is in git history.
+
 ## Season dates ship with the package (R CMD check fix)
 
 `data-raw/season_dates.csv` moved to `inst/extdata/season_dates.csv`

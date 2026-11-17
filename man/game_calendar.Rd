@@ -21,8 +21,8 @@ else the game's), \code{season}, \code{game_date}, \code{week}, \code{season_typ
 \description{
 Returns \code{season}, \code{game_date} (ISO), \code{week}, \code{season_type} for the game.
 If the game isn't in the list (or no list is given), falls back to the
-game's own date, \code{\link[=classify_season_type]{classify_season_type()}}, and a date-based
-Sunday-to-Saturday week (\code{\link[=date_based_week]{date_based_week()}}), and logs a message saying
-so.
+game's own date and \code{\link[=classify_season_type]{classify_season_type()}}, with \code{week} NA (the week
+is ncaa.com's scoreboard week, which only the game list has), and logs a
+message saying so.
 }
 \keyword{internal}

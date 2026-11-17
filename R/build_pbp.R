@@ -2,9 +2,9 @@
 #'
 #' Returns `season`, `game_date` (ISO), `week`, `season_type` for the game.
 #' If the game isn't in the list (or no list is given), falls back to the
-#' game's own date, [classify_season_type()], and a date-based
-#' Sunday-to-Saturday week ([date_based_week()]), and logs a message saying
-#' so.
+#' game's own date and [classify_season_type()], with `week` NA (the week
+#' is ncaa.com's scoreboard week, which only the game list has), and logs a
+#' message saying so.
 #'
 #' @param game A game read by [fetch_ncaa_game()] or [fetch_stats_ncaa_game()].
 #' @param index The game list ([ncaa_season_games()]), or NULL.
@@ -22,9 +22,9 @@ game_calendar <- function(game, index, season_dates) {
   }
   d <- game$header_date
   st <- classify_season_type(d, game$season, season_dates)
-  wk <- date_based_week(d, game$season, st, season_dates)
+  wk <- NA_integer_
   message("Game ", game$game_id, " not found in the ", game$season,
-          " game list; using a date-based week (", wk, ", ", st, ").")
+          " game list; week left NA (", st, ").")
   list(index_home = unname(game$matchup[["home"]]), index_away = unname(game$matchup[["away"]]),
        season = game$season, game_date = format(d, "%Y-%m-%d"), week = wk,
        season_type = st, week_source = "date fallback")
@@ -473,7 +473,7 @@ scoring_team <- function(kept, text_team, teams) {
 #'   (situation, play) table), from [fetch_ncaa_game()] or
 #'   [fetch_stats_ncaa_game()].
 #' @param index The game list for the game's season ([ncaa_season_games()]).
-#'   If NULL, or the game isn't in it, a date-based week is used and logged
+#'   If NULL, or the game isn't in it, `week` is NA (logged)
 #'   (see [game_calendar()]).
 #' @param season_dates Season-dates table; if NULL, [ensure_season_dates()]
 #'   for the game's season (adds it from Wikipedia if missing).

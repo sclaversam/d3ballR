@@ -13,7 +13,7 @@ build_pbp(game, index = NULL, season_dates = NULL, conf = NULL)
 \code{\link[=fetch_stats_ncaa_game]{fetch_stats_ncaa_game()}}.}
 
 \item{index}{The game list for the game's season (\code{\link[=ncaa_season_games]{ncaa_season_games()}}).
-If NULL, or the game isn't in it, a date-based week is used and logged
+If NULL, or the game isn't in it, \code{week} is NA (logged)
 (see \code{\link[=game_calendar]{game_calendar()}}).}
 
 \item{season_dates}{Season-dates table; if NULL, \code{\link[=ensure_season_dates]{ensure_season_dates()}}

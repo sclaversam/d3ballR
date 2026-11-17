@@ -50,11 +50,11 @@ filter or `season`, not a new pipeline.
   `data-raw/ncaa/{season}_games.csv`, and `game_id` is the ncaa.com contest
   id ("6461490"), the file name in `pbp/{season}/`. Placeholder contests
   dated outside the season and second listings of the same game are
-  dropped. `week` and `season_type` keep d3football's convention; team names
-  keep d3football's spelling (`inst/extdata/team_names.csv`). The old d3football id is
-  the `d3football_id` column of the game list (from the 2025 crosswalk
-  `data-raw/ncaa/2025_contests.csv`, kept as data). Notes written before
-  2026-11-16 use the old ids.
+  dropped. Team names are ncaa.com's short names and `week` is ncaa.com's
+  scoreboard week (decided by Sam, 2026-11-17; until then both followed
+  d3football). Notes written before 2026-11-16 use the old d3football ids
+  ("20250906_e064"); git history has the old crosswalk
+  (`data-raw/ncaa/2025_contests.csv`).
 - **ncaa.com's play text is the same StatCrew text** as d3football's, so the
   parser is unchanged: `ncaa_play_table()` rebuilds d3football's
   (situation, play) table from the JSON. Its quirks, all handled there:

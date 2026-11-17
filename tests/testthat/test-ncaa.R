@@ -7,12 +7,6 @@ test_that("parse_ncaa_drive_text reads both driveText formats", {
   expect_equal(d$yard, c(28L, 4L, 13L, 3L, NA, NA))
 })
 
-test_that("ncaa_to_index_name maps through the crosswalk and keeps unknown names", {
-  f <- withr::local_tempfile(fileext = ".csv")
-  utils::write.csv(data.frame(ncaa_name = "Alfred St.", index_name = "Alfred State"), f, row.names = FALSE)
-  expect_equal(ncaa_to_index_name(c("Alfred St.", "Carnegie Mellon"), f), c("Alfred State", "Carnegie Mellon"))
-})
-
 # A tiny ncaa.com-shaped game: Alpha (ncaa home) kicks off, Beta scores a
 # touchdown whose extra point ncaa.com has no line for (the score still
 # rises by 1), then Alpha starts a drive. driveText has no yardline team.
@@ -358,7 +352,7 @@ test_that("driveText side codes are paired with the play text's by a yardline vo
   expect_length(ncaa_spot_token_map(spots, parse_ncaa_drive_text(rep("1 and 10 at 35", 6))), 0)
 })
 
-test_that("ncaa_season_games drops placeholders and second listings, and numbers postseason weeks", {
+test_that("ncaa_season_games drops placeholders and second listings, and keeps ncaa.com's weeks", {
   sb <- function(contest, week, date, away, home, as, hs, br = "") data.frame(
     contest = contest, ncaa_week = week, date = as.Date(date), away = away, home = home,
     away_score = as, home_score = hs, bracket_round = br, away_conference = "", home_conference = "")
@@ -373,7 +367,7 @@ test_that("ncaa_season_games drops placeholders and second listings, and numbers
   dates <- data.frame(season = 2025L, regular_season_end = as.Date("2025-11-15"))
   g <- ncaa_season_games(2025, weeks = c(2, 13, 17, 19), dir = dir, season_dates = dates)
   expect_equal(g$game_id, c("1", "2", "4", "6"))
-  expect_equal(g$week, c(1L, 1L, 2L, 3L))
+  expect_equal(g$week, c(2L, 13L, 17L, 19L))
   expect_equal(g$season_type, c("regular", "postseason", "postseason", "postseason"))
   d <- attr(g, "dropped")
   expect_equal(d$contest, c("5", "3"))

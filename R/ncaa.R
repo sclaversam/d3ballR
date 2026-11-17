@@ -289,7 +289,7 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
     if (!is.null(x)) sb[[length(sb) + 1]] <- x
   }
   sb <- do.call(rbind, sb)
-  tags <- data.frame(team = ncaa_to_index_name(c(sb$away, sb$home)),
+  tags <- data.frame(team = c(sb$away, sb$home),
                      seo = c(sb$away_conference, sb$home_conference))
   tags <- tags[tags$seo != "", ]
   seo <- tapply(tags$seo, tags$team, function(v) names(sort(table(v), decreasing = TRUE))[1])
@@ -328,31 +328,24 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
 #'   the lower id (2025: 6533522, beside 6529877).
 #'
 #' The columns:
-#' - `home`, `away`: ncaa.com's home and away teams, spelled as d3football
-#'   spells them ([ncaa_to_index_name()]; names not in the table are
-#'   ncaa.com's short names).
+#' - `home`, `away`: ncaa.com's home and away teams, by ncaa.com's short
+#'   names ("Alfred St.", "Carnegie Mellon").
 #' - `season_type`: "postseason" for NCAA tournament games (a
 #'   `bracket_round` on the scoreboard) and for games after the regular
 #'   season's end ([classify_season_type()]); "regular" otherwise.
-#' - `week`: d3football's convention, which cfbfastR also uses: regular
-#'   weeks count from the week of the first Saturday in September
-#'   ([date_based_week()]; a game before it is week 0); postseason weeks
-#'   count the weeks after the regular season that have games, so they are
-#'   the tournament's rounds (1 = first round, ..., 6 = the Stagg Bowl).
-#'   ncaa.com's own week is kept in `ncaa_week` (2025: regular week + 1).
-#' - `d3football_id`: the game's old d3football boxscore id, from the old
-#'   contest crosswalk (`{season}_contests.csv`, kept as data; 2025 only)
-#'   where it exists.
+#' - `week`: ncaa.com's scoreboard week (decided by Sam, 2026-11-17). It
+#'   counts on through the postseason: in 2025 the regular season is weeks
+#'   1-12 and the tournament weeks 13-17, with the Stagg Bowl in week 19.
 #'
 #' Writes `{dir}/{season}_games.csv`.
 #'
 #' @param season Season year.
 #' @param weeks ncaa.com week numbers to read.
-#' @param dir Folder for the game list and the crosswalk.
+#' @param dir Folder for the game list.
 #' @param season_dates Output of [read_season_dates()] (NULL: read it).
 #' @return A data frame, one row per game: `game_id`, `season`,
 #'   `game_date`, `week`, `season_type`, `home`, `away`, `home_score`,
-#'   `away_score`, `ncaa_week`, `bracket_round`, `d3football_id`.
+#'   `away_score`, `bracket_round`.
 #' @export
 ncaa_season_games <- function(season, weeks = 1:20, dir = "data-raw/ncaa", season_dates = NULL) {
   sb <- list()
@@ -387,25 +380,13 @@ ncaa_season_games <- function(season, weeks = 1:20, dir = "data-raw/ncaa", seaso
 
   tourney <- sb$bracket_round != ""
   st <- ifelse(tourney, "postseason", classify_season_type(sb$date, season, season_dates))
-  wk <- pmax(date_based_week(sb$date, season, st, season_dates), 0L)
-  # postseason weeks are numbered by the weeks that have games (the
-  # tournament's rounds: the 2025 Stagg Bowl, three weeks after the
-  # semifinals, is week 6)
-  post <- st == "postseason"
-  wk[post] <- match(wk[post], sort(unique(wk[post])))
-
-  xw_file <- file.path(dir, paste0(season, "_contests.csv"))
-  xw <- if (file.exists(xw_file)) {
-    utils::read.csv(xw_file, na.strings = "", colClasses = c(game_id = "character", contest = "character"))
-  } else data.frame(game_id = character(), contest = character())
 
   out <- data.frame(
     game_id = sb$contest, season = as.integer(season), game_date = format(sb$date, "%Y-%m-%d"),
-    week = as.integer(wk), season_type = st,
-    home = ncaa_to_index_name(sb$home), away = ncaa_to_index_name(sb$away),
+    week = as.integer(sb$ncaa_week), season_type = st,
+    home = sb$home, away = sb$away,
     home_score = sb$home_score, away_score = sb$away_score,
-    ncaa_week = sb$ncaa_week, bracket_round = sb$bracket_round,
-    d3football_id = xw$game_id[match(sb$contest, xw$contest)]
+    bracket_round = sb$bracket_round
   )
   out <- out[order(out$game_date, out$game_id), ]
   rownames(out) <- NULL
@@ -465,23 +446,6 @@ game_conferences <- function(game_id, home, away, conf) {
     conference_game = if (length(m)) any(m) else NA,
     shared_conference = !is.na(hc) & !is.na(ac) & hc == ac
   )
-}
-
-#' ncaa.com team names translated to d3football's spelling
-#'
-#' `inst/extdata/team_names.csv` lists the ncaa.com short names that differ
-#' from d3football's scoreboard spelling (the convention the output keeps), e.g.
-#' "Franklin & Marshall" -> "Franklin and Marshall". Names not listed are
-#' already the same on both sites.
-#'
-#' @param x ncaa.com short names.
-#' @param file The name table.
-#' @return `x`, translated where listed.
-#' @keywords internal
-ncaa_to_index_name <- function(x, file = d3_extdata("team_names.csv")) {
-  tab <- utils::read.csv(file, na.strings = "")
-  m <- tab$index_name[match(x, tab$ncaa_name)]
-  ifelse(is.na(m), x, m)
 }
 
 #' Flatten an ncaa.com play-by-play JSON into one row per line

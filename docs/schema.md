@@ -33,9 +33,8 @@ on every row, so any value can be traced back to its source.
   zero-padded `"MM:SS"` strings of time left in the quarter. `secs_remaining_*`
   columns are integers.
 - **Team names** (`home`, `away`, `pos_team`, `def_pos_team`, `penalized_team`)
-  use d3football's spelling (ncaa.com's names translated through
-  `inst/extdata/team_names.csv`; teams d3football never listed keep
-  ncaa.com's short name), one name per team for the whole season.
+  use ncaa.com's short names ("Alfred St.", "Carnegie Mellon"; d3football's
+  spellings until 2026-11-17), one name per team for the whole season.
   The raw `play_text` keeps each stat crew's own spelling and codes.
 
 ## Conventions
@@ -150,20 +149,20 @@ clock and seconds columns are NA in periods 5+.
   are labeled correctly.
 - `season_type` is `"postseason"` after the season's regular-season end date.
   NCAA playoff and bowl games are both postseason.
-- `week` is d3's scoreboard week. Postseason weeks restart at 1, as in
-  cfbfastR.
+- `week` is ncaa.com's scoreboard week. It counts on through the
+  postseason (unlike cfbfastR, whose postseason restarts at 1).
 
 ## Columns
 
 | # | column | type | definition | NA behavior | notes |
 |---|---|---|---|---|---|
-| 1 | `game_id` | character | The ncaa.com contest id, e.g. `"6461490"` (since 2026-11-16; before, d3football's boxscore id, e.g. `"20250906_e064"`). | Never NA. | Constant per file; the file name. Joins to the game list `data-raw/ncaa/{season}_games.csv`, whose `d3football_id` column is the old id. Read it as character. |
+| 1 | `game_id` | character | The ncaa.com contest id, e.g. `"6461490"` (since 2026-11-16; before, d3football's boxscore id, e.g. `"20250906_e064"`). | Never NA. | Constant per file; the file name. Joins to the game list `data-raw/ncaa/{season}_games.csv`. Read it as character. |
 | 2 | `season` | integer | Season year. | Never NA. | The season the game list belongs to, never read off the date (a January bowl or the Stagg Bowl is the season before). |
 | 3 | `game_date` | character | Game date, `YYYY-MM-DD`. | Never NA. | |
-| 4 | `week` | integer | Week of the season. | Never NA. | d3football's (and cfbfastR's) convention: regular weeks count from the week of the first Saturday in September (a game before it is week 0); postseason restarts at 1 and counts the postseason weeks with games (the tournament rounds; the Stagg Bowl is 6). Not ncaa.com's week number (regular week + 1 in 2025). |
+| 4 | `week` | integer | Week of the season. | Never NA. | ncaa.com's scoreboard week (since 2026-11-17; before, d3football's convention). 2025: regular season weeks 1-12, tournament weeks 13-17, Stagg Bowl week 19. Use `season_type` to tell regular season from postseason. |
 | 5 | `season_type` | character | `"regular"` or `"postseason"`. | Never NA. | Postseason for NCAA tournament games and any game after the regular-season end date (`inst/extdata/season_dates.csv`). All 2020 games are regular. |
-| 6 | `home` | character | Home team. | Never NA. | ncaa.com's home team, d3football's spelling. |
-| 7 | `away` | character | Away team. | Never NA. | ncaa.com's away team, d3football's spelling. |
+| 6 | `home` | character | Home team. | Never NA. | ncaa.com's home team, ncaa.com's short name. |
+| 7 | `away` | character | Away team. | Never NA. | ncaa.com's away team, ncaa.com's short name. |
 | 8 | `home_team_conference` | character | Home team's conference that season, e.g. `"Centennial Conference"`. From ncaa.com's scoreboard tag, named as d3football names it (`inst/extdata/conference_names.csv`). | NA for a team with no D3 conference that season (independent, non-D3) or not yet looked up. | Membership is per season (Carnegie Mellon: PAC through 2024, Centennial from 2025). cfbfastR name. |
 | 9 | `away_team_conference` | character | Away team's conference that season. | As `home_team_conference`. | cfbfastR name. |
 | 10 | `conference_game` | logical | ncaa.com builds: a regular-season game between two teams of the same conference. d3football builds: d3football marks it a conference game ("*" on the team schedule). | d3football builds: NA if neither team's schedule has been read. | Playoff and bowl games between members are FALSE either way. The ncaa.com rule matches d3football's marker on all 58 Centennial 2025 games. cfbfastR name. |
