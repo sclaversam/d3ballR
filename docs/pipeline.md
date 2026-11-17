@@ -155,6 +155,12 @@ first-down exclusivity and placement.
   `stats_ncaa_result` column: both "big portion missing" games are the same
   there (`6496410` has no 4th quarter, `6461643` only the first half), so
   they stay as they are.
+- **Elmhurst at Washington U. (`6461643`) covers only the first half:**
+  ncaa.com's file (and stats.ncaa.org, checked by Sam 2026-11-17) ends
+  after the 2nd quarter with "End of game". It reconciles (all 17 points
+  came before halftime), so it is kept and isn't in `known_exceptions.csv`
+  (that list is for games that don't reconcile), but its second half is
+  missing.
 - **Dead-ball penalties before a kickoff in tournament files** ("PENALTY
   CROWN Personal Foul 15 yards from WHEIL35 to WHEIL50. NO PLAY", driveText
   "- and -") have no situation, so they are unclassified and dropped
