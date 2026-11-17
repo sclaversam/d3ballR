@@ -151,7 +151,10 @@ first-down exclusivity and placement.
   his browser. (c) came from a scan of every file for a regulation quarter
   with no or few lines; thin 4th quarters in blowouts (running clock) and
   `6462325`, called for thunderstorms in the 4th quarter, are not
-  problems.
+  problems. Checked by Sam on stats.ncaa.org (2026-11-17), recorded in the file's
+  `stats_ncaa_result` column: both "big portion missing" games are the same
+  there (`6496410` has no 4th quarter, `6461643` only the first half), so
+  they stay as they are.
 - **Dead-ball penalties before a kickoff in tournament files** ("PENALTY
   CROWN Personal Foul 15 yards from WHEIL35 to WHEIL50. NO PLAY", driveText
   "- and -") have no situation, so they are unclassified and dropped
