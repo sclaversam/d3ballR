@@ -22,6 +22,11 @@ and what to check. Two problems found by the scan are new:
 file) and quarters filed under the wrong period in `6461596` (Lyon at
 McMurry) and `6531808` (Anna Maria at Worcester State).
 
+Sam's decision (same day): stats.ncaa.org is used only for games with no
+ncaa.com play-by-play or that can't be built: the 6 empty week-1 games and
+`6529905` (column `pull_from_stats_ncaa`). The rest stay as ncaa.com has
+them, documented.
+
 ## Game ids and the game list move to ncaa.com
 
 Decided by Sam (2026-11-16). The 2025 game list now comes from ncaa.com's

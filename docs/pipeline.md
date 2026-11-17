@@ -146,7 +146,10 @@ first-down exclusivity and placement.
   can't be built, (c) a big portion missing, (d) a severe smaller issue
   (doesn't reconcile and no rule can fix it, a missing touchdown, quarters
   mislabelled, downs unreliable). Each row has the ncaa.com link and what
-  to check on stats.ncaa.org. stats.ncaa.org blocks scripts (Akamai 403
+  to check on stats.ncaa.org. Sam's decision (2026-11-17): stats.ncaa.org
+  is used only for (a) and (b), the 7 rows with `pull_from_stats_ncaa`
+  TRUE; (c) and (d) stay as ncaa.com has them, documented.
+  stats.ncaa.org blocks scripts (Akamai 403
   on the first request), so a patch would come from a page Sam saves in
   his browser. (c) came from a scan of every file for a regulation quarter
   with no or few lines; thin 4th quarters in blowouts (running clock) and
