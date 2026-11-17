@@ -740,7 +740,8 @@ ncaa_spot_token_map <- function(spots, dt) {
 #'   a different team snaps: always in games with no "drive start" lines at
 #'   all (the tournament format), otherwise only on the game's first snap,
 #'   after a kickoff, on the first snap of an overtime period, or right after
-#'   a snap that can end a possession (a punt, turnover, 4th down or
+#'   a snap that can end a possession (a punt, turnover, 4th down not
+#'   converted, or
 #'   touchdown); ncaa.com's `teamId` is wrong on some single lines, so it
 #'   isn't trusted mid-drive.
 #' - ncaa.com leaves out some extra-point kicks. When a touchdown is
@@ -1172,8 +1173,16 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   # has no "drive start" line (a blocked field goal recovered by the defense)
   last_snap <- NA_integer_
   last_kick <- NA_integer_
+  # a 4th down the offense converted ("..., 1ST DOWN." before any penalty
+  # clause) keeps the ball: it doesn't open a new drive even when the next
+  # line carries the other team's id (6462090: MIT's id on Salve Regina's
+  # interception right after Salve converted 4th and 1)
+  converted <- function(k) {
+    stringr::str_detect(stringr::str_remove(txt[k], "PENALTY .*$"), "1ST DOWN") &&
+      !stringr::str_detect(txt[k], stringr::regex("intercepted|fumble", ignore_case = TRUE))
+  }
   ends_possession <- function(k) {
-    !is.na(k) && (dt$down[k] %in% 4L || stringr::str_detect(
+    !is.na(k) && ((dt$down[k] %in% 4L && !converted(k)) || stringr::str_detect(
       txt[k], stringr::regex("field goal|\\bpunt\\b|intercepted|fumble|blocked", ignore_case = TRUE)) ||
       live_td(txt[k]))
   }

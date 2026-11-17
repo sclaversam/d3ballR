@@ -433,6 +433,38 @@ try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = cha
   out
 }
 
+#' The offense for a dead-ball penalty: the team that snaps next
+#'
+#' A dead-ball penalty (`play_type` "penalty_no_play": no snap) happens
+#' between plays, so it belongs to the possession of the next snap. The
+#' source often files one that comes right after a kickoff, a punt or a
+#' turnover under the team that just gave the ball up ("PENALTY UPS False
+#' Start" after Lewis & Clark's kickoff, 6461790; a personal foul after
+#' Bethel's interception, 6462129), which put the new offense's first
+#' series on the wrong team. Each such row takes the `pos_team` of the next
+#' snap, when a snap follows in the same period with no kickoff, try or
+#' try-phase row in between. Rows in a try phase, and rows labelled as a
+#' safety on a foul in the end zone (they carry points), are left alone.
+#'
+#' @param kept Kept rows with `play_type`, `pos_team`, `period`,
+#'   `try_phase`, `play_text`.
+#' @return The corrected `pos_team` vector.
+#' @keywords internal
+dead_ball_penalty_team <- function(kept) {
+  out <- kept$pos_team
+  n <- nrow(kept)
+  dead <- which(kept$play_type == "penalty_no_play" & !kept$try_phase & !labelled_safety(kept$play_text))
+  stop_type <- c("kickoff", "extra_point", "two_point")
+  for (i in dead) {
+    j <- i + 1L
+    while (j <= n && kept$play_type[j] == "penalty_no_play" && !kept$try_phase[j]) j <- j + 1L
+    if (j > n || kept$period[j] != kept$period[i] || kept$try_phase[j] || kept$play_type[j] %in% stop_type) next
+    if (!kept$play_type[j] %in% play_type_categories || is.na(kept$pos_team[j])) next
+    out[i] <- kept$pos_team[j]
+  }
+  out
+}
+
 #' The team that scored each row's points, before tries are assigned
 #'
 #' A first pass of [parse_outcome_flags()] and [score_points()] on the rows
@@ -532,6 +564,7 @@ build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
   kept$try_phase <- flag_try_phase(kept)
   kept$pos_team <- try_phase_team(kept, scores, teams, kickoffs, actor_map,
                                   scorer = scoring_team(kept, text_team, teams))
+  kept$pos_team <- dead_ball_penalty_team(kept)
   kept$def_pos_team <- other_team(kept$pos_team, teams)
 
   kept$yards_to_goal <- compute_yards_to_goal(kept, own_side)

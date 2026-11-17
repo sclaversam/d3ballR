@@ -216,3 +216,18 @@ test_that("a touchdown overturned on review is not a touchdown (6461573)", {
   )
   expect_equal(has_touchdown(x), c(FALSE, TRUE, FALSE, FALSE))
 })
+
+test_that("a dead-ball penalty belongs to the team that snaps next (6461790)", {
+  kept <- data.frame(
+    play_type = c("kickoff", "penalty_no_play", "pass_incomplete", "rush", "penalty_no_play", "kickoff"),
+    pos_team = c("UPS", "LC", "UPS", "UPS", "UPS", "LC"), period = 1L,
+    try_phase = c(FALSE, FALSE, FALSE, FALSE, TRUE, FALSE),
+    play_text = c("kickoff", "PENALTY UPS False Start", "pass", "rush", "PENALTY LC UNS", "kickoff"))
+  expect_equal(dead_ball_penalty_team(kept), c("UPS", "UPS", "UPS", "UPS", "UPS", "LC"))
+})
+
+test_that("a penalty's team code can be glued to the infraction name", {
+  x <- split_infractions("PENALTY CCHolding (Duncan,Jeremy) 10 yards from CC27 to CC17.", c("CC", "MC"))[[1]]
+  expect_equal(x$token, "CC")
+  expect_equal(x$yards, 10L)
+})

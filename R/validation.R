@@ -180,6 +180,7 @@ write_first_down_report <- function(built, check_dir) {
             !length(flagged) & n_seg > 1 ~ "previous play has more than one yardage segment (a lateral): yards_gained reads only the first, so its first down is missed",
             !length(flagged) & prev_deadball_off_pen ~ "previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk)",
             length(flagged) == 1 & r$down[1] != 1L ~ "series starts with a down other than 1st: the source kept the old down for the new offense after a change of possession (source quirk)",
+            length(flagged) > 1 & all(r$down[flagged[-1]] > 1L, na.rm = TRUE) ~ "the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter missed it, so the situation-only series runs on (source quirk; the flag follows the play)",
             TRUE ~ "unexplained"),
           first_row_text = r$play_text[1]
         )

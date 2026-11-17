@@ -106,3 +106,28 @@ test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {
     expect_false(any(g$new_series[is.na(g$down)]), label = paste(basename(f), "flags only on snap rows"))
   }
 })
+
+test_that("a kickoff the source left out: the other team's snap after a try starts a kickoff series", {
+  d <- series_rows(play_type = c("rush", "extra_point", "rush", "rush"),
+                   pos_team = c("A", "A", "B", "B"), scoring_play = c(TRUE, FALSE, FALSE, FALSE),
+                   down = c(1L, NA, 1L, 2L))
+  d$try_phase <- c(FALSE, TRUE, FALSE, FALSE)
+  expect_equal(flags_of(d), c("-", "-", "kickoff", "-"))
+})
+
+test_that("a first down that an offensive penalty after the play didn't take away still counts (6462261)", {
+  # 1st & 10 at own 30: 20-yard catch, 1ST DOWN, then offensive holding
+  # enforced from the end of the run; next snap is a fresh 1st & 10 ten yards on
+  k <- data.frame(
+    play_text = c("pass complete for 20 yards to the COE50, 1ST DOWN, PENALTY COE Holding 10 yards from COE50 to COE40.",
+                  "pass complete for 15 yards to the BVU45, 1ST DOWN."),
+    play_type = "pass_complete", pos_team = "Coe", def_pos_team = "BV", down = 1L, distance = 10L,
+    yards_to_goal = c(70L, 60L), yards_gained = c(20L, 15L), penalty_yards_signed = c(-10L, NA),
+    penalty_declined = c(FALSE, NA), penalized_team = c("Coe", NA), Goal_To_Go = FALSE,
+    scrimmage_play = TRUE, penalty_no_play = FALSE, turnover = FALSE, scoring_play = FALSE)
+  out <- derive_first_downs(k, c(2L, NA))
+  expect_true(out$firstD_by_yards[1])
+  # the same holding with the next snap the same 1st down moved back: no first down
+  k2 <- k; k2$yards_to_goal <- c(70L, 80L); k2$distance <- c(10L, 20L)
+  expect_false(derive_first_downs(k2, c(2L, NA))$firstD_by_yards[1])
+})

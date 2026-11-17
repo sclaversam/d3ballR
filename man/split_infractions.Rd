@@ -30,4 +30,8 @@ Enforcement yards come
 only from "N yard(s) from/to", never from the play's "for N yards"
 (convention 5).
 }
+\details{
+The team code is followed by a space, or (in some host files) by the
+infraction name with no space ("PENALTY CCHolding 10 yards ...").
+}
 \keyword{internal}

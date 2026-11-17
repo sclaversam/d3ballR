@@ -5,6 +5,40 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## First-down flags: five fixes (477 to 317 series exceptions)
+
+Asked by Sam (2026-11-17): check the `first_downs.md` exceptions; the ones
+left are kept as known issues (`pipeline.md`). 1,263 games built, 1,262
+reconcile (unchanged); no point changes.
+
+- **A first down kept despite a later offensive penalty.** In
+  `derive_first_downs()` the test "did the same 1st down just move back?"
+  compared the next snap's distance against the *whole* distance column
+  (`%in%`), so almost every first down with an offensive penalty on the
+  play was dropped (6462261: 20-yard catch, 1ST DOWN, holding enforced
+  from the end of the play; the next snap is a fresh 1st and 10). Now
+  row by row. 43 rows gain `firstD_by_yards` / `new_series`.
+- **A kickoff the source left out.** In regulation, the other team's snap
+  right after a try or a scoring play starts a series by kickoff
+  (`firstD_by_kickoff`), even when ncaa.com printed no kickoff line
+  (`derive_series_flags()`). 74 rows.
+- **A dead-ball penalty belongs to the team that snaps next**
+  (`dead_ball_penalty_team()`): one right after a kickoff, punt or
+  turnover was filed under the team that gave the ball up (6461790,
+  6462129). 25 rows change `pos_team` (and their score columns and
+  `penalty_yards_signed`, which follow it); the bogus one-row drives they
+  made are gone, so later drives in those 22 games renumber.
+- **Penalty codes glued to the infraction** ("PENALTY CCHolding",
+  "GUIllegal", 10 games) are read (`split_infractions()`): 86 rows gain
+  `penalized_team` / `penalty_yards_signed`, and the first downs those
+  fouls took away are no longer credited.
+- **A converted 4th down keeps possession** in `ncaa_play_table()`: a
+  line with the other team's id right after it no longer opens a drive
+  (6462090: Salve Regina's interception filed under MIT). 4 rows change
+  team.
+- The report labels the source's down-counter quirk (a first down the
+  next situation doesn't show) instead of "unexplained".
+
 ## Last traces of d3football removed (package prep)
 
 Asked by Sam (2026-11-17). No output changed: all 1,263 games in

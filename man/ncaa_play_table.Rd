@@ -53,7 +53,8 @@ score. A header and a "TEAM drive start at." line are also added when
 a different team snaps: always in games with no "drive start" lines at
 all (the tournament format), otherwise only on the game's first snap,
 after a kickoff, on the first snap of an overtime period, or right after
-a snap that can end a possession (a punt, turnover, 4th down or
+a snap that can end a possession (a punt, turnover, 4th down not
+converted, or
 touchdown); ncaa.com's \code{teamId} is wrong on some single lines, so it
 isn't trusted mid-drive.
 \item ncaa.com leaves out some extra-point kicks. When a touchdown is
