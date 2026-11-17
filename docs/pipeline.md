@@ -52,7 +52,7 @@ ncaa.com yet) are listed as pending, and the next run continues from there.
 
 | Stage | What it does | Code | Output |
 |---|---|---|---|
-| Season dates | Regular-season end date per season (2019-2025 seeded and verified). A missing season is read from its Wikipedia infobox and logged for checking. | `R/season_dates.R` (`ensure_season_dates`, `check_season_dates`) | `data-raw/season_dates.csv` |
+| Season dates | Regular-season end date per season (2019-2025 seeded and verified). A missing season is read from its Wikipedia infobox and logged for checking. | `R/season_dates.R` (`ensure_season_dates`, `check_season_dates`) | `inst/extdata/season_dates.csv` (ships with the package; seasons added on an installed copy go to a user copy) |
 | Game list | Every game of a season from ncaa.com's weekly D3 scoreboards (cached): `game_id` = contest id, date, week and regular/postseason in d3football's convention, teams in d3football's spelling, final score, and the old d3football id. Placeholder and duplicate contests are dropped (logged). | `R/ncaa.R` (`ncaa_season_games`) | `data-raw/ncaa/{season}_games.csv` |
 | Conferences | Each team's conference that season, from ncaa.com's scoreboard tags (already read for the game list, so no new requests); conference game = same conference, regular season. | `R/ncaa.R` (`ncaa_conference_table`, `game_conferences`) | `data-raw/ncaa/{season}_conferences.csv` |
 | Old-id crosswalk | Data only (its builder was removed with the d3football code): each 2025 d3football game id's ncaa.com contest id. `ncaa_season_games()` reads it for `d3football_id`. Historical notes in this file and the CHANGELOG before 2026-11-16 use the old ids. | | `data-raw/ncaa/2025_contests.csv` |
@@ -180,13 +180,8 @@ first-down exclusivity and placement.
   Anna Maria, Madonna, Point); their conference columns are NA.
 - **Older seasons:** only 2025 has been built. Other seasons' ncaa.com
   scoreboards may differ or not exist (2020 was a spring season; folded
-  conferences need extra codes in `conference_names.csv`); nobody has
+  conferences need extra codes in `inst/extdata/conference_names.csv`); nobody has
   checked how far back ncaa.com's D3 play-by-play goes.
-- **`R CMD check` fails 2 tests (to fix later).** `test-season-dates.R`
-  reads `data-raw/season_dates.csv`, but `.Rbuildignore`
-  leaves `data-raw/` out of the built package, so the file is missing there.
-  `devtools::test()` runs from the source tree and passes. Fix: move the CSV
-  to `inst/extdata/` and read it with `system.file()`.
 
 ## Source quirks the pipeline handles
 

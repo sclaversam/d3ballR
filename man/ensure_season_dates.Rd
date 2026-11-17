@@ -4,12 +4,12 @@
 \alias{ensure_season_dates}
 \title{Make sure the season-dates table covers the given seasons}
 \usage{
-ensure_season_dates(seasons, path = "data-raw/season_dates.csv")
+ensure_season_dates(seasons, path = season_dates_path())
 }
 \arguments{
 \item{seasons}{Integer vector of seasons needed.}
 
-\item{path}{CSV path.}
+\item{path}{CSV path (default \code{\link[=season_dates_path]{season_dates_path()}}).}
 }
 \value{
 The (possibly extended) season-dates table.
@@ -18,6 +18,9 @@ The (possibly extended) season-dates table.
 For each season missing from the table, fetches its Wikipedia page
 (\code{\link[=fetch_wikipedia_regular_season_end]{fetch_wikipedia_regular_season_end()}}), appends the date with
 \code{source = "wikipedia"}, writes the CSV back, and logs that it was added
-so it can be verified. Then compares every date with the Thanksgiving
+so it can be verified. Working from the source folder (\code{load_all()}),
+"back" is \code{inst/extdata/season_dates.csv}, so the new season can be
+committed; with an installed package it is the user copy (see
+\code{\link[=season_dates_path]{season_dates_path()}}). Then compares every date with the Thanksgiving
 rule (\code{\link[=check_season_dates]{check_season_dates()}}), warning on disagreements.
 }

@@ -5,6 +5,20 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Season dates ship with the package (R CMD check fix)
+
+`data-raw/season_dates.csv` moved to `inst/extdata/season_dates.csv`
+(Sam, 2026-11-17). `data-raw/` is left out of the built package, so an
+installed d3ballR couldn't find the table that sets `season_type` and the
+week numbers, and `R CMD check` failed 2 tests. `read_season_dates()` and
+`ensure_season_dates()` now find it with `season_dates_path()`; a season
+added on an installed copy is saved to a user copy
+(`tools::R_user_dir("d3ballR", "data")`) instead of inside the package.
+The two name tables the code reads at run time moved too, for the same
+reason: `data-raw/ncaa/team_names.csv` and `conference_names.csv` are now
+in `inst/extdata/` (an installed copy without `team_names.csv` would have
+spelled teams ncaa.com's way without saying so). No output changes.
+
 ## d3football code removed: d3ballR is ncaa.com-only
 
 Asked by Sam (2026-11-17), now that all of 2025 is built from ncaa.com (and

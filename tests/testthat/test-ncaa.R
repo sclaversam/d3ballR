@@ -126,7 +126,7 @@ test_that("conf_seo reads a scoreboard team's conference tag", {
 })
 
 test_that("the conference crosswalk covers every D3 conference tag with a unique code", {
-  tab <- utils::read.csv(test_path("../../data-raw/ncaa/conference_names.csv"), na.strings = "")
+  tab <- utils::read.csv(d3_extdata("conference_names.csv"), na.strings = "")
   expect_false(anyDuplicated(tab$ncaa_seo) > 0)
   expect_false(anyDuplicated(tab$conference_code) > 0)
   expect_true(all(c("centennial", "wiac", "njac", "middle-atlantic") %in% tab$ncaa_seo))

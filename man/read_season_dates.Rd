@@ -4,10 +4,10 @@
 \alias{read_season_dates}
 \title{Read the regular-season end dates}
 \usage{
-read_season_dates(path = "data-raw/season_dates.csv")
+read_season_dates(path = season_dates_path())
 }
 \arguments{
-\item{path}{CSV path (default \code{data-raw/season_dates.csv}).}
+\item{path}{CSV path (default \code{\link[=season_dates_path]{season_dates_path()}}).}
 }
 \value{
 A data frame.
