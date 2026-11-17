@@ -20,7 +20,8 @@ running score (see above), or NULL.}
 returns it, for games with no running score, or NULL.}
 }
 \value{
-A tibble with \code{situation} and \code{play}, as \code{\link[=find_plays]{find_plays()}} returns.
+A tibble with \code{situation} and \code{play}: the (situation, play)
+table the parser reads (\code{\link[=classify_plays]{classify_plays()}}).
 }
 \description{
 The rest of the pipeline reads d3football's two-column play table

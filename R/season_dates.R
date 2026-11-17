@@ -45,6 +45,8 @@ parse_infobox_regular_season_end <- function(wikitext, season) {
 #' @return Date, or NA if not found.
 #' @keywords internal
 fetch_wikipedia_regular_season_end <- function(season) {
+  throttle()
+  .fetch_state$n_requests <- n_requests() + 1L
   resp <- httr2::request("https://en.wikipedia.org/w/api.php") |>
     httr2::req_url_query(action = "parse", page = paste(season, "NCAA Division III football season"),
                          prop = "wikitext", format = "json", formatversion = 2, redirects = 1) |>
@@ -146,7 +148,8 @@ ensure_season_dates <- function(seasons, path = "data-raw/season_dates.csv") {
 #' a season isn't in the table (see [ensure_season_dates()]).
 #'
 #' @param game_date Date vector.
-#' @param season Integer vector (from the boxscore URL path, never the date).
+#' @param season Integer vector (the season the game belongs to, never read
+#'   off the date: January games belong to the season before).
 #' @param season_dates Output of [read_season_dates()].
 #' @return Character vector.
 #' @keywords internal
@@ -162,10 +165,10 @@ classify_season_type <- function(game_date, season, season_dates) {
 
 #' Date-based week number (Sunday-to-Saturday)
 #'
-#' The fallback when a game isn't in the season index, and the cross-check
-#' against the scoreboard's week in the index report. Weeks run Sunday to
-#' Saturday. Regular-season week 1 is the week of the season's first
-#' Saturday in September (d3's own week 1 in 2019, 2024 and 2025).
+#' The week of every game in the game list ([ncaa_season_games()]), and the
+#' fallback for a game that isn't in it. Weeks run Sunday to Saturday.
+#' Regular-season week 1 is the week of the season's first Saturday in
+#' September (d3football's own week 1 in 2019, 2024 and 2025).
 #' Postseason weeks restart at 1 (cfbfastR) with the week of the first
 #' Saturday after `regular_season_end`. For a season whose games aren't in
 #' the fall (2020, played in spring 2021), pass `regular_anchor`: the
@@ -196,170 +199,4 @@ date_based_week <- function(game_date, season, season_type, season_dates, regula
   post_anchor <- sunday_on_or_before(as.Date(first_post_sat, origin = "1970-01-01"))
   anchor <- as.Date(ifelse(season_type == "postseason", post_anchor, reg_anchor), origin = "1970-01-01")
   as.integer(floor(as.numeric(game_date - anchor) / 7)) + 1L
-}
-
-#' Parse one d3football weekly scoreboard page
-#'
-#' The composite scoreboard (`/scoreboard/{season}/composite?view=N`) lists
-#' one week's games in a single table: Date ("Sep. 6", no year), Away
-#' (optional "No. N" ranking + team link), away score, Home, home score,
-#' status, and links ("BX" = boxscore). A row with an empty date cell is a
-#' note on the game above it ("@ Canton, Ohio" = neutral site). There are no
-#' round or bowl labels: NCAA playoff and bowl games share the table.
-#'
-#' @param html Parsed page.
-#' @param season Season the page belongs to.
-#' @param view The page's `view=` number.
-#' @return Data frame, one row per game (may be zero rows).
-#' @keywords internal
-parse_scoreboard_page <- function(html, season, view) {
-  rows <- rvest::html_elements(html, xpath = "//div[contains(@class,'schedule')]//table//tr[td]")
-  if (!length(rows)) return(NULL)
-  cells <- lapply(rows, function(r) rvest::html_elements(r, xpath = "./td"))
-  team_of <- function(td) {
-    a <- rvest::html_element(td, "a")
-    nm <- if (!is.na(a)) rvest::html_text(a) else rvest::html_text(td)
-    stringr::str_squish(stringr::str_remove(stringr::str_squish(nm), "^No\\. \\d+\\s*"))
-  }
-  out <- list()
-  for (i in seq_along(cells)) {
-    td <- cells[[i]]
-    first <- stringr::str_squish(rvest::html_text(td[[1]]))
-    if (length(td) < 7 || first == "") {
-      # note row: attach to the previous game (neutral-site location)
-      if (length(out)) out[[length(out)]]$site_note <- stringr::str_squish(rvest::html_text(rows[[i]]))
-      next
-    }
-    links <- rvest::html_attr(rvest::html_elements(td[[7]], "a"), "href")
-    bx <- links[grepl("/boxscores/", links)][1]
-    out[[length(out) + 1]] <- data.frame(
-      date_text = first,
-      away = team_of(td[[2]]),
-      away_score = suppressWarnings(as.integer(stringr::str_squish(rvest::html_text(td[[3]])))),
-      home = team_of(td[[4]]),
-      home_score = suppressWarnings(as.integer(stringr::str_squish(rvest::html_text(td[[5]])))),
-      status = stringr::str_squish(rvest::html_text(td[[6]])),
-      boxscore_path = if (is.na(bx)) NA_character_ else bx,
-      site_note = NA_character_,
-      scoreboard_view = as.integer(view),
-      page_season = as.integer(season)
-    )
-  }
-  do.call(rbind, out)
-}
-
-#' Turn scoreboard rows into the season index
-#'
-#' - `game_id` and `boxscore_url` from the boxscore link (NA when d3 has no
-#'   boxscore, e.g. a cancelled game).
-#' - `season` from the `/seasons/{year}/` URL path, never from the date, so
-#'   January games and the spring-2021 "2020" season are labelled right.
-#' - `game_date` from the boxscore id (YYYYMMDD); without a boxscore, from
-#'   the "Sep. 6" text, with the year taken as `season` for July-December
-#'   and `season + 1` for January-June.
-#' - `season_type` by [classify_season_type()].
-#' - `week`: the scoreboard view number for regular-season games;
-#'   postseason weeks restart at 1 (cfbfastR): `view - first_postseason_view
-#'   + 1`.
-#'
-#' @param raw Rows from [parse_scoreboard_page()].
-#' @param season_dates Output of [read_season_dates()].
-#' @return The index data frame.
-#' @keywords internal
-finalize_season_index <- function(raw, season_dates) {
-  base <- "https://www.d3football.com"
-  path <- raw$boxscore_path
-  game_id <- stringr::str_match(path, "/boxscores/([^./]+)\\.xml")[, 2]
-  url_season <- as.integer(stringr::str_match(path, "/seasons/(\\d{4})/")[, 2])
-  season <- dplyr::coalesce(url_season, raw$page_season)
-
-  id_date <- as.Date(stringr::str_match(game_id, "^(\\d{8})")[, 2], format = "%Y%m%d")
-  m <- stringr::str_match(raw$date_text, "^([A-Za-z]+)\\.? (\\d{1,2})")
-  mon <- match(substr(tolower(m[, 2]), 1, 3), tolower(month.abb))
-  yr <- ifelse(mon >= 7, season, season + 1L)
-  text_date <- as.Date(sprintf("%d-%02d-%02d", yr, mon, as.integer(m[, 3])))
-  game_date <- dplyr::coalesce(id_date, text_date)
-
-  season_type <- classify_season_type(game_date, season, season_dates)
-  first_post_view <- tapply(raw$scoreboard_view[season_type == "postseason"],
-                            season[season_type == "postseason"], min)
-  fpv <- first_post_view[as.character(season)]
-  week <- ifelse(season_type == "postseason", raw$scoreboard_view - fpv + 1L, raw$scoreboard_view)
-
-  idx <- data.frame(
-    game_id = game_id, season = season, game_date = format(game_date, "%Y-%m-%d"),
-    week = as.integer(week), season_type = season_type,
-    home = raw$home, away = raw$away,
-    boxscore_url = ifelse(is.na(path), NA_character_, paste0(base, path)),
-    scoreboard_view = raw$scoreboard_view, status = raw$status,
-    away_score = raw$away_score, home_score = raw$home_score, site_note = raw$site_note,
-    date_text = raw$date_text, text_date = format(text_date, "%Y-%m-%d")
-  )
-  idx <- idx[is.na(idx$game_id) | !duplicated(idx$game_id), ]
-  idx[order(idx$game_date, idx$game_id), ]
-}
-
-#' Build (or load) the index of every game in a d3football season
-#'
-#' Loops over the weekly composite scoreboard pages
-#' (`https://www.d3football.com/scoreboard/{season}/composite?view=N`),
-#' starting at view 1 and stopping after two consecutive views with no
-#' games (pages past the season's last week come back empty), and returns
-#' one row per game. Requests are throttled (`delay` seconds apart) and
-#' sent with a browser User-Agent. The result is cached to
-#' `{cache_dir}/{season}.csv` and the cache is reused unless
-#' `refresh = TRUE`.
-#'
-#' @param season Season year, e.g. 2025 (the 2020 season was played in
-#'   spring 2021).
-#' @param refresh Re-scrape even if a cached index exists.
-#' @param cache_dir Cache directory.
-#' @param delay Seconds to wait between requests.
-#' @param max_views Safety cap on the number of views tried.
-#' @param season_dates_path Path to `season_dates.csv`.
-#' @return Data frame: `game_id`, `season`, `game_date` (ISO), `week`,
-#'   `season_type`, `home`, `away`, `boxscore_url`, then provenance columns
-#'   `scoreboard_view`, `status`, `away_score`, `home_score`, `site_note`
-#'   (e.g. "@ Canton, Ohio" for a neutral site), `date_text`, `text_date`.
-#'   `game_id` / `boxscore_url` are NA for games d3 has no boxscore for.
-#' @export
-build_season_index <- function(season, refresh = FALSE, cache_dir = "data-raw/index",
-                               delay = 3, max_views = 30,
-                               season_dates_path = "data-raw/season_dates.csv") {
-  cache <- file.path(cache_dir, paste0(season, ".csv"))
-  if (!refresh && file.exists(cache)) {
-    return(utils::read.csv(cache, na.strings = "", colClasses = c(game_id = "character")))
-  }
-  old <- options(d3ballR.delay = delay)
-  on.exit(options(old), add = TRUE)
-  pages <- list()
-  empties <- 0L
-  for (v in seq_len(max_views)) {
-    url <- sprintf("https://www.d3football.com/scoreboard/%d/composite?view=%d", season, v)
-    html <- tryCatch(fetch_html(url, refresh = refresh), error = function(e) NULL)
-    rows <- if (is.null(html)) NULL else parse_scoreboard_page(html, season, v)
-    if (is.null(rows) || !nrow(rows)) {
-      empties <- empties + 1L
-      if (empties >= 2L) break
-      next
-    }
-    empties <- 0L
-    pages[[length(pages) + 1]] <- rows
-    message("season ", season, " view ", v, ": ", nrow(rows), " games")
-  }
-  if (!length(pages)) stop("No scoreboard games found for season ", season)
-  idx <- finalize_season_index(do.call(rbind, pages), ensure_season_dates(season, season_dates_path))
-  dir.create(cache_dir, showWarnings = FALSE, recursive = TRUE)
-  utils::write.csv(idx, cache, row.names = FALSE, na = "")
-  idx
-}
-
-#' Games involving a team, from a season index
-#'
-#' @param index Output of [build_season_index()].
-#' @param team Team name as the scoreboard spells it (e.g. "Carnegie Mellon").
-#' @return The matching index rows.
-#' @export
-index_team_games <- function(index, team) {
-  index[index$home == team | index$away == team, ]
 }

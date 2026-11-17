@@ -5,6 +5,38 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## d3football code removed: d3ballR is ncaa.com-only
+
+Asked by Sam (2026-11-17), now that all of 2025 is built from ncaa.com (and
+stats.ncaa.org for 9 games). No output changed: all 1,263 games in
+`pbp/2025/` rebuild byte-identical, 1,262 reconcile.
+
+- **Removed:** the d3football page scraper (`fetch_html()`,
+  `scrape_plays()`, `find_plays()` and the boxscore line-score readers),
+  the d3football season index (`build_season_index()` and the scoreboard
+  parsers), the team and standings pages (`R/conferences.R` except
+  `game_conferences()`), `map_ncaa_contests()` (it needed the index; the
+  2025 crosswalk it wrote stays as data), `build_season(source =
+  "d3football")`, `scripts/season_index_report.R`, and the d3football
+  outputs `pbp/d3football/`, `checks/d3football/`, `data-raw/index/`,
+  `data-raw/conferences/`, `checks/2025/season_index.md`. All are in git
+  history up to 0e64fd9.
+- **Moved:** the shared request bookkeeping (`n_requests()`,
+  `reset_fetch_state()`, `throttle()`) from `R/scrape_plays.R` to
+  `R/fetch.R`; its environment is `.fetch_state`. The Wikipedia request for
+  season dates now goes through the same throttle and counter.
+  `R/season_index.R` is now `R/season_dates.R` (season dates, season type,
+  date-based weeks); `game_conferences()` moved to `R/ncaa.R`.
+- **Changed:** `build_pbp()` takes a game already read (from
+  `fetch_ncaa_game()` or `fetch_stats_ncaa_game()`), not a URL;
+  `build_all_pbp(game_ids, ..., loader, season, index)`. `build_failures.csv`
+  names its column `game_id` (was `game_url`). `scripts/build_season.R
+  --conference` reads members from `data-raw/ncaa/{season}_conferences.csv`.
+- **Reports:** `build_report.md` no longer compares `conference_game` with
+  d3football's cached "*" marker (last result: 288 of 289 agree, the one
+  being Gallaudet's ncaa.com tag), and `conference_check.csv` loses its
+  `d3_marker` and `agree` columns.
+
 ## Two known source gaps fixed from stats.ncaa.org
 
 Sam's go-ahead (2026-11-17): the stats.ncaa.org rule also covers a game

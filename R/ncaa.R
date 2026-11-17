@@ -48,7 +48,7 @@ ncaa_cache_key <- function(path) {
 #' ([ncaa_direct_request()]); with `options(d3ballR.ncaa_api = ...)` from
 #' an ncaa-api server ([ncaa_api_base()]). Both store the same JSON.
 #'
-#' Same rules as [fetch_html()]: every response is cached on disk
+#' Every response is cached on disk
 #' (`getOption("d3ballR.ncaa_cache_dir")`, default `data-raw/cache/ncaa/`,
 #' gitignored) and never requested twice; requests are at least
 #' `d3ballR.delay` seconds apart and count against `d3ballR.max_requests`;
@@ -70,18 +70,18 @@ fetch_ncaa_json <- function(path, refresh = FALSE) {
   }
   # a path that already returned an HTTP error this run (no play-by-play
   # yet) is not requested again until the next run
-  failed <- .d3_state$http_failed
+  failed <- .fetch_state$http_failed
   if (!is.null(failed) && path %in% names(failed)) {
     stop("Not fetched: ncaa.com HTTP ", failed[[path]], " for ", path, " (earlier this run; not retried)", call. = FALSE)
   }
   budget <- getOption("d3ballR.max_requests", Inf)
   if (n_requests() >= budget) stop("Not fetched: request budget (", budget, ") reached: ", path, call. = FALSE)
   throttle()
-  .d3_state$n_requests <- n_requests() + 1L
+  .fetch_state$n_requests <- n_requests() + 1L
   api <- ncaa_api_base()
   res <- if (is.null(api)) ncaa_direct_request(path) else ncaa_api_request(api, path)
   if (is.null(res$body)) {
-    .d3_state$http_failed <- c(.d3_state$http_failed, stats::setNames(as.character(res$status), path))
+    .fetch_state$http_failed <- c(.fetch_state$http_failed, stats::setNames(as.character(res$status), path))
     stop("Not fetched: ncaa.com HTTP ", res$status, " for ", path,
          if (!is.null(res$why)) paste0(" (", res$why, ")"), call. = FALSE)
   }
@@ -225,7 +225,8 @@ ncaa_gql_scoreboard <- function(contests) {
 #'
 #' @param season Season year.
 #' @param week ncaa.com week number (1, 2, ...). ncaa.com numbers weeks
-#'   its own way; they don't match the season index's weeks.
+#'   its own way (2025: d3football's regular week + 1; see
+#'   [ncaa_season_games()]).
 #' @return A data frame, one row per game: `contest` (ncaa.com contest id),
 #'   `ncaa_week`, `date`, `away`, `home` (ncaa.com short names),
 #'   `away_score`, `home_score` (integer, NA when ncaa.com shows none),
@@ -264,19 +265,19 @@ conf_seo <- function(team) {
 #' (d3football's names and codes, e.g. "Centennial Conference", "CC").
 #' Tags not in that table (non-D3 conferences such as "nec", and
 #' "diii-independent") and blank tags give NA, as for an independent or a
-#' non-D3 opponent. The scoreboards are the ones [map_ncaa_contests()]
+#' non-D3 opponent. The scoreboards are the ones [ncaa_season_games()]
 #' reads, so nothing new is fetched once they are cached.
 #'
 #' ncaa.com has no conference-game marker, so `conference_marker` is TRUE
-#' for a regular-season game (the season index's `season_type`) between two
+#' for a regular-season game (the game list's `season_type`) between two
 #' teams of the same conference. Playoff and bowl games are FALSE.
 #'
 #' @param season Season year.
-#' @param index The season index ([build_season_index()]).
+#' @param index The game list ([ncaa_season_games()]).
 #' @param weeks ncaa.com week numbers to read.
 #' @param dir Where `conference_names.csv` is, and where
 #'   `{season}_conferences.csv` is written.
-#' @return The same shape as [build_conference_table()]: a list with
+#' @return A list with
 #'   `table` (`season`, `team`, `conference`, `conference_code`,
 #'   `ncaa_conference`) and `markers` (`season`, `team`, `game_id`,
 #'   `conference_marker`; one row per index game, `team` is the home team).
@@ -314,7 +315,7 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
 #' The season's game list from ncaa.com's Division III scoreboards
 #'
 #' Since 2026-11-16 the game list (and `game_id`) comes from ncaa.com, not
-#' from d3football's season index. Every contest on the season's weekly
+#' from d3football's season index (whose scraper was removed on 2026-11-17). Every contest on the season's weekly
 #' scoreboards (`weeks`, cached) is one game; `game_id` is its ncaa.com
 #' contest id ("6461490"). A contest listed in more than one week is kept
 #' once. Dropped (listed in the result's `dropped` attribute, with why):
@@ -326,8 +327,7 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
 #'   score): the tournament's contest (with a bracket round) is kept, else
 #'   the lower id (2025: 6533522, beside 6529877).
 #'
-#' Columns follow the season index, so the rest of the pipeline reads them
-#' the same way:
+#' The columns:
 #' - `home`, `away`: ncaa.com's home and away teams, spelled as d3football
 #'   spells them ([ncaa_to_index_name()]; names not in the table are
 #'   ncaa.com's short names).
@@ -341,7 +341,8 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
 #'   the tournament's rounds (1 = first round, ..., 6 = the Stagg Bowl).
 #'   ncaa.com's own week is kept in `ncaa_week` (2025: regular week + 1).
 #' - `d3football_id`: the game's old d3football boxscore id, from the old
-#'   contest crosswalk (`{season}_contests.csv`) where it exists.
+#'   contest crosswalk (`{season}_contests.csv`, kept as data; 2025 only)
+#'   where it exists.
 #'
 #' Writes `{dir}/{season}_games.csv`.
 #'
@@ -425,7 +426,9 @@ ncaa_season_games <- function(season, weeks = 1:20, dir = "data-raw/ncaa", seaso
 #' so this is the identity mapping.
 #'
 #' @param games Output of [ncaa_season_games()].
-#' @return A data frame like [map_ncaa_contests()]'s.
+#' @return A data frame: `game_id`, `contest`, `ncaa_away`, `ncaa_home`,
+#'   `ncaa_away_score`, `ncaa_home_score`, `home_away_flip` (FALSE),
+#'   `date_diff` (0).
 #' @keywords internal
 ncaa_contest_table <- function(games) {
   data.frame(game_id = games$game_id, contest = games$game_id,
@@ -434,10 +437,40 @@ ncaa_contest_table <- function(games) {
              home_away_flip = FALSE, date_diff = 0)
 }
 
-#' ncaa.com team names translated to the season index's spelling
+#' Conference columns for one game
+#'
+#' `home_team_conference` / `away_team_conference` from the season's
+#' conference table (NA for a team in no conference: an independent or a
+#' non-D3 opponent, or a team not in the table). `conference_game` from
+#' the game's marker ([ncaa_conference_table()]: same conference in the
+#' regular season), NOT from shared membership alone, so a playoff game
+#' between two members isn't counted; NA when the game has no marker.
+#' `shared_conference` (both teams in the same conference) is returned for
+#' the report.
+#'
+#' @param game_id Game id.
+#' @param home,away Team names (the game list's spelling).
+#' @param conf Output of [ncaa_conference_table()], or NULL.
+#' @return A list: `home_team_conference`, `away_team_conference`,
+#'   `conference_game`, `shared_conference`.
+#' @keywords internal
+game_conferences <- function(game_id, home, away, conf) {
+  tab <- conf$table
+  hc <- if (!is.null(tab)) tab$conference[match(home, tab$team)] else NA_character_
+  ac <- if (!is.null(tab)) tab$conference[match(away, tab$team)] else NA_character_
+  m <- if (!is.null(conf$markers)) conf$markers$conference_marker[conf$markers$game_id %in% game_id] else logical()
+  list(
+    home_team_conference = hc,
+    away_team_conference = ac,
+    conference_game = if (length(m)) any(m) else NA,
+    shared_conference = !is.na(hc) & !is.na(ac) & hc == ac
+  )
+}
+
+#' ncaa.com team names translated to d3football's spelling
 #'
 #' `data-raw/ncaa/team_names.csv` lists the ncaa.com short names that differ
-#' from d3football's scoreboard spelling (the season index's), e.g.
+#' from d3football's scoreboard spelling (the convention the output keeps), e.g.
 #' "Franklin & Marshall" -> "Franklin and Marshall". Names not listed are
 #' already the same on both sites.
 #'
@@ -450,75 +483,6 @@ ncaa_to_index_name <- function(x, file = "data-raw/ncaa/team_names.csv") {
   tab <- utils::read.csv(file, na.strings = "")
   m <- tab$index_name[match(x, tab$ncaa_name)]
   ifelse(is.na(m), x, m)
-}
-
-#' Match the season index's games to ncaa.com contest ids
-#'
-#' Reads the ncaa.com scoreboard week by week (cached) and pairs each
-#' ncaa.com game with an index game: same two teams (after
-#' [ncaa_to_index_name()]) and game dates at most one day apart (closest
-#' first). Tournament (bracket) entries are matched first, since ncaa.com
-#' lists a few of them twice. Home and away are compared but not required
-#' to agree (ncaa.com lists Salisbury at Johns Hopkins, Dec 6 2025, the
-#' other way round); `home_away_flip` records it.
-#'
-#' The result is written to `data-raw/ncaa/{season}_contests.csv` and read
-#' back from there on later calls (pass `refresh = TRUE` to rebuild it).
-#' Weeks the run can't fetch (offline, budget) are skipped with a message,
-#' so a partial table can be completed later.
-#'
-#' @param season Season year.
-#' @param index The season index ([build_season_index()]).
-#' @param weeks ncaa.com week numbers to read.
-#' @param dir Where the contest table is kept.
-#' @param refresh Rebuild the table even if it exists.
-#' @return A data frame: `game_id` (index id), `contest`, `ncaa_away`,
-#'   `ncaa_home`, `ncaa_away_score`, `ncaa_home_score`, `home_away_flip`,
-#'   `date_diff` (days).
-#' @export
-map_ncaa_contests <- function(season, index, weeks = 1:20, dir = "data-raw/ncaa", refresh = FALSE) {
-  f <- file.path(dir, paste0(season, "_contests.csv"))
-  if (!refresh && file.exists(f)) {
-    return(utils::read.csv(f, na.strings = "", colClasses = c(game_id = "character", contest = "character")))
-  }
-  sb <- list()
-  for (w in weeks) {
-    x <- tryCatch(ncaa_scoreboard_week(season, w), error = function(e) {
-      message("ncaa.com scoreboard week ", w, " not read: ", conditionMessage(e))
-      NULL
-    })
-    if (!is.null(x)) sb[[length(sb) + 1]] <- x
-  }
-  sb <- do.call(rbind, sb)
-  sb <- sb[!duplicated(sb$contest), ]
-  sb$a <- ncaa_to_index_name(sb$away)
-  sb$h <- ncaa_to_index_name(sb$home)
-  sb <- sb[order(sb$bracket_round == "", sb$contest), ]
-
-  idx <- index[!is.na(index$game_id), ]
-  idx_date <- as.Date(idx$game_date)
-  used <- rep(FALSE, nrow(idx))
-  out <- list()
-  for (i in seq_len(nrow(sb))) {
-    pair <- (idx$away == sb$a[i] & idx$home == sb$h[i]) | (idx$away == sb$h[i] & idx$home == sb$a[i])
-    dd <- abs(as.numeric(idx_date - sb$date[i]))
-    cand <- which(pair & dd <= 1 & !used)
-    if (!length(cand)) next
-    k <- cand[which.min(dd[cand])]
-    used[k] <- TRUE
-    out[[length(out) + 1]] <- data.frame(
-      game_id = idx$game_id[k], contest = sb$contest[i],
-      ncaa_away = sb$away[i], ncaa_home = sb$home[i],
-      ncaa_away_score = sb$away_score[i], ncaa_home_score = sb$home_score[i],
-      home_away_flip = sb$h[i] != idx$home[k], date_diff = dd[k]
-    )
-  }
-  out <- do.call(rbind, out)
-  out <- out[order(out$game_id), ]
-  dir.create(dir, showWarnings = FALSE, recursive = TRUE)
-  utils::write.csv(out, f, row.names = FALSE, na = "")
-  message(season, ": ", nrow(out), " of ", nrow(idx), " index games matched to ncaa.com contests")
-  out
 }
 
 #' Flatten an ncaa.com play-by-play JSON into one row per line
@@ -843,7 +807,8 @@ ncaa_spot_token_map <- function(spots, dt) {
 #'   running score (see above), or NULL.
 #' @param scoring ncaa.com's scoring summary as [ncaa_scoring_entries()]
 #'   returns it, for games with no running score, or NULL.
-#' @return A tibble with `situation` and `play`, as [find_plays()] returns.
+#' @return A tibble with `situation` and `play`: the (situation, play)
+#'   table the parser reads ([classify_plays()]).
 #' @keywords internal
 ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   n <- nrow(lines)
@@ -1451,20 +1416,18 @@ ncaa_own_token <- function(team_id, token, yard, tokens) {
   if (a >= b) stats::setNames(tokens, ids) else stats::setNames(rev(tokens), ids)
 }
 
-#' Fetch one game from ncaa.com in the shape [fetch_game()] returns
+#' Fetch one game from ncaa.com, ready for [build_pbp()]
 #'
-#' Looks the game up in the contest table ([map_ncaa_contests()]), fetches
-#' its play-by-play (cached), and rebuilds the d3football-style play table
-#' with [ncaa_play_table()]. Home and away follow the season index (which
-#' differs from ncaa.com in one 2025 game). The final score is ncaa.com's
+#' Looks the game up in the contest table ([ncaa_contest_table()]), fetches
+#' its play-by-play (cached), and rebuilds the (situation, play) table the
+#' parser reads with [ncaa_play_table()]. Home and away follow the contest
+#' table. The final score is ncaa.com's
 #' scoreboard score, else its last running score.
 #'
-#' @param game_id Game id: the ncaa.com contest id, e.g. "6461490" (or,
-#'   with [map_ncaa_contests()]'s table, an old d3football id).
-#' @param contests Contest table: [ncaa_contest_table()] of the game list,
-#'   or [map_ncaa_contests()]'s.
-#' @param index The game list ([ncaa_season_games()]) or the season index.
-#' @return A list like [fetch_game()]'s: `game_id`, `season`, `teams`,
+#' @param game_id Game id: the ncaa.com contest id, e.g. "6461490".
+#' @param contests Contest table: [ncaa_contest_table()] of the game list.
+#' @param index The game list ([ncaa_season_games()]).
+#' @return A game list for [build_pbp()]: `game_id`, `season`, `teams`,
 #'   `finals`, `matchup`, `header_date`, `plays`, plus `contest`.
 #' @export
 fetch_ncaa_game <- function(game_id, contests, index) {

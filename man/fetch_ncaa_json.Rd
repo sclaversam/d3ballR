@@ -24,7 +24,7 @@ By default each is requested from ncaa.com directly
 an ncaa-api server (\code{\link[=ncaa_api_base]{ncaa_api_base()}}). Both store the same JSON.
 }
 \details{
-Same rules as \code{\link[=fetch_html]{fetch_html()}}: every response is cached on disk
+Every response is cached on disk
 (\code{getOption("d3ballR.ncaa_cache_dir")}, default \verb{data-raw/cache/ncaa/},
 gitignored) and never requested twice; requests are at least
 \code{d3ballR.delay} seconds apart and count against \code{d3ballR.max_requests};

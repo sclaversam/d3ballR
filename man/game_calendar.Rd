@@ -2,27 +2,27 @@
 % Please edit documentation in R/build_pbp.R
 \name{game_calendar}
 \alias{game_calendar}
-\title{Look a game up in its season index}
+\title{Look a game up in its game list}
 \usage{
 game_calendar(game, index, season_dates)
 }
 \arguments{
-\item{game}{A list from \code{\link[=fetch_game]{fetch_game()}}.}
+\item{game}{A game read by \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}} or \code{\link[=fetch_stats_ncaa_game]{fetch_stats_ncaa_game()}}.}
 
-\item{index}{A season index from \code{\link[=build_season_index]{build_season_index()}}, or NULL.}
+\item{index}{The game list (\code{\link[=ncaa_season_games]{ncaa_season_games()}}), or NULL.}
 
 \item{season_dates}{Output of \code{\link[=read_season_dates]{read_season_dates()}}.}
 }
 \value{
-A list: \code{index_home}, \code{index_away} (scoreboard spelling, else the
-boxscore header's), \code{season}, \code{game_date}, \code{week}, \code{season_type},
+A list: \code{index_home}, \code{index_away} (the game list's spelling,
+else the game's), \code{season}, \code{game_date}, \code{week}, \code{season_type},
 \code{week_source} ("index" or "date fallback").
 }
 \description{
 Returns \code{season}, \code{game_date} (ISO), \code{week}, \code{season_type} for the game.
-If the game isn't in the index (or no index is available), falls back to
-the boxscore id's date (else the header date), \code{\link[=classify_season_type]{classify_season_type()}},
-and a date-based Sunday-to-Saturday week (\code{\link[=date_based_week]{date_based_week()}}), and logs
-a message saying so.
+If the game isn't in the list (or no list is given), falls back to the
+game's own date, \code{\link[=classify_season_type]{classify_season_type()}}, and a date-based
+Sunday-to-Saturday week (\code{\link[=date_based_week]{date_based_week()}}), and logs a message saying
+so.
 }
 \keyword{internal}

@@ -1,121 +1,16 @@
-#' Extract the boxscore game id from a game URL
-#'
-#' @param game_url Boxscore URL, e.g.
-#'   "https://www.d3football.com/seasons/2025/boxscores/20250906_e064.xml".
-#' @return Character scalar, e.g. "20250906_e064".
-#' @keywords internal
-extract_game_id <- function(game_url) {
-  stringr::str_match(game_url, "boxscores/([^./]+)\\.xml")[, 2]
-}
-
-#' Is this table the line score?
-#'
-#' A table with at least 2 rows and either a "Final" column or a first
-#' column headed "Scoring" (a game stopped early has no "Final" column).
-#'
-#' @param t A data frame.
-#' @return TRUE / FALSE.
-#' @keywords internal
-is_line_score <- function(t) {
-  nrow(t) >= 2 && ("Final" %in% colnames(t) || identical(colnames(t)[1], "Scoring"))
-}
-
-#' Read the two team names off a boxscore's line-score table
-#'
-#' Located by content (see [is_line_score()]),
-#' not by position, same philosophy as [find_plays()]. Each of the first two
-#' rows is "TEAM NAME (W-L, conf)" or "TEAM NAME (W-L)"; the trailing
-#' parenthetical record is stripped.
-#'
-#' @param tbls A list of data frames (from [tables_on()]).
-#' @return A character vector of length 2: the two team names.
-#' @keywords internal
-find_line_score_teams <- function(tbls) {
-  for (t in tbls) {
-    if (is_line_score(t)) {
-      raw <- stringr::str_squish(as.character(t[[1]][1:2]))
-      return(stringr::str_remove(raw, "\\s*\\([^)]*\\)\\s*$"))
-    }
-  }
-  stop("No line-score table found. Open the page and check the layout.")
-}
-
-#' Read the two final scores off a boxscore's line-score table
-#'
-#' Same table as [find_line_score_teams()]; the "Final" column. A game
-#' stopped early has no "Final" column: its last column is the score when
-#' play stopped ("3rd QTR - 04:19" in Case Western Reserve at Rowan, 2025).
-#'
-#' @param tbls A list of data frames (from [tables_on()]).
-#' @return Integer vector of length 2, named by the line-score team names.
-#' @keywords internal
-find_line_score_finals <- function(tbls) {
-  for (t in tbls) {
-    if (is_line_score(t)) {
-      raw <- stringr::str_squish(as.character(t[[1]][1:2]))
-      nm <- stringr::str_remove(raw, "\\s*\\([^)]*\\)\\s*$")
-      final <- if ("Final" %in% colnames(t)) t[["Final"]] else t[[ncol(t)]]
-      return(stats::setNames(suppressWarnings(as.integer(final[1:2])), nm))
-    }
-  }
-  stop("No line-score table found. Open the page and check the layout.")
-}
-
-#' Extract the season from a boxscore URL path
-#'
-#' Always the `/seasons/{year}/` path segment, never the game date: a
-#' January championship and the 2020 season (played in spring 2021) belong
-#' to the season in the path.
-#'
-#' @param game_url Boxscore URL.
-#' @return Integer.
-#' @keywords internal
-extract_season <- function(game_url) {
-  as.integer(stringr::str_match(game_url, "/seasons/(\\d{4})/")[, 2])
-}
-
-#' Fetch one game's play table plus its team names
-#'
-#' Fetches the plays view page once and pulls the play-by-play table (via
-#' [find_plays()]), the two line-score team names, the "Away at Home"
-#' header (via [parse_matchup()]) and the header date, so each game only
-#' costs one HTTP request. Works for any game: nothing assumes a team.
-#'
-#' @param game_url Boxscore URL without the `?view=` suffix.
-#' @return A list with `game_id`, `season` (from the URL path), `teams`
-#'   (both line-score names), `finals` (line-score final scores, named by
-#'   team), `matchup` (`c(away, home)`, header spelling),
-#'   `header_date` (Date from the header, used only if the game isn't in
-#'   the season index), and `plays` (tibble with `situation`/`play`).
-#' @keywords internal
-fetch_game <- function(game_url) {
-  html <- fetch_html(paste0(game_url, "?view=plays"))
-  tbls <- tables_on(html)
-  header <- stringr::str_squish(as.character(tbls[[1]][[1]][1]))
-  list(
-    game_id     = extract_game_id(game_url),
-    season      = extract_season(game_url),
-    teams       = find_line_score_teams(tbls),
-    finals      = find_line_score_finals(tbls),
-    matchup     = parse_matchup(tbls),
-    header_date = as.Date(stringr::str_match(header, "(\\d{1,2}/\\d{1,2}/\\d{4})")[, 2], format = "%m/%d/%Y"),
-    plays       = find_plays(tbls)
-  )
-}
-
-#' Look a game up in its season index
+#' Look a game up in its game list
 #'
 #' Returns `season`, `game_date` (ISO), `week`, `season_type` for the game.
-#' If the game isn't in the index (or no index is available), falls back to
-#' the boxscore id's date (else the header date), [classify_season_type()],
-#' and a date-based Sunday-to-Saturday week ([date_based_week()]), and logs
-#' a message saying so.
+#' If the game isn't in the list (or no list is given), falls back to the
+#' game's own date, [classify_season_type()], and a date-based
+#' Sunday-to-Saturday week ([date_based_week()]), and logs a message saying
+#' so.
 #'
-#' @param game A list from [fetch_game()].
-#' @param index A season index from [build_season_index()], or NULL.
+#' @param game A game read by [fetch_ncaa_game()] or [fetch_stats_ncaa_game()].
+#' @param index The game list ([ncaa_season_games()]), or NULL.
 #' @param season_dates Output of [read_season_dates()].
-#' @return A list: `index_home`, `index_away` (scoreboard spelling, else the
-#'   boxscore header's), `season`, `game_date`, `week`, `season_type`,
+#' @return A list: `index_home`, `index_away` (the game list's spelling,
+#'   else the game's), `season`, `game_date`, `week`, `season_type`,
 #'   `week_source` ("index" or "date fallback").
 #' @keywords internal
 game_calendar <- function(game, index, season_dates) {
@@ -125,11 +20,11 @@ game_calendar <- function(game, index, season_dates) {
                 season = as.integer(hit$season), game_date = as.character(hit$game_date),
                 week = as.integer(hit$week), season_type = hit$season_type, week_source = "index"))
   }
-  d <- dplyr::coalesce(as.Date(substr(game$game_id, 1, 8), format = "%Y%m%d"), game$header_date)
+  d <- game$header_date
   st <- classify_season_type(d, game$season, season_dates)
   wk <- date_based_week(d, game$season, st, season_dates)
   message("Game ", game$game_id, " not found in the ", game$season,
-          " season index; using a date-based week (", wk, ", ", st, ").")
+          " game list; using a date-based week (", wk, ", ", st, ").")
   list(index_home = unname(game$matchup[["home"]]), index_away = unname(game$matchup[["away"]]),
        season = game$season, game_date = format(d, "%Y-%m-%d"), week = wk,
        season_type = st, week_source = "date fallback")
@@ -565,32 +460,32 @@ scoring_team <- function(kept, text_team, teams) {
 
 #' Build one game's play-by-play table
 #'
-#' Works for any d3football game. Keeps the five event types (`play`,
-#' `kickoff`, `extra_point`, `two_point`, `penalty_no_play`), after using
-#' the dropped administrative rows to derive `period`, `pos_team`, the
-#' kickoff teams, and the clock. `season`, `game_date`, `week` and
-#' `season_type` come from the season index (see [build_season_index()]).
+#' Works for any game. Keeps the five event types (`play`, `kickoff`,
+#' `extra_point`, `two_point`, `penalty_no_play`), after using the dropped
+#' administrative rows to derive `period`, `pos_team`, the kickoff teams,
+#' and the clock. `season`, `game_date`, `week` and `season_type` come from
+#' the game list (see [ncaa_season_games()]).
 #' See `R/classify.R` and `R/parse_play_type.R` for the upstream row_type /
 #' play_type classification this builds on.
 #'
-#' @param game_url A d3football boxscore URL without the `?view=` suffix
-#'   (the page is read with [fetch_game()]), or a game already read, as a
-#'   list in [fetch_game()]'s shape (e.g. from [fetch_ncaa_game()]).
-#' @param index Season index for the game's season. If NULL, the cached
-#'   `data-raw/index/{season}.csv` is used when present (no network);
-#'   otherwise a date-based week is used and logged (see [game_calendar()]).
+#' @param game A game already read: a list with `game_id`, `season`,
+#'   `teams`, `finals`, `matchup`, `header_date` and `plays` (the
+#'   (situation, play) table), from [fetch_ncaa_game()] or
+#'   [fetch_stats_ncaa_game()].
+#' @param index The game list for the game's season ([ncaa_season_games()]).
+#'   If NULL, or the game isn't in it, a date-based week is used and logged
+#'   (see [game_calendar()]).
 #' @param season_dates Season-dates table; if NULL, [ensure_season_dates()]
 #'   for the game's season (adds it from Wikipedia if missing).
-#' @param conf Conference data from [build_conference_table()]; if NULL, the
-#'   cached `data-raw/conferences/{season}*.csv` files are used when present
-#'   (no network), else the conference columns are NA.
+#' @param conf Conference data from [ncaa_conference_table()]; if NULL, the
+#'   conference columns are NA.
 #' @return A tibble, one row per kept play, with the columns in
 #'   `pbp_columns`. Attributes, for the validation reports and change log:
 #'   `week_source` ("index" or "date fallback"), `unclassified` (rows the
 #'   classifier put in its unknown `other` bucket; should be NULL),
 #'   `shared_conference` (both
-#'   teams in one conference; for the cross-check), `finals` (line-score
-#'   final scores by canonical team name), `kickoffs` (the
+#'   teams in one conference), `finals` (final scores by canonical team
+#'   name), `kickoffs` (the
 #'   per-kickoff possession decisions from [assign_kickoffs()]),
 #'   `score_checks` (each score line vs the parsed points),
 #'   `first_down_text` (the text-only first-down flags), and `next_snap`
@@ -598,12 +493,10 @@ scoring_team <- function(kept, text_team, teams) {
 #'   (stated clocks dropped as inconsistent), `footer_clock` (drive-footer
 #'   elapsed time vs the clock anchors).
 #' @export
-build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) {
-  game <- if (is.list(game_url)) game_url else fetch_game(game_url)
-  if (is.null(index)) index <- load_cached_index(game$season)
+build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
+  if (!is.list(game) || is.null(game$plays)) stop("build_pbp() needs a game already read (see fetch_ncaa_game()).")
   if (is.null(season_dates)) season_dates <- ensure_season_dates(game$season)
   cal <- game_calendar(game, index, season_dates)
-  if (is.null(conf)) conf <- load_cached_conferences(game$season)
   gc <- game_conferences(game$game_id, cal$index_home, cal$index_away, conf)
 
   classified <- classify_plays(game$plays)
@@ -729,32 +622,6 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
   out
 }
 
-#' Read a cached season index without touching the network
-#'
-#' @param season Season year.
-#' @param cache_dir Cache directory used by [build_season_index()].
-#' @return The index, or NULL if no cache exists.
-#' @keywords internal
-load_cached_index <- function(season, cache_dir = "data-raw/index") {
-  f <- file.path(cache_dir, paste0(season, ".csv"))
-  if (is.na(season) || !file.exists(f)) return(NULL)
-  utils::read.csv(f, na.strings = "", colClasses = c(game_id = "character"))
-}
-
-#' Read cached conference data without touching the network
-#'
-#' @param season Season year.
-#' @param cache_dir Directory used by [build_conference_table()].
-#' @return A list (`table`, `markers`) or NULL.
-#' @keywords internal
-load_cached_conferences <- function(season, cache_dir = "data-raw/conferences") {
-  tf <- file.path(cache_dir, paste0(season, ".csv"))
-  mf <- file.path(cache_dir, paste0(season, "_schedule_markers.csv"))
-  if (is.na(season) || !file.exists(tf)) return(NULL)
-  list(table = utils::read.csv(tf, na.strings = ""),
-       markers = if (file.exists(mf)) utils::read.csv(mf, na.strings = "", colClasses = c(game_id = "character")) else NULL)
-}
-
 #' Points each team scored in a built game, from `score_pts`
 #'
 #' `score_pts` is from `pos_team`'s view: positive points went to
@@ -774,43 +641,33 @@ team_points <- function(g, team) {
 #'
 #' Usually called by [build_season()]. Writes one CSV per game to
 #' `{out_dir}/{game_id}.csv`, a per-game summary to
-#' `{check_dir}/pbp_row_counts.csv` (row count, boxscore final score,
+#' `{check_dir}/pbp_row_counts.csv` (row count, final score,
 #' parsed points per team, `score_reconciled`), and the validation reports
 #' to `check_dir` (see [write_pbp_checks()]), plus `score_reconciliation.csv`
 #' and `build_failures.csv`. A game that fails to build is logged in
-#' `build_failures.csv` and skipped, so one bad page doesn't stop the batch. Each game's season
-#' index is loaded once per season, via [build_season_index()] (cached;
-#' scraped only if no cache exists). Prints the per-game counts.
+#' `build_failures.csv` and skipped, so one bad game doesn't stop the batch.
+#' Prints the per-game counts.
 #'
-#' @param game_urls Character vector of d3football boxscore URLs (any
-#'   teams, any seasons), or of game ids when `loader` is given.
-#' @param loader NULL to read d3football pages, or a function taking a game
-#'   id and returning the game ([fetch_game()]'s shape), e.g. a wrapper
-#'   around [fetch_ncaa_game()].
-#' @param season With `loader`: the games' season (for the season index).
+#' @param game_ids Game ids (one season).
 #' @param out_dir Directory to write per-game CSVs into.
 #' @param check_dir Directory for the validation reports.
-#' @param conf Conference data from [build_conference_table()] (else the
-#'   cached files are used).
+#' @param conf Conference data from [ncaa_conference_table()], or NULL.
+#' @param loader A function taking a game id and returning the game read
+#'   ([fetch_ncaa_game()] or [fetch_stats_ncaa_game()]).
+#' @param season The games' season.
+#' @param index The season's game list ([ncaa_season_games()]).
 #' @return Invisibly, a named list of the per-game tibbles (by `game_id`).
 #' @export
-build_all_pbp <- function(game_urls, out_dir, check_dir, conf = NULL, loader = NULL, season = NULL,
-                          index = NULL) {
+build_all_pbp <- function(game_ids, out_dir, check_dir, conf = NULL, loader, season, index = NULL) {
   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
-
-  season_of <- function(u) if (is.null(loader)) extract_season(u) else rep(as.integer(season), length(u))
-  seasons <- unique(stats::na.omit(season_of(game_urls)))
-  indexes <- if (is.null(index)) lapply(seasons, build_season_index) else rep(list(index), length(seasons))
-  names(indexes) <- seasons
-  season_dates <- ensure_season_dates(seasons)
+  season_dates <- ensure_season_dates(season)
 
   failures <- list()
-  games <- lapply(game_urls, function(u) {
+  games <- lapply(game_ids, function(u) {
     tryCatch(
-      build_pbp(if (is.null(loader)) u else loader(u),
-                index = indexes[[as.character(season_of(u))]], season_dates = season_dates, conf = conf),
+      build_pbp(loader(u), index = index, season_dates = season_dates, conf = conf),
       error = function(e) {
-        failures[[length(failures) + 1]] <<- data.frame(game_url = u, error = conditionMessage(e))
+        failures[[length(failures) + 1]] <<- data.frame(game_id = u, error = conditionMessage(e))
         message("FAILED ", u, ": ", conditionMessage(e))
         NULL
       }
@@ -839,13 +696,13 @@ build_all_pbp <- function(game_urls, out_dir, check_dir, conf = NULL, loader = N
   utils::write.csv(counts, file.path(check_dir, "pbp_row_counts.csv"), row.names = FALSE, na = "")
   write_pbp_checks(games, check_dir)
   dir.create(check_dir, showWarnings = FALSE, recursive = TRUE)
-  utils::write.csv(do.call(rbind, c(list(data.frame(game_url = character(), error = character())), failures)),
+  utils::write.csv(do.call(rbind, c(list(data.frame(game_id = character(), error = character())), failures)),
                    file.path(check_dir, "build_failures.csv"), row.names = FALSE, na = "")
   utils::write.csv(counts[, c("game_id", "game_date", "away", "home", "away_final", "home_final",
                               "away_pts_parsed", "home_pts_parsed", "score_reconciled")],
                    file.path(check_dir, "score_reconciliation.csv"), row.names = FALSE, na = "")
 
-  message(nrow(counts), " games built (", sum(counts$score_reconciled), " reconcile with the boxscore final); ",
+  message(nrow(counts), " games built (", sum(counts$score_reconciled), " reconcile with the final score); ",
           length(failures), " not built")
 
   names(games) <- counts$game_id

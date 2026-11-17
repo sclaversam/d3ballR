@@ -1,7 +1,7 @@
 # d3ballR
 
-Play-by-play data for **NCAA Division III football**, scraped from
-d3football.com into tidy, cfbfastR-style tables.
+Play-by-play data for **NCAA Division III football**, read from ncaa.com
+into tidy, cfbfastR-style tables.
 
 The college football data ecosystem stops at Division I: `cfbfastR` and the
 CollegeFootballData API cover only FBS and FCS. Division II and III are absent
@@ -26,15 +26,16 @@ gap for Division III.
 # install.packages("devtools")
 devtools::load_all()
 
-# one game
-g <- build_pbp("https://www.d3football.com/seasons/2025/boxscores/20250906_e064.xml")
+# one game (ncaa.com contest id; the game list is data-raw/ncaa/2025_games.csv)
+games <- ncaa_season_games(2025)
+g <- build_pbp(fetch_ncaa_game("6461445", ncaa_contest_table(games), games), index = games)
 
 # a season, or the games involving some teams
-members <- conference_members(2025, "CC")$team
-build_season(2025, teams = members)   # writes pbp/2025/ and checks/2025/
+conf <- read.csv("data-raw/ncaa/2025_conferences.csv")
+build_season(2025, teams = conf$team[conf$conference_code %in% "CC"])   # writes pbp/2025/ and checks/2025/
 ```
 
-Or read the built CSVs directly: `read.csv("pbp/2025/20250906_e064.csv",
+Or read the built CSVs directly: `read.csv("pbp/2025/6461445.csv",
 na.strings = "")`.
 
 ## What's in each row
@@ -56,10 +57,10 @@ Every column is defined in **[docs/schema.md](docs/schema.md)**.
 ```
 R/                 package code (pipeline stages; see docs/pipeline.md)
 tests/testthat/    unit tests + data tests over every built game
-scripts/           build_season.R, season_index_report.R
+scripts/           build_season.R
 pbp/{season}/      built play-by-play, one CSV per game
 checks/{season}/   validation reports for that season
-data-raw/          season dates, season index, conference tables (page cache: gitignored)
+data-raw/          season dates, ncaa.com game lists and crosswalks, saved stats.ncaa.org pages (response cache: gitignored)
 docs/              schema.md, pipeline.md, CHANGELOG.md, coverage audit
 ```
 

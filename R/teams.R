@@ -1,22 +1,3 @@
-#' Parse the "Away at Home" matchup off the boxscore header
-#'
-#' The first table on the plays page starts with "Carnegie Mellon at Chicago
-#' - Chicago Logo, Illinois 09/06/2025 - 12:00 PM". The two names are in the
-#' header / line-score spelling ("Chicago", "UW-La Crosse"), which is not
-#' always the `pos_team` spelling; map them with [build_team_map()].
-#'
-#' @param tbls A list of data frames (from [tables_on()]).
-#' @return Named character vector `c(away = ..., home = ...)`.
-#' @keywords internal
-parse_matchup <- function(tbls) {
-  for (t in tbls) {
-    cell <- stringr::str_squish(as.character(t[[1]][1]))
-    m <- stringr::str_match(cell, "^(.+?) at (.+?) - ")
-    if (!is.na(m[1, 1])) return(c(away = m[1, 2], home = m[1, 3]))
-  }
-  stop("No 'Away at Home' header found. Open the page and check the layout.")
-}
-
 #' Build a map from every team spelling on the page to one canonical name
 #'
 #' d3 names a team several ways on one page: the header, line score, score

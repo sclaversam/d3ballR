@@ -24,17 +24,9 @@ Known source exceptions (`data-raw/ncaa/known_exceptions.csv`: ncaa.com's data i
 |---|---|---|---|---|---|---|---|---|---|
 | 6496410 | 2025-09-06 | Case Western Reserve | Rowan | 17 | 17 | 14 | 17 | FALSE | ncaa.com's play-by-play stops at the end of the 3rd quarter; the final (17-17) includes 4th-quarter points that aren't in it. stats.ncaa.org has the same gap (checked by Sam, 2026-11-17). |
 
-## Conference game: same conference in the regular season vs d3football's "*" marker
-
-288 of 289 games agree (974 with no cached d3football marker). Disagreements:
-
-| game_id | game_date | season_type | away | home | away_team_conference | home_team_conference | conference_game | shared_conference | d3_marker | agree |
-|---|---|---|---|---|---|---|---|---|---|---|
-| 6461406 | 2025-10-25 | regular | Randolph-Macon | Gallaudet | ODAC | SCAC | FALSE | FALSE | TRUE | FALSE |
-
 ## Built from stats.ncaa.org
 
-Games ncaa.com can't give (no play-by-play, or a file that can't be built), built from a stats.ncaa.org page saved by hand in `data-raw/stats_ncaa/` (see `stats_ncaa_games()`):
+Games ncaa.com can't give (no play-by-play, a file that can't be built, or one that doesn't reconcile when the stats.ncaa.org version does), built from a stats.ncaa.org page saved by hand in `data-raw/stats_ncaa/` (see `stats_ncaa_games()`):
 
 | game_id | file | built |
 |---|---|---|
@@ -53,12 +45,6 @@ Games ncaa.com can't give (no play-by-play, or a file that can't be built), buil
 None.
 
 ## Pending games
-
-None.
-
-## Not on ncaa.com
-
-Index games with no ncaa.com contest (e.g. non-NCAA bowl games).
 
 None.
 

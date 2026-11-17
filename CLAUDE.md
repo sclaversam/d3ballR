@@ -6,7 +6,8 @@ it points to.
 ## What this project is
 
 `d3ballR` scrapes and parses **NCAA Division III** football play-by-play from
-d3football.com into tidy, cfbfastR-style tables. `cfbfastR` and the
+ncaa.com into tidy, cfbfastR-style tables (until 2026-11-04 from
+d3football.com; that code was removed on 2026-11-17). `cfbfastR` and the
 CollegeFootballData API cover only Division I; D2 and D3 are absent from every
 published dataset (`docs/cfbfastr_d2_d3_coverage_audit.Rmd`).
 
@@ -51,10 +52,9 @@ filter or `season`, not a new pipeline.
   dated outside the season and second listings of the same game are
   dropped. `week` and `season_type` keep d3football's convention; team names
   keep d3football's spelling (`team_names.csv`). The old d3football id is
-  the `d3football_id` column of the game list (crosswalk from
-  `map_ncaa_contests()`, `{season}_contests.csv`). Notes written before
-  2026-11-16 use the old ids. The d3football source (`pbp/d3football/`)
-  keeps its old ids and the d3football index.
+  the `d3football_id` column of the game list (from the 2025 crosswalk
+  `data-raw/ncaa/2025_contests.csv`, kept as data). Notes written before
+  2026-11-16 use the old ids.
 - **ncaa.com's play text is the same StatCrew text** as d3football's, so the
   parser is unchanged: `ncaa_play_table()` rebuilds d3football's
   (situation, play) table from the JSON. Its quirks, all handled there:
@@ -93,13 +93,14 @@ filter or `season`, not a new pipeline.
   ncaa.com has no conference-game marker, so a conference game is a
   regular-season game between two teams of the same conference; it matches
   d3football's "*" marker on all 58 Centennial 2025 games.
-- **d3football.com is now cache-only.** Its firewall serves scripts a
-  JavaScript bot challenge. Do not try to get around it: no browser
-  automation, no reusing browser cookies such as `aws-waf-token`.
-  `build_season(..., source = "d3football")` still rebuilds the 133 cached
-  2025 games into `pbp/d3football/2025/` (kept for comparison).
-- **User-Agent:** `fetch_html()` sends a browser one (d3football);
-  `fetch_ncaa_json()` sends "d3ballR (CMU student research)".
+- **d3football.com is no longer used** (its scraper, the season index and
+  the `pbp/d3football/` builds were removed on 2026-11-17; they are in git
+  history up to 0e64fd9). Its firewall serves scripts a JavaScript bot
+  challenge. Do not try to get around it: no browser automation, no reusing
+  browser cookies such as `aws-waf-token`.
+- **User-Agent:** `fetch_ncaa_json()` sends "d3ballR (CMU student
+  research)". Every request goes through the shared counter and throttle in
+  `R/fetch.R`.
 - **Rate limiting:** fetch in capped batches (`max_requests`), 6 s apart.
   Prefer `OFFLINE=1` / the cache when iterating on parsing, and don't run
   large fetches without Sam's go-ahead.
@@ -110,10 +111,9 @@ filter or `season`, not a new pipeline.
 ## Working rules
 
 - **Validate against the data, not one game.** After any parser change,
-  rebuild from the cache (`OFFLINE=1 Rscript scripts/build_season.R 2025
-  --conference CC`, and `--source d3football` for the cached d3football
-  games) and check `checks/2025/` and `checks/d3football/2025/` (score
-  reconciliation must stay 100%; the series and clock checks must stay clean
+  rebuild from the cache (`OFFLINE=1 Rscript scripts/build_season.R 2025`)
+  and check `checks/2025/` (score reconciliation must stay at every game
+  but the known source gaps; the series and clock checks must stay clean
   or explained), then run `devtools::test()`. Run R with a UTF-8 locale
   (`LC_ALL=C.UTF-8` in the cloud) or accented names are written as
   `<U+00F6>`.

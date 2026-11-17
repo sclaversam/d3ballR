@@ -2,7 +2,7 @@
 % Please edit documentation in R/ncaa.R
 \name{ncaa_to_index_name}
 \alias{ncaa_to_index_name}
-\title{ncaa.com team names translated to the season index's spelling}
+\title{ncaa.com team names translated to d3football's spelling}
 \usage{
 ncaa_to_index_name(x, file = "data-raw/ncaa/team_names.csv")
 }
@@ -16,7 +16,7 @@ ncaa_to_index_name(x, file = "data-raw/ncaa/team_names.csv")
 }
 \description{
 \code{data-raw/ncaa/team_names.csv} lists the ncaa.com short names that differ
-from d3football's scoreboard spelling (the season index's), e.g.
+from d3football's scoreboard spelling (the convention the output keeps), e.g.
 "Franklin & Marshall" -> "Franklin and Marshall". Names not listed are
 already the same on both sites.
 }
