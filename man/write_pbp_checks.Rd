@@ -28,9 +28,6 @@ snap belongs to the other team) with \code{yards_to_goal}, the next snap's
 own down / distance / yards to goal, and its team and text. The
 \verb{next_*} values are from the next snap's offense view, so across a
 change of possession they are measured toward the other end zone.
-\item \code{drive_footer_clock.csv}: every d3 drive's start clock + footer
-"MM:SS elapsed" vs the drive's end reference (see
-\code{\link[=footer_clock_check]{footer_clock_check()}}); \code{flag} marks mismatches.
 \item \code{clock_bounds.csv}: any regulation row whose \code{clock_start_max} /
 \code{clock_start_min} is NA, max < min, or \code{clock_start} (when known) falls
 outside them (should be

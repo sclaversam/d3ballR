@@ -74,7 +74,7 @@ test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {
   dir <- test_path("../../pbp")
   files <- list.files(dir, pattern = "\\.csv$", recursive = TRUE, full.names = TRUE)
   skip_if(!length(files), "no built games")
-  # ncaa.com contest 6461445 (old id 20250906_e064, Carnegie Mellon at Chicago)
+  # ncaa.com contest 6461445 (old id 6461445, Carnegie Mellon at Chicago)
   g1 <- files[basename(files) == "6461445.csv"]
   if (length(g1)) {
     g <- utils::read.csv(g1, na.strings = "")
@@ -85,7 +85,7 @@ test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {
     expect_false(r$firstD_by_penalty)
     expect_equal(r$down, 1L)
   }
-  # 6462069 (old id 20250904_hz19, Franklin and Marshall at Lebanon Valley)
+  # 6462069 (old id 6462069, Franklin and Marshall at Lebanon Valley)
   hz <- files[basename(files) == "6462069.csv"]
   if (length(hz)) {
     g <- utils::read.csv(hz, na.strings = "")

@@ -14,7 +14,7 @@ ncaa_move_late_touchdowns(lines)
 }
 \description{
 ncaa.com sometimes prints a touchdown a line or two late, after the try
-and kickoff that follow it (\verb{20251129_57m9}: "J.Runyan kick attempt
+and kickoff that follow it (\code{6529878}: "J.Runyan kick attempt
 good", the kickoff, then the interception returned for the touchdown).
 A try can't come before its touchdown, so when a try line does not follow
 a touchdown, and a touchdown comes within the next three lines with only

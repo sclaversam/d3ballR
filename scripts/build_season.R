@@ -25,7 +25,7 @@ if (nzchar(Sys.getenv("OFFLINE"))) options(d3ballR.offline = TRUE)
 
 code <- opt("--conference")
 # conference members: the team-to-conference table read off ncaa.com's
-# scoreboards (data-raw/ncaa/{season}_conferences.csv; d3football's codes)
+# scoreboards (data-raw/ncaa/{season}_conferences.csv)
 members <- function(code) {
   f <- file.path("data-raw", "ncaa", paste0(season, "_conferences.csv"))
   if (!file.exists(f)) ncaa_conference_table(season, ncaa_season_games(season))

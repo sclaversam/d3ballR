@@ -16,7 +16,7 @@ names).}
 Named character vector: names are spellings, values canonical.
 }
 \description{
-d3 names a team several ways on one page: the header, line score, score
+The source names a team several ways in one game: the header, line score, score
 lines and drive headers use one spelling ("Chicago", "Franklin and
 Marshall"); drive-start rows use another ("UChicago", "Franklin &
 Marshall"). The canonical name is the drive-start spelling, which is what

@@ -26,8 +26,7 @@ A data frame, one row per game: \code{game_id}, \code{season},
 \code{away_score}, \code{bracket_round}.
 }
 \description{
-Since 2026-11-16 the game list (and \code{game_id}) comes from ncaa.com, not
-from d3football's season index (whose scraper was removed on 2026-11-17). Every contest on the season's weekly
+Every contest on the season's weekly
 scoreboards (\code{weeks}, cached) is one game; \code{game_id} is its ncaa.com
 contest id ("6461490"). A contest listed in more than one week is kept
 once. Dropped (listed in the result's \code{dropped} attribute, with why):

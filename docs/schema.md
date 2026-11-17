@@ -33,8 +33,8 @@ on every row, so any value can be traced back to its source.
   zero-padded `"MM:SS"` strings of time left in the quarter. `secs_remaining_*`
   columns are integers.
 - **Team names** (`home`, `away`, `pos_team`, `def_pos_team`, `penalized_team`)
-  use ncaa.com's short names ("Alfred St.", "Carnegie Mellon"; d3football's
-  spellings until 2026-11-17), one name per team for the whole season.
+  use ncaa.com's short names ("Alfred St.", "Carnegie Mellon"), one name
+  per team for the whole season.
   The raw `play_text` keeps each stat crew's own spelling and codes.
 
 ## Conventions
@@ -68,7 +68,7 @@ means the defense was flagged, negative means the offense was. Only accepted
 infractions count. Two accepted ones are summed; offsetting penalties are 0.
 
 **No-play gating.** `penalty_no_play` is TRUE when the text says "NO PLAY" or
-the row is a dead-ball penalty with no snap. d3 still prints the wiped-out
+the row is a dead-ball penalty with no snap. StatCrew still prints the wiped-out
 attempt in full ("... 54 yards ... TOUCHDOWN nullified by penalty ... NO
 PLAY"), but none of it is credited:
 - `yards_gained` is NA and `score_pts` is 0;
@@ -95,14 +95,14 @@ PUNT`, `PUNT`). Don't count touchdowns by `pos_team`; use `td_team`. Because
 "The defense scored" is `td_team == def_pos_team`.
 
 **Score.** `pos_team_score` / `def_pos_team_score` are the score *before* the
-play, summed from the parsed points of every earlier row. d3's printed score
+play, summed from the parsed points of every earlier row. The printed score
 lines are used only as a check (a stat crew sometimes skips one), and the
-game total is reconciled against the boxscore final. A PAT's "before" score
+game total is reconciled against the final score. A PAT's "before" score
 includes its touchdown.
 
 **Down, distance, field position.**
 - `yards_to_goal` is the distance to the opponent's end zone (own 25 → 75).
-- `Goal_To_Go` is TRUE when the line to gain is the goal line. d3 writes this
+- `Goal_To_Go` is TRUE when the line to gain is the goal line. StatCrew writes this
   either literally ("1st and Goal at CMU06") or as a number equal to the
   distance to the goal ("1st and 4 at UC 4"); both count.
 - Every down, distance and field-position column describes **this row's own
@@ -156,16 +156,16 @@ clock and seconds columns are NA in periods 5+.
 
 | # | column | type | definition | NA behavior | notes |
 |---|---|---|---|---|---|
-| 1 | `game_id` | character | The ncaa.com contest id, e.g. `"6461490"` (since 2026-11-16; before, d3football's boxscore id, e.g. `"20250906_e064"`). | Never NA. | Constant per file; the file name. Joins to the game list `data-raw/ncaa/{season}_games.csv`. Read it as character. |
+| 1 | `game_id` | character | The ncaa.com contest id, e.g. `"6461490"`. | Never NA. | Constant per file; the file name. Joins to the game list `data-raw/ncaa/{season}_games.csv`. Read it as character. |
 | 2 | `season` | integer | Season year. | Never NA. | The season the game list belongs to, never read off the date (a January bowl or the Stagg Bowl is the season before). |
 | 3 | `game_date` | character | Game date, `YYYY-MM-DD`. | Never NA. | |
-| 4 | `week` | integer | Week of the season. | Never NA. | ncaa.com's scoreboard week (since 2026-11-17; before, d3football's convention). 2025: regular season weeks 1-12, tournament weeks 13-17, Stagg Bowl week 19. Use `season_type` to tell regular season from postseason. |
+| 4 | `week` | integer | Week of the season. | Never NA. | ncaa.com's scoreboard week. 2025: regular season weeks 1-12, tournament weeks 13-17, Stagg Bowl week 19. Use `season_type` to tell regular season from postseason. |
 | 5 | `season_type` | character | `"regular"` or `"postseason"`. | Never NA. | Postseason for NCAA tournament games and any game after the regular-season end date (`inst/extdata/season_dates.csv`). All 2020 games are regular. |
 | 6 | `home` | character | Home team. | Never NA. | ncaa.com's home team, ncaa.com's short name. |
 | 7 | `away` | character | Away team. | Never NA. | ncaa.com's away team, ncaa.com's short name. |
-| 8 | `home_team_conference` | character | Home team's conference that season, e.g. `"Centennial Conference"`. From ncaa.com's scoreboard tag, named as d3football names it (`inst/extdata/conference_names.csv`). | NA for a team with no D3 conference that season (independent, non-D3) or not yet looked up. | Membership is per season (Carnegie Mellon: PAC through 2024, Centennial from 2025). cfbfastR name. |
+| 8 | `home_team_conference` | character | Home team's conference that season, e.g. `"Centennial Conference"`. From ncaa.com's scoreboard tag, named through `inst/extdata/conference_names.csv`. | NA for a team with no D3 conference that season (independent, non-D3) or not yet looked up. | Membership is per season (Carnegie Mellon: PAC through 2024, Centennial from 2025). cfbfastR name. |
 | 9 | `away_team_conference` | character | Away team's conference that season. | As `home_team_conference`. | cfbfastR name. |
-| 10 | `conference_game` | logical | ncaa.com builds: a regular-season game between two teams of the same conference. d3football builds: d3football marks it a conference game ("*" on the team schedule). | d3football builds: NA if neither team's schedule has been read. | Playoff and bowl games between members are FALSE either way. The ncaa.com rule matches d3football's marker on all 58 Centennial 2025 games. cfbfastR name. |
+| 10 | `conference_game` | logical | A regular-season game between two teams of the same conference. | Never NA: FALSE when a team has no D3 conference. | Playoff and bowl games between members are FALSE. cfbfastR name. |
 | 11 | `play_index` | integer | Row order within the game, 1..N. | Never NA. | |
 | 12 | `drive_number` | integer | Drive within the game, 1..N. | Never NA. | The opening kickoff starts drive 1. |
 | 13 | `drive_play_number` | integer | Row's position within its drive, from 1. | Never NA. | A kickoff is always 1. |
@@ -216,7 +216,7 @@ clock and seconds columns are NA in periods 5+.
 | 58 | `drive_result` | character | How the row's drive ended, repeated on every row of the drive. | Never NA. | `TD`, `FG`, `MISSED FG`, `BLOCKED FG`, `PUNT`, `BLOCKED PUNT`, `INT`, `FUMBLE`, `DOWNS`, `SAFETY`, `END OF HALF`, `END OF GAME`, `ONSIDE`. A defensive TD is labeled by how the offense lost the ball. |
 | 59 | `firstD_by_kickoff` | logical | First snap row of a series that began with a kickoff. | Never NA. | Kickoff rows themselves are FALSE. Includes after an onside kick, whoever recovered. cfbfastR name. |
 | 60 | `firstD_by_poss` | logical | First snap row after a change of possession, or of an overtime possession. | Never NA. | After a punt, interception, lost fumble, downs, missed / blocked FG, or a punt / FG the kicking team regained. cfbfastR name. |
-| 61 | `firstD_by_yards` | logical | First snap row of a series earned by the previous play's yardage. | Never NA. | Same offense; the previous play reached the line (d3's "1ST DOWN" text, or yards ≥ distance outside goal-to-go), unless an accepted offensive penalty took it away. cfbfastR name. |
+| 61 | `firstD_by_yards` | logical | First snap row of a series earned by the previous play's yardage. | Never NA. | Same offense; the previous play reached the line (StatCrew's "1ST DOWN" text, or yards ≥ distance outside goal-to-go), unless an accepted offensive penalty took it away. cfbfastR name. |
 | 62 | `firstD_by_penalty` | logical | First snap row of a series awarded by a penalty. | Never NA. | Same offense; the previous play didn't reach the line; an accepted penalty awarded it. A declined penalty never counts. cfbfastR name. |
 | 63 | `new_series` | logical | The row starts a new series: one of the four flags. | Never NA. | Exactly one of the four is TRUE when this is. |
 | 64 | `penalty_flag` | logical | The row mentions a penalty. | Never NA. | |

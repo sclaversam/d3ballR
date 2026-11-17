@@ -32,11 +32,11 @@ test_that("built games: clock columns are consistent and the seconds columns mir
     p <- clock_secs(stringr::str_match(g$play_text, "^\\((\\d{1,2}:\\d{2})\\)")[, 2])
     # a printed clock that survived cleaning is a minimum for its own snap.
     # A printed clock that contradicts an official reading is discarded
-    # (e.g. 20250904_zik0: printed 14:48, timeout 13:59, printed 14:15), so
+    # (e.g. 6461247: printed 14:48, timeout 13:59, printed 14:15), so
     # allow a few: at most 1, or 2% of the game's printed clocks
     # A printed clock can run 1-2 s ahead of the official "drive start at"
     # reading on the first snap after a kick (two stopwatches; batch 2:
-    # 20250913_npl1, 20250913_vg5b, 20250920_a8p2), so allow 2 s
+    # 6462344, 6461618, 6462135), so allow 2 s
     ok <- is.na(p) | !reg | p <= mx + 2
     expect_true(sum(!ok) <= max(1, 0.02 * sum(!is.na(p))),
                 label = paste(basename(f), "printed clocks within the snap range (allowing discarded typos)"))
@@ -44,7 +44,7 @@ test_that("built games: clock columns are consistent and the seconds columns mir
 })
 
 test_that("bounds meeting pins clock_start (McDaniel game: printed clocks tighten the range)", {
-  f <- test_path("../../pbp/2025/6462426.csv")  # old id 20251025_mepx
+  f <- test_path("../../pbp/2025/6462426.csv")  # old id 6462426
   skip_if_not(file.exists(f))
   g <- utils::read.csv(f, na.strings = "")
   r <- g[g$play_index == 162, ]

@@ -46,7 +46,7 @@ test_that("ncaa_play_table adds a labelled extra point ncaa.com left out", {
   expect_equal(sum(grepl("added by d3ballR", tab$play)), 1L)
 })
 
-test_that("ncaa_play_table adds drive headers and quarter markers d3football-style", {
+test_that("ncaa_play_table adds drive headers and quarter markers", {
   tab <- ncaa_toy()
   expect_equal(tab$play[1], "1st")
   expect_true(all(c("Beta at 15:00", "Alpha at 14:00") %in% tab$play))
@@ -302,7 +302,7 @@ test_that("ncaa_direct_request reports an empty game or a stale query id as HTTP
   expect_match(res$why, "PersistedQueryNotFound")
 })
 
-test_that("a touchdown printed after its own try is moved in front of it (20251129_57m9)", {
+test_that("a touchdown printed after its own try is moved in front of it (6529878)", {
   mk <- function(text, home, vis) data.frame(period = 4L, team_id = "1", clock = "00:00", drive_text = NA_character_,
                                              home_score = home, visitor_score = vis, text = text)
   lines <- rbind(
@@ -331,7 +331,7 @@ test_that("a touchdown printed after its own try is moved in front of it (202511
   expect_identical(ncaa_move_late_touchdowns(bad)$text, bad$text)
 })
 
-test_that("driveText side codes are paired with the play text's by a yardline vote (20251129_3gqf)", {
+test_that("driveText side codes are paired with the play text's by a yardline vote (6529887)", {
   txt <- c("kickoff 53 yards to the UWRF12 D.Stokes return 24 yards to the UWRF36",
            "pass complete to B.Wesolowski caught at UWRF41, for 5 yards to the UWRF41",
            "rush middle for 19 yards gain to the CHAP40, 1ST DOWN",

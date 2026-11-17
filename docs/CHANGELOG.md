@@ -5,6 +5,25 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Last traces of d3football removed (package prep)
+
+Asked by Sam (2026-11-17). No output changed: all 1,263 games in
+`pbp/2025/` rebuild byte-identical; 1,262 reconcile. The history entries
+below are kept as written (they use the old d3football game ids).
+
+- Code comments, man pages, tests, scripts, `DESCRIPTION`, `CLAUDE.md`,
+  `README.md`, `schema.md` and `pipeline.md` no longer refer to d3football:
+  the play table is described as a StatCrew page's layout, and every old
+  game id ("20251115_effl") is now its ncaa.com contest id ("6461646");
+  pipeline.md's batch lessons were translated too.
+- Removed the drive-footer clock check (`footer_clock_check()`,
+  `checks/{season}/drive_footer_clock.csv`): neither ncaa.com nor
+  stats.ncaa.org prints drive footers, so it only wrote empty rows.
+- `game_calendar()` returns `list_home` / `list_away` (was `index_home` /
+  `index_away`); internal only.
+- `2025_stats_ncaa_candidates.csv`: the six week-1 finals are labelled as
+  coming from the saved stats.ncaa.org page.
+
 ## Team names, weeks and ids follow ncaa.com
 
 Sam's choice (2026-11-17), with d3football gone. **This changes the output.**

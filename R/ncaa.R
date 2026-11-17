@@ -225,8 +225,8 @@ ncaa_gql_scoreboard <- function(contests) {
 #'
 #' @param season Season year.
 #' @param week ncaa.com week number (1, 2, ...). ncaa.com numbers weeks
-#'   its own way (2025: d3football's regular week + 1; see
-#'   [ncaa_season_games()]).
+#'   its own way: week 1 is the first scoreboard of the season and the
+#'   count runs through the postseason (see [ncaa_season_games()]).
 #' @return A data frame, one row per game: `contest` (ncaa.com contest id),
 #'   `ncaa_week`, `date`, `away`, `home` (ncaa.com short names),
 #'   `away_score`, `home_score` (integer, NA when ncaa.com shows none),
@@ -262,7 +262,8 @@ conf_seo <- function(team) {
 #' ncaa.com's weekly scoreboards tag each team in each game with its
 #' conference ("centennial", "wiac", ...). Each team's most common tag is
 #' its conference, named through `inst/extdata/conference_names.csv`
-#' (d3football's names and codes, e.g. "Centennial Conference", "CC").
+#' (a readable name and a short code per tag, e.g. "Centennial Conference",
+#' "CC").
 #' Tags not in that table (non-D3 conferences such as "nec", and
 #' "diii-independent") and blank tags give NA, as for an independent or a
 #' non-D3 opponent. The scoreboards are the ones [ncaa_season_games()]
@@ -314,8 +315,7 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
 
 #' The season's game list from ncaa.com's Division III scoreboards
 #'
-#' Since 2026-11-16 the game list (and `game_id`) comes from ncaa.com, not
-#' from d3football's season index (whose scraper was removed on 2026-11-17). Every contest on the season's weekly
+#' Every contest on the season's weekly
 #' scoreboards (`weeks`, cached) is one game; `game_id` is its ncaa.com
 #' contest id ("6461490"). A contest listed in more than one week is kept
 #' once. Dropped (listed in the result's `dropped` attribute, with why):
@@ -452,7 +452,7 @@ game_conferences <- function(game_id, home, away, conf) {
 #'
 #' ncaa.com nests lines by period, then by "possession" block (each block
 #' carries a `teamId`), then by play. Each play has `playText` (the
-#' StatCrew text, same wording as d3football's), `driveText` (the down,
+#' StatCrew text), `driveText` (the down,
 #' distance and yardline *before* the play, e.g. "2 and 9 at 28"),
 #' `homeScore` / `visitorScore` (the score *after* the play) and `clock`.
 #' A line identical to the one before it in every field (ncaa.com
@@ -496,7 +496,7 @@ ncaa_moved_td_label <- "[d3ballR: moved up; ncaa.com listed this play after the 
 #' Put a touchdown ncaa.com printed after its own try back in front of it
 #'
 #' ncaa.com sometimes prints a touchdown a line or two late, after the try
-#' and kickoff that follow it (`20251129_57m9`: "J.Runyan kick attempt
+#' and kickoff that follow it (`6529878`: "J.Runyan kick attempt
 #' good", the kickoff, then the interception returned for the touchdown).
 #' A try can't come before its touchdown, so when a try line does not follow
 #' a touchdown, and a touchdown comes within the next three lines with only
@@ -672,7 +672,8 @@ ncaa_spot_pattern <- "\\b(thrown to|caught at|to the|at the|at|from|to|on) (?!(?
 #' Some ncaa.com files (tournament games) name the field sides in
 #' `driveText` with one code ("1 and 10 at CHA36", "WRF41", "  U35") and in
 #' the play text with another ("to the CHAP36", "UWRF41", "UWP35"). The two
-#' are paired by a vote, as [infer_text_team()] does for d3football: when a
+#' are paired by a vote, as [infer_text_team()] pairs play-text and
+#' situation codes: when a
 #' line's last spot is "CHAP36" and the next line's driveText reads "at
 #' CHA36", the same yard number (not 50) pairs CHA with CHAP. Of the two
 #' pairings of driveText's two tokens with the play text's two most frequent
@@ -710,10 +711,11 @@ ncaa_spot_token_map <- function(spots, dt) {
   stats::setNames(target[keep], d[keep])
 }
 
-#' Rebuild d3football-style situations and table rows from ncaa.com lines
+#' Rebuild the (situation, play) table from ncaa.com lines
 #'
-#' The rest of the pipeline reads d3football's two-column play table
-#' (`situation`, `play`), so ncaa.com's lines are turned into that table:
+#' The rest of the pipeline reads a two-column play table (`situation`,
+#' `play`), the layout of a StatCrew play-by-play page, so ncaa.com's lines
+#' are turned into that table:
 #'
 #' - `situation` is rebuilt from `driveText`: "2 and 9 at 28" becomes
 #'   "2nd and 9 at DCFB28". ncaa.com usually leaves the yardline's team
@@ -729,8 +731,8 @@ ncaa_spot_token_map <- function(spots, dt) {
 #'   out from the line to gain: 10 yards past the spot where the series
 #'   started, or goal to go. Snaps whose downs repeat with "NO PLAY" keep
 #'   the same series.
-#' - Kickoffs and tries get a blank situation, as on d3football.
-#' - Rows d3football has and ncaa.com doesn't are added: a quarter marker
+#' - Kickoffs and tries get a blank situation, as in a StatCrew page.
+#' - Rows a StatCrew page has and ncaa.com's lines don't are added: a quarter marker
 #'   ("1st", ..., "OT") at the start of each period, a drive header
 #'   ("TEAM at MM:SS") before each "drive start" line, and a score line
 #'   ("AWAY 7, HOME 0") after each scoring sequence, from ncaa.com's running
@@ -882,7 +884,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   situation[!blank_sit & is.na(dist)] <- ""
   # a note with no driveText of its own ("clock 0:26", "Spang in at QB",
   # "previous play upheld by review") carries the situation before it, as
-  # d3football prints it, so the classifier can type it
+  # a StatCrew page prints it, so the classifier can type it
   carry <- is.na(dt$down) & !has_verb & !is_kickoff & !is_try & !is_toss & !is_start
   last_sit <- ""
   for (i in seq_len(n)) {
@@ -918,7 +920,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   is_td <- live_td(txt)
   ic <- function(p) stringr::regex(p, ignore_case = TRUE)
   # a safety on a try ("[Hampden-Sydney PAT safety]") is 1 point for the
-  # trying team (20250927_pu6m)
+  # trying team (6461660)
   try_safety <- is_try & stringr::str_detect(txt, ic("\\bsafety\\b"))
   try_pts <- ifelse(try_safety, 1L, 0L) + ifelse(!try_safety & is_try & !stringr::str_detect(txt, ic("NO PLAY")) &
                       stringr::str_detect(txt, ic("\\b(good|successful)\\b")) &
@@ -926,7 +928,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
                     ifelse(stringr::str_detect(txt, ic("kick attempt")), 1L, 2L), 0L)
   # A try line where ncaa.com's running score rises by 2 for the defending
   # team and not at all for the scoring team was returned by the defense,
-  # whatever the text says (20250913_oc57: "rush attempt Successful", but
+  # whatever the text says (6462421: "rush attempt Successful", but
   # the 2 points went to the other team, which is what the overtime needs).
   # Such lines get `ncaa_defensive_try_label` appended, which the parser
   # reads as a defensive conversion; the raw text stays in front of it.
@@ -947,7 +949,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   # a defensive try earns the scoring team nothing
   try_pts[def_try] <- 0L
   # A safety the text also marks "NO PLAY": a foul by the offense in its own
-  # end zone (20250913_ss2d: illegal forward pass from the end zone) is a
+  # end zone (6461773: illegal forward pass from the end zone) is a
   # safety, and "NO PLAY" only wipes out the pass. Decided by Sam
   # (2026-11-05): ncaa.com's running score decides when the game has one (2
   # for the defense on that line, 0 for the offense); without one, a safety
@@ -989,7 +991,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     end <- if (is.na(j)) (if (is.na(other_snap)) n else other_snap - 1L) else j - 1L
     # ... and at the next touchdown: when ncaa.com drops a try and the
     # kickoff after it, the other team's try must not count for this one
-    # (20251108_vzlp: Albion's punt-return touchdown, then Olivet's)
+    # (6462271: Albion's punt-return touchdown, then Olivet's)
     next_td <- which(is_td & seq_len(n) > i)[1]
     if (!is.na(next_td) && next_td <= end) end <- next_td - 1L
     between <- if (end > i) (i + 1L):end else integer()
@@ -997,7 +999,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     if (!length(tries)) tryless <- c(tryless, i)
     # the score is compared at the next kickoff or, when ncaa.com dropped the
     # kickoff too, on the last line before the other team's first snap
-    # (20251004_ffx2)
+    # (6461664)
     ref <- if (!is.na(j)) j else if (!is.na(other_snap)) other_snap - 1L else NA_integer_
     if (!has_running_score || is.na(ref) || ref <= i) next
     # the touchdown's team: the one whose running score jumped by 6 on it
@@ -1013,7 +1015,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
       else next
     }
     # missing points: 1 = a kick; 2 = a two-point conversion, only when the
-    # touchdown has no try line at all (20251101_nl0h: 16 to 18 on the
+    # touchdown has no try line at all (6461897: 16 to 18 on the
     # kickoff line)
     missing <- up[ti] - sum(try_pts[tries])
     if (up[3L - ti] != 0L || !(missing == 1L || (missing == 2L && !length(tries)))) next
@@ -1031,7 +1033,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     if (!is.null(scoring) && nrow(scoring)) {
       td_clock <- dplyr::coalesce(stringr::str_match(txt, "clock (\\d{1,2}:\\d{2})")[, 2], lines$clock)
       norm <- function(x) sub("^0", "", x)
-      # A summary that leaves out a team's scores (20250913_oxzn lists none of
+      # A summary that leaves out a team's scores (6461828 lists none of
       # Amherst's tries or its field goal, though the text has them) says
       # nothing by leaving out a try: for such a team only a listed try counts
       # as evidence. Complete for a team = it lists at least as many good
@@ -1066,7 +1068,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   }
 
   # --- field goals ncaa.com left out --------------------------------------
-  # Decided by Sam (2026-11-05, 20251004_6sus: La Crosse's first-overtime
+  # Decided by Sam (2026-11-05, 6461313: La Crosse's first-overtime
   # field goal has no line; the running score rises by 3 on the next,
   # Whitewater, snap). With a running score: a line that isn't a scoring
   # play on which one team's score rises by exactly 3 and the other's not
@@ -1092,7 +1094,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
       up <- c(hs_raw[i], vs_raw[i]) - c(hs_raw[i - 1L], vs_raw[i - 1L])
       if (!(sort(up)[1] == 0L && max(up) == 3L)) next
       # ncaa.com's score can lag a line behind: a field-goal line since the
-      # last score change already accounts for these 3 (20251122_6ygb)
+      # last score change already accounts for these 3 (6529845)
       changed <- which(c(FALSE, diff(hs_raw) != 0L | diff(vs_raw) != 0L) & seq_len(n) < i)
       last_change <- if (length(changed)) max(changed) else 0L
       if (any(fg_line[seq_len(n) > last_change & seq_len(n) <= i])) next
@@ -1137,7 +1139,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
 
   # --- safeties ncaa.com's score gives to the team that started the play ---
   # On a change of possession (a blocked field goal recovered by the
-  # defense, which then fouls in its own end zone: 20251004_1j5p) the safety
+  # defense, which then fouls in its own end zone: 6462142) the safety
   # is the original offense's. When the running score rises by 2 for the
   # line's own team and 0 for the other, `ncaa_offense_safety_label` is
   # appended and the parser credits the 2 points to `pos_team`.
@@ -1145,7 +1147,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   if (any(hs_raw > 0L | vs_raw > 0L)) {
     for (i in which(stringr::str_detect(txt, "\\bSAFETY\\b") & !stringr::str_detect(txt, ic("NO PLAY")) & !is_try & !is_kickoff)) {
       # (not kickoffs: there pos_team is already the receiving team, so the
-      # usual -2 credits the kicking team: 20250927_9q5i)
+      # usual -2 credits the kicking team: 6461603)
       own_home <- teams$ncaa_home[match(lines$team_id[i], teams$team_id)]
       if (is.na(own_home) || i < 2L) next
       up <- c(hs_raw[i], vs_raw[i]) - c(hs_raw[i - 1L], vs_raw[i - 1L])
@@ -1153,7 +1155,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     }
   }
 
-  # --- assemble the d3-style table ---------------------------------------
+  # --- assemble the play table -------------------------------------------
   out_sit <- character()
   out_play <- character()
   add <- function(s, p) {
@@ -1218,7 +1220,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
       if (safety_np[i]) paste(txt[i], ncaa_safety_label) else
         if (off_safety[i]) paste(txt[i], ncaa_offense_safety_label) else txt[i])
     # a "drive start" line naming the other team than its own id and the
-    # next snap's id (20251004_p4gx: "Chris. Newport drive start at 15:00"
+    # next snap's id (6461812: "Chris. Newport drive start at 15:00"
     # opens Rowan's overtime possession): the raw line is kept and a drive
     # start for the team that snaps is added after it
     if (is_start[i] && wrong_start[i]) {
@@ -1329,7 +1331,7 @@ ncaa_scoring_entries <- function(j) {
   for (p in seq_along(j$periods)) {
     # `period` is the position in the summary; `quarter` is read from the
     # title ("3rd Quarter", "OT", "2OT"). They differ when a quarter had no
-    # scoring (20250913_oc57 goes 1st, 3rd, 4th, OT).
+    # scoring (6462421 goes 1st, 3rd, 4th, OT).
     qtr <- ncaa_period_number(j$periods[[p]]$title, p)
     for (e in j$periods[[p]]$summary) {
       rows[[length(rows) + 1]] <- data.frame(
@@ -1410,7 +1412,7 @@ fetch_ncaa_game <- function(game_id, contests, index) {
   )
   teams$is_home <- if (isTRUE(hit$home_away_flip)) !teams$ncaa_home else teams$ncaa_home
   starts <- stringr::str_match(lines$text, stringr::regex("^(.*?) drive start at", ignore_case = TRUE))[, 2]
-  # Some files tag every line with the other team's teamId (20250927_kqa4:
+  # Some files tag every line with the other team's teamId (6461392:
   # each "Dubuque drive start" line carries Central's id). When the
   # drive-start names match ncaa.com's team names the other way round on
   # most such lines, the ids are swapped back.

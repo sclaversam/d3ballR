@@ -15,7 +15,7 @@ dd_pattern <- "[1-4](st|nd|rd|th)\\s+and\\s+.*\\bat\\b"
 #' "PENALTY CMU Pass Interference ... NO PLAY."), which wrongly typed three
 #' dead-ball penalty rows as `play` instead of `penalty_no_play`.
 #' Up to two direction words may come between: most hosts write "pass
-#' complete short right", some "pass short right complete" (20251018_6y68).
+#' complete short right", some "pass short right complete" (6461766).
 #' @keywords internal
 verb_pattern <- "\\b(rush|pass(?: (?:short|deep|outside|middle|left|right)){0,2} (complete|incomplete|intercepted)|pass attempt|sacked|punt|field goal|kneel)\\b"
 

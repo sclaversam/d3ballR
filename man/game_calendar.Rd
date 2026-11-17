@@ -14,7 +14,7 @@ game_calendar(game, index, season_dates)
 \item{season_dates}{Output of \code{\link[=read_season_dates]{read_season_dates()}}.}
 }
 \value{
-A list: \code{index_home}, \code{index_away} (the game list's spelling,
+A list: \code{list_home}, \code{list_away} (the game list's spelling,
 else the game's), \code{season}, \code{game_date}, \code{week}, \code{season_type},
 \code{week_source} ("index" or "date fallback").
 }

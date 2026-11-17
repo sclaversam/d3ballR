@@ -19,7 +19,7 @@ derive_first_downs(kept, nxt)
 text-only versions \code{fd_yards_text}, \code{fd_penalty_text} (for checks).
 }
 \description{
-d3's "Last,First" StatCrew format prints "1ST DOWN"; the other format
+The "Last,First" StatCrew format prints "1ST DOWN"; the other format
 (7 of the 11 2025 games) never does. So each flag is the printed text OR
 a data rule, which agree on the games that print it (see the change log).
 }

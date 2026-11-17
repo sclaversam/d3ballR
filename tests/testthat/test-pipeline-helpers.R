@@ -177,7 +177,7 @@ test_that("infer_own_side: plays that settle it decide, losses don't vote", {
   expect_equal(infer_own_side(df), c(A = "AA", B = "BB"))
 })
 
-test_that("a replay-review note doesn't hide a fumble recovery (20251018_c2vg)", {
+test_that("a replay-review note doesn't hide a fumble recovery (6461675)", {
   txt <- c(
     "Henrich,Luke pass complete to Rodriguez,Alex for 5 yards to the MSU46 fumbled by Rodriguez,Alex at MSU46 recovered by SALIS Mack,Kilo at MSU46 Mack,Kilo return 46 yards to the MSU00 TOUCHDOWN, clock 01:05. MSU is challenging the ruling on the field - \"Fumble\". PLAY STANDS.",
     "Romano,Caleb pass incomplete short right. WIDU is challenging the ruling on the field - \"Incomplete pass\". PLAY OVERTURNED. (Original Play: Romano pass complete).",
@@ -198,7 +198,7 @@ test_that("a replay-review note doesn't hide a fumble recovery (20251018_c2vg)",
   expect_equal(out$recovering_team, "Salisbury")
 })
 
-test_that("a player name ending in 'no' doesn't make a good try 'no good' (20251108_vzlp)", {
+test_that("a player name ending in 'no' doesn't make a good try 'no good' (6462271)", {
   t <- c("Daniel Avila pass attempt to Julian Toscano good.", "Avila pass attempt failed.",
          "Grwinski kick attempt no good.", "Moreno kick attempt good.")
   k <- data.frame(play_type = c("two_point", "two_point", "extra_point", "extra_point"), play_text = t,
@@ -207,7 +207,7 @@ test_that("a player name ending in 'no' doesn't make a good try 'no good' (20251
   expect_equal(score_points(k), c(2L, 0L, 0L, 1L))
 })
 
-test_that("a touchdown overturned on review is not a touchdown (20251115_aunt)", {
+test_that("a touchdown overturned on review is not a touchdown (6461573)", {
   x <- c(
     "pass incomplete short left to Balson,Xavier thrown to HEID00. HEID is challenging the ruling on the field - \"Incomplete pass\". PLAY OVERTURNED. (Original Play: pass complete short left to X.Balson caught at HEID00, for 14 yards to the HEID00 TOUCHDOWN, clock 06:27, 1ST DOWN).",
     "rush middle for 1 yard gain to the HEID00 TOUCHDOWN, clock 10:57.",

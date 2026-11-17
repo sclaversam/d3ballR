@@ -22,7 +22,7 @@ and \code{checks} (data frame, one row per score line, with \code{ok}).
 The score before row i is the running total of the points parsed on the
 rows before it (\code{score_pts}, credited to \code{pos_team} when positive and
 \code{def_pos_team} when negative). A PAT's "before" score therefore includes
-its touchdown. d3's printed score lines are not used as the source,
+its touchdown. the printed score lines are not used as the source,
 because a stat crew sometimes skips one and the following lines lag a
 score behind. Each line is compared with the parsed total at that point
 instead (\code{checks}); the game's final score is reconciled separately

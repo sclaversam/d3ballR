@@ -34,8 +34,7 @@ per-kickoff possession decisions from \code{\link[=assign_kickoffs]{assign_kicko
 \code{score_checks} (each score line vs the parsed points),
 \code{first_down_text} (the text-only first-down flags), and \code{next_snap}
 (row index of the next scrimmage snap in the half), \code{clock_discards}
-(stated clocks dropped as inconsistent), \code{footer_clock} (drive-footer
-elapsed time vs the clock anchors).
+(stated clocks dropped as inconsistent).
 }
 \description{
 Works for any game. Keeps the five event types (\code{play}, \code{kickoff},

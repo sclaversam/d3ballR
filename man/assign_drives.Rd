@@ -27,7 +27,7 @@ defensive touchdown where the try is by the other team.
 }
 }
 \details{
-d3's own drive-footer boundaries are not used: StatCrew sometimes splits
+StatCrew drive-footer boundaries are not used: StatCrew sometimes splits
 one possession into two "drives" (a re-kick after a punt penalty, a
 penalty on a field goal), and those are merged here because the same
 team keeps the ball. The opening kickoff is drive 1; no NAs.
