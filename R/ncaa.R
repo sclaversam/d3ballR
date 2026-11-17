@@ -261,7 +261,7 @@ conf_seo <- function(team) {
 #'
 #' ncaa.com's weekly scoreboards tag each team in each game with its
 #' conference ("centennial", "wiac", ...). Each team's most common tag is
-#' its conference, named through `data-raw/ncaa/conference_names.csv`
+#' its conference, named through `inst/extdata/conference_names.csv`
 #' (d3football's names and codes, e.g. "Centennial Conference", "CC").
 #' Tags not in that table (non-D3 conferences such as "nec", and
 #' "diii-independent") and blank tags give NA, as for an independent or a
@@ -275,7 +275,7 @@ conf_seo <- function(team) {
 #' @param season Season year.
 #' @param index The game list ([ncaa_season_games()]).
 #' @param weeks ncaa.com week numbers to read.
-#' @param dir Where `conference_names.csv` is, and where
+#' @param dir Where
 #'   `{season}_conferences.csv` is written.
 #' @return A list with
 #'   `table` (`season`, `team`, `conference`, `conference_code`,
@@ -293,7 +293,7 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
                      seo = c(sb$away_conference, sb$home_conference))
   tags <- tags[tags$seo != "", ]
   seo <- tapply(tags$seo, tags$team, function(v) names(sort(table(v), decreasing = TRUE))[1])
-  names_tab <- utils::read.csv(file.path(dir, "conference_names.csv"), na.strings = "")
+  names_tab <- utils::read.csv(d3_extdata("conference_names.csv"), na.strings = "")
   teams <- sort(unique(c(index$home, index$away)))
   tab <- data.frame(season = as.integer(season), team = teams,
                     ncaa_conference = unname(seo[teams]))
@@ -469,7 +469,7 @@ game_conferences <- function(game_id, home, away, conf) {
 
 #' ncaa.com team names translated to d3football's spelling
 #'
-#' `data-raw/ncaa/team_names.csv` lists the ncaa.com short names that differ
+#' `inst/extdata/team_names.csv` lists the ncaa.com short names that differ
 #' from d3football's scoreboard spelling (the convention the output keeps), e.g.
 #' "Franklin & Marshall" -> "Franklin and Marshall". Names not listed are
 #' already the same on both sites.
@@ -478,8 +478,7 @@ game_conferences <- function(game_id, home, away, conf) {
 #' @param file The name table.
 #' @return `x`, translated where listed.
 #' @keywords internal
-ncaa_to_index_name <- function(x, file = "data-raw/ncaa/team_names.csv") {
-  if (!file.exists(file)) return(x)
+ncaa_to_index_name <- function(x, file = d3_extdata("team_names.csv")) {
   tab <- utils::read.csv(file, na.strings = "")
   m <- tab$index_name[match(x, tab$ncaa_name)]
   ifelse(is.na(m), x, m)

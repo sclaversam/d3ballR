@@ -1,3 +1,47 @@
+#' Path to a lookup table that ships with the package
+#'
+#' The tables the code needs at run time (season dates, ncaa.com team and
+#' conference names) are in `inst/extdata/`, which is installed with the
+#' package (`data-raw/` is not).
+#'
+#' @param name File name, e.g. "team_names.csv".
+#' @return A file path; an error if the file isn't there.
+#' @keywords internal
+d3_extdata <- function(name) system.file("extdata", name, package = "d3ballR", mustWork = TRUE)
+
+#' Where the season-dates table is
+#'
+#' The table ships with the package in `inst/extdata/season_dates.csv`
+#' (`data-raw/` is left out of the built package, so it can't live there).
+#' Seasons [ensure_season_dates()] adds on an installed copy of d3ballR are
+#' written to a user copy instead (`tools::R_user_dir("d3ballR", "data")`),
+#' because the installed package's files shouldn't be changed; once that
+#' copy exists it is the one read. `options(d3ballR.season_dates = path)`
+#' overrides both.
+#'
+#' @return A file path.
+#' @keywords internal
+season_dates_path <- function() {
+  opt <- getOption("d3ballR.season_dates")
+  if (!is.null(opt)) return(opt)
+  user <- season_dates_user_path()
+  if (file.exists(user)) return(user)
+  d3_extdata("season_dates.csv")
+}
+
+#' The user copy of the season-dates table (see [season_dates_path()])
+#' @keywords internal
+season_dates_user_path <- function() file.path(tools::R_user_dir("d3ballR", "data"), "season_dates.csv")
+
+#' Is a file inside an installed package library?
+#' @param path File path.
+#' @keywords internal
+in_installed_library <- function(path) {
+  p <- normalizePath(path, winslash = "/", mustWork = FALSE)
+  libs <- normalizePath(.libPaths(), winslash = "/", mustWork = FALSE)
+  any(startsWith(p, paste0(libs, "/")))
+}
+
 #' Read the regular-season end dates
 #'
 #' One row per season: `season`, `regular_season_end` (Date; NA for 2020,
@@ -6,10 +50,10 @@
 #' `"wikipedia"` for seasons added automatically by
 #' [ensure_season_dates()], which still need a human check).
 #'
-#' @param path CSV path (default `data-raw/season_dates.csv`).
+#' @param path CSV path (default [season_dates_path()]).
 #' @return A data frame.
 #' @keywords internal
-read_season_dates <- function(path = "data-raw/season_dates.csv") {
+read_season_dates <- function(path = season_dates_path()) {
   d <- utils::read.csv(path, colClasses = c("integer", "character", "character"), na.strings = "")
   d$regular_season_end <- as.Date(d$regular_season_end)
   d
@@ -112,14 +156,17 @@ check_season_dates <- function(season_dates = read_season_dates(), warn = TRUE) 
 #' For each season missing from the table, fetches its Wikipedia page
 #' ([fetch_wikipedia_regular_season_end()]), appends the date with
 #' `source = "wikipedia"`, writes the CSV back, and logs that it was added
-#' so it can be verified. Then compares every date with the Thanksgiving
+#' so it can be verified. Working from the source folder (`load_all()`),
+#' "back" is `inst/extdata/season_dates.csv`, so the new season can be
+#' committed; with an installed package it is the user copy (see
+#' [season_dates_path()]). Then compares every date with the Thanksgiving
 #' rule ([check_season_dates()]), warning on disagreements.
 #'
 #' @param seasons Integer vector of seasons needed.
-#' @param path CSV path.
+#' @param path CSV path (default [season_dates_path()]).
 #' @return The (possibly extended) season-dates table.
 #' @export
-ensure_season_dates <- function(seasons, path = "data-raw/season_dates.csv") {
+ensure_season_dates <- function(seasons, path = season_dates_path()) {
   d <- read_season_dates(path)
   missing <- setdiff(unique(stats::na.omit(as.integer(seasons))), d$season)
   if (!length(missing)) return(d)
@@ -136,6 +183,11 @@ ensure_season_dates <- function(seasons, path = "data-raw/season_dates.csv") {
   d <- d[order(d$season), ]
   out <- d
   out$regular_season_end <- format(out$regular_season_end, "%Y-%m-%d")
+  if (in_installed_library(path)) {
+    path <- season_dates_user_path()
+    dir.create(dirname(path), showWarnings = FALSE, recursive = TRUE)
+    message("Saved the season dates to ", path, " (the installed package's copy is left as is).")
+  }
   utils::write.csv(out, path, row.names = FALSE, na = "")
   check_season_dates(d)
   d

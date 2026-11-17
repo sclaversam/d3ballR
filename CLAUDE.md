@@ -51,7 +51,7 @@ filter or `season`, not a new pipeline.
   id ("6461490"), the file name in `pbp/{season}/`. Placeholder contests
   dated outside the season and second listings of the same game are
   dropped. `week` and `season_type` keep d3football's convention; team names
-  keep d3football's spelling (`team_names.csv`). The old d3football id is
+  keep d3football's spelling (`inst/extdata/team_names.csv`). The old d3football id is
   the `d3football_id` column of the game list (from the 2025 crosswalk
   `data-raw/ncaa/2025_contests.csv`, kept as data). Notes written before
   2026-11-16 use the old ids.
@@ -89,7 +89,7 @@ filter or `season`, not a new pipeline.
   from code.
 - **Conferences come from ncaa.com's scoreboards:** each team's
   `conferences[].conferenceSeo` tag, named through
-  `data-raw/ncaa/conference_names.csv` (d3football's names and codes).
+  `inst/extdata/conference_names.csv` (d3football's names and codes).
   ncaa.com has no conference-game marker, so a conference game is a
   regular-season game between two teams of the same conference; it matches
   d3football's "*" marker on all 58 Centennial 2025 games.

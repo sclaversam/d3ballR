@@ -4,7 +4,7 @@
 \alias{ncaa_to_index_name}
 \title{ncaa.com team names translated to d3football's spelling}
 \usage{
-ncaa_to_index_name(x, file = "data-raw/ncaa/team_names.csv")
+ncaa_to_index_name(x, file = d3_extdata("team_names.csv"))
 }
 \arguments{
 \item{x}{ncaa.com short names.}
@@ -15,7 +15,7 @@ ncaa_to_index_name(x, file = "data-raw/ncaa/team_names.csv")
 \code{x}, translated where listed.
 }
 \description{
-\code{data-raw/ncaa/team_names.csv} lists the ncaa.com short names that differ
+\code{inst/extdata/team_names.csv} lists the ncaa.com short names that differ
 from d3football's scoreboard spelling (the convention the output keeps), e.g.
 "Franklin & Marshall" -> "Franklin and Marshall". Names not listed are
 already the same on both sites.

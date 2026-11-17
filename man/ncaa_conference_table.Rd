@@ -13,7 +13,7 @@ ncaa_conference_table(season, index, weeks = 1:20, dir = "data-raw/ncaa")
 
 \item{weeks}{ncaa.com week numbers to read.}
 
-\item{dir}{Where \code{conference_names.csv} is, and where
+\item{dir}{Where
 \verb{\{season\}_conferences.csv} is written.}
 }
 \value{
@@ -25,7 +25,7 @@ A list with
 \description{
 ncaa.com's weekly scoreboards tag each team in each game with its
 conference ("centennial", "wiac", ...). Each team's most common tag is
-its conference, named through \code{data-raw/ncaa/conference_names.csv}
+its conference, named through \code{inst/extdata/conference_names.csv}
 (d3football's names and codes, e.g. "Centennial Conference", "CC").
 Tags not in that table (non-D3 conferences such as "nec", and
 "diii-independent") and blank tags give NA, as for an independent or a
