@@ -451,7 +451,7 @@
 "6461510","2025-10-04","UW-Stout","UW-Eau Claire",42,17,42,17,TRUE
 "6461518","2025-10-04","Greensboro","Southern Virginia",22,35,22,35,TRUE
 "6461528","2025-10-04","Nichols","Maine Maritime",49,20,49,20,TRUE
-"6461552","2025-10-04","Western Connecticut","Juniata",63,15,62,15,FALSE
+"6461552","2025-10-04","Western Connecticut","Juniata",63,15,63,15,TRUE
 "6461560","2025-10-04","Wabash","John Carroll",28,31,28,31,TRUE
 "6461586","2025-10-04","TCNJ","Salisbury",10,55,10,55,TRUE
 "6461604","2025-10-04","Allegheny","Waynesburg",21,11,21,11,TRUE
@@ -1251,7 +1251,7 @@
 "6529893","2025-12-06","Trinity (Texas)","Berry",23,31,23,31,TRUE
 "6529894","2025-12-06","UW-La Crosse","North Central (Ill.)",27,35,27,35,TRUE
 "6529895","2025-12-06","UW-Platteville","Bethel",24,35,24,35,TRUE
-"6529896","2025-12-06","Wheaton (Ill.)","DePauw",49,24,49,18,FALSE
+"6529896","2025-12-06","Wheaton (Ill.)","DePauw",49,24,49,24,TRUE
 "6529897","2025-12-06","St. John's","UW-River Falls",14,42,14,42,TRUE
 "6529898","2025-12-06","Eastern","Susquehanna",0,29,0,29,TRUE
 "6529899","2025-12-06","Johns Hopkins","Salisbury",45,13,45,13,TRUE

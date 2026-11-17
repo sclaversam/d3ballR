@@ -451,7 +451,7 @@
 "6461510",2025,"2025-10-04",5,"regular","UW-Stout","UW-Eau Claire",164,42,17,42,17,"index",TRUE
 "6461518",2025,"2025-10-04",5,"regular","Greensboro","Southern Virginia",188,22,35,22,35,"index",TRUE
 "6461528",2025,"2025-10-04",5,"regular","Nichols","Maine Maritime",145,49,20,49,20,"index",TRUE
-"6461552",2025,"2025-10-04",5,"regular","Western Connecticut","Juniata",170,63,15,62,15,"index",FALSE
+"6461552",2025,"2025-10-04",5,"regular","Western Connecticut","Juniata",175,63,15,63,15,"index",TRUE
 "6461560",2025,"2025-10-04",5,"regular","Wabash","John Carroll",161,28,31,28,31,"index",TRUE
 "6461586",2025,"2025-10-04",5,"regular","TCNJ","Salisbury",148,10,55,10,55,"index",TRUE
 "6461604",2025,"2025-10-04",5,"regular","Allegheny","Waynesburg",152,21,11,21,11,"index",TRUE
@@ -1251,7 +1251,7 @@
 "6529893",2025,"2025-12-06",3,"postseason","Trinity (Texas)","Berry",168,23,31,23,31,"index",TRUE
 "6529894",2025,"2025-12-06",3,"postseason","UW-La Crosse","North Central (Ill.)",170,27,35,27,35,"index",TRUE
 "6529895",2025,"2025-12-06",3,"postseason","UW-Platteville","Bethel",176,24,35,24,35,"index",TRUE
-"6529896",2025,"2025-12-06",3,"postseason","Wheaton (Ill.)","DePauw",135,49,24,49,18,"index",FALSE
+"6529896",2025,"2025-12-06",3,"postseason","Wheaton (Ill.)","DePauw",172,49,24,49,24,"index",TRUE
 "6529897",2025,"2025-12-06",3,"postseason","St. John's","UW-River Falls",187,14,42,14,42,"index",TRUE
 "6529898",2025,"2025-12-06",3,"postseason","Eastern","Susquehanna",136,0,29,0,29,"index",TRUE
 "6529899",2025,"2025-12-06",3,"postseason","Johns Hopkins","Salisbury",153,45,13,45,13,"index",TRUE

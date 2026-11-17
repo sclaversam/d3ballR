@@ -154,8 +154,10 @@ first-down exclusivity and placement.
   (doesn't reconcile and no rule can fix it, a missing touchdown, quarters
   mislabelled, downs unreliable). Each row has the ncaa.com link and what
   to check on stats.ncaa.org. Sam's decision (2026-11-17): stats.ncaa.org
-  is used only for (a) and (b), the 7 rows with `pull_from_stats_ncaa`
-  TRUE; (c) and (d) stay as ncaa.com has them, documented.
+  is used for (a) and (b), and for a game whose stats.ncaa.org version
+  reconciles when ncaa.com's doesn't (`6461552`, `6529896`): the 9 rows
+  with `pull_from_stats_ncaa` TRUE. The rest stay as ncaa.com has them,
+  documented.
   stats.ncaa.org blocks scripts (Akamai 403
   on the first request), so a patch would come from a page Sam saves in
   his browser. (c) came from a scan of every file for a regulation quarter
@@ -328,10 +330,11 @@ read), 44 reconcile (`msui` is a source gap).
 2. **Centennial 2025**: done; rebuilt from ncaa.com on 2026-11-04.
 3. **All of D3 2025 from ncaa.com** (done as far as ncaa.com has it,
    2026-11-16): `build_season(2025)`. Since 2026-11-16 the game list is
-   ncaa.com's (1,263 games); all 1,263 built, 1,260 reconcile (3 known
-   source gaps). 7 come from saved stats.ncaa.org pages: the 6 week-1
-   games ncaa.com has no play-by-play for and the national semifinal
-   `6529905` (see the stats.ncaa.org fallback stage).
+   ncaa.com's (1,263 games); all 1,263 built, 1,262 reconcile (the other,
+   `6496410`, is missing its 4th quarter on both sites). 9 come from saved
+   stats.ncaa.org pages: the 6 week-1 games ncaa.com has no play-by-play
+   for, the national semifinal `6529905`, and two games whose ncaa.com
+   file doesn't reconcile (`6461552`, `6529896`).
    Conferences come from ncaa.com's scoreboards for every team. Expect new
    StatCrew formats to surface. The score-reconciliation test and the
    `first_downs.md` series check are the main guards.

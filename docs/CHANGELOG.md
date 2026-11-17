@@ -5,6 +5,24 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Two known source gaps fixed from stats.ncaa.org
+
+Sam's go-ahead (2026-11-17): the stats.ncaa.org rule also covers a game
+whose ncaa.com file doesn't reconcile when the stats.ncaa.org version
+does. Sam saved two more pages; both now build from stats.ncaa.org,
+reconcile, and are off `known_exceptions.csv`:
+
+- Western Connecticut at Juniata (`6461552`, 63-15): stats.ncaa.org prints
+  both tries ncaa.com dropped; the kick after the 2nd-quarter 14:55
+  touchdown failed.
+- Wheaton at DePauw (`6529896`, 49-24): stats.ncaa.org has the touchdown
+  ncaa.com had no line for (Ballentine to Lukowski, 4th quarter 5:38) and
+  149 snaps to ncaa.com's 123; its downs are right, so the game's 12
+  first-down series exceptions are gone.
+
+1,263 games built; 1,262 reconcile. The one left is Case Western Reserve at
+Rowan (`6496410`), whose 4th quarter is missing on both sites.
+
 ## The 7 games ncaa.com can't give, built from saved stats.ncaa.org pages
 
 Sam's rule (2026-11-17): stats.ncaa.org only for games with no ncaa.com

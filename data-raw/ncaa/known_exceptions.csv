@@ -1,4 +1,2 @@
 "game_id","reason"
 "6496410","ncaa.com's play-by-play stops at the end of the 3rd quarter; the final (17-17) includes 4th-quarter points that aren't in it. stats.ncaa.org has the same gap (checked by Sam, 2026-11-17)."
-"6461552","No running score, and two WestConn touchdowns have no try line (14:55, 2nd quarter; the 13:08 punt return); the final says exactly one of those tries was good. ncaa.com's scoring summary leaves out WestConn's tries and field goals, so it can't say which."
-"6529896","ncaa.com has no line for a DePauw touchdown: its running score rises from 10 to 16 on the ""DePauw drive start at 05:38"" line (4th quarter), and the try after it (M.Berry kick attempt good) is there. The play that scored is unknown, so it is not added."

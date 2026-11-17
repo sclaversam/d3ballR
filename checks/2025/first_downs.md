@@ -23,11 +23,11 @@ cfbfastR also puts `firstD_by_poss`, `firstD_by_yards`, `firstD_by_penalty` on t
 
 | flag | rows |
 |---|---|
-| firstD_by_kickoff | 12690 |
-| firstD_by_poss | 17092 |
-| firstD_by_yards | 37535 |
+| firstD_by_kickoff | 12704 |
+| firstD_by_poss | 17094 |
+| firstD_by_yards | 37538 |
 | firstD_by_penalty | 3422 |
-| new_series | 70739 |
+| new_series | 70758 |
 
 Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
@@ -35,7 +35,7 @@ Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**70964 series; 70475 have exactly one `new_series` row on their first snap row; 489 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7237.
+**70977 series; 70500 have exactly one `new_series` row on their first snap row; 477 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7238.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | first_row_text |
 |---|---|---|---|---|---|---|---|---|
@@ -197,9 +197,6 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 6461494 | 77 | 80 | St. John Fisher | 1 & 10 | none | no new_series row | unexplained | Camden Chance rush for loss of 1 yard to the STJOHN24 (Liam Nealy). |
 | 6461510 | 162 | 164 | UW-Stout | 1 & 10 | none | no new_series row | unexplained | Shotgun Sedin,Luke rush middle for 2 yards gain to the UWEC39 (Kanellakis,Gyanni; Marty,Max). |
 | 6461518 | 82 | 84 | Southern Virginia | 1 & 10 | 82, 83 | more than one new_series row | unexplained | No Huddle-Shotgun Watson,Devin pass complete short right to Audette,Henry caught at SVU29, for 11 yards to the |
-| 6461552 | 101 | 104 | Juniata | 1 & 10 | none | no new_series row | unexplained | Ethan Eisenberg sacked for loss of 3 yards to the JUNIATA22 (Eamon Moran; Amir Gharbi). |
-| 6461552 | 105 | 108 | Juniata | 1 & 10 | none | no new_series row | unexplained | Ethan Eisenberg sacked for loss of 10 yards to the JUNIATA15 (Eamon Moran). |
-| 6461552 | 119 | 123 | Juniata | 1 & 10 | none | no new_series row | unexplained | Ethan Eisenberg pass complete to Nick Rice for 6 yards to the JUNIATA31 (Tafari Johnson). |
 | 6461628 | 135 | 135 | Olivet | 1 & 10 | none | no new_series row | unexplained | (01:40) Shotgun Grant,Charlie pass complete short right to Johnson,Jaylan caught at KZO18, for 10 yards to the |
 | 6461664 | 42 | 45 | Gallaudet | 1 & 10 | none | no new_series row | unexplained | Dakota Fisher rush for loss of 1 yard to the GAL24 (Iannone, Nick). |
 | 6461812 | 190 | 190 | Christopher Newport | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Barry,Connor pass complete short left to Viernes,Jayson caught at ROW10, for 20 yards to the |
@@ -496,15 +493,6 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 6529893 | 58 | 58 | Berry | 1 & 1 | none | no new_series row | unexplained | Shotgun C.Lewis rush middle for 1 yard gain to the TUF00 TOUCHDOWN, clock 05:13 |
 | 6529894 | 155 | 159 | North Central (Ill.) | 1 & 10 | 158 | new_series not on the first snap row | unexplained | No Huddle-Shotgun D.McNeal rush right for 4 yards gain to the NCC35 (N.Jorndt) |
 | 6529895 | 57 | 59 | Bethel | 1 & 10 | 57, 58, 59 | more than one new_series row | unexplained | No Huddle A.Rundell pass intercepted by R.Francis at MET25 R.Francis return 20 yards to the MET05, End Of Play |
-| 6529896 | 11 | 13 | DePauw | 2 & 10 | none | no new_series row | unexplained | (09:35) No Huddle-Shotgun S.Ballentine pass complete short left to F.Ricciardi caught at DPU34, for 5 yards to |
-| 6529896 | 22 | 24 | Wheaton (Ill.) | 2 & 10 | none | no new_series row | unexplained | (04:56) No Huddle-Shotgun M.Forcucci pass incomplete short middle to C.Titherington thrown to WHE34 broken up  |
-| 6529896 | 26 | 28 | DePauw | 1 & 10 | 26, 27, 28 | more than one new_series row | unexplained | (03:29) No Huddle-Shotgun S.Ballentine pass complete short right to P.Samuels caught at DPU42, for 15 yards to |
-| 6529896 | 40 | 41 | DePauw | 2 & 10 | none | no new_series row | unexplained | (12:16) No Huddle-Shotgun S.Ballentine rush middle for 0 yards to the DPU24 (P.Johanik) |
-| 6529896 | 50 | 54 | DePauw | 1 & 10 | 50, 51, 53 | more than one new_series row | unexplained | (06:41) No Huddle-Shotgun S.Ballentine pass incomplete deep middle to L.Lukowski thrown to WHE06 PENALTY WHE P |
-| 6529896 | 55 | 58 | Wheaton (Ill.) | 1 & 10 | none | no new_series row | unexplained | (04:51) No Huddle-Shotgun M.Crider rush middle for 2 yards gain to the WHE34 (T.Jimoh-Oyesigi) |
-| 6529896 | 80 | 80 | DePauw | 1 & 10 | none | no new_series row | unexplained | (12:30) No Huddle-Shotgun S.Ballentine pass complete short middle to R.Ballentine caught at WHE38, for 11 yard |
-| 6529896 | 120 | 121 | Wheaton (Ill.) | 1 & 10 | none | no new_series row | unexplained | (03:38) No Huddle-Shotgun M.Crider rush middle for 0 yards to the DPU28 (C.Green) |
-| 6529896 | 128 | 129 | DePauw | 2 & 10 | none | no new_series row | unexplained | (01:27) No Huddle-Shotgun S.Ballentine pass complete short left to S.Mencer caught at DPU44, for 3 yards to th |
 | 6529897 | 15 | 15 | UW-River Falls | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | No Huddle-Shotgun K.Blaha pass complete short right to B.Wesolowski caught at SJU44, for 16 yards to the SJU28 |
 | 6529897 | 22 | 22 | St. John's | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun T.Feeney rush right for 18 yards gain to the SJU38, out of bounds at SJU38, 1ST DOWN |
 | 6529897 | 48 | 51 | UW-River Falls | 1 & 10 | 48, 49, 50, 51 | more than one new_series row | unexplained | No Huddle-Shotgun K.Blaha pass incomplete short left to B.Rohrer thrown to SJU18 PENALTY SJU Pass Interference |
