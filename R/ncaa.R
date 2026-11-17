@@ -163,7 +163,8 @@ ncaa_direct_request <- function(path) {
   out <- switch(kind,
     play_by_play = {
       p <- j$data$playbyplay
-      first <- p$periods[[1]]$playbyplayStats[[1]]
+      # no periods at all (or an empty first one): no play-by-play yet
+      first <- if (length(p$periods) && length(p$periods[[1]]$playbyplayStats)) p$periods[[1]]$playbyplayStats[[1]]
       if (length(first) < 2) NULL else p
     },
     scoring_summary = j$data$scoringSummary,
@@ -310,6 +311,129 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
   list(table = tab, markers = markers)
 }
 
+#' The season's game list from ncaa.com's Division III scoreboards
+#'
+#' Since 2026-11-16 the game list (and `game_id`) comes from ncaa.com, not
+#' from d3football's season index. Every contest on the season's weekly
+#' scoreboards (`weeks`, cached) is one game; `game_id` is its ncaa.com
+#' contest id ("6461490"). A contest listed in more than one week is kept
+#' once. Dropped (listed in the result's `dropped` attribute, with why):
+#' - a contest dated outside the season (before August 1 of `season` or
+#'   after July 31 of the next year), a placeholder ncaa.com left in its
+#'   scoreboard (2025: the Stagg Bowl's duplicate 6529906, dated
+#'   2025-01-04);
+#' - a second contest for the same game (same date, teams and final
+#'   score): the tournament's contest (with a bracket round) is kept, else
+#'   the lower id (2025: 6533522, beside 6529877).
+#'
+#' Columns follow the season index, so the rest of the pipeline reads them
+#' the same way:
+#' - `home`, `away`: ncaa.com's home and away teams, spelled as d3football
+#'   spells them ([ncaa_to_index_name()]; names not in the table are
+#'   ncaa.com's short names).
+#' - `season_type`: "postseason" for NCAA tournament games (a
+#'   `bracket_round` on the scoreboard) and for games after the regular
+#'   season's end ([classify_season_type()]); "regular" otherwise.
+#' - `week`: d3football's convention, which cfbfastR also uses: regular
+#'   weeks count from the week of the first Saturday in September
+#'   ([date_based_week()]; a game before it is week 0); postseason weeks
+#'   count the weeks after the regular season that have games, so they are
+#'   the tournament's rounds (1 = first round, ..., 6 = the Stagg Bowl).
+#'   ncaa.com's own week is kept in `ncaa_week` (2025: regular week + 1).
+#' - `d3football_id`: the game's old d3football boxscore id, from the old
+#'   contest crosswalk (`{season}_contests.csv`) where it exists.
+#'
+#' Writes `{dir}/{season}_games.csv`.
+#'
+#' @param season Season year.
+#' @param weeks ncaa.com week numbers to read.
+#' @param dir Folder for the game list and the crosswalk.
+#' @param season_dates Output of [read_season_dates()] (NULL: read it).
+#' @return A data frame, one row per game: `game_id`, `season`,
+#'   `game_date`, `week`, `season_type`, `home`, `away`, `home_score`,
+#'   `away_score`, `ncaa_week`, `bracket_round`, `d3football_id`.
+#' @export
+ncaa_season_games <- function(season, weeks = 1:20, dir = "data-raw/ncaa", season_dates = NULL) {
+  sb <- list()
+  for (w in weeks) {
+    x <- tryCatch(ncaa_scoreboard_week(season, w), error = function(e) NULL)
+    if (!is.null(x)) sb[[length(sb) + 1]] <- x
+  }
+  if (!length(sb)) stop("No ncaa.com scoreboard could be read for ", season, call. = FALSE)
+  sb <- do.call(rbind, sb)
+  sb <- sb[!duplicated(sb$contest), ]
+  in_season <- !is.na(sb$date) & sb$date >= as.Date(sprintf("%d-08-01", season)) &
+    sb$date <= as.Date(sprintf("%d-07-31", season + 1L))
+  keep_cols <- c("contest", "ncaa_week", "date", "away", "home", "away_score", "home_score", "bracket_round")
+  dropped <- sb[!in_season, keep_cols]
+  dropped$why <- rep("dated outside the season", nrow(dropped))
+  sb <- sb[in_season, ]
+  # the same game listed twice (same date, teams and score; 2025: 6533522
+  # beside the tournament's 6529877): keep the tournament's contest (with a
+  # bracket round), else the lower contest id
+  pair <- paste(sb$date, pmin(sb$away, sb$home), pmax(sb$away, sb$home),
+                pmin(sb$away_score, sb$home_score), pmax(sb$away_score, sb$home_score))
+  ord <- order(pair, sb$bracket_round == "", as.numeric(sb$contest))
+  dup <- duplicated(pair[ord])
+  dup_rows <- ord[dup & !is.na(sb$away_score[ord]) & !is.na(sb$home_score[ord])]
+  if (length(dup_rows)) {
+    d <- sb[dup_rows, keep_cols]
+    d$why <- paste0("duplicate of contest ", sb$contest[ord][match(pair[dup_rows], pair[ord])])
+    dropped <- rbind(dropped, d)
+    sb <- sb[-dup_rows, ]
+  }
+  if (is.null(season_dates)) season_dates <- ensure_season_dates(season)
+
+  tourney <- sb$bracket_round != ""
+  st <- ifelse(tourney, "postseason", classify_season_type(sb$date, season, season_dates))
+  wk <- pmax(date_based_week(sb$date, season, st, season_dates), 0L)
+  # postseason weeks are numbered by the weeks that have games (the
+  # tournament's rounds: the 2025 Stagg Bowl, three weeks after the
+  # semifinals, is week 6)
+  post <- st == "postseason"
+  wk[post] <- match(wk[post], sort(unique(wk[post])))
+
+  xw_file <- file.path(dir, paste0(season, "_contests.csv"))
+  xw <- if (file.exists(xw_file)) {
+    utils::read.csv(xw_file, na.strings = "", colClasses = c(game_id = "character", contest = "character"))
+  } else data.frame(game_id = character(), contest = character())
+
+  out <- data.frame(
+    game_id = sb$contest, season = as.integer(season), game_date = format(sb$date, "%Y-%m-%d"),
+    week = as.integer(wk), season_type = st,
+    home = ncaa_to_index_name(sb$home), away = ncaa_to_index_name(sb$away),
+    home_score = sb$home_score, away_score = sb$away_score,
+    ncaa_week = sb$ncaa_week, bracket_round = sb$bracket_round,
+    d3football_id = xw$game_id[match(sb$contest, xw$contest)]
+  )
+  out <- out[order(out$game_date, out$game_id), ]
+  rownames(out) <- NULL
+  dir.create(dir, showWarnings = FALSE, recursive = TRUE)
+  utils::write.csv(out, file.path(dir, paste0(season, "_games.csv")), row.names = FALSE, na = "")
+  if (nrow(dropped)) {
+    message(season, ": dropped ", nrow(dropped), " ncaa.com contest(s): ",
+            paste0(dropped$contest, " (", dropped$why, ")", collapse = ", "))
+  }
+  attr(out, "dropped") <- dropped
+  out
+}
+
+#' The contest table for a game list from [ncaa_season_games()]
+#'
+#' [fetch_ncaa_game()] looks games up in a contest table. With ncaa.com's
+#' game list the game id is the contest id and home / away are ncaa.com's,
+#' so this is the identity mapping.
+#'
+#' @param games Output of [ncaa_season_games()].
+#' @return A data frame like [map_ncaa_contests()]'s.
+#' @keywords internal
+ncaa_contest_table <- function(games) {
+  data.frame(game_id = games$game_id, contest = games$game_id,
+             ncaa_away = games$away, ncaa_home = games$home,
+             ncaa_away_score = games$away_score, ncaa_home_score = games$home_score,
+             home_away_flip = FALSE, date_diff = 0)
+}
+
 #' ncaa.com team names translated to the season index's spelling
 #'
 #' `data-raw/ncaa/team_names.csv` lists the ncaa.com short names that differ
@@ -435,7 +559,89 @@ ncaa_lines <- function(j) {
   # distance, score); a play can't happen twice, so the copy is dropped
   key <- do.call(paste, c(out, sep = "\r"))
   dup <- c(FALSE, key[-1] == key[-nrow(out)]) & nzchar(out$text)
-  out[!dup, , drop = FALSE]
+  ncaa_move_late_touchdowns(out[!dup, , drop = FALSE])
+}
+
+#' Label on a touchdown line moved in front of its try
+#' @keywords internal
+ncaa_moved_td_label <- "[d3ballR: moved up; ncaa.com listed this play after the lines that follow it]"
+
+#' Put a touchdown ncaa.com printed after its own try back in front of it
+#'
+#' ncaa.com sometimes prints a touchdown a line or two late, after the try
+#' and kickoff that follow it (`20251129_57m9`: "J.Runyan kick attempt
+#' good", the kickoff, then the interception returned for the touchdown).
+#' A try can't come before its touchdown, so when a try line does not follow
+#' a touchdown, and a touchdown comes within the next three lines with only
+#' kickoffs (or empty lines) in between, the touchdown line is moved in
+#' front of the try and labelled ([ncaa_moved_td_label]).
+#'
+#' Where ncaa.com has a running score it must agree: the try raises one
+#' team's score by 1 or 2 and the touchdown then raises the same team's by
+#' 6. The two lines' scores are then swapped into play order (the
+#' touchdown gets the score before the try plus 6, the try the total), so
+#' the running score still only goes up. Without a running score the order
+#' of the lines alone decides.
+#'
+#' @param lines Output of [ncaa_lines()] before this step.
+#' @return `lines`, reordered where needed.
+#' @keywords internal
+ncaa_move_late_touchdowns <- function(lines) {
+  ic <- function(pattern) stringr::regex(pattern, ignore_case = TRUE)
+  txt <- lines$text
+  is_td <- has_touchdown(txt)
+  is_try <- stringr::str_detect(txt, ic("\\b(kick|pass|rush) attempt\\b")) &
+    !stringr::str_detect(txt, ic("field goal"))
+  is_kickoff <- stringr::str_detect(txt, ic("\\bkickoff\\b"))
+  # the last line with a score before each line (NA if none)
+  last_score <- function(i, col) {
+    v <- lines[[col]][seq_len(i - 1)]
+    v <- v[!is.na(v)]
+    if (length(v)) v[length(v)] else NA_integer_
+  }
+  i <- 1L
+  while (i <= nrow(lines)) {
+    if (is_try[i]) {
+      prev <- which(nzchar(lines$text[seq_len(i - 1)]))
+      after_td <- length(prev) && is_td[prev[length(prev)]]
+      later <- seq.int(i + 1L, length.out = min(3L, nrow(lines) - i))
+      t <- later[is_td[later]]
+      t <- if (length(t)) t[1] else NA_integer_
+      between <- if (!is.na(t)) seq.int(i + 1L, length.out = t - i - 1L) else integer()
+      ok <- !after_td && !is.na(t) &&
+        all(is_kickoff[between] | !nzchar(lines$text[between]))
+      if (ok) {
+        sc <- c("home_score", "visitor_score")
+        before <- vapply(sc, function(col) last_score(i, col), integer(1))
+        at_try <- unlist(lines[i, sc])
+        at_td <- unlist(lines[t, sc])
+        has_score <- !anyNA(c(before, at_try, at_td))
+        if (has_score) {
+          d_try <- at_try - before
+          d_td <- at_td - at_try
+          ok <- sum(d_try > 0) == 1L && max(d_try) %in% 1:2 && all(d_td[d_try == 0] == 0) &&
+            d_td[d_try > 0] == 6L
+        }
+        if (ok) {
+          moved <- lines[t, ]
+          moved$text <- paste(moved$text, ncaa_moved_td_label)
+          if (has_score) {
+            moved[sc] <- as.list(at_td - d_try)
+            lines[i, sc] <- as.list(at_td)
+          }
+          lines <- rbind(lines[seq_len(i - 1), ], moved, lines[setdiff(seq.int(i, nrow(lines)), t), ])
+          txt <- lines$text
+          is_td <- c(is_td[seq_len(i - 1)], TRUE, is_td[setdiff(seq.int(i, length(is_td)), t)])
+          is_try <- c(is_try[seq_len(i - 1)], FALSE, is_try[setdiff(seq.int(i, length(is_try)), t)])
+          is_kickoff <- c(is_kickoff[seq_len(i - 1)], FALSE, is_kickoff[setdiff(seq.int(i, length(is_kickoff)), t)])
+          i <- i + 1L
+        }
+      }
+    }
+    i <- i + 1L
+  }
+  rownames(lines) <- NULL
+  lines
 }
 
 #' Games whose score can't reconcile because of a gap in the source
@@ -520,7 +726,9 @@ parse_ncaa_drive_text <- function(x) {
   m <- stringr::str_match(x, "^\\s*([1-4]) and (\\S*) at ([A-Za-z&.' -]*?)\\s*(\\d{1,2})\\s*$")
   dist <- m[, 3]
   dist <- ifelse(dist %in% c("0", "true"), "Goal", ifelse(grepl("^-?\\d+$", dist), dist, NA_character_))
-  tok <- ifelse(is.na(m[, 4]) | m[, 4] %in% c("", "-"), NA_character_, m[, 4])
+  # tokens can come padded ("at  TU35", "at   U35")
+  tok <- trimws(m[, 4])
+  tok <- ifelse(is.na(tok) | tok %in% c("", "-"), NA_character_, tok)
   data.frame(down = suppressWarnings(as.integer(m[, 2])), dist = dist, token = tok,
              yard = suppressWarnings(as.integer(m[, 5])))
 }
@@ -531,6 +739,49 @@ parse_ncaa_drive_text <- function(x) {
 #' stat crew uses (they can differ from the down-and-distance tokens).
 #' @keywords internal
 ncaa_spot_pattern <- "\\b(thrown to|caught at|to the|at the|at|from|to|on) (?!(?:at|to|the|on|from)\\b)([A-Za-z][A-Za-z&.'-]*?(?: [A-Z][A-Za-z&.'-]{0,9})?) ?(\\d{1,2})\\b"
+
+#' Pair driveText's yardline tokens with the play text's spelling
+#'
+#' Some ncaa.com files (tournament games) name the field sides in
+#' `driveText` with one code ("1 and 10 at CHA36", "WRF41", "  U35") and in
+#' the play text with another ("to the CHAP36", "UWRF41", "UWP35"). The two
+#' are paired by a vote, as [infer_text_team()] does for d3football: when a
+#' line's last spot is "CHAP36" and the next line's driveText reads "at
+#' CHA36", the same yard number (not 50) pairs CHA with CHAP. Of the two
+#' pairings of driveText's two tokens with the play text's two most frequent
+#' ones, the one with at least 3 votes and at least 3 times the other's
+#' wins, and driveText's tokens are renamed to the play text's (the
+#' spelling the rest of the pipeline reads). When the two already agree,
+#' or the vote isn't clear, nothing is renamed.
+#'
+#' @param spots `str_match_all(txt, ncaa_spot_pattern)`, one per line.
+#' @param dt Output of [parse_ncaa_drive_text()] for the same lines.
+#' @return Named character vector: names are driveText tokens, values the
+#'   play-text token to use instead (empty when nothing is renamed).
+#' @keywords internal
+ncaa_spot_token_map <- function(spots, dt) {
+  none <- stats::setNames(character(), character())
+  d <- names(sort(table(stats::na.omit(dt$token)), decreasing = TRUE))
+  if (length(d) < 2) return(none)
+  d <- d[1:2]
+  t <- names(sort(table(unlist(lapply(spots, function(s) s[, 3]))), decreasing = TRUE))
+  if (length(t) < 2) return(none)
+  t <- t[1:2]
+  if (setequal(t, d)) return(none)
+  last <- function(k) vapply(spots, function(s) if (nrow(s)) s[nrow(s), k] else NA_character_, character(1))
+  end_tok <- last(3)
+  end_num <- suppressWarnings(as.integer(last(4)))
+  nxt_tok <- c(dt$token[-1], NA)
+  nxt_num <- c(dt$yard[-1], NA)
+  ok <- !is.na(end_tok) & !is.na(nxt_tok) & !is.na(end_num) & !is.na(nxt_num) &
+    end_num == nxt_num & end_num != 50L & end_tok %in% t & nxt_tok %in% d
+  same <- sum(ok & ((end_tok == t[1] & nxt_tok == d[1]) | (end_tok == t[2] & nxt_tok == d[2])))
+  swap <- sum(ok & ((end_tok == t[1] & nxt_tok == d[2]) | (end_tok == t[2] & nxt_tok == d[1])))
+  if (max(same, swap) < 3 || max(same, swap) < 3 * min(same, swap)) return(none)
+  target <- if (same > swap) t else rev(t)
+  keep <- d != target
+  stats::setNames(target[keep], d[keep])
+}
 
 #' Rebuild d3football-style situations and table rows from ncaa.com lines
 #'
@@ -612,6 +863,11 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   # on a play wiped out by a penalty only the enforcement counts
   no_play <- stringr::str_detect(txt, stringr::regex("\\bNO PLAY\\b", ignore_case = TRUE))
   end_spots <- stringr::str_match_all(ifelse(no_play, stringr::str_extract(txt, "PENALTY.*$"), txt), ncaa_spot_pattern)
+  # tournament files can spell the sides one way in driveText ("CHA36")
+  # and another in the play text ("CHAP36"): use the play text's spelling
+  tok_map <- ncaa_spot_token_map(spots, dt)
+  renamed <- dt$token %in% names(tok_map)
+  dt$token[renamed] <- unname(tok_map[dt$token[renamed]])
   all_tok <- unlist(lapply(spots, function(s) s[, 3]))
   tokens <- names(sort(table(c(all_tok, stats::na.omit(dt$token))), decreasing = TRUE))[1:2]
   if (anyNA(tokens)) stop("Could not find two yardline team tokens in the ncaa.com text.")
@@ -729,7 +985,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   # a re-kick after a "NO PLAY" try). The added line goes after the
   # touchdown's last try line, and the running score is raised from there.
   # "TOUCHDOWN nullified by penalty" is not a touchdown
-  live_td <- function(x) stringr::str_detect(x, "\\bTOUCHDOWN\\b(?!\\s+nullified)") &
+  live_td <- function(x) has_touchdown(x) &
     !stringr::str_detect(x, stringr::regex("NO PLAY", ignore_case = TRUE))
   is_td <- live_td(txt)
   ic <- function(p) stringr::regex(p, ignore_case = TRUE)
@@ -738,7 +994,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   try_safety <- is_try & stringr::str_detect(txt, ic("\\bsafety\\b"))
   try_pts <- ifelse(try_safety, 1L, 0L) + ifelse(!try_safety & is_try & !stringr::str_detect(txt, ic("NO PLAY")) &
                       stringr::str_detect(txt, ic("\\b(good|successful)\\b")) &
-                      !stringr::str_detect(txt, ic("no good|failed")),
+                      !stringr::str_detect(txt, ic("\\b(no good|failed)\\b")),
                     ifelse(stringr::str_detect(txt, ic("kick attempt")), 1L, 2L), 0L)
   # A try line where ncaa.com's running score rises by 2 for the defending
   # team and not at all for the scoring team was returned by the defense,
@@ -803,6 +1059,11 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     other_snap <- which(is_snap & seq_len(n) > i & lines$team_id != lines$team_id[i])[1]
     if (!is.na(other_snap) && (is.na(j) || other_snap < j)) j <- NA
     end <- if (is.na(j)) (if (is.na(other_snap)) n else other_snap - 1L) else j - 1L
+    # ... and at the next touchdown: when ncaa.com drops a try and the
+    # kickoff after it, the other team's try must not count for this one
+    # (20251108_vzlp: Albion's punt-return touchdown, then Olivet's)
+    next_td <- which(is_td & seq_len(n) > i)[1]
+    if (!is.na(next_td) && next_td <= end) end <- next_td - 1L
     between <- if (end > i) (i + 1L):end else integer()
     tries <- between[is_try[between]]
     if (!length(tries)) tryless <- c(tryless, i)
@@ -823,11 +1084,15 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
       else if (up[ti] >= 6L) up[ti] <- up[ti] - 6L
       else next
     }
-    if (up[3L - ti] != 0L || up[ti] - sum(try_pts[tries]) != 1L) next
+    # missing points: 1 = a kick; 2 = a two-point conversion, only when the
+    # touchdown has no try line at all (20251101_nl0h: 16 to 18 on the
+    # kickoff line)
+    missing <- up[ti] - sum(try_pts[tries])
+    if (up[3L - ti] != 0L || !(missing == 1L || (missing == 2L && !length(tries)))) next
     at <- max(c(i, tries))
-    added[as.character(at)] <- ncaa_added_try_text
+    added[as.character(at)] <- if (missing == 2L) ncaa_added_two_point_text_score else ncaa_added_try_text
     gap <- at:(if (!is.na(j)) j - 1L else ref)
-    if (ti == 1L) hs[gap] <- hs[gap] + 1L else vs[gap] <- vs[gap] + 1L
+    if (ti == 1L) hs[gap] <- hs[gap] + missing else vs[gap] <- vs[gap] + missing
   }
   # No running score at all (some host schools' files): when the final
   # score is short by exactly one point per touchdown with no try line, a
@@ -843,7 +1108,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
       # nothing by leaving out a try: for such a team only a listed try counts
       # as evidence. Complete for a team = it lists at least as many good
       # tries and field goals for it as the play text has.
-      fg_good <- stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("NO GOOD|NO PLAY"))
+      fg_good <- stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("\\b(NO GOOD|NO PLAY)\\b"))
       complete <- function(tid) {
         sum(scoring$team_id == tid & scoring$type %in% c("XP", "TPC")) >= sum(try_pts > 0L & lines$team_id %in% tid) &&
           sum(scoring$team_id == tid & scoring$type %in% "FG") >= sum(fg_good & lines$team_id %in% tid)
@@ -863,9 +1128,9 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     }
     if (length(unmatched) && !is.null(final_total)) {
       text_pts <- 6L * sum(is_td) +
-        3L * sum(stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("NO GOOD|NO PLAY"))) +
+        3L * sum(stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("\\b(NO GOOD|NO PLAY)\\b"))) +
         2L * sum(stringr::str_detect(txt, "\\bSAFETY\\b") & !stringr::str_detect(txt, ic("NO PLAY"))) +
-        sum(try_pts) + sum(ifelse(added == ncaa_added_two_point_text, 2L, 1L))
+        sum(try_pts) + sum(ifelse(added %in% c(ncaa_added_two_point_text, ncaa_added_two_point_text_score), 2L, 1L))
       if (final_total - text_pts == length(unmatched)) {
         added[as.character(unmatched)] <- ncaa_added_try_text_final
       }
@@ -883,7 +1148,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
   # (same quarter and team). Without a running score: a summary field goal
   # with no field-goal line at its quarter and clock, only when the final
   # score is short by exactly 3 per such field goal.
-  fg_line <- stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("NO GOOD|NO PLAY"))
+  fg_line <- stringr::str_detect(txt, ic("field goal.*\\bGOOD\\b")) & !stringr::str_detect(txt, ic("\\b(NO GOOD|NO PLAY)\\b"))
   score_line_txt <- is_td | fg_line | is_try | stringr::str_detect(txt, "\\bSAFETY\\b")
   s_qtr_all <- if (!is.null(scoring) && nrow(scoring)) (if (is.null(scoring$quarter)) scoring$period else scoring$quarter) else integer()
   summary_kicker <- function(per, tid) {
@@ -914,7 +1179,7 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     cand <- cand[!vapply(cand, function(k) any(fg_line & lines$period == s_qtr_all[k] & norm(clk) %in% norm(scoring$time[k])), logical(1))]
     text_pts <- 6L * sum(is_td) + 3L * sum(fg_line) +
       2L * sum(stringr::str_detect(txt, "\\bSAFETY\\b") & !stringr::str_detect(txt, ic("NO PLAY"))) +
-      sum(try_pts) + sum(ifelse(added == ncaa_added_two_point_text, 2L, 1L))
+      sum(try_pts) + sum(ifelse(added %in% c(ncaa_added_two_point_text, ncaa_added_two_point_text_score), 2L, 1L))
     if (length(cand) && final_total - text_pts == 3L * length(cand)) {
       secs <- function(x) { p <- strsplit(x, ":"); vapply(p, function(v) if (length(v) == 2) as.integer(v[1]) * 60L + as.integer(v[2]) else NA_integer_, integer(1)) }
       for (k in cand) {
@@ -1109,6 +1374,13 @@ ncaa_added_try_text_final <- "kick attempt good [added by d3ballR: ncaa.com has 
 #' @keywords internal
 ncaa_added_try_text_summary <- "kick attempt good [added by d3ballR: ncaa.com has no line for this try and no running score; its scoring summary lists the extra point as good]."
 
+#' Play text of a two-point try added from ncaa.com's running score
+#'
+#' The touchdown has no try line and the running score rose by 2 before the
+#' next kickoff. It doesn't say whether it was a run or a pass.
+#' @keywords internal
+ncaa_added_two_point_text_score <- "two-point attempt good [added by d3ballR: ncaa.com has no line for this try; its score rose by 2 after the touchdown]."
+
 #' Play text of a two-point try added from ncaa.com's scoring summary
 #'
 #' The summary doesn't say whether it was a run or a pass.
@@ -1187,9 +1459,11 @@ ncaa_own_token <- function(team_id, token, yard, tokens) {
 #' differs from ncaa.com in one 2025 game). The final score is ncaa.com's
 #' scoreboard score, else its last running score.
 #'
-#' @param game_id Season-index game id, e.g. "20250905_jdn4".
-#' @param contests Contest table from [map_ncaa_contests()].
-#' @param index The season index.
+#' @param game_id Game id: the ncaa.com contest id, e.g. "6461490" (or,
+#'   with [map_ncaa_contests()]'s table, an old d3football id).
+#' @param contests Contest table: [ncaa_contest_table()] of the game list,
+#'   or [map_ncaa_contests()]'s.
+#' @param index The game list ([ncaa_season_games()]) or the season index.
 #' @return A list like [fetch_game()]'s: `game_id`, `season`, `teams`,
 #'   `finals`, `matchup`, `header_date`, `plays`, plus `contest`.
 #' @export

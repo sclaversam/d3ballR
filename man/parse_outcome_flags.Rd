@@ -46,7 +46,10 @@ rush/pass/sack/kneel that fell short of the line to gain (by the loose
 \code{yards_gained}), wasn't a touchdown, interception, or lost fumble, had no
 penalty, and the next row with a down belongs to the other team. Some
 StatCrew formats never print the phrase, so the rule is needed.
-\item \code{touchdown}: text says "TOUCHDOWN" (upper case) and wasn't nullified.
+A fumble printed after the play's "TOUCHDOWN" on a scrimmage play is
+never lost: the ball was dead at the score.
+\item \code{touchdown}: text says "TOUCHDOWN" (upper case), wasn't nullified, and
+isn't only in a replay-review note (\code{\link[=has_touchdown]{has_touchdown()}}).
 \item \code{safety}: text says "safety". None in the 2025 CMU games.
 }
 }

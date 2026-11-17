@@ -297,9 +297,86 @@ test_that("ncaa_direct_request reports an empty game or a stale query id as HTTP
   httr2::local_mocked_responses(function(req) httr2::response(200, headers = "Content-Type: application/json",
     body = charToRaw('{"data":{"playbyplay":{"periods":[{"playbyplayStats":[{"__typename":"PlayByPlayFootball"}]}]}}}')))
   expect_equal(ncaa_direct_request("/game/1/play-by-play")$status, 502L)
+  # no periods at all (the week-1 games still missing in batch 6)
+  httr2::local_mocked_responses(function(req) httr2::response(200, headers = "Content-Type: application/json",
+    body = charToRaw('{"data":{"playbyplay":{"contestId":6461900,"periods":[]}}}')))
+  expect_equal(ncaa_direct_request("/game/6461900/play-by-play")$status, 502L)
   httr2::local_mocked_responses(function(req) httr2::response(200, headers = "Content-Type: application/json",
     body = charToRaw('{"errors":[{"message":"PersistedQueryNotFound"}]}')))
   res <- ncaa_direct_request("/game/1/scoring-summary")
   expect_equal(res$status, 502L)
   expect_match(res$why, "PersistedQueryNotFound")
+})
+
+test_that("a touchdown printed after its own try is moved in front of it (20251129_57m9)", {
+  mk <- function(text, home, vis) data.frame(period = 4L, team_id = "1", clock = "00:00", drive_text = NA_character_,
+                                             home_score = home, visitor_score = vis, text = text)
+  lines <- rbind(
+    mk("K.Brown pass incomplete short left to K.Sims thrown to TU20", NA, NA),
+    mk("J.Runyan kick attempt good (H: T.Hancock, LS: J.Dioli)", 28L, 24L),
+    mk("J.Runyan kickoff 60 yards to the HSU05 G.Powell return 8 yards to the HSU13", NA, NA),
+    mk("K.Brown pass intercepted by T.Scannell at TU30 T.Scannell return 70 yards to the HSU00 TOUCHDOWN, clock 00:59", 34L, 24L),
+    mk("J.Runyan kickoff 55 yards to the HSU15, out of bounds at HSU15", NA, NA)
+  )
+  lines <- rbind(mk("earlier play", 27L, 24L), lines)
+  out <- ncaa_move_late_touchdowns(lines)
+  expect_match(out$text[3], "TOUCHDOWN")
+  expect_match(out$text[3], "moved up", fixed = TRUE)
+  expect_match(out$text[4], "kick attempt good")
+  expect_equal(out$home_score[3:4], c(33L, 34L))
+  expect_equal(nrow(out), nrow(lines))
+
+  # a try right after its touchdown is left alone
+  normal <- lines[c(1, 5, 3, 4, 6), ]
+  normal$home_score <- c(27L, 33L, 34L, NA, NA)
+  expect_identical(ncaa_move_late_touchdowns(normal)$text, normal$text)
+
+  # a running score that contradicts the move keeps ncaa.com's order
+  bad <- lines
+  bad$home_score[5] <- 31L
+  expect_identical(ncaa_move_late_touchdowns(bad)$text, bad$text)
+})
+
+test_that("driveText side codes are paired with the play text's by a yardline vote (20251129_3gqf)", {
+  txt <- c("kickoff 53 yards to the UWRF12 D.Stokes return 24 yards to the UWRF36",
+           "pass complete to B.Wesolowski caught at UWRF41, for 5 yards to the UWRF41",
+           "rush middle for 19 yards gain to the CHAP40, 1ST DOWN",
+           "pass complete to T.Asher for 4 yards to the CHAP36",
+           "pass complete to T.Asher for 8 yards to the CHAP28, 1ST DOWN",
+           "rush middle for 5 yards gain to the CHAP23")
+  dt <- parse_ncaa_drive_text(c("- and - at CHA35", "1 and  at WRF36", "2 and  at WRF41",
+                                "1 and  at CHA40", "2 and  at CHA36", "1 and  at CHA28"))
+  spots <- stringr::str_match_all(txt, ncaa_spot_pattern)
+  expect_equal(ncaa_spot_token_map(spots, dt), c(CHA = "CHAP", WRF = "UWRF"))
+  # padded driveText codes are trimmed ("at   U35")
+  expect_equal(parse_ncaa_drive_text("1 and 10 at   U35")$token, "U")
+
+  # play text already in driveText's spelling: nothing to rename
+  same <- stringr::str_match_all(gsub("CHAP", "CHA", gsub("UWRF", "WRF", txt)), ncaa_spot_pattern)
+  expect_length(ncaa_spot_token_map(same, dt), 0)
+  # no driveText tokens (the regular format): nothing to rename
+  expect_length(ncaa_spot_token_map(spots, parse_ncaa_drive_text(rep("1 and 10 at 35", 6))), 0)
+})
+
+test_that("ncaa_season_games drops placeholders and second listings, and numbers postseason weeks", {
+  sb <- function(contest, week, date, away, home, as, hs, br = "") data.frame(
+    contest = contest, ncaa_week = week, date = as.Date(date), away = away, home = home,
+    away_score = as, home_score = hs, bracket_round = br, away_conference = "", home_conference = "")
+  weeks <- list(
+    `2` = sb("1", 2, "2025-09-06", "Alpha", "Beta", 7L, 14L),
+    `13` = sb(c("2", "3"), 13, "2025-11-22", c("Gamma", "Gamma"), c("Delta", "Delta"), 3L, 10L, c("1", "")),
+    `17` = sb("4", 17, "2025-12-20", "Beta", "Delta", 21L, 28L, "5"),
+    `19` = sb(c("5", "6"), 19, c("2025-01-04", "2026-01-04"), "Beta", "Delta", 24L, 14L, c("6", ""))
+  )
+  local_mocked_bindings(ncaa_scoreboard_week = function(season, week) weeks[[as.character(week)]])
+  dir <- withr::local_tempdir()
+  dates <- data.frame(season = 2025L, regular_season_end = as.Date("2025-11-15"))
+  g <- ncaa_season_games(2025, weeks = c(2, 13, 17, 19), dir = dir, season_dates = dates)
+  expect_equal(g$game_id, c("1", "2", "4", "6"))
+  expect_equal(g$week, c(1L, 1L, 2L, 3L))
+  expect_equal(g$season_type, c("regular", "postseason", "postseason", "postseason"))
+  d <- attr(g, "dropped")
+  expect_equal(d$contest, c("5", "3"))
+  expect_match(d$why[2], "duplicate of contest 2")
+  expect_true(file.exists(file.path(dir, "2025_games.csv")))
 })

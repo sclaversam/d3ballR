@@ -106,7 +106,10 @@ token_regex <- function(tokens) {
 #'   `yards_gained`), wasn't a touchdown, interception, or lost fumble, had no
 #'   penalty, and the next row with a down belongs to the other team. Some
 #'   StatCrew formats never print the phrase, so the rule is needed.
-#' - `touchdown`: text says "TOUCHDOWN" (upper case) and wasn't nullified.
+#'   A fumble printed after the play's "TOUCHDOWN" on a scrimmage play is
+#'   never lost: the ball was dead at the score.
+#' - `touchdown`: text says "TOUCHDOWN" (upper case), wasn't nullified, and
+#'   isn't only in a replay-review note ([has_touchdown()]).
 #' - `safety`: text says "safety". None in the 2025 CMU games.
 #'
 #' @param df Kept rows with `play_text`, `play_type`, `pos_team`,
@@ -127,15 +130,27 @@ parse_outcome_flags <- function(df, text_team) {
   completion <- pt == "pass_complete"
   sack <- pt == "sack"
   int <- pt == "pass_intercepted"
-  fumble <- stringr::str_detect(txt, ic("\\b(fumbled?|muffed|muff)\\b"))
+  # the fumble search ignores a replay-review note at the end of the line
+  # ("MSU is challenging the ruling on the field - \"Fumble\". PLAY STANDS."):
+  # its quoted ruling is not a fumble of its own, and it would hide the
+  # "recovered by" before it
+  play_txt <- strip_review_note(txt)
+  fumble <- stringr::str_detect(play_txt, ic("\\b(fumbled?|muffed|muff)\\b"))
   # upper-case only: scores are always "TOUCHDOWN"; the lower-case word
   # appears in "Penalty after touchdown before PAT" marker rows
-  touchdown <- stringr::str_detect(txt, "\\bTOUCHDOWN\\b") &
-    !stringr::str_detect(txt, ic("touchdown nullified"))
+  touchdown <- has_touchdown(txt)
   safety <- stringr::str_detect(txt, ic("\\bsafety\\b"))
 
+  # a runner or receiver who scored before fumbling ("rush for 22 yards to
+  # the DEAN00, TOUCHDOWN, fumble by ... recovered by DEAN", 20251115_m5el)
+  # scored: the ball was dead at the score, so the fumble after it can't be
+  # lost
+  td_pos <- stringr::str_locate(play_txt, "\\bTOUCHDOWN\\b")[, 1]
+  fum_pos <- stringr::str_locate(play_txt, ic("\\b(fumbled?|muffed|muff)\\b"))[, 1]
+  scored_first <- scrimmage & touchdown & !is.na(td_pos) & !is.na(fum_pos) & td_pos < fum_pos
   # last recovery after the last mention of a fumble
-  after_fumble <- stringr::str_replace(txt, ic("^.*\\b(fumbled?|muffed|muff)\\b"), "")
+  after_fumble <- stringr::str_replace(play_txt, ic("^.*\\b(fumbled?|muffed|muff)\\b"), "")
+  after_fumble[scored_first] <- ""
   recov_token <- vapply(
     stringr::str_match_all(after_fumble, paste0("recovered by ", token_regex(names(text_team)), "\\b")),
     function(m) if (nrow(m)) m[nrow(m), 2] else NA_character_, character(1)
@@ -174,4 +189,43 @@ parse_outcome_flags <- function(df, text_team) {
                 downs_turnover = downs_turnover, touchdown = touchdown, safety = safety)
   for (nm in names(flags)) df[[nm]] <- flags[[nm]] & !no_play
   df
+}
+
+#' Does a play line score a touchdown?
+#'
+#' "TOUCHDOWN" in upper case (the lower-case word appears in "Penalty after
+#' touchdown before PAT" marker rows), not "TOUCHDOWN nullified", and not
+#' only inside a replay-review note: a touchdown overturned on review
+#' ("pass incomplete ... PLAY OVERTURNED. (Original Play: ... TOUCHDOWN)")
+#' is not one (see [strip_review_note()]).
+#'
+#' @param x Character vector of play text.
+#' @return Logical vector.
+#' @keywords internal
+has_touchdown <- function(x) {
+  x <- strip_review_note(x)
+  stringr::str_detect(x, "\\bTOUCHDOWN\\b") &
+    !stringr::str_detect(x, stringr::regex("touchdown nullified", ignore_case = TRUE))
+}
+
+#' Drop a replay-review note from the end of a play line
+#'
+#' StatCrew appends the review of a play after the play itself:
+#' "MSU is challenging the ruling on the field - \"Fumble\". PLAY STANDS."
+#' or "play is under automatic review - \"Targeting\". PLAY STANDS.",
+#' sometimes followed by "(Original Play: ...)" when the ruling was
+#' overturned. The play before the note is the final ruling. The note
+#' quotes the ruling under review ("Fumble", "Interception"), which
+#' must not be read as part of the play.
+#'
+#' @param x Character vector of play text.
+#' @return `x` with everything from the review note on removed (unchanged
+#'   when there is no note).
+#' @keywords internal
+strip_review_note <- function(x) {
+  stringr::str_replace(
+    x,
+    stringr::regex("\\s*(\\S+ is challenging the ruling|play is under automatic review)\\b.*$", ignore_case = TRUE),
+    ""
+  )
 }

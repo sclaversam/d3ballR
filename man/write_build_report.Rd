@@ -12,7 +12,8 @@ write_build_report(
   conf,
   check_dir,
   source = "ncaa",
-  out_dir = file.path("pbp", season)
+  out_dir = file.path("pbp", season),
+  stats_games = character()
 )
 }
 \arguments{

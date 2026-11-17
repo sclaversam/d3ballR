@@ -463,11 +463,13 @@ pbp_columns <- c(
 #' Otherwise the scorer is the team that kicks off next in the same half (its teams come from the
 #' next drive header); if no kickoff follows (end of half, overtime), the
 #' first score line after the scoring play (after a safety, the team that
-#' conceded), else the scoring play's own offense. Score lines are not the
+#' conceded), else the team that scored the scoring play ([scoring_team()]). Score lines are not the
 #' first choice because d3 sometimes skips one and the rest lag a score
 #' behind (Dean at Fitchburg State, 2025). This fixes the try after a
 #' defensive touchdown, which otherwise inherits the team that was scored
 #' on.
+#' A try outside any try phase (its score printed elsewhere) goes to its
+#' kicker's team when that is known.
 #'
 #' @param kept Kept rows with `row`, `try_phase`, `play_type`, `play_text`,
 #'   `penalty_no_play`, `pos_team`.
@@ -475,9 +477,12 @@ pbp_columns <- c(
 #' @param teams The two canonical team names.
 #' @param kickoffs Output of [assign_kickoffs()] (refined by the kicker).
 #' @param actor_map Output of [build_actor_map()].
+#' @param scorer Output of [scoring_team()]: the team that scored each row's
+#'   points (NULL: the scoring play's offense is used in rule 3).
 #' @return Character vector: the corrected `pos_team`.
 #' @keywords internal
-try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = character()) {
+try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = character(),
+                           scorer = NULL) {
   scoring <- which(is_scoring_snap(kept))
   out <- kept$pos_team
   actors <- play_actor(kept$play_text)
@@ -518,11 +523,44 @@ try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = cha
     if (nrow(sr) && !is.na(sr$scorer[1])) {
       out[i] <- if (safety) other_team(sr$scorer[1], teams) else sr$scorer[1]
     } else {
-      # 3. the scoring play's own offense
-      out[i] <- kept$pos_team[s]
+      # 3. the team that scored the scoring play: its offense, or the
+      #    defense on a return touchdown (a blocked punt returned for a
+      #    touchdown, 20251025_eeno)
+      out[i] <- if (!is.null(scorer) && !is.na(scorer[s])) scorer[s] else kept$pos_team[s]
     }
   }
+  # a try printed away from its score (no score before it in the try phase:
+  # ncaa.com moved the touchdown elsewhere, 20251206_rxq5) belongs to its
+  # kicker's / passer's team when that is known; otherwise it keeps the
+  # offense on the field
+  orphan <- which(!kept$try_phase & kept$play_type %in% c("extra_point", "two_point") & !is.na(actor_team))
+  out[orphan] <- actor_team[orphan]
   out
+}
+
+#' The team that scored each row's points, before tries are assigned
+#'
+#' A first pass of [parse_outcome_flags()] and [score_points()] on the rows
+#' as they stand: a scoring play's own row already has the right offense,
+#' so its sign says who scored (`pos_team` for +, the other team for -).
+#' [try_phase_team()] uses it for a try with no kicker named and no kickoff
+#' after it, which otherwise went to the scoring play's offense, wrong after
+#' a return touchdown.
+#'
+#' @param kept Kept rows with `play_text`, `play_type`, `pos_team`, `down`,
+#'   `distance`, `penalty_no_play`, `kicker_recovered`.
+#' @param text_team Output of [infer_text_team()].
+#' @param teams The two canonical team names.
+#' @return Character vector: the scoring team, NA on rows with no points.
+#' @keywords internal
+scoring_team <- function(kept, text_team, teams) {
+  k <- kept
+  k$def_pos_team <- other_team(k$pos_team, teams)
+  k$yards_gained <- parse_yards_gained(k$play_text, k$play_type, k$penalty_no_play)
+  k <- parse_outcome_flags(k, text_team)
+  k$safety[labelled_safety(k$play_text)] <- TRUE
+  pts <- score_points(k)
+  dplyr::case_when(pts > 0L ~ k$pos_team, pts < 0L ~ k$def_pos_team, TRUE ~ NA_character_)
 }
 
 #' Build one game's play-by-play table
@@ -600,7 +638,8 @@ build_pbp <- function(game_url, index = NULL, season_dates = NULL, conf = NULL) 
 
   # tries belong to the scoring team
   kept$try_phase <- flag_try_phase(kept)
-  kept$pos_team <- try_phase_team(kept, scores, teams, kickoffs, actor_map)
+  kept$pos_team <- try_phase_team(kept, scores, teams, kickoffs, actor_map,
+                                  scorer = scoring_team(kept, text_team, teams))
   kept$def_pos_team <- other_team(kept$pos_team, teams)
 
   kept$yards_to_goal <- compute_yards_to_goal(kept, own_side)
@@ -755,12 +794,13 @@ team_points <- function(g, team) {
 #'   cached files are used).
 #' @return Invisibly, a named list of the per-game tibbles (by `game_id`).
 #' @export
-build_all_pbp <- function(game_urls, out_dir, check_dir, conf = NULL, loader = NULL, season = NULL) {
+build_all_pbp <- function(game_urls, out_dir, check_dir, conf = NULL, loader = NULL, season = NULL,
+                          index = NULL) {
   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
   season_of <- function(u) if (is.null(loader)) extract_season(u) else rep(as.integer(season), length(u))
   seasons <- unique(stats::na.omit(season_of(game_urls)))
-  indexes <- lapply(seasons, build_season_index)
+  indexes <- if (is.null(index)) lapply(seasons, build_season_index) else rep(list(index), length(seasons))
   names(indexes) <- seasons
   season_dates <- ensure_season_dates(seasons)
 

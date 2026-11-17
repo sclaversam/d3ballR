@@ -38,7 +38,9 @@ parse_coin_deferrer <- function(text) {
 #' kickoff, in order:
 #' 1. **override** -- the text shows the kicking team recovered (onside kick,
 #'    or a return fumble/muff recovered by the kicker). The receiving team is
-#'    the other team, and the play is a turnover.
+#'    the other team, and the play is a turnover. An onside kick printed with
+#'    no recovery counts too when it landed on the kicking team's own side
+#'    and the kicking team has the next drive (20251101_y8ak).
 #' 2. **header** -- otherwise, the team named on the next drive header/start
 #'    row after the kickoff (before the next kickoff, same half).
 #' 3. **fallback** -- no drive row follows (e.g. a kickoff-return TD): the
@@ -133,6 +135,20 @@ assign_kickoffs <- function(full, teams, team_map, own_side, text_team, scores) 
     rec <- stringr::str_match_all(full$play[k], paste0("recovered by ", token_regex(names(text_team)), "\\b"))[[1]]
     recovered_by <- if (nrow(rec)) unname(text_team[rec[nrow(rec), 2]]) else NA_character_
     kicker_recovered <- !is.na(recovered_by) && !is.na(context_kicker) && recovered_by == context_kicker
+    # an onside kick some hosts print with no recovery at all ("Gallant,Carson
+    # onside kickoff 11 yards to the SUFB46.", 20251101_y8ak): it landed on
+    # the kicking team's own side and the kicking team has the next drive,
+    # so the kicking team recovered it
+    if (!kicker_recovered && is.na(recovered_by) && !is.na(context_kicker) &&
+        identical(header_team, context_kicker) &&
+        stringr::str_detect(full$play[k], stringr::regex("\\bonside kickoff\\b", ignore_case = TRUE))) {
+      land <- stringr::str_match(full$play[k], paste0("kickoff -?\\d+ yards? to the ", token_regex(names(text_team)), "\\d"))
+      land_team <- if (!is.na(land[1, 2])) unname(text_team[land[1, 2]]) else NA_character_
+      if (identical(land_team, context_kicker)) {
+        recovered_by <- context_kicker
+        kicker_recovered <- TRUE
+      }
+    }
 
     if (kicker_recovered) {
       rule <- "override"

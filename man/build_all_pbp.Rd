@@ -10,7 +10,8 @@ build_all_pbp(
   check_dir,
   conf = NULL,
   loader = NULL,
-  season = NULL
+  season = NULL,
+  index = NULL
 )
 }
 \arguments{

@@ -66,9 +66,11 @@ ncaa.com yet) are listed as pending, and the next run continues from there.
 | Stage | What it does | Code | Output |
 |---|---|---|---|
 | Season dates | Regular-season end date per season (2019-2025 seeded and verified). A missing season is read from its Wikipedia infobox and logged for checking. | `R/season_index.R` (`ensure_season_dates`, `check_season_dates`) | `data-raw/season_dates.csv` |
-| Season index | Every game of a season from d3's weekly scoreboard pages: date, week, regular/postseason, teams, boxscore URL. | `R/season_index.R` (`build_season_index`) | `data-raw/index/{season}.csv` |
+| Game list | Every game of a season from ncaa.com's weekly D3 scoreboards (cached): `game_id` = contest id, date, week and regular/postseason in d3football's convention, teams in d3football's spelling, final score, and the old d3football id. Placeholder and duplicate contests are dropped (logged). | `R/ncaa.R` (`ncaa_season_games`) | `data-raw/ncaa/{season}_games.csv` |
+| Season index (d3football source only) | Every game of a season from d3's weekly scoreboard pages: date, week, regular/postseason, teams, boxscore URL. The game list for `source = "d3football"`; cache only now. | `R/season_index.R` (`build_season_index`) | `data-raw/index/{season}.csv` |
 | Conferences | Each team's conference that season, from ncaa.com's scoreboard tags (already read for the contest map, so no new requests); conference game = same conference, regular season. (d3football source: the team pages and their "*" marker.) | `R/ncaa.R` (`ncaa_conference_table`); `R/conferences.R` (`build_conference_table`) | `data-raw/ncaa/{season}_conferences.csv`; `data-raw/conferences/{season}*.csv` |
-| ncaa contests | Each index game's ncaa.com contest id, from ncaa.com's weekly scoreboards (team names through a crosswalk, dates at most a day apart). | `R/ncaa.R` (`map_ncaa_contests`) | `data-raw/ncaa/{season}_contests.csv`, `data-raw/ncaa/team_names.csv` |
+| Old-id crosswalk | Each d3football index game's ncaa.com contest id (team names through `team_names.csv`, dates at most a day apart). Built once for 2025; `ncaa_season_games()` reads it for `d3football_id`. Historical notes in this file and the CHANGELOG before 2026-11-16 use the old ids. | `R/ncaa.R` (`map_ncaa_contests`) | `data-raw/ncaa/{season}_contests.csv`, `data-raw/ncaa/team_names.csv` |
+| stats.ncaa.org fallback | For the games ncaa.com can't give (no play-by-play, or a file that can't be built: `pull_from_stats_ncaa` TRUE in `{season}_stats_ncaa_candidates.csv`), a stats.ncaa.org "Play By Play" page Sam saved from his browser is read into ncaa.com's line table and built the same way. Pages are matched to games by date and teams, whatever their file name. The build report lists them under "Built from stats.ncaa.org". | `R/stats_ncaa.R` (`stats_ncaa_games`, `stats_ncaa_files`, `stats_ncaa_lines`, `fetch_stats_ncaa_game`) | `data-raw/stats_ncaa/*.html` (committed) |
 | Fetch | Each game's play-by-play JSON from ncaa.com (or, for `source = "d3football"`, its cached boxscore page). Cached and throttled. | `R/ncaa.R` (`fetch_ncaa_json`), `R/scrape_plays.R` (`fetch_html`) | `data-raw/cache/ncaa/`, `data-raw/cache/` (gitignored) |
 | Rebuild table | ncaa.com's lines become d3football's (situation, play) table: situations from `driveText` with the yardline side recovered, quarter markers, drive headers, score lines, and labelled extra points ncaa.com left out. | `R/ncaa.R` (`fetch_ncaa_game`, `ncaa_play_table`) | |
 | Classify | Label every row of the page: snap, kickoff, try, dead-ball penalty, or one of the non-play types (drive header / footer, quarter marker, timeout, ...). | `R/classify.R`, `R/parse_play_type.R` | |
@@ -97,8 +99,10 @@ rules:
   default) and capped by `max_requests`, as before.
 - **Pending:** an HTTP 502 means ncaa.com has no play-by-play for the game
   (yet); the game is listed as pending and retried on a later run.
-- **Terms:** NCAA's terms of use forbid scraping without permission, so
-  keep requests few and get a go-ahead before large runs.
+- **Terms:** NCAA's terms of use forbid scraping without permission. Sam's
+  professor and the NCAA told him (2026-11-17) that accessing the
+  play-by-play the way other public R packages do is fine. Requests stay
+  few, cached and throttled, with a go-ahead before large runs.
 
 **d3football** (the old source) now serves scripts a JavaScript bot
 challenge. Its pages are read from the cache only; do not try to get past
@@ -133,11 +137,47 @@ first-down exclusivity and placement.
   ncaa.com and are added, labelled in `play_text`: 91 proved by the running
   score, 9 (CMU home games, no running score) by ncaa.com's scoring summary.
   The final-score fallback is not needed in Centennial 2025.
-- **Games ncaa.com can't give:** non-NCAA bowl games, and the 2025 national
-  semifinal `20251220_vlfc` (every play tagged with one team). Both are
-  listed in the build report.
-- **The 2025 Stagg Bowl isn't in the game list:** the season index and the
-  cached ncaa.com scoreboards stop at 2025-12-20.
+- **stats.ncaa.org pages' own quirks** (handled in `stats_ncaa_lines()`):
+  it is a different StatCrew file from ncaa.com's (names "Blaha,Kaleb" for
+  "K.Blaha"; drive-start lines everywhere). Drive headers can sit a group
+  of plays off and some read 0 - 0 throughout (`6461614`: 8 drives
+  relabelled from their drive-start lines). In `6529905` its 4th quarter
+  starts a few lines late: 2 snaps and a try of the 4th (the 14:23
+  touchdown) are filed under the 3rd; ncaa.com has them in the 4th. Left as
+  stats.ncaa.org has it.
+- **Non-NCAA bowl games** aren't on ncaa.com's scoreboards, so since the
+  switch to ncaa.com's game list they aren't in it at all.
+- **Games to patch from stats.ncaa.org:** `data-raw/ncaa/{season}_stats_ncaa_candidates.csv`
+  lists the 2025 games whose ncaa.com file is unusable or badly
+  incomplete, by Sam's rule (2026-11-17): (a) no play-by-play at all, (b)
+  can't be built, (c) a big portion missing, (d) a severe smaller issue
+  (doesn't reconcile and no rule can fix it, a missing touchdown, quarters
+  mislabelled, downs unreliable). Each row has the ncaa.com link and what
+  to check on stats.ncaa.org. Sam's decision (2026-11-17): stats.ncaa.org
+  is used for (a) and (b), and for a game whose stats.ncaa.org version
+  reconciles when ncaa.com's doesn't (`6461552`, `6529896`): the 9 rows
+  with `pull_from_stats_ncaa` TRUE. The rest stay as ncaa.com has them,
+  documented.
+  stats.ncaa.org blocks scripts (Akamai 403
+  on the first request), so a patch would come from a page Sam saves in
+  his browser. (c) came from a scan of every file for a regulation quarter
+  with no or few lines; thin 4th quarters in blowouts (running clock) and
+  `6462325`, called for thunderstorms in the 4th quarter, are not
+  problems. Checked by Sam on stats.ncaa.org (2026-11-17), recorded in the file's
+  `stats_ncaa_result` column: both "big portion missing" games are the same
+  there (`6496410` has no 4th quarter, `6461643` only the first half), so
+  they stay as they are.
+- **Elmhurst at Washington U. (`6461643`) covers only the first half:**
+  ncaa.com's file (and stats.ncaa.org, checked by Sam 2026-11-17) ends
+  after the 2nd quarter with "End of game". It reconciles (all 17 points
+  came before halftime), so it is kept and isn't in `known_exceptions.csv`
+  (that list is for games that don't reconcile), but its second half is
+  missing.
+- **Dead-ball penalties before a kickoff in tournament files** ("PENALTY
+  CROWN Personal Foul 15 yards from WHEIL35 to WHEIL50. NO PLAY", driveText
+  "- and -") have no situation, so they are unclassified and dropped
+  (`20251122_667w`, `20251122_dfrn`, `20251129_ghzw`; 6 rows). The kickoff
+  text still shows the new spot.
 - **`yards_gained` on a lateral** reads only the first yardage segment. So a
   first down earned after a lateral is missed (1 series in 2025).
 - **`yards_gained` is not defined** for interceptions, punts, field goals,
@@ -239,12 +279,62 @@ section after every batch.
 | A field goal with no line (the running score rises by 3 on the next, non-scoring, line) | Sam's decision: a labelled "field goal attempt GOOD" row is added before that line, for the team in possession, with down and distance rebuilt from the previous snap and the kicker from the scoring summary when cached; skipped when a field-goal line since the last score change already accounts for it (ncaa.com's score can lag a line). Without a running score, a summary field goal with no matching line is added only when the final is short by exactly 3 per such field goal | `20251004_6sus` |
 | Index `week` and season type | fetch by `season_type == "regular"` (batch 2's lesson) held: no playoff games fetched | |
 
+### Batch 4 (2025 weeks 7-8, 220 new games, 2026-11-08)
+
+Week 7 was already cached; week 8 was the first batch fetched straight
+from ncaa.com in R (no ncaa-api server): 124 requests (112 play-by-play,
+12 scoring summaries), no failures.
+
+| Quirk | Generic rule now | First seen |
+|---|---|---|
+| A replay-review note after the play ("MSU is challenging the ruling on the field - \"Fumble\". PLAY STANDS.") hid the "recovered by" before it, so a lost fumble wasn't a turnover | `strip_review_note()`: the fumble and recovery search ignores the note (and any "(Original Play: ...)"); the play before it is the final ruling | `20251018_c2vg` (fumble-return TD credited to the fumbling team); also fixed `20250906_2lhd`, `20251011_36q6`, `20251025_yvrv` |
+| Pass direction before the result ("pass short right complete to ...") | pass verbs accept up to two direction words between "pass" and complete / incomplete / intercepted | `20251018_6y68` (39 passes had been dropped as unclassified) |
+| A return touchdown whose try has no kicker named, no kickoff line after it and no running score went to the scoring play's offense (the punting team) | `scoring_team()`: a first pass of the outcome flags and points says who scored; `try_phase_team()`'s last rule uses it | `20251025_eeno` (blocked punt returned for a touchdown) |
+| ncaa.com prints a touchdown after its own try and kickoff (an interception return), so the try landed on the other team's drive | Sam's decision (2026-11-09): `ncaa_move_late_touchdowns()` in `ncaa_lines()` moves a touchdown that comes within 3 lines after a try with no touchdown before it (only kickoffs between) in front of the try, labelled; the running score must agree (try +1/+2 then +6 for the same team) and is put back in play order. Fires once in all cached games | `20251129_57m9` |
+
+### Batch 5 (2025 weeks 9-10, 222 new games, 2026-11-09)
+
+Fetched straight from ncaa.com in R: 242 requests (222 play-by-play, 20
+scoring summaries), no failures. All 222 games reconcile after these
+fixes.
+
+| Quirk | Generic rule now | First seen |
+|---|---|---|
+| An onside kick printed with no recovery ("Gallant,Carson onside kickoff 11 yards to the SUFB46."); the drive header made the kicking team the receiver, and its kicker's tries then went to the other team | `assign_kickoffs()`: an onside kick with no "recovered by" that lands on the kicking team's own side, when the kicking team has the next drive, is a kicker recovery | `20251101_y8ak`; also `20251018_lsn7` (Knox's opening onside kick, reconciled before; now a turnover with `drive_result` "ONSIDE") |
+| A try dropped with the running score rising by 2 (a two-point conversion) | the running-score rule adds "two-point attempt good" (`ncaa_added_two_point_text_score`) when the touchdown has no try line and the score rose by 2 | `20251101_nl0h` |
+| "pass attempt to Julian Toscano good" read as "no good" | "no good" / "failed" / "blocked" / "missed" / "NO PLAY" are matched as words | `20251108_vzlp` |
+| A try and the kickoff after it both dropped, the other team scoring on its next snap: the other team's try was taken for this touchdown's | a touchdown's try window ends at the next touchdown | `20251108_vzlp` (Albion's punt-return touchdown) |
+
+### Batch 6 (2025 week 11 and the playoffs, 117 new games, 2026-11-16)
+
+Fetched straight from ncaa.com in R: 135 requests (115 play-by-play, 14
+scoring summaries, 6 week-1 retries that came back empty), plus 1 for the
+Stagg Bowl. Week 11: 108 of 108 built and reconciled. Playoffs: 45 of the
+51 index games built (5 non-NCAA bowls aren't on ncaa.com; `vlfc` can't be
+read), 44 reconcile (`msui` is a source gap).
+
+| Quirk | Generic rule now | First seen |
+|---|---|---|
+| A touchdown overturned on review still scored: the "(Original Play: ... TOUCHDOWN)" after "PLAY OVERTURNED" was read as the play | `has_touchdown()` drops the review note before looking for "TOUCHDOWN", everywhere (batch 4's `strip_review_note()` covered only fumbles) | `20251115_aunt` |
+| Tournament files spell the sides differently in driveText and play text ("CHA36" / "CHAP36", "WRF" / "UWRF", "CRO" / "CROWN"; codes padded "  U35"), so the side recovery mixed four codes | `ncaa_spot_token_map()`: a yardline vote renames driveText's codes to the play text's; driveText codes are trimmed | `20251122_667w`, `20251129_3gqf` (failed since batch 1, never listed); 6 playoff games tidied |
+| A garbled kickoff-return touchdown named the kicking team's kicker ("Adrogue onside kickoff ... TOUCHDOWN", then Adrogue's try), so the points went to the receiver | `refine_kickoffs_by_kicker()`: on a kickoff touchdown, a try by the kicking team's kicker right after it means the kicking team recovered | `20251115_effl` |
+| "rush for 22 yards to the DEAN00, TOUCHDOWN, fumble by ... recovered by DEAN" read as a defensive touchdown | a fumble printed after "TOUCHDOWN" on a scrimmage play is never lost | `20251115_m5el` |
+| A try printed away from its touchdown (ncaa.com put the touchdown at the end of the game) went to the offense on the field | a try outside any try phase goes to its kicker's team when known | `20251206_rxq5` |
+| An empty game (`periods: []`) raised "subscript out of bounds" | `ncaa_direct_request()` returns 502 (pending) | the 6 week-1 retries |
+| Source gap: a DePauw touchdown has no line (running score +6 on a drive-start line) | listed in `known_exceptions.csv` | `20251206_msui` |
+| Source quirk: in some host files the down counter rises on every snap and resets only on a printed "1ST DOWN" (a 15-yard gain shows "2 and ...") | labelled, not fixed: these games carry most of the batch's 83 new `first_downs.md` series exceptions | `20251206_msui`, `20251206_bkyu`, `20251206_v1xq`, `20251206_snpc` |
+
 ## Roadmap
 
 1. **CMU 2025** (validation set): done.
 2. **Centennial 2025**: done; rebuilt from ncaa.com on 2026-11-04.
-3. **All of D3 2025 from ncaa.com** (next): `build_season(2025)`. About
-   1,180 more games, fetched in capped runs with Sam's go-ahead.
+3. **All of D3 2025 from ncaa.com** (done as far as ncaa.com has it,
+   2026-11-16): `build_season(2025)`. Since 2026-11-16 the game list is
+   ncaa.com's (1,263 games); all 1,263 built, 1,262 reconcile (the other,
+   `6496410`, is missing its 4th quarter on both sites). 9 come from saved
+   stats.ncaa.org pages: the 6 week-1 games ncaa.com has no play-by-play
+   for, the national semifinal `6529905`, and two games whose ncaa.com
+   file doesn't reconcile (`6461552`, `6529896`).
    Conferences come from ncaa.com's scoreboards for every team. Expect new
    StatCrew formats to surface. The score-reconciliation test and the
    `first_downs.md` series check are the main guards.
