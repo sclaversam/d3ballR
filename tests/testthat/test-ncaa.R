@@ -7,12 +7,6 @@ test_that("parse_ncaa_drive_text reads both driveText formats", {
   expect_equal(d$yard, c(28L, 4L, 13L, 3L, NA, NA))
 })
 
-test_that("ncaa_to_index_name maps through the crosswalk and keeps unknown names", {
-  f <- withr::local_tempfile(fileext = ".csv")
-  utils::write.csv(data.frame(ncaa_name = "Alfred St.", index_name = "Alfred State"), f, row.names = FALSE)
-  expect_equal(ncaa_to_index_name(c("Alfred St.", "Carnegie Mellon"), f), c("Alfred State", "Carnegie Mellon"))
-})
-
 # A tiny ncaa.com-shaped game: Alpha (ncaa home) kicks off, Beta scores a
 # touchdown whose extra point ncaa.com has no line for (the score still
 # rises by 1), then Alpha starts a drive. driveText has no yardline team.
@@ -52,7 +46,7 @@ test_that("ncaa_play_table adds a labelled extra point ncaa.com left out", {
   expect_equal(sum(grepl("added by d3ballR", tab$play)), 1L)
 })
 
-test_that("ncaa_play_table adds drive headers and quarter markers d3football-style", {
+test_that("ncaa_play_table adds drive headers and quarter markers", {
   tab <- ncaa_toy()
   expect_equal(tab$play[1], "1st")
   expect_true(all(c("Beta at 15:00", "Alpha at 14:00") %in% tab$play))
@@ -308,7 +302,7 @@ test_that("ncaa_direct_request reports an empty game or a stale query id as HTTP
   expect_match(res$why, "PersistedQueryNotFound")
 })
 
-test_that("a touchdown printed after its own try is moved in front of it (20251129_57m9)", {
+test_that("a touchdown printed after its own try is moved in front of it (6529878)", {
   mk <- function(text, home, vis) data.frame(period = 4L, team_id = "1", clock = "00:00", drive_text = NA_character_,
                                              home_score = home, visitor_score = vis, text = text)
   lines <- rbind(
@@ -337,7 +331,7 @@ test_that("a touchdown printed after its own try is moved in front of it (202511
   expect_identical(ncaa_move_late_touchdowns(bad)$text, bad$text)
 })
 
-test_that("driveText side codes are paired with the play text's by a yardline vote (20251129_3gqf)", {
+test_that("driveText side codes are paired with the play text's by a yardline vote (6529887)", {
   txt <- c("kickoff 53 yards to the UWRF12 D.Stokes return 24 yards to the UWRF36",
            "pass complete to B.Wesolowski caught at UWRF41, for 5 yards to the UWRF41",
            "rush middle for 19 yards gain to the CHAP40, 1ST DOWN",
@@ -358,7 +352,7 @@ test_that("driveText side codes are paired with the play text's by a yardline vo
   expect_length(ncaa_spot_token_map(spots, parse_ncaa_drive_text(rep("1 and 10 at 35", 6))), 0)
 })
 
-test_that("ncaa_season_games drops placeholders and second listings, and numbers postseason weeks", {
+test_that("ncaa_season_games drops placeholders and second listings, and keeps ncaa.com's weeks", {
   sb <- function(contest, week, date, away, home, as, hs, br = "") data.frame(
     contest = contest, ncaa_week = week, date = as.Date(date), away = away, home = home,
     away_score = as, home_score = hs, bracket_round = br, away_conference = "", home_conference = "")
@@ -373,7 +367,7 @@ test_that("ncaa_season_games drops placeholders and second listings, and numbers
   dates <- data.frame(season = 2025L, regular_season_end = as.Date("2025-11-15"))
   g <- ncaa_season_games(2025, weeks = c(2, 13, 17, 19), dir = dir, season_dates = dates)
   expect_equal(g$game_id, c("1", "2", "4", "6"))
-  expect_equal(g$week, c(1L, 1L, 2L, 3L))
+  expect_equal(g$week, c(2L, 13L, 17L, 19L))
   expect_equal(g$season_type, c("regular", "postseason", "postseason", "postseason"))
   d <- attr(g, "dropped")
   expect_equal(d$contest, c("5", "3"))

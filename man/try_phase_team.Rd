@@ -40,7 +40,7 @@ Otherwise the scorer is the team that kicks off next in the same half (its teams
 next drive header); if no kickoff follows (end of half, overtime), the
 first score line after the scoring play (after a safety, the team that
 conceded), else the team that scored the scoring play (\code{\link[=scoring_team]{scoring_team()}}). Score lines are not the
-first choice because d3 sometimes skips one and the rest lag a score
+first choice because StatCrew sometimes skips one and the rest lag a score
 behind (Dean at Fitchburg State, 2025). This fixes the try after a
 defensive touchdown, which otherwise inherits the team that was scored
 on.

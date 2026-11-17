@@ -1,7 +1,7 @@
 # Shared request bookkeeping for every network call d3ballR makes
 # (ncaa.com's data server in R/ncaa.R, Wikipedia in R/season_dates.R): a
 # per-run request counter, the list of paths that failed this run, and a
-# throttle. Moved here from the old d3football scraper (2026-11-17).
+# throttle.
 
 .fetch_state <- new.env(parent = emptyenv())
 

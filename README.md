@@ -9,16 +9,16 @@ from every published dataset
 ([coverage audit](docs/cfbfastr_d2_d3_coverage_audit.Rmd)). d3ballR fills that
 gap for Division III.
 
-## Status: checkpoint Centennial Conference 2025
+## Status: the 2025 season
 
-- **Coverage:** every 2025 game involving a Centennial Conference team, 62 games
-  (10 postseason, 1 overtime). That's 10,149 rows across 36 teams.
-- **Shape:** one row per event, 67 columns. Names follow cfbfastR where an
-  equivalent exists.
-- **Checks:** every game's play-by-play points reconcile with its boxscore
-  final score, and every validation report is clean or explains its exceptions.
-- **Generic:** nothing assumes a team or season. Building all of D3 2025 is
-  the same call without a filter.
+- **Coverage:** every game on ncaa.com's 2025 Division III scoreboards:
+  1,263 games, regular season through the Stagg Bowl.
+- **Shape:** one row per event, 71 columns ([schema](docs/schema.md)). Names
+  follow cfbfastR where an equivalent exists.
+- **Checks:** 1,262 of 1,263 games' play-by-play points reconcile with the
+  final score (the other is missing its 4th quarter at the source), and every
+  validation report is clean or explains its exceptions.
+- **Generic:** nothing assumes a team or season.
 
 ## Quick start
 
@@ -60,7 +60,7 @@ tests/testthat/    unit tests + data tests over every built game
 scripts/           build_season.R
 pbp/{season}/      built play-by-play, one CSV per game
 checks/{season}/   validation reports for that season
-data-raw/          season dates, ncaa.com game lists and crosswalks, saved stats.ncaa.org pages (response cache: gitignored)
+data-raw/          ncaa.com game lists and conference tables, known source gaps, saved stats.ncaa.org pages (response cache: gitignored)
 docs/              schema.md, pipeline.md, CHANGELOG.md, coverage audit
 ```
 
@@ -75,5 +75,5 @@ docs/              schema.md, pipeline.md, CHANGELOG.md, coverage audit
 
 ## Roadmap
 
-CMU 2025 (done) → Centennial 2025 (done, this checkpoint) → all of D3 2025 →
-other seasons.
+CMU 2025 → Centennial Conference 2025 → all of D3 2025 (done) → a data
+loader and a package release → other seasons.

@@ -14,15 +14,15 @@ game_calendar(game, index, season_dates)
 \item{season_dates}{Output of \code{\link[=read_season_dates]{read_season_dates()}}.}
 }
 \value{
-A list: \code{index_home}, \code{index_away} (the game list's spelling,
+A list: \code{list_home}, \code{list_away} (the game list's spelling,
 else the game's), \code{season}, \code{game_date}, \code{week}, \code{season_type},
 \code{week_source} ("index" or "date fallback").
 }
 \description{
 Returns \code{season}, \code{game_date} (ISO), \code{week}, \code{season_type} for the game.
 If the game isn't in the list (or no list is given), falls back to the
-game's own date, \code{\link[=classify_season_type]{classify_season_type()}}, and a date-based
-Sunday-to-Saturday week (\code{\link[=date_based_week]{date_based_week()}}), and logs a message saying
-so.
+game's own date and \code{\link[=classify_season_type]{classify_season_type()}}, with \code{week} NA (the week
+is ncaa.com's scoreboard week, which only the game list has), and logs a
+message saying so.
 }
 \keyword{internal}

@@ -22,7 +22,7 @@ Known source exceptions (`data-raw/ncaa/known_exceptions.csv`: ncaa.com's data i
 
 | game_id | game_date | away | home | away_final | home_final | away_pts_parsed | home_pts_parsed | score_reconciled | reason |
 |---|---|---|---|---|---|---|---|---|---|
-| 6496410 | 2025-09-06 | Case Western Reserve | Rowan | 17 | 17 | 14 | 17 | FALSE | ncaa.com's play-by-play stops at the end of the 3rd quarter; the final (17-17) includes 4th-quarter points that aren't in it. stats.ncaa.org has the same gap (checked by Sam, 2026-11-17). |
+| 6496410 | 2025-09-06 | CWRU | Rowan | 17 | 17 | 14 | 17 | FALSE | ncaa.com's play-by-play stops at the end of the 3rd quarter; the final (17-17) includes 4th-quarter points that aren't in it. stats.ncaa.org has the same gap (checked by Sam, 2026-11-17). |
 
 ## Built from stats.ncaa.org
 

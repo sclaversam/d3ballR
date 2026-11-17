@@ -98,7 +98,7 @@ derive_td_team <- function(kept) {
 #' The score before row i is the running total of the points parsed on the
 #' rows before it (`score_pts`, credited to `pos_team` when positive and
 #' `def_pos_team` when negative). A PAT's "before" score therefore includes
-#' its touchdown. d3's printed score lines are not used as the source,
+#' its touchdown. the printed score lines are not used as the source,
 #' because a stat crew sometimes skips one and the following lines lag a
 #' score behind. Each line is compared with the parsed total at that point
 #' instead (`checks`); the game's final score is reconciled separately
@@ -121,7 +121,7 @@ running_score <- function(kept, scores, teams) {
   s1 <- cumsum(c(0L, p1))[seq_len(nrow(kept))]
   s2 <- cumsum(c(0L, p2))[seq_len(nrow(kept))]
 
-  # d3's printed score lines are a check, not the source: compare each with
+  # the printed score lines are a check, not the source: compare each with
   # the parsed total at that point
   checks <- do.call(rbind, lapply(seq_len(nrow(scores)), function(j) {
     before <- kept$row < scores$row[j]
@@ -153,7 +153,7 @@ next_snap_index <- function(kept) {
 
 #' First down by yards / by penalty
 #'
-#' d3's "Last,First" StatCrew format prints "1ST DOWN"; the other format
+#' The "Last,First" StatCrew format prints "1ST DOWN"; the other format
 #' (7 of the 11 2025 games) never does. So each flag is the printed text OR
 #' a data rule, which agree on the games that print it (see the change log).
 #'
@@ -191,15 +191,18 @@ derive_first_downs <- function(kept, nxt) {
     kept$yards_gained >= kept$distance & !(kept$Goal_To_Go %in% TRUE)
   # an accepted penalty on the offense during the play (holding, etc.) can
   # take the first down away even when the yardage reached the line, and
-  # even when d3 printed "1ST DOWN" before the penalty clause: then the first
+  # even when StatCrew printed "1ST DOWN" before the penalty clause: then the first
   # down only stands if the same offense really snaps a 1st down next
   off_penalty <- accepted & !is.na(kept$penalized_team) & kept$penalized_team == kept$pos_team
   # "really" = a new series, not the same 1st down moved back by the
   # enforcement (1st & 15, 10-yd holding -> 1st & 5 is not a first down)
   net_nxt <- kept$yards_to_goal - kept$yards_to_goal[nxt]
-  next_new_series <- !is.na(nxt) & kept$pos_team[nxt] %in% kept$pos_team &
+  # (element-wise: the next snap's distance against this row's carried-over
+  # distance; `%in%` over the whole column got this wrong until 2026-11-17)
+  moved_back <- !is.na(kept$distance[nxt]) & !is.na(net_nxt) & kept$distance[nxt] == kept$distance - net_nxt
+  next_new_series <- !is.na(nxt) & !is.na(kept$pos_team[nxt]) & !is.na(kept$pos_team) &
     kept$pos_team[nxt] == kept$pos_team & kept$down[nxt] %in% 1L &
-    (!(kept$down %in% 1L) | !(kept$distance[nxt] %in% (kept$distance - net_nxt)))
+    (!(kept$down %in% 1L) | !moved_back)
   stands <- !off_penalty | next_new_series
   kept$fd_yards_text <- fd_yards_text & kept$scrimmage_play & !kept$penalty_no_play & !kept$turnover
   kept$firstD_by_yards <- (fd_yards_text | fd_yards_rule) & kept$scrimmage_play &
@@ -324,7 +327,9 @@ series_next_snap <- function(kept, nxt) {
 #' in the same half and, in overtime, the same period: that row is the first
 #' snap of the new series. A snap that replays the same down after a no-play
 #' penalty is never a series start. If two causes point at
-#' one snap, precedence kickoff > poss > yards > penalty decides. Finally,
+#' one snap, precedence kickoff > poss > yards > penalty decides. A snap
+#' right after a try or scoring play by the other team, in regulation, is
+#' `firstD_by_kickoff` even when the source has no kickoff line. Finally,
 #' the first snap of each overtime possession is `firstD_by_poss`.
 #'
 #' @param kept Kept rows after [derive_first_downs()], with `play_type`,
@@ -379,6 +384,21 @@ derive_series_flags <- function(kept, nxt) {
     if (is.na(best[t]) || rank[cause[i]] < rank[best[t]]) {
       best[t] <- cause[i]
       cause_row[t] <- i
+    }
+  }
+
+  # a kickoff the source left out: in regulation, a snap right after a try
+  # or a scoring play, by the other team, with no row in between, starts a
+  # series by kickoff (a kickoff always follows a score; ncaa.com drops
+  # some kickoff lines)
+  for (t in snaps[kept$period[snaps] <= 4L & is.na(best[snaps])]) {
+    p <- t - 1L
+    if (p < 1L || kept$half[p] != kept$half[t]) next
+    after_score <- kept$play_type[p] %in% c("extra_point", "two_point") | kept$scoring_play[p] %in% TRUE
+    if (after_score && !is.na(kept$pos_team[p]) && !is.na(kept$pos_team[t]) && kept$pos_team[p] != kept$pos_team[t]) {
+      best[t] <- "kickoff"
+      causes_at[t] <- "kickoff (no kickoff line in the source)"
+      cause_row[t] <- p
     }
   }
 

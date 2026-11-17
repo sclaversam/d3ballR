@@ -142,7 +142,7 @@ parse_outcome_flags <- function(df, text_team) {
   safety <- stringr::str_detect(txt, ic("\\bsafety\\b"))
 
   # a runner or receiver who scored before fumbling ("rush for 22 yards to
-  # the DEAN00, TOUCHDOWN, fumble by ... recovered by DEAN", 20251115_m5el)
+  # the DEAN00, TOUCHDOWN, fumble by ... recovered by DEAN", 6461729)
   # scored: the ball was dead at the score, so the fumble after it can't be
   # lost
   td_pos <- stringr::str_locate(play_txt, "\\bTOUCHDOWN\\b")[, 1]

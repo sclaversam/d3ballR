@@ -2,30 +2,30 @@
 #'
 #' Returns `season`, `game_date` (ISO), `week`, `season_type` for the game.
 #' If the game isn't in the list (or no list is given), falls back to the
-#' game's own date, [classify_season_type()], and a date-based
-#' Sunday-to-Saturday week ([date_based_week()]), and logs a message saying
-#' so.
+#' game's own date and [classify_season_type()], with `week` NA (the week
+#' is ncaa.com's scoreboard week, which only the game list has), and logs a
+#' message saying so.
 #'
 #' @param game A game read by [fetch_ncaa_game()] or [fetch_stats_ncaa_game()].
 #' @param index The game list ([ncaa_season_games()]), or NULL.
 #' @param season_dates Output of [read_season_dates()].
-#' @return A list: `index_home`, `index_away` (the game list's spelling,
+#' @return A list: `list_home`, `list_away` (the game list's spelling,
 #'   else the game's), `season`, `game_date`, `week`, `season_type`,
 #'   `week_source` ("index" or "date fallback").
 #' @keywords internal
 game_calendar <- function(game, index, season_dates) {
   hit <- if (!is.null(index)) index[!is.na(index$game_id) & index$game_id == game$game_id, ] else NULL
   if (!is.null(hit) && nrow(hit) == 1) {
-    return(list(index_home = hit$home, index_away = hit$away,
+    return(list(list_home = hit$home, list_away = hit$away,
                 season = as.integer(hit$season), game_date = as.character(hit$game_date),
                 week = as.integer(hit$week), season_type = hit$season_type, week_source = "index"))
   }
   d <- game$header_date
   st <- classify_season_type(d, game$season, season_dates)
-  wk <- date_based_week(d, game$season, st, season_dates)
+  wk <- NA_integer_
   message("Game ", game$game_id, " not found in the ", game$season,
-          " game list; using a date-based week (", wk, ", ", st, ").")
-  list(index_home = unname(game$matchup[["home"]]), index_away = unname(game$matchup[["away"]]),
+          " game list; week left NA (", st, ").")
+  list(list_home = unname(game$matchup[["home"]]), list_away = unname(game$matchup[["away"]]),
        season = game$season, game_date = format(d, "%Y-%m-%d"), week = wk,
        season_type = st, week_source = "date fallback")
 }
@@ -94,7 +94,7 @@ kept_row_types <- c("play", "kickoff", "extra_point", "two_point", "penalty_no_p
 #' The team code can contain periods and a space ("MASS. MA27": the code is
 #' "MASS. MA"). The yardline's team-letters group is optional so a bare midfield number
 #' ("at 50") still parses down/distance/yard_num, with `yard_side` NA. A
-#' negative distance (d3 printed "4th and -2" once in 2025) is kept as
+#' negative distance (the source printed "4th and -2" once in 2025) is kept as
 #' printed rather than dropping the down.
 #' @keywords internal
 situation_pattern <- "^([1-4])(?:st|nd|rd|th)\\s+and\\s+(Goal|-?\\d+)\\s+at\\s+([A-Za-z&.' -]*?)\\s*(\\d+)$"
@@ -213,7 +213,7 @@ infer_own_side <- function(df) {
   # when they split, the vote decides
   settled <- sum(anchors) > 0 && decisive(anchors) && (min(anchors) == 0 || max(anchors) >= 3 * min(anchors))
   # a single settling play doesn't overrule a decisive vote: one touchback
-  # or false start on a mis-tagged possession would (20250927_ezew: 1
+  # or false start on a mis-tagged possession would (6462266: 1
   # play vs a 60-0 vote); it still decides when the vote can't
   if (settled && sum(anchors) == 1 && decisive(vote)) settled <- FALSE
   if (settled) {
@@ -252,7 +252,7 @@ compute_yards_to_goal <- function(df, own_side) {
 
 #' Flag goal-to-go situations and fill their distance
 #'
-#' Goal-to-go means the line to gain is the goal line. d3's StatCrew text
+#' Goal-to-go means the line to gain is the goal line. StatCrew text
 #' writes that two ways: literally ("1st and Goal at CMU06"), and as a
 #' number that happens to equal the distance to the goal ("1st and 4 at
 #' UC 4", "1st and 1 at UC 1"). Both are goal-to-go, so `Goal_To_Go` is
@@ -359,7 +359,7 @@ pbp_columns <- c(
 #' next drive header); if no kickoff follows (end of half, overtime), the
 #' first score line after the scoring play (after a safety, the team that
 #' conceded), else the team that scored the scoring play ([scoring_team()]). Score lines are not the
-#' first choice because d3 sometimes skips one and the rest lag a score
+#' first choice because StatCrew sometimes skips one and the rest lag a score
 #' behind (Dean at Fitchburg State, 2025). This fixes the try after a
 #' defensive touchdown, which otherwise inherits the team that was scored
 #' on.
@@ -383,7 +383,7 @@ try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = cha
   actors <- play_actor(kept$play_text)
   actor_team <- unname(actor_map[actors])
   # kickers / passers of tries already decided in this game (a kicker who
-  # only kicks extra points isn't in actor_map: 20251011_xh02)
+  # only kicks extra points isn't in actor_map: 6461717)
   try_actor <- character()
   for (i in which(kept$try_phase)) {
     s <- scoring[scoring < i]
@@ -399,7 +399,7 @@ try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = cha
     }
     # 1. the team that kicks off next in the same half scored (or conceded a
     #    safety). Kickoff teams come from the next drive header, which is
-    #    reliable; d3's score lines sometimes lag a score behind.
+    #    reliable; StatCrew score lines sometimes lag a score behind.
     #    Only a kickoff before the next live snap counts: when the source
     #    has no kickoff line after the try (ncaa.com drops some), a later
     #    kickoff belongs to a later score.
@@ -420,16 +420,48 @@ try_phase_team <- function(kept, scores, teams, kickoffs = NULL, actor_map = cha
     } else {
       # 3. the team that scored the scoring play: its offense, or the
       #    defense on a return touchdown (a blocked punt returned for a
-      #    touchdown, 20251025_eeno)
+      #    touchdown, 6462377)
       out[i] <- if (!is.null(scorer) && !is.na(scorer[s])) scorer[s] else kept$pos_team[s]
     }
   }
   # a try printed away from its score (no score before it in the try phase:
-  # ncaa.com moved the touchdown elsewhere, 20251206_rxq5) belongs to its
+  # ncaa.com moved the touchdown elsewhere, 6529898) belongs to its
   # kicker's / passer's team when that is known; otherwise it keeps the
   # offense on the field
   orphan <- which(!kept$try_phase & kept$play_type %in% c("extra_point", "two_point") & !is.na(actor_team))
   out[orphan] <- actor_team[orphan]
+  out
+}
+
+#' The offense for a dead-ball penalty: the team that snaps next
+#'
+#' A dead-ball penalty (`play_type` "penalty_no_play": no snap) happens
+#' between plays, so it belongs to the possession of the next snap. The
+#' source often files one that comes right after a kickoff, a punt or a
+#' turnover under the team that just gave the ball up ("PENALTY UPS False
+#' Start" after Lewis & Clark's kickoff, 6461790; a personal foul after
+#' Bethel's interception, 6462129), which put the new offense's first
+#' series on the wrong team. Each such row takes the `pos_team` of the next
+#' snap, when a snap follows in the same period with no kickoff, try or
+#' try-phase row in between. Rows in a try phase, and rows labelled as a
+#' safety on a foul in the end zone (they carry points), are left alone.
+#'
+#' @param kept Kept rows with `play_type`, `pos_team`, `period`,
+#'   `try_phase`, `play_text`.
+#' @return The corrected `pos_team` vector.
+#' @keywords internal
+dead_ball_penalty_team <- function(kept) {
+  out <- kept$pos_team
+  n <- nrow(kept)
+  dead <- which(kept$play_type == "penalty_no_play" & !kept$try_phase & !labelled_safety(kept$play_text))
+  stop_type <- c("kickoff", "extra_point", "two_point")
+  for (i in dead) {
+    j <- i + 1L
+    while (j <= n && kept$play_type[j] == "penalty_no_play" && !kept$try_phase[j]) j <- j + 1L
+    if (j > n || kept$period[j] != kept$period[i] || kept$try_phase[j] || kept$play_type[j] %in% stop_type) next
+    if (!kept$play_type[j] %in% play_type_categories || is.na(kept$pos_team[j])) next
+    out[i] <- kept$pos_team[j]
+  }
   out
 }
 
@@ -473,7 +505,7 @@ scoring_team <- function(kept, text_team, teams) {
 #'   (situation, play) table), from [fetch_ncaa_game()] or
 #'   [fetch_stats_ncaa_game()].
 #' @param index The game list for the game's season ([ncaa_season_games()]).
-#'   If NULL, or the game isn't in it, a date-based week is used and logged
+#'   If NULL, or the game isn't in it, `week` is NA (logged)
 #'   (see [game_calendar()]).
 #' @param season_dates Season-dates table; if NULL, [ensure_season_dates()]
 #'   for the game's season (adds it from Wikipedia if missing).
@@ -490,14 +522,13 @@ scoring_team <- function(kept, text_team, teams) {
 #'   `score_checks` (each score line vs the parsed points),
 #'   `first_down_text` (the text-only first-down flags), and `next_snap`
 #'   (row index of the next scrimmage snap in the half), `clock_discards`
-#'   (stated clocks dropped as inconsistent), `footer_clock` (drive-footer
-#'   elapsed time vs the clock anchors).
+#'   (stated clocks dropped as inconsistent).
 #' @export
 build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
   if (!is.list(game) || is.null(game$plays)) stop("build_pbp() needs a game already read (see fetch_ncaa_game()).")
   if (is.null(season_dates)) season_dates <- ensure_season_dates(game$season)
   cal <- game_calendar(game, index, season_dates)
-  gc <- game_conferences(game$game_id, cal$index_home, cal$index_away, conf)
+  gc <- game_conferences(game$game_id, cal$list_home, cal$list_away, conf)
 
   classified <- classify_plays(game$plays)
   classified$row <- seq_len(nrow(classified))
@@ -533,6 +564,7 @@ build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
   kept$try_phase <- flag_try_phase(kept)
   kept$pos_team <- try_phase_team(kept, scores, teams, kickoffs, actor_map,
                                   scorer = scoring_team(kept, text_team, teams))
+  kept$pos_team <- dead_ball_penalty_team(kept)
   kept$def_pos_team <- other_team(kept$pos_team, teams)
 
   kept$yards_to_goal <- compute_yards_to_goal(kept, own_side)
@@ -578,9 +610,10 @@ build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
 
   # Team names: within a game every spelling was mapped to one name (the
   # drive-start spelling), but stat crews spell teams differently from game
-  # to game ("Ursinus", "URSINUS", "URSINUS COLLEGE"). The season index
-  # (scoreboard) spells each team one way all season, so output uses that.
-  to_index <- stats::setNames(c(cal$index_home, cal$index_away), c(kept$home[1], kept$away[1]))
+  # to game ("Ursinus", "URSINUS", "URSINUS COLLEGE"). The game list
+  # (ncaa.com's scoreboards) spells each team one way all season, so output
+  # uses that.
+  to_index <- stats::setNames(c(cal$list_home, cal$list_away), c(kept$home[1], kept$away[1]))
   rename <- function(x) {
     ifelse(is.na(x), NA_character_, vapply(strsplit(x, "; ", fixed = TRUE), function(p) {
       m <- unname(to_index[p])
@@ -618,7 +651,6 @@ build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
   clk$discarded$game_id <- rep(game$game_id, nrow(clk$discarded))
   clk$discarded$play_index <- kept$play_index[match(clk$discarded$row, kept$row)]
   attr(out, "clock_discards") <- clk$discarded
-  attr(out, "footer_clock") <- footer_clock_check(classified, clk, kept, game$game_id)
   out
 }
 

@@ -20,7 +20,7 @@ A data frame, one row per score line, in game order: \code{row}
 (points added since the previous line).
 }
 \description{
-d3 prints a score line after every scoring sequence ("Carnegie Mellon 7,
+The play table has a score line after every scoring sequence ("Carnegie Mellon 7,
 Chicago 0"), using the header spelling of each name. For a touchdown the
 line comes after the try, so one line covers TD + PAT.
 }

@@ -6,8 +6,7 @@ it points to.
 ## What this project is
 
 `d3ballR` scrapes and parses **NCAA Division III** football play-by-play from
-ncaa.com into tidy, cfbfastR-style tables (until 2026-11-04 from
-d3football.com; that code was removed on 2026-11-17). `cfbfastR` and the
+ncaa.com into tidy, cfbfastR-style tables. `cfbfastR` and the
 CollegeFootballData API cover only Division I; D2 and D3 are absent from every
 published dataset (`docs/cfbfastr_d2_d3_coverage_audit.Rmd`).
 
@@ -16,7 +15,7 @@ scraper: accurate, tidy play-by-play. Modeling (EPA, win probability) is out of
 scope for now.
 
 **Roadmap:** CMU 2025 (done) → Centennial Conference 2025 (done; checkpoint
-tag `checkpoint-centennial-2025`; rebuilt from ncaa.com 2026-11-04) → all of
+tag `checkpoint-centennial-2025`) → all of
 D3 2025 (done 2026-11-17: all 1,263 games, 9 of them from saved
 stats.ncaa.org pages; 1,262 reconcile) → other seasons.
 Everything in `R/` must stay generic: no code may assume a team or a season.
@@ -50,14 +49,12 @@ filter or `season`, not a new pipeline.
   `data-raw/ncaa/{season}_games.csv`, and `game_id` is the ncaa.com contest
   id ("6461490"), the file name in `pbp/{season}/`. Placeholder contests
   dated outside the season and second listings of the same game are
-  dropped. `week` and `season_type` keep d3football's convention; team names
-  keep d3football's spelling (`inst/extdata/team_names.csv`). The old d3football id is
-  the `d3football_id` column of the game list (from the 2025 crosswalk
-  `data-raw/ncaa/2025_contests.csv`, kept as data). Notes written before
-  2026-11-16 use the old ids.
-- **ncaa.com's play text is the same StatCrew text** as d3football's, so the
-  parser is unchanged: `ncaa_play_table()` rebuilds d3football's
-  (situation, play) table from the JSON. Its quirks, all handled there:
+  dropped. Team names are ncaa.com's short names and `week` is ncaa.com's
+  scoreboard week (decided by Sam, 2026-11-17). CHANGELOG entries before
+  2026-11-16 use an older id scheme ("6461445").
+- **ncaa.com's play text is StatCrew text**: `ncaa_play_table()` turns the
+  JSON into the (situation, play) table the parser reads, the layout of a
+  StatCrew play-by-play page. Its quirks, all handled there:
   - `driveText` ("2 and 9 at 28") has no yardline team; the side is recovered
     from spots in the play text. Tournament games use "2 and  at JHU13"
     (distance often blank, recomputed from the line to gain).
@@ -72,9 +69,9 @@ filter or `season`, not a new pipeline.
   - `teamId` is unreliable on single lines (a punt can carry the receiver's
     id), so drives open at "drive start" lines.
   - Some kickoffs are dropped; no drive footers ("N plays, Y yards").
-  - Some playoff games are a different StatCrew file from d3football's.
+  - Some playoff games are a different StatCrew file from the regular one.
   - The 2025 national semifinal Johns Hopkins at UW-River Falls (contest
-    6529905, old id `20251220_vlfc`) tags every line with one team and has no
+    6529905) tags every line with one team and has no
     drive-start lines or running score, so possession can't be read. Its
     plays are all there.
   - The 2025 Stagg Bowl (UW-River Falls 24, North Central 14, 2026-01-04)
@@ -89,15 +86,12 @@ filter or `season`, not a new pipeline.
   from code.
 - **Conferences come from ncaa.com's scoreboards:** each team's
   `conferences[].conferenceSeo` tag, named through
-  `inst/extdata/conference_names.csv` (d3football's names and codes).
-  ncaa.com has no conference-game marker, so a conference game is a
-  regular-season game between two teams of the same conference; it matches
-  d3football's "*" marker on all 58 Centennial 2025 games.
-- **d3football.com is no longer used** (its scraper, the season index and
-  the `pbp/d3football/` builds were removed on 2026-11-17; they are in git
-  history up to 0e64fd9). Its firewall serves scripts a JavaScript bot
-  challenge. Do not try to get around it: no browser automation, no reusing
-  browser cookies such as `aws-waf-token`.
+  `inst/extdata/conference_names.csv` (a name and code per tag). ncaa.com
+  has no conference-game marker, so a conference game is a regular-season
+  game between two teams of the same conference.
+- **Bot challenges:** never try to get around one (stats.ncaa.org's Akamai
+  block, or any site's JavaScript challenge): no browser automation, no
+  reused browser cookies.
 - **User-Agent:** `fetch_ncaa_json()` sends "d3ballR (CMU student
   research)". Every request goes through the shared counter and throttle in
   `R/fetch.R`.
@@ -132,7 +126,7 @@ filter or `season`, not a new pipeline.
   just produce it.
 - Run code and show the actual output (counts, exceptions), not a summary of
   what it would do.
-- Be honest about disagreements and limits. When d3's data is wrong (a source
+- Be honest about disagreements and limits. When the source's data is wrong (a source
   quirk), say so and label it, rather than bending the parser.
 - Sam maintains a companion doc explaining each function. When you add a
   function, note what it does, its inputs / outputs, and any gotchas.

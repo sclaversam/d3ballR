@@ -28,6 +28,9 @@ is_no_play <- function(play_text) {
 #' only from "N yard(s) from/to", never from the play's "for N yards"
 #' (convention 5).
 #'
+#' The team code is followed by a space, or (in some host files) by the
+#' infraction name with no space ("PENALTY CCHolding 10 yards ...").
+#'
 #' @param clause Character vector: text from the first "PENALTY" onward.
 #' @param tokens The game's play-text team tokens (names of
 #'   [infer_text_team()]'s output).
@@ -37,7 +40,9 @@ is_no_play <- function(play_text) {
 #' @keywords internal
 split_infractions <- function(clause, tokens) {
   pattern <- paste0(
-    "\\b", token_regex(tokens), " .*?",
+    # the team code, then a space or, in some files, the infraction name
+    # glued straight on ("PENALTY MCHolding", "GUIllegal")
+    "\\b", token_regex(tokens), "(?: |(?=[A-Z][a-z])).*?",
     "(?:(\\d+) yards? (?:from|to)|(?i:(declined)|(off-?setting))|(?=, 1ST DOWN))"
   )
   lapply(clause, function(cl) {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse_clock.R
 \name{stated_clock_anchors}
 \alias{stated_clock_anchors}
-\title{Every clock reading d3 states, as positioned anchors}
+\title{Every clock reading the source states, as positioned anchors}
 \usage{
 stated_clock_anchors(full)
 }

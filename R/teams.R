@@ -1,6 +1,6 @@
 #' Build a map from every team spelling on the page to one canonical name
 #'
-#' d3 names a team several ways on one page: the header, line score, score
+#' The source names a team several ways in one game: the header, line score, score
 #' lines and drive headers use one spelling ("Chicago", "Franklin and
 #' Marshall"); drive-start rows use another ("UChicago", "Franklin &
 #' Marshall"). The canonical name is the drive-start spelling, which is what
@@ -138,7 +138,7 @@ build_actor_map <- function(kept, kickoffs) {
 #' drive: there the try right after it decides, when its kicker (or passer /
 #' rusher) is on the kicking team ("Adrogue,Matias onside kickoff 2 yards to
 #' the WASHU37 TOUCHDOWN" then "Adrogue,Matias kick attempt good",
-#' 20251115_effl).
+#' 6461646).
 #'
 #' @param kickoffs Output of [assign_kickoffs()].
 #' @param kept Kept rows with `row`, `play_text`.

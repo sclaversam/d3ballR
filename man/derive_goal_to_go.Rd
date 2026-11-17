@@ -14,7 +14,7 @@ derive_goal_to_go(df)
 \code{distance} filled on "and Goal" rows. Drops \code{distance_is_goal}.
 }
 \description{
-Goal-to-go means the line to gain is the goal line. d3's StatCrew text
+Goal-to-go means the line to gain is the goal line. StatCrew text
 writes that two ways: literally ("1st and Goal at CMU06"), and as a
 number that happens to equal the distance to the goal ("1st and 4 at
 UC 4", "1st and 1 at UC 1"). Both are goal-to-go, so \code{Goal_To_Go} is

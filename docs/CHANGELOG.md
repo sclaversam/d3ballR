@@ -5,6 +5,84 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## First-down flags: five fixes (477 to 317 series exceptions)
+
+Asked by Sam (2026-11-17): check the `first_downs.md` exceptions; the ones
+left are kept as known issues (`pipeline.md`). 1,263 games built, 1,262
+reconcile (unchanged); no point changes.
+
+- **A first down kept despite a later offensive penalty.** In
+  `derive_first_downs()` the test "did the same 1st down just move back?"
+  compared the next snap's distance against the *whole* distance column
+  (`%in%`), so almost every first down with an offensive penalty on the
+  play was dropped (6462261: 20-yard catch, 1ST DOWN, holding enforced
+  from the end of the play; the next snap is a fresh 1st and 10). Now
+  row by row. 43 rows gain `firstD_by_yards` / `new_series`.
+- **A kickoff the source left out.** In regulation, the other team's snap
+  right after a try or a scoring play starts a series by kickoff
+  (`firstD_by_kickoff`), even when ncaa.com printed no kickoff line
+  (`derive_series_flags()`). 74 rows.
+- **A dead-ball penalty belongs to the team that snaps next**
+  (`dead_ball_penalty_team()`): one right after a kickoff, punt or
+  turnover was filed under the team that gave the ball up (6461790,
+  6462129). 25 rows change `pos_team` (and their score columns and
+  `penalty_yards_signed`, which follow it); the bogus one-row drives they
+  made are gone, so later drives in those 22 games renumber.
+- **Penalty codes glued to the infraction** ("PENALTY CCHolding",
+  "GUIllegal", 10 games) are read (`split_infractions()`): 86 rows gain
+  `penalized_team` / `penalty_yards_signed`, and the first downs those
+  fouls took away are no longer credited.
+- **A converted 4th down keeps possession** in `ncaa_play_table()`: a
+  line with the other team's id right after it no longer opens a drive
+  (6462090: Salve Regina's interception filed under MIT). 4 rows change
+  team.
+- The report labels the source's down-counter quirk (a first down the
+  next situation doesn't show) instead of "unexplained".
+
+## Last traces of d3football removed (package prep)
+
+Asked by Sam (2026-11-17). No output changed: all 1,263 games in
+`pbp/2025/` rebuild byte-identical; 1,262 reconcile. The history entries
+below are kept as written (they use the old d3football game ids).
+
+- Code comments, man pages, tests, scripts, `DESCRIPTION`, `CLAUDE.md`,
+  `README.md`, `schema.md` and `pipeline.md` no longer refer to d3football:
+  the play table is described as a StatCrew page's layout, and every old
+  game id ("20251115_effl") is now its ncaa.com contest id ("6461646");
+  pipeline.md's batch lessons were translated too.
+- Removed the drive-footer clock check (`footer_clock_check()`,
+  `checks/{season}/drive_footer_clock.csv`): neither ncaa.com nor
+  stats.ncaa.org prints drive footers, so it only wrote empty rows.
+- `game_calendar()` returns `list_home` / `list_away` (was `index_home` /
+  `index_away`); internal only.
+- `2025_stats_ncaa_candidates.csv`: the six week-1 finals are labelled as
+  coming from the saved stats.ncaa.org page.
+
+## Team names, weeks and ids follow ncaa.com
+
+Sam's choice (2026-11-17), with d3football gone. **This changes the output.**
+
+- **Team names** (`home`, `away`, `pos_team`, `def_pos_team`,
+  `penalized_team`) are ncaa.com's short names ("Alfred St.", "CWRU",
+  "Augustana (IL)"), not d3football's ("Alfred State", "Case Western
+  Reserve", "Augustana"). `inst/extdata/team_names.csv` and
+  `ncaa_to_index_name()` are removed. Reason: d3football is blocked, so a
+  team new in a later season could never get a d3football spelling, and
+  seasons would mix the two. Conference names stay as they were
+  (`conference_names.csv`), since ncaa.com only gives tags like
+  "centennial".
+- **`week`** is ncaa.com's scoreboard week. It used to be d3football's (and
+  cfbfastR's) count: regular season from the first Saturday in September,
+  postseason restarting at 1. 2025 now reads regular season weeks 1-12
+  (each game one higher than before; the week-0 game is week 1),
+  tournament weeks 13-17, Stagg Bowl 19. `season_type` still separates
+  regular season from postseason. The game list's `ncaa_week` column is
+  gone (it is `week` now), and so is `date_based_week()`.
+- **`d3football_id`** is gone from the game list, with
+  `data-raw/ncaa/2025_contests.csv` (the crosswalk it came from) and the
+  `old_d3football_id` column of `2025_stats_ncaa_candidates.csv`. Notes
+  from before 2026-11-16 use the old ids; the crosswalk is in git history.
+
 ## Season dates ship with the package (R CMD check fix)
 
 `data-raw/season_dates.csv` moved to `inst/extdata/season_dates.csv`

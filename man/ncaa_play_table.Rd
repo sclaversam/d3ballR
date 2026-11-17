@@ -2,7 +2,7 @@
 % Please edit documentation in R/ncaa.R
 \name{ncaa_play_table}
 \alias{ncaa_play_table}
-\title{Rebuild d3football-style situations and table rows from ncaa.com lines}
+\title{Rebuild the (situation, play) table from ncaa.com lines}
 \usage{
 ncaa_play_table(lines, teams, final_total = NULL, scoring = NULL)
 }
@@ -24,8 +24,9 @@ A tibble with \code{situation} and \code{play}: the (situation, play)
 table the parser reads (\code{\link[=classify_plays]{classify_plays()}}).
 }
 \description{
-The rest of the pipeline reads d3football's two-column play table
-(\code{situation}, \code{play}), so ncaa.com's lines are turned into that table:
+The rest of the pipeline reads a two-column play table (\code{situation},
+\code{play}), the layout of a StatCrew play-by-play page, so ncaa.com's lines
+are turned into that table:
 }
 \details{
 \itemize{
@@ -43,8 +44,8 @@ count, nor do spots of a play wiped out by a penalty ("NO PLAY"). The two team t
 out from the line to gain: 10 yards past the spot where the series
 started, or goal to go. Snaps whose downs repeat with "NO PLAY" keep
 the same series.
-\item Kickoffs and tries get a blank situation, as on d3football.
-\item Rows d3football has and ncaa.com doesn't are added: a quarter marker
+\item Kickoffs and tries get a blank situation, as in a StatCrew page.
+\item Rows a StatCrew page has and ncaa.com's lines don't are added: a quarter marker
 ("1st", ..., "OT") at the start of each period, a drive header
 ("TEAM at MM:SS") before each "drive start" line, and a score line
 ("AWAY 7, HOME 0") after each scoring sequence, from ncaa.com's running
@@ -52,7 +53,8 @@ score. A header and a "TEAM drive start at." line are also added when
 a different team snaps: always in games with no "drive start" lines at
 all (the tournament format), otherwise only on the game's first snap,
 after a kickoff, on the first snap of an overtime period, or right after
-a snap that can end a possession (a punt, turnover, 4th down or
+a snap that can end a possession (a punt, turnover, 4th down not
+converted, or
 touchdown); ncaa.com's \code{teamId} is wrong on some single lines, so it
 isn't trusted mid-drive.
 \item ncaa.com leaves out some extra-point kicks. When a touchdown is

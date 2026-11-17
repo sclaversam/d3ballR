@@ -12,9 +12,6 @@
 #'   own down / distance / yards to goal, and its team and text. The
 #'   `next_*` values are from the next snap's offense view, so across a
 #'   change of possession they are measured toward the other end zone.
-#' - `drive_footer_clock.csv`: every d3 drive's start clock + footer
-#'   "MM:SS elapsed" vs the drive's end reference (see
-#'   [footer_clock_check()]); `flag` marks mismatches.
 #' - `clock_bounds.csv`: any regulation row whose `clock_start_max` /
 #'   `clock_start_min` is NA, max < min, or `clock_start` (when known) falls
 #'   outside them (should be
@@ -64,8 +61,6 @@ write_pbp_checks <- function(games, check_dir = "checks") {
     )
   }))
 
-  reports$drive_footer_clock <- do.call(rbind, lapply(games, attr, "footer_clock"))
-
   b <- dplyr::bind_rows(games)
   reg <- b$period <= 4L  # overtime is untimed: clock columns NA by design
   mx <- clock_secs(b$clock_start_max)
@@ -79,68 +74,6 @@ write_pbp_checks <- function(games, check_dir = "checks") {
     utils::write.csv(reports[[nm]], file.path(check_dir, paste0(nm, ".csv")), row.names = FALSE, na = "")
   }
   invisible(reports)
-}
-
-#' Check each d3 drive's "MM:SS elapsed" against the clock anchors
-#'
-#' For every StatCrew drive (opening drive row through its footer): start
-#' clock + footer elapsed should land on the drive's end. The end reference
-#' is the scoring play's stated clock if the drive scored, else the next
-#' drive's start time, else 00:00 at the end of the half. Times are
-#' compared as game seconds elapsed, so drives that cross a quarter are
-#' handled.
-#'
-#' @param full Classified rows (full set).
-#' @param clk Output of [derive_clock()].
-#' @param kept Kept rows with `row`, `touchdown`, `field_goal_made`,
-#'   `safety`.
-#' @param game_id Game id.
-#' @return Data frame, one row per drive footer.
-#' @keywords internal
-footer_clock_check <- function(full, clk, kept, game_id) {
-  rt <- full$row_type
-  q <- dplyr::coalesce(as.integer(full$quarter), 1L)
-  half <- ifelse(q <= 2, 1L, 2L)
-  good <- clk$anchors[clk$anchors$kind != "printed", ]  # official readings only, one per row
-  val <- stats::setNames(good$secs, good$row)
-  game_secs <- function(quarter, secs) (quarter - 1L) * 900L + (900L - secs)
-  opening <- clk$opening_rows
-  scoring_rows <- kept$row[kept$touchdown | kept$field_goal_made | kept$safety]
-  footers <- which(rt == "drive_footer")
-  prev_f <- c(0L, footers[-length(footers)])
-  out <- lapply(seq_along(footers), function(i) {
-    f <- footers[i]
-    starts <- opening[opening > prev_f[i] & opening < f]
-    st <- if (length(starts)) starts[1] else NA_integer_
-    team <- if (!is.na(st)) drive_row_team(full$play[st]) else NA_character_
-    el <- clock_secs(stringr::str_match(full$play[f], "(\\d{1,2}:\\d{2}) elapsed")[, 2])
-    s_secs <- if (!is.na(st)) val[as.character(st)] else NA
-    sc <- scoring_rows[scoring_rows > ifelse(is.na(st), prev_f[i], st) & scoring_rows < f]
-    sc_val <- if (length(sc)) val[as.character(sc[length(sc)])] else NA
-    nxt <- opening[opening > f]
-    if (length(sc) && !is.na(sc_val)) {
-      ref <- "score clock"; ref_q <- q[sc[length(sc)]]; ref_secs <- sc_val
-    } else if (length(nxt) && !is.na(st) && half[nxt[1]] == half[st]) {
-      ref <- "next drive start"; ref_q <- q[nxt[1]]; ref_secs <- val[as.character(nxt[1])]
-    } else {
-      ref <- "end of half"; ref_q <- if (!is.na(st) && half[st] == 1L) 2L else 4L; ref_secs <- 0L
-    }
-    expected <- if (!is.na(st)) game_secs(q[st], s_secs) + el else NA
-    actual <- game_secs(ref_q, ref_secs)
-    data.frame(
-      game_id = game_id, footer_row = f, team = team,
-      start_quarter = if (!is.na(st)) q[st] else NA, start_clock = fmt_clock(unname(s_secs)),
-      elapsed = fmt_clock(el), reference = ref, ref_quarter = ref_q, ref_clock = fmt_clock(unname(ref_secs)),
-      diff_seconds = unname(actual - expected),
-      footer_text = full$play[f]
-    )
-  })
-  res <- do.call(rbind, out)
-  ot <- !is.na(res$start_quarter) & res$start_quarter > 4L
-  res$reference[ot] <- "overtime (untimed)"
-  res$diff_seconds[ot] <- NA
-  res$flag <- !ot & (is.na(res$diff_seconds) | res$diff_seconds != 0)
-  res
 }
 
 #' Split a game's snap rows into series, independently of the flags
@@ -245,8 +178,9 @@ write_first_down_report <- function(built, check_dir) {
           problem = if (!length(flagged)) "no new_series row" else if (length(flagged) > 1) "more than one new_series row" else "new_series not on the first snap row",
           likely_cause = dplyr::case_when(
             !length(flagged) & n_seg > 1 ~ "previous play has more than one yardage segment (a lateral): yards_gained reads only the first, so its first down is missed",
-            !length(flagged) & prev_deadball_off_pen ~ "previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk)",
-            length(flagged) == 1 & r$down[1] != 1L ~ "series starts with a down other than 1st: d3 kept the old down for the new offense after a change of possession (source quirk)",
+            !length(flagged) & prev_deadball_off_pen ~ "previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk)",
+            length(flagged) == 1 & r$down[1] != 1L ~ "series starts with a down other than 1st: the source kept the old down for the new offense after a change of possession (source quirk)",
+            length(flagged) > 1 & all(r$down[flagged[-1]] > 1L, na.rm = TRUE) ~ "the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter missed it, so the situation-only series runs on (source quirk; the flag follows the play)",
             TRUE ~ "unexplained"),
           first_row_text = r$play_text[1]
         )

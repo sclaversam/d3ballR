@@ -13,7 +13,7 @@ fmt_clock <- function(s) {
   ifelse(is.na(s), NA_character_, sprintf("%02d:%02d", s %/% 60L, s %% 60L))
 }
 
-#' Every clock reading d3 states, as positioned anchors
+#' Every clock reading the source states, as positioned anchors
 #'
 #' Readings come from "clock M:SS" anywhere in a row (timeouts, quarter
 #' starts, bare clock rows, spot corrections, end-of-half rows, and kept
@@ -56,7 +56,7 @@ stated_clock_anchors <- function(full) {
   pre <- stringr::str_match(txt, "^\\((\\d{1,2}:\\d{2})\\)")[, 2]
   rp <- which(!is.na(pre) & full$row_type %in% kept_row_types)
   # some files print "(00:00)" on nearly every play (a stat-crew setting,
-  # e.g. 20250906_pzhf): when most printed clocks are 00:00, those 00:00
+  # e.g. 6461790): when most printed clocks are 00:00, those 00:00
   # readings carry no information and are dropped, along with the file's
   # other 00:00 readings ("TOUCHDOWN, clock 00:00", "drive start at 00:00")
   zero <- clock_secs(pre[rp]) == 0
