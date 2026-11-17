@@ -36,9 +36,13 @@ local({
   for (k in seq_len(nrow(exc))) {
     id <- exc$game_id[k]
     test_that(paste("known source exception", id), {
-      season <- substr(id, 1, 4)
+      # game ids are ncaa.com contest ids (no season in them): find the
+      # season folder that has the game
+      seasons <- list.files(file.path(top, "pbp"), pattern = "^\\d{4}$")
+      hit <- seasons[file.exists(file.path(top, "pbp", seasons, paste0(id, ".csv")))]
+      skip_if(!length(hit), paste(id, "not built"))
+      season <- hit[1]
       f <- file.path(top, "pbp", season, paste0(id, ".csv"))
-      skip_if(!file.exists(f), paste(id, "not built"))
       counts <- utils::read.csv(file.path(top, "checks", season, "pbp_row_counts.csv"), na.strings = "",
                                 colClasses = c(game_id = "character"))
       r <- counts[counts$game_id == id, ]

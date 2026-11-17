@@ -311,6 +311,129 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
   list(table = tab, markers = markers)
 }
 
+#' The season's game list from ncaa.com's Division III scoreboards
+#'
+#' Since 2026-11-16 the game list (and `game_id`) comes from ncaa.com, not
+#' from d3football's season index. Every contest on the season's weekly
+#' scoreboards (`weeks`, cached) is one game; `game_id` is its ncaa.com
+#' contest id ("6461490"). A contest listed in more than one week is kept
+#' once. Dropped (listed in the result's `dropped` attribute, with why):
+#' - a contest dated outside the season (before August 1 of `season` or
+#'   after July 31 of the next year), a placeholder ncaa.com left in its
+#'   scoreboard (2025: the Stagg Bowl's duplicate 6529906, dated
+#'   2025-01-04);
+#' - a second contest for the same game (same date, teams and final
+#'   score): the tournament's contest (with a bracket round) is kept, else
+#'   the lower id (2025: 6533522, beside 6529877).
+#'
+#' Columns follow the season index, so the rest of the pipeline reads them
+#' the same way:
+#' - `home`, `away`: ncaa.com's home and away teams, spelled as d3football
+#'   spells them ([ncaa_to_index_name()]; names not in the table are
+#'   ncaa.com's short names).
+#' - `season_type`: "postseason" for NCAA tournament games (a
+#'   `bracket_round` on the scoreboard) and for games after the regular
+#'   season's end ([classify_season_type()]); "regular" otherwise.
+#' - `week`: d3football's convention, which cfbfastR also uses: regular
+#'   weeks count from the week of the first Saturday in September
+#'   ([date_based_week()]; a game before it is week 0); postseason weeks
+#'   count the weeks after the regular season that have games, so they are
+#'   the tournament's rounds (1 = first round, ..., 6 = the Stagg Bowl).
+#'   ncaa.com's own week is kept in `ncaa_week` (2025: regular week + 1).
+#' - `d3football_id`: the game's old d3football boxscore id, from the old
+#'   contest crosswalk (`{season}_contests.csv`) where it exists.
+#'
+#' Writes `{dir}/{season}_games.csv`.
+#'
+#' @param season Season year.
+#' @param weeks ncaa.com week numbers to read.
+#' @param dir Folder for the game list and the crosswalk.
+#' @param season_dates Output of [read_season_dates()] (NULL: read it).
+#' @return A data frame, one row per game: `game_id`, `season`,
+#'   `game_date`, `week`, `season_type`, `home`, `away`, `home_score`,
+#'   `away_score`, `ncaa_week`, `bracket_round`, `d3football_id`.
+#' @export
+ncaa_season_games <- function(season, weeks = 1:20, dir = "data-raw/ncaa", season_dates = NULL) {
+  sb <- list()
+  for (w in weeks) {
+    x <- tryCatch(ncaa_scoreboard_week(season, w), error = function(e) NULL)
+    if (!is.null(x)) sb[[length(sb) + 1]] <- x
+  }
+  if (!length(sb)) stop("No ncaa.com scoreboard could be read for ", season, call. = FALSE)
+  sb <- do.call(rbind, sb)
+  sb <- sb[!duplicated(sb$contest), ]
+  in_season <- !is.na(sb$date) & sb$date >= as.Date(sprintf("%d-08-01", season)) &
+    sb$date <= as.Date(sprintf("%d-07-31", season + 1L))
+  keep_cols <- c("contest", "ncaa_week", "date", "away", "home", "away_score", "home_score", "bracket_round")
+  dropped <- sb[!in_season, keep_cols]
+  dropped$why <- rep("dated outside the season", nrow(dropped))
+  sb <- sb[in_season, ]
+  # the same game listed twice (same date, teams and score; 2025: 6533522
+  # beside the tournament's 6529877): keep the tournament's contest (with a
+  # bracket round), else the lower contest id
+  pair <- paste(sb$date, pmin(sb$away, sb$home), pmax(sb$away, sb$home),
+                pmin(sb$away_score, sb$home_score), pmax(sb$away_score, sb$home_score))
+  ord <- order(pair, sb$bracket_round == "", as.numeric(sb$contest))
+  dup <- duplicated(pair[ord])
+  dup_rows <- ord[dup & !is.na(sb$away_score[ord]) & !is.na(sb$home_score[ord])]
+  if (length(dup_rows)) {
+    d <- sb[dup_rows, keep_cols]
+    d$why <- paste0("duplicate of contest ", sb$contest[ord][match(pair[dup_rows], pair[ord])])
+    dropped <- rbind(dropped, d)
+    sb <- sb[-dup_rows, ]
+  }
+  if (is.null(season_dates)) season_dates <- ensure_season_dates(season)
+
+  tourney <- sb$bracket_round != ""
+  st <- ifelse(tourney, "postseason", classify_season_type(sb$date, season, season_dates))
+  wk <- pmax(date_based_week(sb$date, season, st, season_dates), 0L)
+  # postseason weeks are numbered by the weeks that have games (the
+  # tournament's rounds: the 2025 Stagg Bowl, three weeks after the
+  # semifinals, is week 6)
+  post <- st == "postseason"
+  wk[post] <- match(wk[post], sort(unique(wk[post])))
+
+  xw_file <- file.path(dir, paste0(season, "_contests.csv"))
+  xw <- if (file.exists(xw_file)) {
+    utils::read.csv(xw_file, na.strings = "", colClasses = c(game_id = "character", contest = "character"))
+  } else data.frame(game_id = character(), contest = character())
+
+  out <- data.frame(
+    game_id = sb$contest, season = as.integer(season), game_date = format(sb$date, "%Y-%m-%d"),
+    week = as.integer(wk), season_type = st,
+    home = ncaa_to_index_name(sb$home), away = ncaa_to_index_name(sb$away),
+    home_score = sb$home_score, away_score = sb$away_score,
+    ncaa_week = sb$ncaa_week, bracket_round = sb$bracket_round,
+    d3football_id = xw$game_id[match(sb$contest, xw$contest)]
+  )
+  out <- out[order(out$game_date, out$game_id), ]
+  rownames(out) <- NULL
+  dir.create(dir, showWarnings = FALSE, recursive = TRUE)
+  utils::write.csv(out, file.path(dir, paste0(season, "_games.csv")), row.names = FALSE, na = "")
+  if (nrow(dropped)) {
+    message(season, ": dropped ", nrow(dropped), " ncaa.com contest(s): ",
+            paste0(dropped$contest, " (", dropped$why, ")", collapse = ", "))
+  }
+  attr(out, "dropped") <- dropped
+  out
+}
+
+#' The contest table for a game list from [ncaa_season_games()]
+#'
+#' [fetch_ncaa_game()] looks games up in a contest table. With ncaa.com's
+#' game list the game id is the contest id and home / away are ncaa.com's,
+#' so this is the identity mapping.
+#'
+#' @param games Output of [ncaa_season_games()].
+#' @return A data frame like [map_ncaa_contests()]'s.
+#' @keywords internal
+ncaa_contest_table <- function(games) {
+  data.frame(game_id = games$game_id, contest = games$game_id,
+             ncaa_away = games$away, ncaa_home = games$home,
+             ncaa_away_score = games$away_score, ncaa_home_score = games$home_score,
+             home_away_flip = FALSE, date_diff = 0)
+}
+
 #' ncaa.com team names translated to the season index's spelling
 #'
 #' `data-raw/ncaa/team_names.csv` lists the ncaa.com short names that differ
@@ -1336,9 +1459,11 @@ ncaa_own_token <- function(team_id, token, yard, tokens) {
 #' differs from ncaa.com in one 2025 game). The final score is ncaa.com's
 #' scoreboard score, else its last running score.
 #'
-#' @param game_id Season-index game id, e.g. "20250905_jdn4".
-#' @param contests Contest table from [map_ncaa_contests()].
-#' @param index The season index.
+#' @param game_id Game id: the ncaa.com contest id, e.g. "6461490" (or,
+#'   with [map_ncaa_contests()]'s table, an old d3football id).
+#' @param contests Contest table: [ncaa_contest_table()] of the game list,
+#'   or [map_ncaa_contests()]'s.
+#' @param index The game list ([ncaa_season_games()]) or the season index.
 #' @return A list like [fetch_game()]'s: `game_id`, `season`, `teams`,
 #'   `finals`, `matchup`, `header_date`, `plays`, plus `contest`.
 #' @export

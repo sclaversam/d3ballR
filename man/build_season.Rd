@@ -37,9 +37,8 @@ mix in one folder.}
 Invisibly, the list of built games.
 }
 \description{
-One pipeline for every stage of the roadmap. The games come from the
-season index (\code{\link[=build_season_index]{build_season_index()}}): with \code{teams = NULL}, every game
-in the index; with \code{teams}, only games involving one of them (e.g. a
+One pipeline for every stage of the roadmap. The games come from
+ncaa.com's scoreboards (\code{\link[=ncaa_season_games]{ncaa_season_games()}}; for \code{source = "d3football"}, the season index \code{\link[=build_season_index]{build_season_index()}}): with \code{teams = NULL}, every game in the list; with \code{teams}, only games involving one of them (e.g. a
 conference's members: any of their games, including non-conference,
 playoff and bowl games). Games already in \code{out_dir} are always rebuilt
 too, so \code{out_dir} and the reports in \code{check_dir} always cover every game
@@ -48,8 +47,7 @@ built so far for the season.
 \details{
 The play-by-play comes from ncaa.com (\code{source = "ncaa"}, the default)
 requested directly from R (see \code{\link[=fetch_ncaa_json]{fetch_ncaa_json()}}; an ncaa-api server
-is optional): each index
-game is matched to its ncaa.com contest (\code{\link[=map_ncaa_contests]{map_ncaa_contests()}}), its
+is optional): each game's (contest's)
 play-by-play is fetched (\code{\link[=prefetch_ncaa_games]{prefetch_ncaa_games()}}) and rebuilt into the
 play table the parser reads (\code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}). \code{source = "d3football"} reads d3football boxscore pages instead, which now works
 only from pages already in the cache (d3football's firewall blocks

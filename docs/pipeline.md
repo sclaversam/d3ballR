@@ -66,9 +66,10 @@ ncaa.com yet) are listed as pending, and the next run continues from there.
 | Stage | What it does | Code | Output |
 |---|---|---|---|
 | Season dates | Regular-season end date per season (2019-2025 seeded and verified). A missing season is read from its Wikipedia infobox and logged for checking. | `R/season_index.R` (`ensure_season_dates`, `check_season_dates`) | `data-raw/season_dates.csv` |
-| Season index | Every game of a season from d3's weekly scoreboard pages: date, week, regular/postseason, teams, boxscore URL. | `R/season_index.R` (`build_season_index`) | `data-raw/index/{season}.csv` |
+| Game list | Every game of a season from ncaa.com's weekly D3 scoreboards (cached): `game_id` = contest id, date, week and regular/postseason in d3football's convention, teams in d3football's spelling, final score, and the old d3football id. Placeholder and duplicate contests are dropped (logged). | `R/ncaa.R` (`ncaa_season_games`) | `data-raw/ncaa/{season}_games.csv` |
+| Season index (d3football source only) | Every game of a season from d3's weekly scoreboard pages: date, week, regular/postseason, teams, boxscore URL. The game list for `source = "d3football"`; cache only now. | `R/season_index.R` (`build_season_index`) | `data-raw/index/{season}.csv` |
 | Conferences | Each team's conference that season, from ncaa.com's scoreboard tags (already read for the contest map, so no new requests); conference game = same conference, regular season. (d3football source: the team pages and their "*" marker.) | `R/ncaa.R` (`ncaa_conference_table`); `R/conferences.R` (`build_conference_table`) | `data-raw/ncaa/{season}_conferences.csv`; `data-raw/conferences/{season}*.csv` |
-| ncaa contests | Each index game's ncaa.com contest id, from ncaa.com's weekly scoreboards (team names through a crosswalk, dates at most a day apart). | `R/ncaa.R` (`map_ncaa_contests`) | `data-raw/ncaa/{season}_contests.csv`, `data-raw/ncaa/team_names.csv` |
+| Old-id crosswalk | Each d3football index game's ncaa.com contest id (team names through `team_names.csv`, dates at most a day apart). Built once for 2025; `ncaa_season_games()` reads it for `d3football_id`. Historical notes in this file and the CHANGELOG before 2026-11-16 use the old ids. | `R/ncaa.R` (`map_ncaa_contests`) | `data-raw/ncaa/{season}_contests.csv`, `data-raw/ncaa/team_names.csv` |
 | Fetch | Each game's play-by-play JSON from ncaa.com (or, for `source = "d3football"`, its cached boxscore page). Cached and throttled. | `R/ncaa.R` (`fetch_ncaa_json`), `R/scrape_plays.R` (`fetch_html`) | `data-raw/cache/ncaa/`, `data-raw/cache/` (gitignored) |
 | Rebuild table | ncaa.com's lines become d3football's (situation, play) table: situations from `driveText` with the yardline side recovered, quarter markers, drive headers, score lines, and labelled extra points ncaa.com left out. | `R/ncaa.R` (`fetch_ncaa_game`, `ncaa_play_table`) | |
 | Classify | Label every row of the page: snap, kickoff, try, dead-ball penalty, or one of the non-play types (drive header / footer, quarter marker, timeout, ...). | `R/classify.R`, `R/parse_play_type.R` | |
@@ -133,16 +134,15 @@ first-down exclusivity and placement.
   ncaa.com and are added, labelled in `play_text`: 91 proved by the running
   score, 9 (CMU home games, no running score) by ncaa.com's scoring summary.
   The final-score fallback is not needed in Centennial 2025.
-- **Games ncaa.com can't give:** non-NCAA bowl games, and the 2025 national
-  semifinal `20251220_vlfc` (every play tagged with one team). Both are
-  listed in the build report.
-- **The 2025 Stagg Bowl isn't in the game list:** the season index stops
-  at 2025-12-20 (d3football's scoreboards can no longer be read). ncaa.com
-  has it: week 19 of its scoreboard (cached) lists UW-River Falls 24,
-  North Central (Ill.) 14 on 2026-01-04 as contest 6534822 (and a
-  duplicate, 6529906, dated 2025), and contest 6534822's play-by-play is
-  cached (202 lines, normal format). Adding it needs a decision on its
-  `game_id`, since there is no d3football boxscore id for it.
+- **Games ncaa.com can't give:** the 2025 national semifinal `6529905`
+  (old id `20251220_vlfc`; every play tagged with one team), listed in the
+  build report. Non-NCAA bowl games aren't on ncaa.com's scoreboards, so
+  since the switch to ncaa.com's game list they aren't in it at all.
+- **Games only on ncaa.com wait for a fetch:** 25 games on ncaa.com's 2025
+  scoreboards were never in d3football's index with a boxscore id (Saint
+  Francis (Pa.)'s 11 games, 13 games d3football listed without a
+  boxscore, King's at Wilkes). Their play-by-play isn't cached; they are
+  pending.
 - **Dead-ball penalties before a kickoff in tournament files** ("PENALTY
   CROWN Personal Foul 15 yards from WHEIL35 to WHEIL50. NO PLAY", driveText
   "- and -") have no situation, so they are unclassified and dropped
@@ -299,11 +299,11 @@ read), 44 reconcile (`msui` is a source gap).
 1. **CMU 2025** (validation set): done.
 2. **Centennial 2025**: done; rebuilt from ncaa.com on 2026-11-04.
 3. **All of D3 2025 from ncaa.com** (done as far as ncaa.com has it,
-   2026-11-16): `build_season(2025)`. 1,230 games built, 1,227 reconcile
-   (3 known source gaps). Not built: 6 week-1 games ncaa.com still has no
-   play-by-play for (`8wt2`, `jir1`, `qsmw`, `lq0t`, `wf4k`, `yr0t`;
-   retried in batch 6), 6 non-NCAA bowls, the national semifinal `vlfc`,
-   and the Stagg Bowl (not in the season index; see Known issues).
+   2026-11-16): `build_season(2025)`. Since 2026-11-16 the game list is
+   ncaa.com's (1,263 games); 1,231 built (with the Stagg Bowl), 1,228
+   reconcile (3 known source gaps). Not built: 6 week-1 games ncaa.com
+   still has no play-by-play for (retried in batch 6), 25 games only on
+   ncaa.com not yet fetched, and the national semifinal `6529905`.
    Conferences come from ncaa.com's scoreboards for every team. Expect new
    StatCrew formats to surface. The score-reconciliation test and the
    `first_downs.md` series check are the main guards.

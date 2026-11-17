@@ -45,11 +45,17 @@ filter or `season`, not a new pipeline.
   play-by-play isn't available yet; it stays pending.
 - **Terms of use:** NCAA's terms forbid scraping without permission. Sam was
   advised to ask his professor; keep requests few, cached and throttled.
-- **The d3football season index stays the game list** (`game_id` is still
-  d3football's boxscore id). `map_ncaa_contests()` pairs each index game with
-  its ncaa.com contest (same teams via `data-raw/ncaa/team_names.csv`, dates
-  at most a day apart) into `data-raw/ncaa/{season}_contests.csv`. 2025:
-  1,237 of 1,243 matched; the rest are non-NCAA bowls and one date mismatch.
+- **The game list is ncaa.com's** (decided by Sam, 2026-11-16):
+  `ncaa_season_games()` reads the season's cached D3 scoreboards into
+  `data-raw/ncaa/{season}_games.csv`, and `game_id` is the ncaa.com contest
+  id ("6461490"), the file name in `pbp/{season}/`. Placeholder contests
+  dated outside the season and second listings of the same game are
+  dropped. `week` and `season_type` keep d3football's convention; team names
+  keep d3football's spelling (`team_names.csv`). The old d3football id is
+  the `d3football_id` column of the game list (crosswalk from
+  `map_ncaa_contests()`, `{season}_contests.csv`). Notes written before
+  2026-11-16 use the old ids. The d3football source (`pbp/d3football/`)
+  keeps its old ids and the d3football index.
 - **ncaa.com's play text is the same StatCrew text** as d3football's, so the
   parser is unchanged: `ncaa_play_table()` rebuilds d3football's
   (situation, play) table from the JSON. Its quirks, all handled there:
@@ -69,13 +75,12 @@ filter or `season`, not a new pipeline.
   - Some kickoffs are dropped; no drive footers ("N plays, Y yards").
   - Some playoff games are a different StatCrew file from d3football's.
   - The 2025 national semifinal Johns Hopkins at UW-River Falls (contest
-    6529905, `20251220_vlfc`) tags every line with one team and has no
+    6529905, old id `20251220_vlfc`) tags every line with one team and has no
     drive-start lines or running score, so possession can't be read. Its
     plays are all there.
-  - The season index ends on 2025-12-20, so the 2025 Stagg Bowl
-    (UW-River Falls 24, North Central 14, 2026-01-04) is not in the game
-    list. ncaa.com has it (week-19 scoreboard, contest 6534822, play-by-play
-    cached); adding it needs a `game_id` decision.
+  - The 2025 Stagg Bowl (UW-River Falls 24, North Central 14, 2026-01-04)
+    is contest 6534822; ncaa.com also lists a placeholder 6529906 dated
+    2025-01-04, dropped from the game list.
 - **Conferences come from ncaa.com's scoreboards:** each team's
   `conferences[].conferenceSeo` tag, named through
   `data-raw/ncaa/conference_names.csv` (d3football's names and codes).

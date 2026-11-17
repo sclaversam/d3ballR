@@ -1,1231 +1,1232 @@
 "game_id","game_date","away","home","away_final","home_final","away_pts_parsed","home_pts_parsed","score_reconciled"
-"20250904_2g4w","2025-09-04","Brockport","Buffalo State",41,0,41,0,TRUE
-"20250904_d231","2025-09-04","Carroll","UW-Eau Claire",7,29,7,29,TRUE
-"20250904_e307","2025-09-04","Augsburg","Valley City State",0,27,0,27,TRUE
-"20250904_hjux","2025-09-04","Hiram","Heidelberg",27,65,27,65,TRUE
-"20250904_hz19","2025-09-04","Franklin and Marshall","Lebanon Valley",31,21,31,21,TRUE
-"20250904_ndb9","2025-09-04","Greenville","Illinois College",9,28,9,28,TRUE
-"20250904_x3up","2025-09-04","Averett","N.C. Wesleyan",12,64,12,64,TRUE
-"20250904_x4o2","2025-09-04","Millsaps","Belhaven",24,50,24,50,TRUE
-"20250904_x9dy","2025-09-04","Pacific","Howard Payne",13,21,13,21,TRUE
-"20250904_xvn8","2025-09-04","Coe","Cornell",62,6,62,6,TRUE
-"20250904_zbay","2025-09-04","Marietta","Westminster (Pa.)",12,8,12,8,TRUE
-"20250904_zik0","2025-09-04","Trinity (Texas)","Texas Lutheran",26,14,26,14,TRUE
-"20250905_0otb","2025-09-05","Bridgewater State","Curry",28,35,28,35,TRUE
-"20250905_2ic2","2025-09-05","Hobart","Alfred",23,28,23,28,TRUE
-"20250905_5sfv","2025-09-05","Norwich","St. Lawrence",3,19,3,19,TRUE
-"20250905_9lhe","2025-09-05","Concordia (Wis.)","Thiel",27,8,27,8,TRUE
-"20250905_9opj","2025-09-05","McDaniel","Catholic",7,10,7,10,TRUE
-"20250905_j032","2025-09-05","Ursinus","Alvernia",41,17,41,17,TRUE
-"20250905_jdn4","2025-09-05","Dickinson","Randolph-Macon",34,48,34,48,TRUE
-"20250905_p2em","2025-09-05","Albright","Gallaudet",9,7,9,7,TRUE
-"20250905_rgw0","2025-09-05","SUNY-Maritime","Massachusetts Maritime",21,14,21,14,TRUE
-"20250905_wr9m","2025-09-05","Juniata","Gettysburg",31,30,31,30,TRUE
-"20250906_034w","2025-09-06","Kalamazoo","Austin",14,10,14,10,TRUE
-"20250906_09bx","2025-09-06","Wheaton (Ill.)","Mount Union",29,37,29,37,TRUE
-"20250906_10mp","2025-09-06","Beloit","Rockford",15,19,15,19,TRUE
-"20250906_1c8m","2025-09-06","William Paterson","Western Connecticut",20,21,20,21,TRUE
-"20250906_1qeq","2025-09-06","Macalester","Grinnell",20,15,20,15,TRUE
-"20250906_1qqy","2025-09-06","Anna Maria","Eastern",7,46,7,46,TRUE
-"20250906_26ks","2025-09-06","Hampden-Sydney","Delaware Valley",38,9,38,9,TRUE
-"20250906_29l4","2025-09-06","Lyon","East Texas Baptist",8,47,8,47,TRUE
-"20250906_2lhd","2025-09-06","Mount St. Joseph","Muskingum",33,27,33,27,TRUE
-"20250906_2q6t","2025-09-06","Maryville (Tenn.)","Hendrix",40,14,40,14,TRUE
-"20250906_2yy3","2025-09-06","Apprentice","Southern Virginia",6,27,6,27,TRUE
-"20250906_35p9","2025-09-06","Hope","Loras",62,0,62,0,TRUE
-"20250906_3f7l","2025-09-06","Bethel (Tenn.)","Mary Hardin-Baylor",23,30,23,30,TRUE
-"20250906_3hu1","2025-09-06","St. John Fisher","FDU-Florham",21,0,21,0,TRUE
-"20250906_41ka","2025-09-06","UW-Oshkosh","Linfield",31,14,31,14,TRUE
-"20250906_45l3","2025-09-06","Hilbert","St. Vincent",7,28,7,28,TRUE
-"20250906_5qby","2025-09-06","Johns Hopkins","Ithaca",42,14,42,14,TRUE
-"20250906_5t3v","2025-09-06","Wooster","Wilmington",35,59,35,59,TRUE
-"20250906_5u5q","2025-09-06","John Carroll","Waynesburg",48,14,48,14,TRUE
-"20250906_616y","2025-09-06","Misericordia","Endicott",21,31,21,31,TRUE
-"20250906_6mvd","2025-09-06","Carthage","Lakeland",51,40,51,40,TRUE
-"20250906_70fv","2025-09-06","Coast Guard","University of New England",49,56,49,56,TRUE
-"20250906_71s2","2025-09-06","Baldwin Wallace","Wittenberg",31,13,31,13,TRUE
-"20250906_806w","2025-09-06","Wabash","St. Norbert",55,21,55,21,TRUE
-"20250906_85f2","2025-09-06","Utica","Washington and Jefferson",49,31,49,31,TRUE
-"20250906_8da1","2025-09-06","Alfred State","Anderson",6,7,6,7,TRUE
-"20250906_8hxj","2025-09-06","Kenyon","Bluffton",17,20,17,20,TRUE
-"20250906_8o5p","2025-09-06","Albion","UW-Stevens Point",21,28,21,28,TRUE
-"20250906_8xam","2025-09-06","LaGrange","Point",36,14,36,14,TRUE
-"20250906_91x0","2025-09-06","Geneva","Widener",18,44,18,44,TRUE
-"20250906_ao7f","2025-09-06","Mayville St.","Concordia-Moorhead",6,17,6,17,TRUE
-"20250906_c11m","2025-09-06","Springfield","Western New England",22,23,22,23,TRUE
-"20250906_d0ep","2025-09-06","Ohio Northern","Franklin",20,27,20,27,TRUE
-"20250906_d1ph","2025-09-06","Crown","Hamline",21,28,21,28,TRUE
-"20250906_dcg5","2025-09-06","Nebraska Wesleyan","Dakota St.",7,37,7,37,TRUE
-"20250906_due6","2025-09-06","TCNJ","Lycoming",27,24,27,24,TRUE
-"20250906_e064","2025-09-06","Carnegie Mellon","Chicago",20,0,20,0,TRUE
-"20250906_eq8n","2025-09-06","Virginia-Lynchburg","Roanoke",7,23,7,23,TRUE
-"20250906_ex14","2025-09-06","Knox","Eureka",13,14,13,14,TRUE
-"20250906_f4wr","2025-09-06","Carleton","UW-Whitewater",14,45,14,45,TRUE
-"20250906_fm5a","2025-09-06","Plymouth State","New England College",49,21,49,21,TRUE
-"20250906_fw2w","2025-09-06","Northwestern (Minn.)","St. Olaf",7,32,7,32,TRUE
-"20250906_glc4","2025-09-06","Dubuque","UW-Stout",35,38,35,38,TRUE
-"20250906_hbla","2025-09-06","Case Western Reserve","Rowan",17,17,14,17,FALSE
-"20250906_ipvv","2025-09-06","DePauw","Rose-Hulman",40,0,40,0,TRUE
-"20250906_j3h2","2025-09-06","Union","Susquehanna",14,33,14,33,TRUE
-"20250906_j5s3","2025-09-06","Sewanee","Bethany",41,6,41,6,TRUE
-"20250906_jdae","2025-09-06","Olivet","Rochester",17,38,17,38,TRUE
-"20250906_k8vz","2025-09-06","Westminster (Mo.)","Manchester",21,14,21,14,TRUE
-"20250906_kbs4","2025-09-06","Minnesota-Morris","Concordia-Chicago",16,17,16,17,TRUE
-"20250906_kd8h","2025-09-06","Nichols","MIT",13,46,13,46,TRUE
-"20250906_khao","2025-09-06","Morrisville State","Kean",14,17,14,17,TRUE
-"20250906_km6t","2025-09-06","UW-Platteville","Aurora",41,0,41,0,TRUE
-"20250906_kuih","2025-09-06","St. Scholastica","Wisconsin Lutheran",41,27,41,27,TRUE
-"20250906_lo04","2025-09-06","Central","Illinois Wesleyan",27,18,27,18,TRUE
-"20250906_ls6a","2025-09-06","Hanover","Centre",15,23,15,23,TRUE
-"20250906_m4ph","2025-09-06","Adrian","Valparaiso",10,7,10,7,TRUE
-"20250906_mww9","2025-09-06","Pomona-Pitzer","Willamette",41,17,41,17,TRUE
-"20250906_nhof","2025-09-06","Southwestern","McMurry",27,19,27,19,TRUE
-"20250906_nidd","2025-09-06","Greensboro","Guilford",21,7,21,7,TRUE
-"20250906_og2i","2025-09-06","Rhodes","Washington U.",0,49,0,49,TRUE
-"20250906_ol2o","2025-09-06","Lake Forest","Claremont-Mudd-Scripps",7,14,7,14,TRUE
-"20250906_puzg","2025-09-06","Stevenson","Bridgewater",32,27,32,27,TRUE
-"20250906_pzhf","2025-09-06","Lewis and Clark","Puget Sound",56,20,56,20,TRUE
-"20250906_q2oz","2025-09-06","Gustavus Adolphus","Whitworth",10,23,10,23,TRUE
-"20250906_q4sa","2025-09-06","Monmouth","Wartburg",7,21,7,21,TRUE
-"20250906_qgnn","2025-09-06","Denison","Allegheny",35,24,35,24,TRUE
-"20250906_qqbg","2025-09-06","Ohio Wesleyan","Otterbein",65,28,65,28,TRUE
-"20250906_rqq2","2025-09-06","Alma","UW-River Falls",33,45,33,45,TRUE
-"20250906_s4wd","2025-09-06","Millikin","Luther",33,3,33,3,TRUE
-"20250906_sofj","2025-09-06","Martin Luther","Lawrence",33,14,33,14,TRUE
-"20250906_t9z9","2025-09-06","George Fox","Redlands",7,10,7,10,TRUE
-"20250906_td14","2025-09-06","Huntingdon","Berry",28,58,28,58,TRUE
-"20250906_u1p2","2025-09-06","Grove City","Cortland",31,14,31,14,TRUE
-"20250906_uh9c","2025-09-06","Ky. Christian","Brevard",41,20,41,20,TRUE
-"20250906_uhok","2025-09-06","Pacific Lutheran","Cal Lutheran",15,18,15,18,TRUE
-"20250906_vatl","2025-09-06","Salisbury","Washington and Lee",42,21,42,21,TRUE
-"20250906_vkzk","2025-09-06","Buena Vista","Benedictine",0,35,0,35,TRUE
-"20250906_vvrk","2025-09-06","Augustana","Simpson",42,41,42,41,TRUE
-"20250906_was7","2025-09-06","Hardin-Simmons","Chapman",37,30,37,30,TRUE
-"20250906_wk1h","2025-09-06","Vermont State Castleton","Westfield State",16,12,16,12,TRUE
-"20250906_xaxw","2025-09-06","RPI","WPI",26,9,26,9,TRUE
-"20250906_z0ea","2025-09-06","Calvin","Oberlin",88,6,88,6,TRUE
-"20250906_zgnw","2025-09-06","North Park","Ripon",35,19,35,19,TRUE
-"20250906_zkds","2025-09-06","Methodist","Shenandoah",6,25,6,25,TRUE
-"20250913_0680","2025-09-13","Luther","Martin Luther",0,34,0,34,TRUE
-"20250913_1738","2025-09-13","Eureka","Westminster (Mo.)",6,29,6,29,TRUE
-"20250913_1e9i","2025-09-13","DePauw","Centre",35,14,35,14,TRUE
-"20250913_2coh","2025-09-13","Lawrence","Monmouth",7,78,7,78,TRUE
-"20250913_2k0r","2025-09-13","Madonna","Olivet",45,28,45,28,TRUE
-"20250913_2q8w","2025-09-13","Beloit","Grinnell",0,24,0,24,TRUE
-"20250913_2te5","2025-09-13","Worcester State","Plymouth State",46,47,46,47,TRUE
-"20250913_2yc7","2025-09-13","Mount Union","Grove City",49,14,49,14,TRUE
-"20250913_2yjr","2025-09-13","Hobart","Brockport",10,14,10,14,TRUE
-"20250913_36jd","2025-09-13","Alvernia","Eastern",14,24,14,24,TRUE
-"20250913_3nbz","2025-09-13","Greenville","Lakeland",29,28,29,28,TRUE
-"20250913_4hec","2025-09-13","Arkansas Baptist","Lyon",20,19,20,19,TRUE
-"20250913_4hzs","2025-09-13","Anderson","SUNY-Maritime",0,48,0,48,TRUE
-"20250913_55cm","2025-09-13","Puget Sound","Southwestern",43,51,43,51,TRUE
-"20250913_5d37","2025-09-13","Case Western Reserve","Wabash",28,38,28,38,TRUE
-"20250913_5ivd","2025-09-13","Albion","Bluffton",45,39,45,39,TRUE
-"20250913_65gl","2025-09-13","Washington and Lee","Wittenberg",21,24,21,24,TRUE
-"20250913_6b2l","2025-09-13","Catholic","Capital",20,36,20,36,TRUE
-"20250913_6fo1","2025-09-13","Hendrix","Huntingdon",30,28,30,28,TRUE
-"20250913_6i95","2025-09-13","UW-La Crosse","Carnegie Mellon",38,14,38,14,TRUE
-"20250913_6y5g","2025-09-13","Ithaca","Alfred",45,14,45,14,TRUE
-"20250913_77cq","2025-09-13","Williams","Hamilton",24,17,24,17,TRUE
-"20250913_7myh","2025-09-13","Simpson (Calif.)","Pacific Lutheran",16,42,16,42,TRUE
-"20250913_8770","2025-09-13","John Carroll","Johns Hopkins",13,27,13,27,TRUE
-"20250913_8l2c","2025-09-13","Western New England","Salve Regina",28,34,28,34,TRUE
-"20250913_8lde","2025-09-13","Wilmington","Baldwin Wallace",21,63,21,63,TRUE
-"20250913_8wif","2025-09-13","Christopher Newport","Gettysburg",49,14,49,14,TRUE
-"20250913_8wzq","2025-09-13","Hartwick","Buffalo State",29,27,29,27,TRUE
-"20250913_8x3b","2025-09-13","Westfield State","Bridgewater State",16,29,16,29,TRUE
-"20250913_8xbz","2025-09-13","Heidelberg","Ohio Northern",13,33,13,33,TRUE
-"20250913_9oo3","2025-09-13","MIT","New England College",55,0,55,0,TRUE
-"20250913_a8k7","2025-09-13","UW-Whitewater","St. Xavier",37,0,37,0,TRUE
-"20250913_b286","2025-09-13","Framingham State","Anna Maria",31,25,31,25,TRUE
-"20250913_bmwa","2025-09-13","Curry","Coast Guard",24,34,24,34,TRUE
-"20250913_c7zf","2025-09-13","Whitworth","Eastern Ore.",10,16,10,16,TRUE
-"20250913_cdoz","2025-09-13","St. Lawrence","St. John Fisher",23,28,23,28,TRUE
-"20250913_cnrb","2025-09-13","Guilford","Methodist",42,40,42,40,TRUE
-"20250913_crwv","2025-09-13","Massachusetts Maritime","Dean",28,0,28,0,TRUE
-"20250913_d7vl","2025-09-13","McMurry","Hardin-Simmons",19,24,19,24,TRUE
-"20250913_d8f5","2025-09-13","Fitchburg State","Mass-Dartmouth",24,25,24,25,TRUE
-"20250913_e4ar","2025-09-13","Lycoming","Montclair State",24,27,24,27,TRUE
-"20250913_e6vy","2025-09-13","King's","Delaware Valley",7,49,7,49,TRUE
-"20250913_easl","2025-09-13","Oberlin","Hiram",21,58,21,58,TRUE
-"20250913_en9e","2025-09-13","Moravian","Rowan",0,56,0,56,TRUE
-"20250913_epla","2025-09-13","Austin","Rhodes",17,31,17,31,TRUE
-"20250913_f947","2025-09-13","Waynesburg","Dickinson",19,52,19,52,TRUE
-"20250913_fyam","2025-09-13","Randolph-Macon","Central",0,10,0,10,TRUE
-"20250913_fzim","2025-09-13","Denison","Alma",27,53,27,53,TRUE
-"20250913_ggmc","2025-09-13","Roanoke","Greensboro",32,22,32,22,TRUE
-"20250913_gm2p","2025-09-13","Merchant Marine","Nichols",56,24,56,24,TRUE
-"20250913_h0td","2025-09-13","Albright","Misericordia",21,42,21,42,TRUE
-"20250913_h5p6","2025-09-13","Southern Virginia","Averett",46,14,46,14,TRUE
-"20250913_hte9","2025-09-13","Concordia-Chicago","Manchester",35,14,35,14,TRUE
-"20250913_ic1r","2025-09-13","Okla. Panhandle","East Texas Baptist",0,28,0,28,TRUE
-"20250913_jcmz","2025-09-13","Rose-Hulman","Trine",10,27,10,27,TRUE
-"20250913_jqge","2025-09-13","Muhlenberg","Endicott",28,20,28,20,TRUE
-"20250913_jxwo","2025-09-13","Allegheny","Juniata",38,40,38,40,TRUE
-"20250913_ki1k","2025-09-13","Widener","Stevenson",3,19,3,19,TRUE
-"20250913_llkl","2025-09-13","Butler","Hanover",16,7,16,7,TRUE
-"20250913_lyzg","2025-09-13","Loras","Benedictine",13,20,13,20,TRUE
-"20250913_m2dl","2025-09-13","Thiel","Adrian",0,76,0,76,TRUE
-"20250913_mc0u","2025-09-13","Westminster (Pa.)","Franklin and Marshall",27,7,27,7,TRUE
-"20250913_mrh7","2025-09-13","Concordia (Wis.)","Calvin",7,34,7,34,TRUE
-"20250913_myuk","2025-09-13","Pacific","Willamette",42,0,42,0,TRUE
-"20250913_mz2v","2025-09-13","Husson","Springfield",6,38,6,38,TRUE
-"20250913_npl1","2025-09-13","Washington and Jefferson","Hampden-Sydney",31,38,31,38,TRUE
-"20250913_o62p","2025-09-13","Coe","UW-River Falls",47,59,47,59,TRUE
-"20250913_oc57","2025-09-13","Lake Forest","Illinois College",25,28,25,28,TRUE
-"20250913_od64","2025-09-13","Middlebury","Wesleyan",17,31,17,31,TRUE
-"20250913_ouyb","2025-09-13","Norwich","Vermont State Castleton",8,30,8,30,TRUE
-"20250913_ox10","2025-09-13","Belhaven","Trinity (Texas)",0,49,0,49,TRUE
-"20250913_oxzn","2025-09-13","Amherst","Bates",23,26,23,26,TRUE
-"20250913_pqb6","2025-09-13","Tufts","Bowdoin",13,0,13,0,TRUE
-"20250913_q5xn","2025-09-13","Howard Payne","Texas Lutheran",28,18,28,18,TRUE
-"20250913_r1hn","2025-09-13","Chicago","Cornell",28,12,28,12,TRUE
-"20250913_rnc9","2025-09-13","Rockford","Elmhurst",30,34,30,34,TRUE
-"20250913_rryo","2025-09-13","Bridgewater","Susquehanna",17,56,17,56,TRUE
-"20250913_rt73","2025-09-13","RPI","Utica",14,41,14,41,TRUE
-"20250913_rw3b","2025-09-13","Otterbein","Marietta",31,47,31,47,TRUE
-"20250913_s5dd","2025-09-13","Berry","LaGrange",48,0,48,0,TRUE
-"20250913_shly","2025-09-13","UW-Oshkosh","North Central (Ill.)",14,45,14,45,TRUE
-"20250913_ss2d","2025-09-13","Shenandoah","Geneva",29,28,29,28,TRUE
-"20250913_tsw4","2025-09-13","WPI","University of New England",3,41,3,41,TRUE
-"20250913_u736","2025-09-13","Ripon","Knox",50,7,50,7,TRUE
-"20250913_u86b","2025-09-13","Rochester","Morrisville State",30,14,30,14,TRUE
-"20250913_uvc5","2025-09-13","Brevard","Sewanee",26,10,26,10,TRUE
-"20250913_uy29","2025-09-13","Maryville (Tenn.)","Ohio Wesleyan",48,24,48,24,TRUE
-"20250913_v6wh","2025-09-13","Kean","Ursinus",14,42,14,42,TRUE
-"20250913_vau6","2025-09-13","Alfred State","Hilbert",49,13,49,13,TRUE
-"20250913_vg5b","2025-09-13","Bethany","Kalamazoo",7,50,7,50,TRUE
-"20250913_vlco","2025-09-13","Mayville St.","Nebraska Wesleyan",20,13,20,13,TRUE
-"20250913_vwc7","2025-09-13","UW-Platteville","Dubuque",56,27,56,27,TRUE
-"20250913_vxjv","2025-09-13","UW-Eau Claire","Kenyon",35,6,35,6,TRUE
-"20250913_w2b6","2025-09-13","Union","Cortland",6,30,6,30,TRUE
-"20250913_w344","2025-09-13","Wartburg","UW-Stout",16,0,16,0,TRUE
-"20250913_w7x6","2025-09-13","Wisconsin Lutheran","Buena Vista",6,17,6,17,TRUE
-"20250913_wd8f","2025-09-13","Centenary (La.)","Millsaps",14,56,14,56,TRUE
-"20250913_whti","2025-09-13","Wilkes","TCNJ",3,17,3,17,TRUE
-"20250913_wjtg","2025-09-13","George Fox","Lewis and Clark",10,38,10,38,TRUE
-"20250913_wncr","2025-09-13","FDU-Florham","Lebanon Valley",13,37,13,37,TRUE
-"20250913_x5xg","2025-09-13","Simpson","Crown",45,7,45,7,TRUE
-"20250913_xd8j","2025-09-13","Trinity (Conn.)","Colby",6,13,6,13,TRUE
-"20250913_ylno","2025-09-13","Northwestern (Minn.)","Bethel",3,50,3,50,TRUE
-"20250913_yo3z","2025-09-13","Salisbury","McDaniel",62,7,62,7,TRUE
-"20250913_z6qc","2025-09-13","Minnesota-Morris","St. John's",0,49,0,49,TRUE
-"20250913_za5s","2025-09-13","Hope","Franklin",38,14,38,14,TRUE
-"20250913_ztwy","2025-09-13","Aurora","Mount St. Joseph",35,28,35,28,TRUE
-"20250913_zvpb","2025-09-13","St. Vincent","Wooster",14,28,14,28,TRUE
-"20250920_012b","2025-09-20","Anderson","Kalamazoo",0,27,0,27,TRUE
-"20250920_0aq7","2025-09-20","Erskine","Brevard",34,38,34,38,TRUE
-"20250920_0n80","2025-09-20","Franklin","Trine",27,35,27,35,TRUE
-"20250920_1q6f","2025-09-20","Bluffton","Olivet",37,28,37,28,TRUE
-"20250920_1qoq","2025-09-20","Morrisville State","Union",7,31,7,31,TRUE
-"20250920_2c5k","2025-09-20","Loras","Dubuque",27,34,27,34,TRUE
-"20250920_2fq2","2025-09-20","East Texas Baptist","Centenary (La.)",50,33,50,33,TRUE
-"20250920_36p6","2025-09-20","Eastern","Lebanon Valley",21,24,21,24,TRUE
-"20250920_3awh","2025-09-20","Cortland","Hartwick",59,9,59,9,TRUE
-"20250920_3rsf","2025-09-20","Wartburg","Simpson",27,13,27,13,TRUE
-"20250920_3t24","2025-09-20","Southern Virginia","Keystone",42,0,42,0,TRUE
-"20250920_4tmb","2025-09-20","Concordia-Moorhead","St. Olaf",16,17,16,17,TRUE
-"20250920_5aqo","2025-09-20","Kenyon","DePauw",14,35,14,35,TRUE
-"20250920_5bx0","2025-09-20","Nebraska Wesleyan","Coe",14,62,14,62,TRUE
-"20250920_5iyg","2025-09-20","Bowdoin","Middlebury",10,31,10,31,TRUE
-"20250920_5osf","2025-09-20","Hamilton","Amherst",13,23,13,23,TRUE
-"20250920_5rb1","2025-09-20","Westfield State","Dean",48,6,48,6,TRUE
-"20250920_5w0q","2025-09-20","Calvin","Heidelberg",40,37,40,37,TRUE
-"20250920_6638","2025-09-20","Muhlenberg","Wilkes",26,18,26,18,TRUE
-"20250920_66j0","2025-09-20","Bethel","Gustavus Adolphus",41,7,41,7,TRUE
-"20250920_6c77","2025-09-20","Juniata","McDaniel",7,24,7,24,TRUE
-"20250920_6ews","2025-09-20","Chapman","Linfield",13,28,13,28,TRUE
-"20250920_6gbq","2025-09-20","Randolph-Macon","Bridgewater",27,3,27,3,TRUE
-"20250920_6y2o","2025-09-20","Wilmington","Muskingum",49,56,49,56,TRUE
-"20250920_7a5r","2025-09-20","Worcester State","Western New England",13,48,13,48,TRUE
-"20250920_7khk","2025-09-20","Benedictine","Aurora",36,35,36,35,TRUE
-"20250920_7sdv","2025-09-20","Knox","Beloit",16,14,16,14,TRUE
-"20250920_7u0m","2025-09-20","Macalester","Carleton",7,51,7,51,TRUE
-"20250920_8d6t","2025-09-20","Monmouth","Lake Forest",49,6,49,6,TRUE
-"20250920_8qlx","2025-09-20","Anna Maria","Massachusetts Maritime",33,27,33,27,TRUE
-"20250920_90q0","2025-09-20","Plymouth State","Bridgewater State",42,21,42,21,TRUE
-"20250920_93sr","2025-09-20","Thiel","Allegheny",0,26,0,26,TRUE
-"20250920_a8p2","2025-09-20","Louisiana Christian","Hardin-Simmons",17,52,17,52,TRUE
-"20250920_aeyn","2025-09-20","Willamette","La Verne",29,14,29,14,TRUE
-"20250920_apgz","2025-09-20","Springfield","UW-Platteville",12,28,12,28,TRUE
-"20250920_ay8q","2025-09-20","UW-Stout","Northwestern (Minn.)",56,13,56,13,TRUE
-"20250920_b4en","2025-09-20","Texas Lutheran","Southwestern",38,35,38,35,TRUE
-"20250920_bzku","2025-09-20","Colby","Williams",0,38,0,38,TRUE
-"20250920_c9mt","2025-09-20","Carthage","North Central (Ill.)",0,62,0,62,TRUE
-"20250920_dclo","2025-09-20","Hanover","Alma",24,23,24,23,TRUE
-"20250920_dxkr","2025-09-20","Misericordia","Widener",21,7,21,7,TRUE
-"20250920_dyvl","2025-09-20","Johns Hopkins","Susquehanna",40,22,40,22,TRUE
-"20250920_e64e","2025-09-20","Wittenberg","Ohio Wesleyan",55,17,55,17,TRUE
-"20250920_ed92","2025-09-20","Gettysburg","Western Connecticut",21,55,21,55,TRUE
-"20250920_edjf","2025-09-20","Hiram","Waynesburg",27,35,27,35,TRUE
-"20250920_egk4","2025-09-20","Roosevelt","UW-Oshkosh",21,38,21,38,TRUE
-"20250920_ekjh","2025-09-20","Bates","Trinity (Conn.)",13,30,13,30,TRUE
-"20250920_ev5d","2025-09-20","Martin Luther","UW-Eau Claire",6,42,6,42,TRUE
-"20250920_evn8","2025-09-20","Dickinson","Lycoming",52,29,52,29,TRUE
-"20250920_f4jk","2025-09-20","Baldwin Wallace","Capital",44,7,44,7,TRUE
-"20250920_fauv","2025-09-20","Wayne St. (Mich.)","UW-La Crosse",22,31,22,31,TRUE
-"20250920_fo39","2025-09-20","Wayland Baptist","Howard Payne",21,18,21,18,TRUE
-"20250920_fq4w","2025-09-20","Brockport","RPI",24,30,24,30,TRUE
-"20250920_ft9d","2025-09-20","Greensboro","Davidson",0,48,0,48,TRUE
-"20250920_hf88","2025-09-20","Cal Lutheran","Puget Sound",55,28,55,28,TRUE
-"20250920_hm9s","2025-09-20","Stevenson","Alvernia",35,13,35,13,TRUE
-"20250920_hxdx","2025-09-20","Illinois College","Chicago",21,24,21,24,TRUE
-"20250920_i3jz","2025-09-20","Salve Regina","William Paterson",24,12,24,12,TRUE
-"20250920_iatw","2025-09-20","Utica","Hobart",17,20,17,20,TRUE
-"20250920_id40","2025-09-20","UW-Whitewater","Mary Hardin-Baylor",26,6,26,6,TRUE
-"20250920_iflt","2025-09-20","Maine Maritime","Norwich",0,63,0,63,TRUE
-"20250920_ig5p","2025-09-20","St. Vincent","Geneva",35,55,35,55,TRUE
-"20250920_ij66","2025-09-20","Mount St. Joseph","Hope",28,31,28,31,TRUE
-"20250920_ikcl","2025-09-20","Trinity (Texas)","Pacific Lutheran",45,8,45,8,TRUE
-"20250920_itrh","2025-09-20","Delaware Valley","Albright",35,28,35,28,TRUE
-"20250920_j29j","2025-09-20","Cornell","Lawrence",20,0,20,0,TRUE
-"20250920_k86q","2025-09-20","Wheaton (Ill.)","Augustana",50,7,50,7,TRUE
-"20250920_kom0","2025-09-20","St. John's","Hamline",59,0,59,0,TRUE
-"20250920_kqmp","2025-09-20","Guilford","Washington and Lee",7,35,7,35,TRUE
-"20250920_l58t","2025-09-20","Berry","Carnegie Mellon",9,17,9,17,TRUE
-"20250920_le3j","2025-09-20","Millsaps","Hendrix",41,19,41,19,TRUE
-"20250920_lsyc","2025-09-20","Mass-Dartmouth","Framingham State",10,14,10,14,TRUE
-"20250920_lxik","2025-09-20","University of New England","Vermont State Castleton",35,8,35,8,TRUE
-"20250920_ly5p","2025-09-20","Manchester","Adrian",0,57,0,57,TRUE
-"20250920_mg9e","2025-09-20","Concordia (Wis.)","Wisconsin Lutheran",27,20,27,20,TRUE
-"20250920_mi5e","2025-09-20","Centre","LaGrange",6,20,6,20,TRUE
-"20250920_ne5l","2025-09-20","Buffalo State","Alfred State",20,56,20,56,TRUE
-"20250920_ofdb","2025-09-20","WPI","Husson",15,13,15,13,TRUE
-"20250920_or3t","2025-09-20","New England College","Fitchburg State",0,48,0,48,TRUE
-"20250920_phpc","2025-09-20","Alfred","St. Lawrence",35,13,35,13,TRUE
-"20250920_puiy","2025-09-20","Catholic","Franklin and Marshall",7,42,7,42,TRUE
-"20250920_q3m6","2025-09-20","Grinnell","Ripon",20,30,20,30,TRUE
-"20250920_qqu2","2025-09-20","Claremont-Mudd-Scripps","George Fox",28,21,28,21,TRUE
-"20250920_rm23","2025-09-20","UW-River Falls","Belhaven",65,0,65,0,TRUE
-"20250920_s44c","2025-09-20","Ursinus","Moravian",35,7,35,7,TRUE
-"20250920_svu6","2025-09-20","McMurry","Huntingdon",46,52,46,52,TRUE
-"20250920_t39s","2025-09-20","Eureka","Rockford",40,20,40,20,TRUE
-"20250920_t60m","2025-09-20","Central","Luther",63,26,63,26,TRUE
-"20250920_ui2z","2025-09-20","Sewanee","N.C. Wesleyan",33,0,33,0,TRUE
-"20250920_upco","2025-09-20","Rose-Hulman","Albion",17,25,17,25,TRUE
-"20250920_vh7c","2025-09-20","FDU-Florham","King's",21,27,21,27,TRUE
-"20250920_w0hw","2025-09-20","Augsburg","St. Scholastica",30,23,30,23,TRUE
-"20250920_we0j","2025-09-20","Washington U.","Carroll",41,29,41,29,TRUE
-"20250920_wxmp","2025-09-20","Averett","Gallaudet",30,39,30,39,TRUE
-"20250920_wzcm","2025-09-20","Lewis and Clark","Pomona-Pitzer",21,3,21,3,TRUE
-"20250920_x6fh","2025-09-20","Wesleyan","Tufts",20,22,20,22,TRUE
-"20250920_xcy2","2025-09-20","SUNY-Maritime","Endicott",7,41,7,41,TRUE
-"20250920_xic9","2025-09-20","Westminster (Pa.)","Case Western Reserve",28,23,28,23,TRUE
-"20250920_xoo0","2025-09-20","Nichols","Coast Guard",60,92,60,92,TRUE
-"20250920_xx40","2025-09-20","North Park","Millikin",17,22,17,22,TRUE
-"20250920_ydnj","2025-09-20","St. Norbert","Concordia-Chicago",59,28,59,28,TRUE
-"20250920_yf1s","2025-09-20","Ithaca","Hilbert",65,3,65,3,TRUE
-"20250920_yf5k","2025-09-20","Wabash","Wooster",34,7,34,7,TRUE
-"20250920_yhau","2025-09-20","Shenandoah","Hampden-Sydney",7,42,7,42,TRUE
-"20250920_ylbh","2025-09-20","Oberlin","John Carroll",0,63,0,63,TRUE
-"20250920_yszz","2025-09-20","Redlands","Whitworth",34,17,34,17,TRUE
-"20250920_yw0g","2025-09-20","Minnesota-Morris","Crown",20,30,20,30,TRUE
-"20250920_yyz1","2025-09-20","St. John Fisher","Rochester",21,28,21,28,TRUE
-"20250920_zhnm","2025-09-20","Elmhurst","Illinois Wesleyan",6,42,6,42,TRUE
-"20250927_03mt","2025-09-27","Springfield","MIT",31,7,31,7,TRUE
-"20250927_08c9","2025-09-27","Wesleyan","Bates",23,7,23,7,TRUE
-"20250927_0bun","2025-09-27","Mary Hardin-Baylor","Mars Hill",7,21,7,21,TRUE
-"20250927_0itn","2025-09-27","Eastern","King's",39,37,39,37,TRUE
-"20250927_0kna","2025-09-27","New England College","Nichols",21,41,21,41,TRUE
-"20250927_19x4","2025-09-27","Cal Lutheran","Redlands",27,10,27,10,TRUE
-"20250927_1j5p","2025-09-27","Luther","Nebraska Wesleyan",7,44,7,44,TRUE
-"20250927_1l6g","2025-09-27","Coe","Wartburg",7,17,7,17,TRUE
-"20250927_3kfs","2025-09-27","Mass-Dartmouth","Anna Maria",43,47,43,47,TRUE
-"20250927_3u3j","2025-09-27","John Carroll","Kenyon",52,0,52,0,TRUE
-"20250927_4d0z","2025-09-27","Alma","Hope",29,26,29,26,TRUE
-"20250927_4g3r","2025-09-27","Buffalo State","Hilbert",15,8,15,8,TRUE
-"20250927_4kd8","2025-09-27","Lebanon Valley","Delaware Valley",21,18,21,18,TRUE
-"20250927_4w65","2025-09-27","Gustavus Adolphus","Concordia-Moorhead",13,14,13,14,TRUE
-"20250927_5j4f","2025-09-27","Cortland","Morrisville State",48,3,48,3,TRUE
-"20250927_6app","2025-09-27","Endicott","Husson",48,14,48,14,TRUE
-"20250927_6ez2","2025-09-27","Mount Union","Baldwin Wallace",42,23,42,23,TRUE
-"20250927_6qv6","2025-09-27","Hiram","St. Vincent",40,38,40,38,TRUE
-"20250927_6vhe","2025-09-27","Macalester","St. Scholastica",34,37,34,37,TRUE
-"20250927_6zcv","2025-09-27","Susquehanna","Christopher Newport",27,41,27,41,TRUE
-"20250927_71uh","2025-09-27","William Paterson","Moravian",38,14,38,14,TRUE
-"20250927_7aif","2025-09-27","Hartwick","Brockport",0,56,0,56,TRUE
-"20250927_9g2q","2025-09-27","Rhodes","Hendrix",28,47,28,47,TRUE
-"20250927_9kaf","2025-09-27","Westminster (Mo.)","Lyon",24,38,24,38,TRUE
-"20250927_9q5i","2025-09-27","Waynesburg","Thiel",45,14,45,14,TRUE
-"20250927_9sle","2025-09-27","Trinity (Conn.)","Williams",34,28,34,28,TRUE
-"20250927_a10w","2025-09-27","Augsburg","St. John's",0,63,0,63,TRUE
-"20250927_amrj","2025-09-27","Tufts","Amherst",14,30,14,30,TRUE
-"20250927_ar7z","2025-09-27","Salisbury","Catholic",55,6,55,6,TRUE
-"20250927_b1ua","2025-09-27","Alfred State","Utica",13,45,13,45,TRUE
-"20250927_bvwf","2025-09-27","Coast Guard","WPI",49,21,49,21,TRUE
-"20250927_clhh","2025-09-27","St. Lawrence","Union",12,44,12,44,TRUE
-"20250927_cnfi","2025-09-27","Western New England","University of New England",31,37,31,37,TRUE
-"20250927_dz2s","2025-09-27","Bridgewater","Averett",41,14,41,14,TRUE
-"20250927_e0ro","2025-09-27","Gallaudet","Roanoke",14,38,14,38,TRUE
-"20250927_egrs","2025-09-27","Millikin","Augustana",6,33,6,33,TRUE
-"20250927_eir7","2025-09-27","Marietta","Capital",24,21,24,21,TRUE
-"20250927_ezew","2025-09-27","Bridgewater State","Framingham State",40,46,40,46,TRUE
-"20250927_f2rp","2025-09-27","Trine","Albion",38,35,38,35,TRUE
-"20250927_faof","2025-09-27","Simpson","Buena Vista",41,0,41,0,TRUE
-"20250927_fbeo","2025-09-27","East Texas Baptist","Texas Lutheran",24,21,24,21,TRUE
-"20250927_fjhh","2025-09-27","Wilkes","Montclair State",24,21,24,21,TRUE
-"20250927_g10s","2025-09-27","Lakeland","Rockford",35,7,35,7,TRUE
-"20250927_gn4g","2025-09-27","Carroll","Wheaton (Ill.)",13,61,13,61,TRUE
-"20250927_hr5v","2025-09-27","Concordia-Chicago","Wisconsin Lutheran",6,28,6,28,TRUE
-"20250927_hrnr","2025-09-27","Denison","Wabash",0,36,0,36,TRUE
-"20250927_i73g","2025-09-27","Widener","Albright",9,35,9,35,TRUE
-"20250927_i8ac","2025-09-27","Pikeville","Maryville (Tenn.)",30,34,30,34,TRUE
-"20250927_jqwj","2025-09-27","DePauw","Wittenberg",28,0,28,0,TRUE
-"20250927_jx36","2025-09-27","Stevenson","FDU-Florham",55,20,55,20,TRUE
-"20250927_k6f9","2025-09-27","Illinois Wesleyan","Carthage",34,10,34,10,TRUE
-"20250927_kqa4","2025-09-27","Dubuque","Central",16,35,16,35,TRUE
-"20250927_ky12","2025-09-27","St. Olaf","Carleton",28,35,28,35,TRUE
-"20250927_l291","2025-09-27","Alfred","St. John Fisher",7,21,7,21,TRUE
-"20250927_l54d","2025-09-27","Worcester State","Westfield State",22,31,22,31,TRUE
-"20250927_lme8","2025-09-27","Rochester","RPI",3,31,3,31,TRUE
-"20250927_mren","2025-09-27","Kalamazoo","Calvin",16,24,16,24,TRUE
-"20250927_mzk1","2025-09-27","Hobart","Ithaca",7,13,7,13,TRUE
-"20250927_n5yi","2025-09-27","Claremont-Mudd-Scripps","Pomona-Pitzer",17,25,17,25,TRUE
-"20250927_ncsj","2025-09-27","SUNY-Maritime","Salve Regina",20,28,20,28,TRUE
-"20250927_ngba","2025-09-27","Massachusetts Maritime","Plymouth State",10,14,10,14,TRUE
-"20250927_nk0h","2025-09-27","La Verne","Chapman",6,56,6,56,TRUE
-"20250927_noe8","2025-09-27","Washington and Jefferson","Grove City",34,14,34,14,TRUE
-"20250927_nuea","2025-09-27","Benedictine","Concordia (Wis.)",20,28,20,28,TRUE
-"20250927_nz64","2025-09-27","Dean","Curry",12,52,12,52,TRUE
-"20250927_oplb","2025-09-27","Ohio Northern","Wilmington",41,35,41,35,TRUE
-"20250927_orwo","2025-09-27","Apprentice","Methodist",19,20,19,20,TRUE
-"20250927_p3f2","2025-09-27","Elmhurst","North Park",6,34,6,34,TRUE
-"20250927_pqjf","2025-09-27","Adrian","Olivet",59,27,59,27,TRUE
-"20250927_pu6m","2025-09-27","Hampden-Sydney","Guilford",69,14,69,14,TRUE
-"20250927_rg6z","2025-09-27","Bowdoin","Hamilton",13,27,13,27,TRUE
-"20250927_rv66","2025-09-27","Case Western Reserve","Bethany",55,0,55,0,TRUE
-"20250927_s6dy","2025-09-27","Merchant Marine","Norwich",49,0,49,0,TRUE
-"20250927_st6a","2025-09-27","Middlebury","Colby",27,17,27,17,TRUE
-"20250927_swcu","2025-09-27","Washington and Lee","Randolph-Macon",6,24,6,24,TRUE
-"20250927_ty65","2025-09-27","Aurora","Eureka",66,0,66,0,TRUE
-"20250927_ubam","2025-09-27","North Central (Ill.)","Washington U.",44,14,44,14,TRUE
-"20250927_vlh0","2025-09-27","Alvernia","Misericordia",10,41,10,41,TRUE
-"20250927_wpcf","2025-09-27","Geneva","Allegheny",28,16,28,16,TRUE
-"20250927_wr0w","2025-09-27","Western Connecticut","Kean",38,7,38,7,TRUE
-"20250927_wvvq","2025-09-27","Bethel","Hamline",62,12,62,12,TRUE
-"20250927_y144","2025-09-27","Muskingum","Otterbein",37,13,37,13,TRUE
-"20250927_y56g","2025-09-27","Rowan","Lycoming",34,23,34,23,TRUE
-"20250927_za9q","2025-09-27","Howard Payne","McMurry",24,31,24,31,TRUE
-"20250927_zne4","2025-09-27","Juniata","TCNJ",0,35,0,35,TRUE
-"20250927_zvzz","2025-09-27","Wooster","Oberlin",38,0,38,0,TRUE
-"20251003_ktys","2025-10-03","Massachusetts Maritime","Mass-Dartmouth",7,31,7,31,TRUE
-"20251003_tcdm","2025-10-03","Dickinson","Johns Hopkins",10,55,10,55,TRUE
-"20251004_0t4u","2025-10-04","Montclair State","Kean",38,28,38,28,TRUE
-"20251004_1ekt","2025-10-04","Manchester","Bluffton",23,39,23,39,TRUE
-"20251004_1fpd","2025-10-04","Williams","Bowdoin",35,17,35,17,TRUE
-"20251004_1gsu","2025-10-04","Tufts","Trinity (Conn.)",14,41,14,41,TRUE
-"20251004_1lej","2025-10-04","Pomona-Pitzer","La Verne",34,12,34,12,TRUE
-"20251004_1oxb","2025-10-04","RPI","Hobart",36,10,36,10,TRUE
-"20251004_1shb","2025-10-04","Northwestern (Minn.)","Crown",3,22,3,22,TRUE
-"20251004_26pc","2025-10-04","Whitworth","Pacific",28,14,28,14,TRUE
-"20251004_271q","2025-10-04","Hilbert","St. Lawrence",14,45,14,45,TRUE
-"20251004_2kko","2025-10-04","UW-River Falls","UW-Oshkosh",17,21,17,21,TRUE
-"20251004_2ngk","2025-10-04","Vermont State Castleton","William Paterson",7,32,7,32,TRUE
-"20251004_354d","2025-10-04","Lawrence","Illinois College",0,59,0,59,TRUE
-"20251004_3omj","2025-10-04","Wartburg","Luther",36,3,36,3,TRUE
-"20251004_3puz","2025-10-04","Hartwick","Alfred",24,45,24,45,TRUE
-"20251004_3xt3","2025-10-04","Washington and Jefferson","Hiram",70,13,70,13,TRUE
-"20251004_4bpj","2025-10-04","Puget Sound","Lewis and Clark",21,58,21,58,TRUE
-"20251004_4cgc","2025-10-04","Catholic","Wilkes",13,15,13,15,TRUE
-"20251004_53sq","2025-10-04","Westminster (Mo.)","Greenville",24,38,24,38,TRUE
-"20251004_57kf","2025-10-04","Morrisville State","Alfred State",21,41,21,41,TRUE
-"20251004_5sdb","2025-10-04","Monmouth","Grinnell",49,9,49,9,TRUE
-"20251004_5zl7","2025-10-04","Nichols","Maine Maritime",49,20,49,20,TRUE
-"20251004_6011","2025-10-04","Grove City","Geneva",22,9,22,9,TRUE
-"20251004_60j5","2025-10-04","Claremont-Mudd-Scripps","Cal Lutheran",17,22,17,22,TRUE
-"20251004_64vz","2025-10-04","Chicago","Knox",52,0,52,0,TRUE
-"20251004_6sus","2025-10-04","UW-La Crosse","UW-Whitewater",23,20,23,20,TRUE
-"20251004_7p7e","2025-10-04","Randolph-Macon","Roanoke",35,17,35,17,TRUE
-"20251004_83ae","2025-10-04","Carthage","Elmhurst",31,7,31,7,TRUE
-"20251004_83oi","2025-10-04","Wheaton (Ill.)","North Central (Ill.)",0,35,0,35,TRUE
-"20251004_8k6r","2025-10-04","Concordia (Wis.)","St. Norbert",24,17,24,17,TRUE
-"20251004_8kxj","2025-10-04","Western Connecticut","Juniata",63,15,62,15,FALSE
-"20251004_97gq","2025-10-04","Buena Vista","Coe",10,37,10,37,TRUE
-"20251004_9jc0","2025-10-04","University of New England","Endicott",14,53,14,53,TRUE
-"20251004_9kt1","2025-10-04","Union","Buffalo State",28,6,28,6,TRUE
-"20251004_9l6i","2025-10-04","St. John's","Bethel",10,17,10,17,TRUE
-"20251004_acvc","2025-10-04","UW-Stevens Point","UW-Platteville",0,52,0,52,TRUE
-"20251004_arrb","2025-10-04","Anna Maria","Westfield State",41,14,41,14,TRUE
-"20251004_aubs","2025-10-04","Bridgewater","Shenandoah",21,24,21,24,TRUE
-"20251004_awvc","2025-10-04","Greensboro","Southern Virginia",22,35,22,35,TRUE
-"20251004_az6u","2025-10-04","N.C. Wesleyan","LaGrange",24,41,24,41,TRUE
-"20251004_b3mj","2025-10-04","Plymouth State","Dean",34,0,34,0,TRUE
-"20251004_bnm6","2025-10-04","Rockford","Benedictine",9,42,9,42,TRUE
-"20251004_bq6e","2025-10-04","Hanover","Rose-Hulman",44,10,44,10,TRUE
-"20251004_c1e5","2025-10-04","Marietta","Ohio Northern",9,42,9,42,TRUE
-"20251004_cwsy","2025-10-04","UW-Stout","UW-Eau Claire",42,17,42,17,TRUE
-"20251004_e8f2","2025-10-04","Curry","New England College",62,7,62,7,TRUE
-"20251004_ec6d","2025-10-04","Brevard","Belhaven",20,23,20,23,TRUE
-"20251004_f375","2025-10-04","Moravian","Lycoming",0,17,0,17,TRUE
-"20251004_f7br","2025-10-04","TCNJ","Salisbury",10,55,10,55,TRUE
-"20251004_fdfy","2025-10-04","Rhodes","Berry",14,54,14,54,TRUE
-"20251004_ffx2","2025-10-04","Guilford","Gallaudet",55,0,55,0,TRUE
-"20251004_fidj","2025-10-04","Lake Forest","Ripon",38,0,38,0,TRUE
-"20251004_fker","2025-10-04","Amherst","Middlebury",27,17,27,17,TRUE
-"20251004_g2xb","2025-10-04","Centenary (La.)","Austin",15,41,15,41,TRUE
-"20251004_gavq","2025-10-04","Augustana","North Park",24,21,24,21,TRUE
-"20251004_gczt","2025-10-04","Colby","Bates",13,6,13,6,TRUE
-"20251004_ghod","2025-10-04","Eureka","Concordia-Chicago",20,49,20,49,TRUE
-"20251004_gwn0","2025-10-04","McDaniel","Carnegie Mellon",7,56,7,56,TRUE
-"20251004_h4xl","2025-10-04","Howard Payne","Hardin-Simmons",14,69,14,69,TRUE
-"20251004_h5zy","2025-10-04","Martin Luther","Minnesota-Morris",28,35,28,35,TRUE
-"20251004_hi4i","2025-10-04","MIT","Merchant Marine",3,6,3,6,TRUE
-"20251004_i1ye","2025-10-04","Mary Hardin-Baylor","East Texas Baptist",42,28,42,28,TRUE
-"20251004_itkv","2025-10-04","Wittenberg","Wooster",12,14,12,14,TRUE
-"20251004_iui1","2025-10-04","Linfield","George Fox",35,17,35,17,TRUE
-"20251004_iwy5","2025-10-04","Ithaca","Rochester",10,6,10,6,TRUE
-"20251004_jdl2","2025-10-04","Illinois Wesleyan","Washington U.",40,42,40,42,TRUE
-"20251004_k167","2025-10-04","Ursinus","Muhlenberg",36,39,36,39,TRUE
-"20251004_kvxr","2025-10-04","St. Scholastica","Concordia-Moorhead",21,49,21,49,TRUE
-"20251004_l1s1","2025-10-04","Otterbein","Mount Union",7,62,7,62,TRUE
-"20251004_lrtn","2025-10-04","Wabash","John Carroll",28,31,28,31,TRUE
-"20251004_m13d","2025-10-04","Millsaps","Centre",36,37,36,37,TRUE
-"20251004_m1e9","2025-10-04","Ohio Wesleyan","Denison",20,35,20,35,TRUE
-"20251004_m2sf","2025-10-04","Allegheny","Waynesburg",21,11,21,11,TRUE
-"20251004_mn95","2025-10-04","Bethany","Westminster (Pa.)",0,52,0,52,TRUE
-"20251004_n967","2025-10-04","Cornell","Beloit",26,19,26,19,TRUE
-"20251004_ng1t","2025-10-04","Capital","Heidelberg",27,30,27,30,TRUE
-"20251004_np44","2025-10-04","Coast Guard","SUNY-Maritime",28,26,28,26,TRUE
-"20251004_oeoq","2025-10-04","Brockport","St. John Fisher",24,31,24,31,TRUE
-"20251004_ouoc","2025-10-04","Willamette","Pacific Lutheran",28,31,28,31,TRUE
-"20251004_p4gx","2025-10-04","Christopher Newport","Rowan",49,41,49,41,TRUE
-"20251004_pbxo","2025-10-04","Southwestern","Trinity (Texas)",14,65,14,65,TRUE
-"20251004_pyut","2025-10-04","Aurora","Lakeland",49,28,49,28,TRUE
-"20251004_qids","2025-10-04","Washington and Lee","Hampden-Sydney",42,34,42,34,TRUE
-"20251004_quxy","2025-10-04","Bridgewater State","Worcester State",10,19,10,19,TRUE
-"20251004_s1ak","2025-10-04","Franklin and Marshall","Gettysburg",35,28,35,28,TRUE
-"20251004_shsy","2025-10-04","Franklin","Muskingum",34,33,34,33,TRUE
-"20251004_sn30","2025-10-04","Calvin","Alma",6,55,6,55,TRUE
-"20251004_t05s","2025-10-04","WPI","Norwich",14,7,14,7,TRUE
-"20251004_t6zc","2025-10-04","Framingham State","Fitchburg State",22,12,22,12,TRUE
-"20251004_tbhu","2025-10-04","Carleton","Gustavus Adolphus",45,28,45,28,TRUE
-"20251004_ti5l","2025-10-04","Case Western Reserve","St. Vincent",42,14,42,14,TRUE
-"20251004_tufo","2025-10-04","Hope","Trine",55,35,55,35,TRUE
-"20251004_udft","2025-10-04","Anderson","Mount St. Joseph",21,41,21,41,TRUE
-"20251004_uosq","2025-10-04","Methodist","Huntingdon",0,26,0,26,TRUE
-"20251004_urp0","2025-10-04","Oberlin","DePauw",0,75,0,75,TRUE
-"20251004_uzua","2025-10-04","Salve Regina","Springfield",14,28,14,28,TRUE
-"20251004_v6is","2025-10-04","St. Olaf","Augsburg",13,44,13,44,TRUE
-"20251004_w1sl","2025-10-04","Nebraska Wesleyan","Dubuque",10,21,10,21,TRUE
-"20251004_wb7u","2025-10-04","Hamline","Macalester",0,29,0,29,TRUE
-"20251004_x33y","2025-10-04","Redlands","Chapman",0,27,0,27,TRUE
-"20251004_xmdh","2025-10-04","Albion","Adrian",7,28,7,28,TRUE
-"20251004_yc5u","2025-10-04","Central","Loras",45,27,45,27,TRUE
-"20251004_yy2p","2025-10-04","Carroll","Millikin",28,17,28,17,TRUE
-"20251004_zedh","2025-10-04","Hamilton","Wesleyan",14,56,14,56,TRUE
-"20251004_zlas","2025-10-04","Husson","Western New England",10,35,10,35,TRUE
-"20251004_ztu6","2025-10-04","Utica","Cortland",13,28,13,28,TRUE
-"20251004_zxz4","2025-10-04","Olivet","Kalamazoo",47,44,47,44,TRUE
-"20251010_0ri6","2025-10-10","King's","Stevenson",35,28,35,28,TRUE
-"20251011_0d04","2025-10-11","Allegheny","Case Western Reserve",21,62,21,62,TRUE
-"20251011_0m1x","2025-10-11","Texas Lutheran","Centenary (La.)",55,27,55,27,TRUE
-"20251011_0pnd","2025-10-11","Bates","Tufts",35,28,35,28,TRUE
-"20251011_0yee","2025-10-11","Wesleyan","Colby",24,7,24,7,TRUE
-"20251011_1315","2025-10-11","UW-Platteville","UW-River Falls",21,31,21,31,TRUE
-"20251011_2llw","2025-10-11","Luther","Buena Vista",7,31,7,31,TRUE
-"20251011_2r84","2025-10-11","Chapman","Pomona-Pitzer",17,10,17,10,TRUE
-"20251011_2x0c","2025-10-11","Trinity (Texas)","Berry",6,29,6,29,TRUE
-"20251011_36q6","2025-10-11","Wilkes","Moravian",26,7,26,7,TRUE
-"20251011_3km0","2025-10-11","Redlands","Claremont-Mudd-Scripps",17,10,17,10,TRUE
-"20251011_401u","2025-10-11","Millikin","North Central (Ill.)",10,59,10,59,TRUE
-"20251011_483x","2025-10-11","Washington U.","Carthage",31,23,31,23,TRUE
-"20251011_49vb","2025-10-11","Gustavus Adolphus","St. Olaf",35,21,35,21,TRUE
-"20251011_4csw","2025-10-11","Christopher Newport","Vermont State Castleton",69,7,69,7,TRUE
-"20251011_50fr","2025-10-11","Greenville","Northwestern (Minn.)",23,20,23,20,TRUE
-"20251011_5nq8","2025-10-11","UW-Eau Claire","UW-La Crosse",21,41,21,41,TRUE
-"20251011_6a94","2025-10-11","Crown","Martin Luther",17,7,17,7,TRUE
-"20251011_6ak2","2025-10-11","Loras","Nebraska Wesleyan",31,28,31,28,TRUE
-"20251011_6yv3","2025-10-11","Benedictine","Eureka",56,0,56,0,TRUE
-"20251011_706s","2025-10-11","Ohio Wesleyan","Wabash",27,44,27,44,TRUE
-"20251011_7v05","2025-10-11","North Park","Carroll",10,24,10,24,TRUE
-"20251011_93p8","2025-10-11","Bluffton","Anderson",49,7,49,7,TRUE
-"20251011_95sr","2025-10-11","Morrisville State","Utica",21,27,21,27,TRUE
-"20251011_98xu","2025-10-11","Gettysburg","Dickinson",21,49,21,49,TRUE
-"20251011_aosd","2025-10-11","Shenandoah","Guilford",45,7,45,7,TRUE
-"20251011_atry","2025-10-11","Hanover","Mount St. Joseph",45,21,45,21,TRUE
-"20251011_avtg","2025-10-11","Pacific Lutheran","Puget Sound",41,27,41,27,TRUE
-"20251011_azf4","2025-10-11","Waynesburg","Grove City",14,24,14,24,TRUE
-"20251011_azmf","2025-10-11","Concordia-Moorhead","Hamline",58,12,58,12,TRUE
-"20251011_bn95","2025-10-11","St. Norbert","Wisconsin Lutheran",17,14,17,14,TRUE
-"20251011_bonl","2025-10-11","Rose-Hulman","Franklin",35,34,35,34,TRUE
-"20251011_bv9l","2025-10-11","William Paterson","TCNJ",0,42,0,42,TRUE
-"20251011_cwfu","2025-10-11","Kenyon","Oberlin",57,2,57,2,TRUE
-"20251011_d947","2025-10-11","Baldwin Wallace","Otterbein",56,14,56,14,TRUE
-"20251011_dcrz","2025-10-11","Millsaps","Rhodes",45,19,45,19,TRUE
-"20251011_dfem","2025-10-11","Trinity (Conn.)","Hamilton",49,0,49,0,TRUE
-"20251011_dfez","2025-10-11","Lewis and Clark","Willamette",28,20,28,20,TRUE
-"20251011_dpuo","2025-10-11","Kean","Salisbury",24,38,24,38,TRUE
-"20251011_e0h0","2025-10-11","Geneva","Thiel",51,38,51,38,TRUE
-"20251011_e2mj","2025-10-11","Pacific","Linfield",6,23,6,23,TRUE
-"20251011_e3xa","2025-10-11","Denison","Wooster",28,7,28,7,TRUE
-"20251011_efvw","2025-10-11","Wheaton (Ill.)","Illinois Wesleyan",65,21,65,21,TRUE
-"20251011_etjq","2025-10-11","Capital","Manchester",52,27,52,27,TRUE
-"20251011_eumc","2025-10-11","Roanoke","Bridgewater",24,14,24,14,TRUE
-"20251011_ew1x","2025-10-11","McDaniel","Ursinus",0,52,0,52,TRUE
-"20251011_fs81","2025-10-11","Juniata","Catholic",17,20,17,20,TRUE
-"20251011_gdtj","2025-10-11","Cal Lutheran","La Verne",23,19,23,19,TRUE
-"20251011_h50c","2025-10-11","Centre","Maryville (Tenn.)",13,33,13,33,TRUE
-"20251011_h6v3","2025-10-11","Southern Virginia","Brevard",32,35,32,35,TRUE
-"20251011_ho10","2025-10-11","Mary Hardin-Baylor","Hardin-Simmons",7,34,7,34,TRUE
-"20251011_iog6","2025-10-11","East Texas Baptist","Howard Payne",18,36,18,36,TRUE
-"20251011_ip91","2025-10-11","St. Vincent","Bethany",57,35,57,35,TRUE
-"20251011_j421","2025-10-11","John Carroll","Wittenberg",44,7,44,7,TRUE
-"20251011_j7yv","2025-10-11","Illinois College","Monmouth",15,48,15,48,TRUE
-"20251011_jg99","2025-10-11","Austin","Hendrix",21,60,21,60,TRUE
-"20251011_js9f","2025-10-11","Ithaca","St. Lawrence",24,7,24,7,TRUE
-"20251011_kfwm","2025-10-11","Minnesota-Morris","Westminster (Mo.)",30,27,30,27,TRUE
-"20251011_kqku","2025-10-11","Muhlenberg","Franklin and Marshall",27,28,27,28,TRUE
-"20251011_lfb3","2025-10-11","Western Connecticut","New Haven",0,69,0,69,TRUE
-"20251011_lra0","2025-10-11","St. John Fisher","Hartwick",35,21,35,21,TRUE
-"20251011_ls6y","2025-10-11","Lakeland","Concordia (Wis.)",34,41,34,41,TRUE
-"20251011_m2jr","2025-10-11","UW-Oshkosh","UW-Stout",16,27,16,27,TRUE
-"20251011_m7ii","2025-10-11","Huntingdon","Greensboro",17,10,17,10,TRUE
-"20251011_mcx6","2025-10-11","Heidelberg","Marietta",30,27,30,27,TRUE
-"20251011_me37","2025-10-11","Maine Maritime","Curry",0,60,0,60,TRUE
-"20251011_moak","2025-10-11","Belhaven","N.C. Wesleyan",41,38,41,38,TRUE
-"20251011_mqjy","2025-10-11","Albright","Alvernia",38,14,38,14,TRUE
-"20251011_mxk9","2025-10-11","Westminster (Pa.)","Washington and Jefferson",7,24,7,24,TRUE
-"20251011_n348","2025-10-11","FDU-Florham","Widener",17,20,17,20,TRUE
-"20251011_n6nc","2025-10-11","Lycoming","Susquehanna",7,69,7,69,TRUE
-"20251011_navh","2025-10-11","Carleton","St. Scholastica",41,14,41,14,TRUE
-"20251011_ned8","2025-10-11","Misericordia","Lebanon Valley",23,21,23,21,TRUE
-"20251011_nhzr","2025-10-11","Rowan","Montclair State",38,26,38,26,TRUE
-"20251011_nn8o","2025-10-11","Rockford","Aurora",0,48,0,48,TRUE
-"20251011_ocff","2025-10-11","Buffalo State","RPI",13,57,13,57,TRUE
-"20251011_oo7c","2025-10-11","SUNY-Maritime","Merchant Marine",34,14,34,14,TRUE
-"20251011_oy5j","2025-10-11","Hobart","Union",16,33,16,33,TRUE
-"20251011_p8pa","2025-10-11","Lawrence","Chicago",0,66,0,66,TRUE
-"20251011_p9g8","2025-10-11","Lyon","McMurry",7,65,7,65,TRUE
-"20251011_pa8l","2025-10-11","Ohio Northern","Muskingum",54,16,54,16,TRUE
-"20251011_q2p4","2025-10-11","Gallaudet","Washington and Lee",0,45,0,45,TRUE
-"20251011_q8vo","2025-10-11","Averett","Randolph-Macon",20,77,20,77,TRUE
-"20251011_qhn8","2025-10-11","Grinnell","Knox",17,20,17,20,TRUE
-"20251011_qiy9","2025-10-11","Macalester","St. John's",0,70,0,70,TRUE
-"20251011_qp9j","2025-10-11","Beloit","Lake Forest",0,59,0,59,TRUE
-"20251011_qs6v","2025-10-11","Amherst","Bowdoin",34,7,34,7,TRUE
-"20251011_rhc9","2025-10-11","Mount Union","Wilmington",59,0,59,0,TRUE
-"20251011_rvr0","2025-10-11","Bethel","Augsburg",56,7,56,7,TRUE
-"20251011_rvzg","2025-10-11","Dubuque","Wartburg",7,33,7,33,TRUE
-"20251011_sg6j","2025-10-11","George Fox","Whitworth",16,40,16,40,TRUE
-"20251011_t8bp","2025-10-11","Carnegie Mellon","Johns Hopkins",27,28,27,28,TRUE
-"20251011_tjet","2025-10-11","Hilbert","Rochester",0,38,0,38,TRUE
-"20251011_tmcs","2025-10-11","LaGrange","Methodist",26,7,26,7,TRUE
-"20251011_v55d","2025-10-11","Middlebury","Williams",17,24,17,24,TRUE
-"20251011_wc5q","2025-10-11","Coe","Simpson",34,7,34,7,TRUE
-"20251011_xh02","2025-10-11","Fitchburg State","Worcester State",21,6,21,6,TRUE
-"20251011_xu6u","2025-10-11","Sewanee","Southwestern",31,39,31,39,TRUE
-"20251011_ywlf","2025-10-11","UW-Whitewater","UW-Stevens Point",45,14,45,14,TRUE
-"20251011_zemb","2025-10-11","Delaware Valley","Eastern",20,37,20,37,TRUE
-"20251011_zlh0","2025-10-11","Ripon","Cornell",22,14,22,14,TRUE
-"20251016_hzlo","2025-10-16","Trine","Olivet",59,7,59,7,TRUE
-"20251017_27mj","2025-10-17","UW-Stout","UW-Whitewater",2,34,2,34,TRUE
-"20251017_9191","2025-10-17","Springfield","WPI",24,10,24,10,TRUE
-"20251017_v1xc","2025-10-17","University of New England","Maine Maritime",77,14,77,14,TRUE
-"20251018_085q","2025-10-18","Wooster","Ohio Wesleyan",24,20,24,20,TRUE
-"20251018_17vy","2025-10-18","Anna Maria","Plymouth State",35,28,35,28,TRUE
-"20251018_1cf0","2025-10-18","UW-Eau Claire","UW-Oshkosh",21,28,21,28,TRUE
-"20251018_1hou","2025-10-18","Grove City","Allegheny",42,6,42,6,TRUE
-"20251018_1xk5","2025-10-18","Wisconsin Lutheran","Lakeland",34,31,34,31,TRUE
-"20251018_23qb","2025-10-18","Hamline","Carleton",14,63,14,63,TRUE
-"20251018_2cx8","2025-10-18","Wartburg","Loras",40,20,40,20,TRUE
-"20251018_2lsb","2025-10-18","Lewis and Clark","George Fox",28,42,28,42,TRUE
-"20251018_366o","2025-10-18","Simpson","Luther",36,3,36,3,TRUE
-"20251018_44dy","2025-10-18","Williams","Bates",37,30,37,30,TRUE
-"20251018_4y5d","2025-10-18","Gallaudet","Bridgewater",13,73,13,73,TRUE
-"20251018_5gc2","2025-10-18","Geneva","Waynesburg",62,20,62,20,TRUE
-"20251018_5m54","2025-10-18","Carthage","Wheaton (Ill.)",21,47,21,47,TRUE
-"20251018_6ohw","2025-10-18","Delaware Valley","FDU-Florham",41,14,41,14,TRUE
-"20251018_6y68","2025-10-18","Fitchburg State","Massachusetts Maritime",0,10,0,10,TRUE
-"20251018_71xy","2025-10-18","North Central (Ill.)","North Park",75,0,75,0,TRUE
-"20251018_7f29","2025-10-18","Wabash","Kenyon",46,12,46,12,TRUE
-"20251018_7zbg","2025-10-18","Texas Wesleyan","Mary Hardin-Baylor",19,28,19,28,TRUE
-"20251018_822s","2025-10-18","Concordia-Chicago","Rockford",37,26,37,26,TRUE
-"20251018_8333","2025-10-18","Muskingum","Marietta",35,31,35,31,TRUE
-"20251018_8a03","2025-10-18","Nebraska Wesleyan","Central",13,34,13,34,TRUE
-"20251018_8qq8","2025-10-18","Susquehanna","Juniata",56,7,56,7,TRUE
-"20251018_90wy","2025-10-18","Concordia (Wis.)","Aurora",54,45,54,45,TRUE
-"20251018_93do","2025-10-18","Manchester","Franklin",21,48,21,48,TRUE
-"20251018_9luj","2025-10-18","Carroll","Augustana",24,31,24,31,TRUE
-"20251018_9m09","2025-10-18","Alma","Albion",48,27,48,27,TRUE
-"20251018_9yv2","2025-10-18","Hardin-Simmons","East Texas Baptist",34,16,34,16,TRUE
-"20251018_a1wo","2025-10-18","New England College","Husson",0,48,0,48,TRUE
-"20251018_acf5","2025-10-18","La Verne","Claremont-Mudd-Scripps",19,22,19,22,TRUE
-"20251018_aodv","2025-10-18","Capital","Ohio Northern",0,56,0,56,TRUE
-"20251018_atwa","2025-10-18","St. Olaf","Bethel",10,64,10,64,TRUE
-"20251018_b1o8","2025-10-18","Westfield State","Framingham State",24,35,24,35,TRUE
-"20251018_b8ne","2025-10-18","Albright","Eastern",10,17,10,17,TRUE
-"20251018_bkfm","2025-10-18","Grinnell","Lake Forest",0,70,0,70,TRUE
-"20251018_c03m","2025-10-18","Thiel","Westminster (Pa.)",6,48,6,48,TRUE
-"20251018_c1xh","2025-10-18","McMurry","Austin",31,13,31,13,TRUE
-"20251018_c2vg","2025-10-18","Salisbury","Montclair State",56,21,56,21,TRUE
-"20251018_c8dp","2025-10-18","St. Scholastica","Gustavus Adolphus",6,45,6,45,TRUE
-"20251018_ca53","2025-10-18","Keystone","Apprentice",21,45,21,45,TRUE
-"20251018_cgxl","2025-10-18","Dean","Bridgewater State",25,47,25,47,TRUE
-"20251018_cldl","2025-10-18","Hendrix","Texas Lutheran",48,50,48,50,TRUE
-"20251018_cox1","2025-10-18","Adrian","Calvin",48,17,48,17,TRUE
-"20251018_daxb","2025-10-18","Whitworth","Linfield",30,20,30,20,TRUE
-"20251018_dp0f","2025-10-18","Beloit","Lawrence",34,0,34,0,TRUE
-"20251018_euje","2025-10-18","Ripon","Chicago",12,37,12,37,TRUE
-"20251018_fjs8","2025-10-18","Cornell","Monmouth",3,45,3,45,TRUE
-"20251018_fpeh","2025-10-18","Bowdoin","Wesleyan",25,17,25,17,TRUE
-"20251018_fw4y","2025-10-18","Methodist","Southern Virginia",13,30,13,30,TRUE
-"20251018_g1cw","2025-10-18","Nichols","Curry",27,71,27,71,TRUE
-"20251018_g4pd","2025-10-18","Moravian","Catholic",20,26,20,26,TRUE
-"20251018_gc3r","2025-10-18","William Paterson","Rowan",16,45,16,45,TRUE
-"20251018_hxst","2025-10-18","Augsburg","Macalester",32,21,32,21,TRUE
-"20251018_i2h5","2025-10-18","MIT","Coast Guard",14,24,14,24,TRUE
-"20251018_iacj","2025-10-18","Alfred State","Brockport",14,48,14,48,TRUE
-"20251018_ids7","2025-10-18","Pacific","Pacific Lutheran",29,47,29,47,TRUE
-"20251018_j41h","2025-10-18","Kalamazoo","Hope",21,56,21,56,TRUE
-"20251018_j8y5","2025-10-18","St. John's","Concordia-Moorhead",41,6,41,6,TRUE
-"20251018_k5hc","2025-10-18","Elmhurst","Washington U.",0,17,0,17,TRUE
-"20251018_lqes","2025-10-18","Kean","Christopher Newport",0,49,0,49,TRUE
-"20251018_lsn7","2025-10-18","Knox","Illinois College",14,64,14,64,TRUE
-"20251018_lsni","2025-10-18","Lebanon Valley","Widener",34,14,34,14,TRUE
-"20251018_mcjj","2025-10-18","Misericordia","Stevenson",29,28,29,28,TRUE
-"20251018_mhk5","2025-10-18","Muhlenberg","McDaniel",56,7,56,7,TRUE
-"20251018_muny","2025-10-18","UW-La Crosse","UW-Platteville",21,38,21,38,TRUE
-"20251018_ncr1","2025-10-18","Anderson","Hanover",0,58,0,58,TRUE
-"20251018_nmgq","2025-10-18","Eureka","St. Norbert",0,44,0,44,TRUE
-"20251018_npru","2025-10-18","Southwestern","Centre",16,19,16,19,TRUE
-"20251018_nvy4","2025-10-18","Maryville (Tenn.)","Millsaps",21,31,21,31,TRUE
-"20251018_nwu9","2025-10-18","Greensboro","Belhaven",26,41,26,41,TRUE
-"20251018_ogq0","2025-10-18","Westminster (Mo.)","Crown",6,19,6,19,TRUE
-"20251018_p1gd","2025-10-18","N.C. Wesleyan","Huntingdon",21,20,21,20,TRUE
-"20251018_p22v","2025-10-18","TCNJ","Vermont State Castleton",48,7,48,7,TRUE
-"20251018_p4ay","2025-10-18","Alfred","Cortland",12,65,12,65,TRUE
-"20251018_p5mo","2025-10-18","Mount Union","Heidelberg",38,6,38,6,TRUE
-"20251018_pb88","2025-10-18","Randolph-Macon","Guilford",47,0,47,0,TRUE
-"20251018_peh8","2025-10-18","Hiram","Bethany",42,21,42,21,TRUE
-"20251018_q4jr","2025-10-18","Franklin and Marshall","Dickinson",23,20,23,20,TRUE
-"20251018_q584","2025-10-18","Pomona-Pitzer","Redlands",14,16,14,16,TRUE
-"20251018_qehs","2025-10-18","Norwich","SUNY-Maritime",0,42,0,42,TRUE
-"20251018_qo69","2025-10-18","Tufts","Hamilton",38,28,38,28,TRUE
-"20251018_qp1z","2025-10-18","Illinois Wesleyan","Millikin",49,27,49,27,TRUE
-"20251018_qtoo","2025-10-18","Alvernia","King's",0,52,0,52,TRUE
-"20251018_rd3r","2025-10-18","Ursinus","Johns Hopkins",21,52,21,52,TRUE
-"20251018_rs6p","2025-10-18","Worcester State","Mass-Dartmouth",7,32,7,32,TRUE
-"20251018_rzyp","2025-10-18","Middlebury","Trinity (Conn.)",26,28,26,28,TRUE
-"20251018_s3o8","2025-10-18","Berry","Sewanee",44,7,44,7,TRUE
-"20251018_s6n3","2025-10-18","Brevard","LaGrange",10,17,10,17,TRUE
-"20251018_t5ko","2025-10-18","Northwestern (Minn.)","Minnesota-Morris",21,3,21,3,TRUE
-"20251018_teml","2025-10-18","Chapman","Cal Lutheran",35,25,35,25,TRUE
-"20251018_tkfi","2025-10-18","Hampden-Sydney","Averett",67,7,67,7,TRUE
-"20251018_tl72","2025-10-18","Willamette","Puget Sound",28,45,28,45,TRUE
-"20251018_trap","2025-10-18","Lycoming","Western Connecticut",42,24,42,24,TRUE
-"20251018_uba5","2025-10-18","Washington and Jefferson","St. Vincent",56,10,56,10,TRUE
-"20251018_uxv5","2025-10-18","Gettysburg","Carnegie Mellon",20,44,20,44,TRUE
-"20251018_uykj","2025-10-18","Greenville","Martin Luther",39,41,39,41,TRUE
-"20251018_v1b9","2025-10-18","UW-River Falls","UW-Stevens Point",52,7,52,7,TRUE
-"20251018_w6gx","2025-10-18","Centenary (La.)","Lyon",23,20,23,20,TRUE
-"20251018_w9wb","2025-10-18","Rhodes","Trinity (Texas)",0,63,0,63,TRUE
-"20251018_wki3","2025-10-18","Shenandoah","Roanoke",33,20,33,20,TRUE
-"20251018_wysz","2025-10-18","Colby","Amherst",13,9,13,9,TRUE
-"20251018_x2s5","2025-10-18","John Carroll","DePauw",31,27,31,27,TRUE
-"20251018_x3ve","2025-10-18","Denison","Wittenberg",43,40,43,40,TRUE
-"20251018_xb3t","2025-10-18","Western New England","Endicott",24,45,24,45,TRUE
-"20251018_xwlp","2025-10-18","Merchant Marine","Salve Regina",38,34,38,34,TRUE
-"20251018_y29z","2025-10-18","Buena Vista","Dubuque",20,47,20,47,TRUE
-"20251018_z2v9","2025-10-18","Mount St. Joseph","Bluffton",35,7,35,7,TRUE
-"20251018_zedq","2025-10-18","Rose-Hulman","Baldwin Wallace",20,52,20,52,TRUE
-"20251018_zqor","2025-10-18","Wilmington","Otterbein",54,41,54,41,TRUE
-"20251025_024w","2025-10-25","Averett","Shenandoah",3,48,3,48,TRUE
-"20251025_0m5o","2025-10-25","Western New England","Curry",31,52,31,52,TRUE
-"20251025_1ojm","2025-10-25","Framingham State","Massachusetts Maritime",12,14,12,14,TRUE
-"20251025_23jm","2025-10-25","Williams","Tufts",20,41,20,41,TRUE
-"20251025_2zva","2025-10-25","Elmhurst","Carroll",7,47,7,47,TRUE
-"20251025_3c40","2025-10-25","Carnegie Mellon","Muhlenberg",23,27,23,27,TRUE
-"20251025_3f3m","2025-10-25","Howard Payne","Mary Hardin-Baylor",17,41,17,41,TRUE
-"20251025_455z","2025-10-25","Allegheny","Hiram",28,13,28,13,TRUE
-"20251025_4dhm","2025-10-25","Luther","Coe",21,42,21,42,TRUE
-"20251025_4f70","2025-10-25","FDU-Florham","Albright",18,32,18,32,TRUE
-"20251025_4mxm","2025-10-25","Loras","Buena Vista",28,14,28,14,TRUE
-"20251025_4ug9","2025-10-25","Waynesburg","Washington and Jefferson",0,56,0,56,TRUE
-"20251025_52x4","2025-10-25","UW-Stevens Point","UW-Stout",22,42,22,42,TRUE
-"20251025_543j","2025-10-25","Macalester","Bethel",0,53,0,53,TRUE
-"20251025_5bk6","2025-10-25","Bridgewater","Washington and Lee",17,20,17,20,TRUE
-"20251025_5tyj","2025-10-25","Bates","Middlebury",16,34,16,34,TRUE
-"20251025_5v7u","2025-10-25","Catholic","Susquehanna",13,69,13,69,TRUE
-"20251025_5x43","2025-10-25","Bethany","Geneva",28,75,28,75,TRUE
-"20251025_6c4m","2025-10-25","Salve Regina","MIT",20,28,20,28,TRUE
-"20251025_6lzv","2025-10-25","Nelson","Hardin-Simmons",14,68,14,68,TRUE
-"20251025_71yd","2025-10-25","King's","Lebanon Valley",21,20,21,20,TRUE
-"20251025_7l5n","2025-10-25","Franklin","Mount St. Joseph",21,52,21,52,TRUE
-"20251025_7qws","2025-10-25","Dean","Worcester State",27,52,27,52,TRUE
-"20251025_7xan","2025-10-25","Albion","Kalamazoo",26,30,26,30,TRUE
-"20251025_89um","2025-10-25","Lake Forest","Cornell",49,24,49,24,TRUE
-"20251025_8ezz","2025-10-25","Concordia-Moorhead","Augsburg",26,7,26,7,TRUE
-"20251025_9f6y","2025-10-25","Alma","Olivet",53,21,53,21,TRUE
-"20251025_9hv3","2025-10-25","Stevenson","Delaware Valley",38,41,38,41,TRUE
-"20251025_9prp","2025-10-25","Fitchburg State","Anna Maria",22,30,22,30,TRUE
-"20251025_9v5e","2025-10-25","Manchester","Hanover",7,76,7,76,TRUE
-"20251025_ag43","2025-10-25","Christopher Newport","William Paterson",52,7,52,7,TRUE
-"20251025_blxx","2025-10-25","Husson","University of New England",28,38,28,38,TRUE
-"20251025_bmll","2025-10-25","Hamilton","Colby",10,17,10,17,TRUE
-"20251025_bq9e","2025-10-25","Wisconsin Lutheran","Eureka",42,12,42,12,TRUE
-"20251025_cd1m","2025-10-25","McMurry","Centenary (La.)",52,6,52,6,TRUE
-"20251025_cei1","2025-10-25","Salisbury","Rowan",31,28,31,28,TRUE
-"20251025_ciwk","2025-10-25","Hope","Adrian",19,17,19,17,TRUE
-"20251025_d607","2025-10-25","Millikin","Carthage",7,24,7,24,TRUE
-"20251025_depj","2025-10-25","Amherst","Wesleyan",21,31,21,31,TRUE
-"20251025_dgqs","2025-10-25","Concordia (Wis.)","Concordia-Chicago",47,20,47,20,TRUE
-"20251025_digk","2025-10-25","Trine","Calvin",31,34,31,34,TRUE
-"20251025_dmry","2025-10-25","Huntingdon","LaGrange",14,30,14,30,TRUE
-"20251025_dope","2025-10-25","Augustana","North Central (Ill.)",14,76,14,76,TRUE
-"20251025_dsey","2025-10-25","Gustavus Adolphus","Hamline",63,9,63,9,TRUE
-"20251025_e4ax","2025-10-25","Eastern","Misericordia",28,21,28,21,TRUE
-"20251025_e5ht","2025-10-25","Washington U.","Wheaton (Ill.)",24,28,24,28,TRUE
-"20251025_eeno","2025-10-25","Trinity (Conn.)","Bowdoin",45,3,45,3,TRUE
-"20251025_fsf9","2025-10-25","Maine Maritime","New England College",10,14,10,14,TRUE
-"20251025_fy7l","2025-10-25","Brockport","Morrisville State",61,3,61,3,TRUE
-"20251025_gdc7","2025-10-25","Linfield","Pacific Lutheran",31,15,31,15,TRUE
-"20251025_gmjt","2025-10-25","Centre","Trinity (Texas)",14,19,14,19,TRUE
-"20251025_h25m","2025-10-25","Case Western Reserve","Thiel",55,7,55,7,TRUE
-"20251025_h5ma","2025-10-25","Mass-Dartmouth","Bridgewater State",15,35,15,35,TRUE
-"20251025_hbmw","2025-10-25","Carleton","St. John's",10,49,10,49,TRUE
-"20251025_hcz5","2025-10-25","Redlands","Cal Lutheran",30,24,30,24,TRUE
-"20251025_hgxy","2025-10-25","Crown","Northwestern (Minn.)",16,24,16,24,TRUE
-"20251025_htre","2025-10-25","Franklin and Marshall","Ursinus",52,20,52,20,TRUE
-"20251025_im7k","2025-10-25","Norwich","Coast Guard",28,59,28,59,TRUE
-"20251025_iu6d","2025-10-25","Randolph-Macon","Gallaudet",47,7,47,7,TRUE
-"20251025_ixzt","2025-10-25","Merchant Marine","Springfield",7,35,7,35,TRUE
-"20251025_jglz","2025-10-25","Millsaps","Berry",20,43,20,43,TRUE
-"20251025_jupl","2025-10-25","Marietta","Baldwin Wallace",0,38,0,38,TRUE
-"20251025_jybq","2025-10-25","Montclair State","Vermont State Castleton",48,20,48,20,TRUE
-"20251025_k7jb","2025-10-25","Roanoke","Hampden-Sydney",10,35,10,35,TRUE
-"20251025_kb9b","2025-10-25","Union","Ithaca",19,14,19,14,TRUE
-"20251025_kvj1","2025-10-25","Plymouth State","Westfield State",42,35,42,35,TRUE
-"20251025_l8zg","2025-10-25","UW-Oshkosh","UW-La Crosse",13,44,13,44,TRUE
-"20251025_ljnt","2025-10-25","Cortland","St. John Fisher",31,7,31,7,TRUE
-"20251025_lufv","2025-10-25","North Park","Illinois Wesleyan",21,49,21,49,TRUE
-"20251025_mc26","2025-10-25","Bluffton","Rose-Hulman",30,27,30,27,TRUE
-"20251025_mepx","2025-10-25","Dickinson","McDaniel",23,20,23,20,TRUE
-"20251025_mmln","2025-10-25","Minnesota-Morris","Greenville",20,27,20,27,TRUE
-"20251025_n5hm","2025-10-25","Claremont-Mudd-Scripps","Chapman",31,37,31,37,TRUE
-"20251025_nj99","2025-10-25","Austin","Texas Lutheran",7,55,7,55,TRUE
-"20251025_oc10","2025-10-25","Southern Virginia","N.C. Wesleyan",19,10,19,10,TRUE
-"20251025_ojtk","2025-10-25","Illinois College","Ripon",31,0,31,0,TRUE
-"20251025_ow1f","2025-10-25","Maryville (Tenn.)","Southwestern",44,13,44,13,TRUE
-"20251025_oya2","2025-10-25","Otterbein","Capital",20,19,20,19,TRUE
-"20251025_pa27","2025-10-25","DePauw","Denison",35,28,35,28,TRUE
-"20251025_pg8w","2025-10-25","Wittenberg","Oberlin",52,0,52,0,TRUE
-"20251025_pnh1","2025-10-25","Hartwick","Alfred State",28,54,28,54,TRUE
-"20251025_pp9h","2025-10-25","SUNY-Maritime","WPI",28,7,28,7,TRUE
-"20251025_q9bp","2025-10-25","Sewanee","Rhodes",28,6,28,6,TRUE
-"20251025_rkm9","2025-10-25","Wilmington","Anderson",34,23,34,23,TRUE
-"20251025_rto1","2025-10-25","Monmouth","Beloit",72,0,72,0,TRUE
-"20251025_slz4","2025-10-25","Endicott","Nichols",56,3,56,3,TRUE
-"20251025_spoh","2025-10-25","Wooster","John Carroll",7,66,7,66,TRUE
-"20251025_sxum","2025-10-25","Westminster (Pa.)","Grove City",7,14,7,14,TRUE
-"20251025_t9ss","2025-10-25","Rockford","St. Norbert",10,61,10,61,TRUE
-"20251025_tehf","2025-10-25","Martin Luther","Westminster (Mo.)",38,28,38,28,TRUE
-"20251025_tfdo","2025-10-25","St. Lawrence","Hobart",17,49,17,49,TRUE
-"20251025_ti9j","2025-10-25","Central","Wartburg",13,28,13,28,TRUE
-"20251025_tjsi","2025-10-25","Western Connecticut","Moravian",28,35,28,35,TRUE
-"20251025_uao9","2025-10-25","Lakeland","Benedictine",35,42,35,42,TRUE
-"20251025_uswz","2025-10-25","St. Scholastica","St. Olaf",41,44,41,44,TRUE
-"20251025_utnd","2025-10-25","Brevard","Greensboro",34,7,34,7,TRUE
-"20251025_uu62","2025-10-25","Dubuque","Simpson",7,27,7,27,TRUE
-"20251025_uy5n","2025-10-25","Utica","Alfred",51,28,51,28,TRUE
-"20251025_uzzr","2025-10-25","Methodist","Belhaven",7,28,7,28,TRUE
-"20251025_vnjk","2025-10-25","UW-River Falls","UW-Eau Claire",73,21,73,21,TRUE
-"20251025_wenl","2025-10-25","UW-Platteville","UW-Whitewater",19,29,19,29,TRUE
-"20251025_wfq5","2025-10-25","RPI","Hilbert",69,14,69,14,TRUE
-"20251025_wkgm","2025-10-25","Rochester","Buffalo State",23,3,23,3,TRUE
-"20251025_ws2j","2025-10-25","Whitworth","Lewis and Clark",42,35,42,35,TRUE
-"20251025_wyk7","2025-10-25","Heidelberg","Muskingum",29,14,29,14,TRUE
-"20251025_x38p","2025-10-25","Wilkes","Lycoming",21,31,21,31,TRUE
-"20251025_xd6l","2025-10-25","Widener","Alvernia",32,14,32,14,TRUE
-"20251025_xebw","2025-10-25","Willamette","Pacific",14,35,14,35,TRUE
-"20251025_ybar","2025-10-25","TCNJ","Kean",24,7,24,7,TRUE
-"20251025_ye87","2025-10-25","Lyon","Hendrix",21,38,21,38,TRUE
-"20251025_yvrv","2025-10-25","Johns Hopkins","Gettysburg",59,21,59,21,TRUE
-"20251025_yz1u","2025-10-25","Puget Sound","George Fox",23,48,23,48,TRUE
-"20251025_z43s","2025-10-25","Ohio Wesleyan","Kenyon",55,13,55,13,TRUE
-"20251025_z4da","2025-10-25","La Verne","Pomona-Pitzer",26,8,26,8,TRUE
-"20251025_z541","2025-10-25","Chicago","Grinnell",38,7,38,7,TRUE
-"20251025_zeq7","2025-10-25","Ohio Northern","Mount Union",7,33,7,33,TRUE
-"20251101_0i6i","2025-11-01","Guilford","Roanoke",20,21,20,21,TRUE
-"20251101_0jqm","2025-11-01","Alfred","Brockport",0,51,0,51,TRUE
-"20251101_0npb","2025-11-01","DePauw","Ohio Wesleyan",40,10,40,10,TRUE
-"20251101_0rdw","2025-11-01","Albright","King's",14,24,14,24,TRUE
-"20251101_0unn","2025-11-01","New England College","Western New England",0,55,0,55,TRUE
-"20251101_17jz","2025-11-01","Adrian","Kalamazoo",34,7,34,7,TRUE
-"20251101_1c0t","2025-11-01","North Central (Ill.)","Carroll",64,7,64,7,TRUE
-"20251101_1gzy","2025-11-01","Concordia-Chicago","Lakeland",16,47,16,47,TRUE
-"20251101_1s8j","2025-11-01","Hobart","Rochester",28,21,28,21,TRUE
-"20251101_1v4d","2025-11-01","Coast Guard","Salve Regina",36,31,36,31,TRUE
-"20251101_1xlq","2025-11-01","Mass-Dartmouth","Dean",48,7,48,7,TRUE
-"20251101_266t","2025-11-01","UW-Oshkosh","UW-Platteville",14,21,14,21,TRUE
-"20251101_2cro","2025-11-01","Alma","Trine",42,28,42,28,TRUE
-"20251101_2ixh","2025-11-01","St. John's","Gustavus Adolphus",31,13,31,13,TRUE
-"20251101_33w1","2025-11-01","Hampden-Sydney","Gallaudet",61,8,61,8,TRUE
-"20251101_3bki","2025-11-01","Springfield","Norwich",48,6,48,6,TRUE
-"20251101_3wt7","2025-11-01","St. Vincent","Grove City",14,59,14,59,TRUE
-"20251101_43c6","2025-11-01","Bethel","Concordia-Moorhead",55,9,55,9,TRUE
-"20251101_4o1s","2025-11-01","Carthage","North Park",10,14,10,14,TRUE
-"20251101_4r1v","2025-11-01","George Fox","Willamette",31,9,31,9,TRUE
-"20251101_4uk2","2025-11-01","Anna Maria","Worcester State",45,35,45,35,TRUE
-"20251101_5u7s","2025-11-01","Centenary (La.)","Hendrix",10,64,10,64,TRUE
-"20251101_5vfk","2025-11-01","Pacific","Puget Sound",52,35,52,35,TRUE
-"20251101_75we","2025-11-01","Lewis and Clark","Linfield",21,29,21,29,TRUE
-"20251101_78yk","2025-11-01","Middlebury","Hamilton",24,21,24,21,TRUE
-"20251101_7f1w","2025-11-01","St. John Fisher","Utica",7,31,7,31,TRUE
-"20251101_7s9h","2025-11-01","Simpson","Loras",28,27,28,27,TRUE
-"20251101_8ha3","2025-11-01","Lyon","Austin",40,28,40,28,TRUE
-"20251101_8xlh","2025-11-01","Buena Vista","Central",27,52,27,52,TRUE
-"20251101_9455","2025-11-01","Berry","Centre",31,13,31,13,TRUE
-"20251101_aftt","2025-11-01","Lycoming","Catholic",38,12,38,12,TRUE
-"20251101_b024","2025-11-01","Coe","Dubuque",19,7,19,7,TRUE
-"20251101_bgf2","2025-11-01","Grinnell","Illinois College",7,14,7,14,TRUE
-"20251101_bikc","2025-11-01","Johns Hopkins","Muhlenberg",47,26,47,26,TRUE
-"20251101_bx5q","2025-11-01","Wittenberg","Wabash",21,28,21,28,TRUE
-"20251101_c991","2025-11-01","Redlands","La Verne",29,14,29,14,TRUE
-"20251101_cp5f","2025-11-01","Juniata","Wilkes",7,38,7,38,TRUE
-"20251101_cxsp","2025-11-01","Misericordia","FDU-Florham",35,16,35,16,TRUE
-"20251101_d6jj","2025-11-01","Bates","Bowdoin",9,17,9,17,TRUE
-"20251101_dlys","2025-11-01","Carnegie Mellon","Dickinson",70,29,70,29,TRUE
-"20251101_dyvd","2025-11-01","Wheaton (Ill.)","Elmhurst",65,0,65,0,TRUE
-"20251101_e6vs","2025-11-01","Amherst","Trinity (Conn.)",7,14,7,14,TRUE
-"20251101_fgk4","2025-11-01","Rowan","TCNJ",44,30,44,30,TRUE
-"20251101_fksd","2025-11-01","Wesleyan","Williams",34,28,34,28,TRUE
-"20251101_g0dr","2025-11-01","Otterbein","Heidelberg",13,69,13,69,TRUE
-"20251101_g7ws","2025-11-01","Franklin","Anderson",41,7,41,7,TRUE
-"20251101_gdb5","2025-11-01","Allegheny","Westminster (Pa.)",21,57,21,57,TRUE
-"20251101_glah","2025-11-01","William Paterson","Salisbury",7,51,7,51,TRUE
-"20251101_gsrd","2025-11-01","RPI","St. Lawrence",48,0,48,0,TRUE
-"20251101_hwb9","2025-11-01","Lawrence","Lake Forest",0,72,0,72,TRUE
-"20251101_hwk2","2025-11-01","Framingham State","Plymouth State",26,28,26,28,TRUE
-"20251101_hyn8","2025-11-01","Buffalo State","Ithaca",7,49,7,49,TRUE
-"20251101_hzo8","2025-11-01","Greenville","Westminster (Mo.)",7,24,7,24,TRUE
-"20251101_i30q","2025-11-01","UW-Whitewater","UW-River Falls",14,52,14,52,TRUE
-"20251101_i5lm","2025-11-01","Curry","Husson",40,21,40,21,TRUE
-"20251101_i7i8","2025-11-01","Augsburg","Carleton",17,48,17,48,TRUE
-"20251101_id22","2025-11-01","Massachusetts Maritime","Westfield State",21,14,21,14,TRUE
-"20251101_imdv","2025-11-01","Rhodes","Maryville (Tenn.)",22,42,22,42,TRUE
-"20251101_imgs","2025-11-01","Texas Lutheran","McMurry",42,13,42,13,TRUE
-"20251101_jc2y","2025-11-01","St. Olaf","Macalester",6,27,6,27,TRUE
-"20251101_jzj2","2025-11-01","Kenyon","Wooster",6,49,6,49,TRUE
-"20251101_k2em","2025-11-01","McDaniel","Franklin and Marshall",3,24,3,24,TRUE
-"20251101_kwlz","2025-11-01","Oberlin","Denison",9,62,9,62,TRUE
-"20251101_l1ok","2025-11-01","Gettysburg","Ursinus",13,40,13,40,TRUE
-"20251101_l4zl","2025-11-01","Case Western Reserve","Washington and Jefferson",17,28,17,28,TRUE
-"20251101_lt7y","2025-11-01","Cornell","Knox",35,14,35,14,TRUE
-"20251101_mkzr","2025-11-01","Olivet","Calvin",20,50,20,50,TRUE
-"20251101_msqs","2025-11-01","Cortland","Alfred State",49,7,49,7,TRUE
-"20251101_mzc1","2025-11-01","Belhaven","Southern Virginia",41,19,41,19,TRUE
-"20251101_nl0h","2025-11-01","Huntingdon","Brevard",32,26,32,26,TRUE
-"20251101_nrsq","2025-11-01","Hanover","Bluffton",48,0,48,0,TRUE
-"20251101_o7gl","2025-11-01","Aurora","Wisconsin Lutheran",49,42,49,42,TRUE
-"20251101_ohhs","2025-11-01","Pomona-Pitzer","Chapman",14,22,14,22,TRUE
-"20251101_oifr","2025-11-01","Trinity (Texas)","Sewanee",32,3,32,3,TRUE
-"20251101_oiog","2025-11-01","Susquehanna","Western Connecticut",34,0,34,0,TRUE
-"20251101_oml7","2025-11-01","Baldwin Wallace","Muskingum",35,28,35,28,TRUE
-"20251101_p7c7","2025-11-01","Hardin-Simmons","Howard Payne",54,24,54,24,TRUE
-"20251101_pe09","2025-11-01","Hope","Albion",62,0,62,0,TRUE
-"20251101_pe1u","2025-11-01","Crown","Minnesota-Morris",34,15,34,15,TRUE
-"20251101_phsp","2025-11-01","Hamline","St. Scholastica",18,49,18,49,TRUE
-"20251101_po4a","2025-11-01","UW-Eau Claire","UW-Stevens Point",36,39,36,39,TRUE
-"20251101_q0qm","2025-11-01","Bridgewater State","Fitchburg State",38,18,38,18,TRUE
-"20251101_q7h5","2025-11-01","Monmouth","Chicago",29,0,29,0,TRUE
-"20251101_r7fu","2025-11-01","Delaware Valley","Alvernia",43,10,43,10,TRUE
-"20251101_rd8q","2025-11-01","Capital","Mount Union",17,65,17,65,TRUE
-"20251101_rmlr","2025-11-01","Washington and Lee","Averett",61,21,61,21,TRUE
-"20251101_rmum","2025-11-01","Cal Lutheran","Claremont-Mudd-Scripps",21,18,21,18,TRUE
-"20251101_rs2h","2025-11-01","Eastern","Widener",35,0,35,0,TRUE
-"20251101_rzpw","2025-11-01","Northwestern (Minn.)","Martin Luther",24,17,24,17,TRUE
-"20251101_siwb","2025-11-01","LaGrange","Greensboro",49,20,49,20,TRUE
-"20251101_tjry","2025-11-01","Washington U.","Millikin",38,7,38,7,TRUE
-"20251101_u6eq","2025-11-01","Hilbert","Union",13,34,13,34,TRUE
-"20251101_ubsy","2025-11-01","N.C. Wesleyan","Methodist",48,17,48,17,TRUE
-"20251101_us8v","2025-11-01","East Texas Baptist","Mary Hardin-Baylor",14,62,14,62,TRUE
-"20251101_v2bi","2025-11-01","WPI","MIT",7,19,7,19,TRUE
-"20251101_v8dk","2025-11-01","Rockford","Concordia (Wis.)",0,35,0,35,TRUE
-"20251101_vbg1","2025-11-01","Montclair State","Christopher Newport",42,49,42,49,TRUE
-"20251101_w7j5","2025-11-01","Colby","Tufts",33,6,33,6,TRUE
-"20251101_wcrt","2025-11-01","UW-Stout","UW-La Crosse",14,31,14,31,TRUE
-"20251101_wd8w","2025-11-01","Lebanon Valley","Stevenson",13,15,13,15,TRUE
-"20251101_wkhy","2025-11-01","Wartburg","Nebraska Wesleyan",34,10,34,10,TRUE
-"20251101_wmpu","2025-11-01","Waynesburg","Bethany",48,28,48,28,TRUE
-"20251101_wwv1","2025-11-01","Pacific Lutheran","Whitworth",6,10,6,10,TRUE
-"20251101_wxoq","2025-11-01","Illinois Wesleyan","Augustana",21,42,21,42,TRUE
-"20251101_xg3c","2025-11-01","Rose-Hulman","Manchester",35,13,35,13,TRUE
-"20251101_xnwt","2025-11-01","Benedictine","St. Norbert",17,24,17,24,TRUE
-"20251101_xtc2","2025-11-01","Mount St. Joseph","Ohio Northern",42,49,42,49,TRUE
-"20251101_y8ak","2025-11-01","Shenandoah","Randolph-Macon",14,31,14,31,TRUE
-"20251101_yqo8","2025-11-01","Maine Maritime","Endicott",7,69,7,69,TRUE
-"20251101_yuot","2025-11-01","Marietta","Wilmington",44,14,44,14,TRUE
-"20251101_zavb","2025-11-01","Nichols","University of New England",34,58,34,58,TRUE
-"20251101_zhvs","2025-11-01","Southwestern","Millsaps",24,27,24,27,TRUE
-"20251101_zj04","2025-11-01","Vermont State Castleton","Kean",9,14,9,14,TRUE
-"20251108_05d5","2025-11-08","Austin","Centenary (La.)",20,10,20,10,TRUE
-"20251108_09bo","2025-11-08","Delaware Valley","Misericordia",51,20,51,20,TRUE
-"20251108_0v10","2025-11-08","Bowdoin","Colby",6,16,6,16,TRUE
-"20251108_0xm4","2025-11-08","Ripon","Monmouth",3,58,3,58,TRUE
-"20251108_0y0s","2025-11-08","Vermont State Castleton","Rowan",7,62,7,62,TRUE
-"20251108_10an","2025-11-08","UW-Stout","UW-Platteville",23,24,23,24,TRUE
-"20251108_12fo","2025-11-08","Salisbury","Christopher Newport",42,45,42,45,TRUE
-"20251108_16e2","2025-11-08","Lakeland","Eureka",40,12,40,12,TRUE
-"20251108_1bca","2025-11-08","Loras","Coe",7,63,7,63,TRUE
-"20251108_1p00","2025-11-08","UW-Stevens Point","UW-Oshkosh",15,41,15,41,TRUE
-"20251108_1uv6","2025-11-08","Alfred","Alfred State",28,35,28,35,TRUE
-"20251108_2taf","2025-11-08","Southwestern","Rhodes",35,22,35,22,TRUE
-"20251108_2uq2","2025-11-08","Southern Virginia","Huntingdon",21,44,21,44,TRUE
-"20251108_2uu4","2025-11-08","Salve Regina","Norwich",38,10,38,10,TRUE
-"20251108_3rr9","2025-11-08","Tufts","Middlebury",30,33,30,33,TRUE
-"20251108_3t3x","2025-11-08","Williams","Amherst",13,14,13,14,TRUE
-"20251108_3t9w","2025-11-08","Augustana","Carthage",23,3,23,3,TRUE
-"20251108_3ubg","2025-11-08","Franklin and Marshall","Carnegie Mellon",31,24,31,24,TRUE
-"20251108_3yae","2025-11-08","Kean","William Paterson",17,7,17,7,TRUE
-"20251108_4jf2","2025-11-08","FDU-Florham","Eastern",7,28,7,28,TRUE
-"20251108_58k8","2025-11-08","Catholic","Western Connecticut",19,52,19,52,TRUE
-"20251108_655k","2025-11-08","Northwestern (Minn.)","Greenville",17,14,17,14,TRUE
-"20251108_65m4","2025-11-08","Millsaps","Trinity (Texas)",24,42,24,42,TRUE
-"20251108_6nz8","2025-11-08","Linfield","Puget Sound",77,14,77,14,TRUE
-"20251108_6pm0","2025-11-08","King's","Widener",24,40,24,40,TRUE
-"20251108_6vmd","2025-11-08","Belhaven","LaGrange",6,38,6,38,TRUE
-"20251108_7cw5","2025-11-08","Concordia-Moorhead","Macalester",17,14,17,14,TRUE
-"20251108_7emn","2025-11-08","Hiram","Westminster (Pa.)",0,76,0,76,TRUE
-"20251108_7lwl","2025-11-08","University of New England","Curry",30,47,30,47,TRUE
-"20251108_88i8","2025-11-08","Otterbein","Hanover",8,49,8,49,TRUE
-"20251108_8d91","2025-11-08","Dean","Framingham State",6,31,6,31,TRUE
-"20251108_8e12","2025-11-08","Greensboro","N.C. Wesleyan",38,29,38,29,TRUE
-"20251108_8enc","2025-11-08","WPI","Merchant Marine",14,34,14,34,TRUE
-"20251108_8kin","2025-11-08","Chicago","Beloit",40,0,40,0,TRUE
-"20251108_8ojg","2025-11-08","Bethany","Thiel",17,12,17,12,TRUE
-"20251108_8rs8","2025-11-08","Lake Forest","Knox",63,0,63,0,TRUE
-"20251108_9e7o","2025-11-08","UW-La Crosse","UW-River Falls",7,41,7,41,TRUE
-"20251108_9l42","2025-11-08","Ithaca","RPI",24,23,24,23,TRUE
-"20251108_a0p9","2025-11-08","Pacific","George Fox",21,27,21,27,TRUE
-"20251108_as9j","2025-11-08","St. John Fisher","Morrisville State",21,7,21,7,TRUE
-"20251108_avuh","2025-11-08","Martin Luther","Crown",21,34,21,34,TRUE
-"20251108_b1hr","2025-11-08","Calvin","Hope",0,52,0,52,TRUE
-"20251108_b23s","2025-11-08","Endicott","New England College",63,0,63,0,TRUE
-"20251108_bjta","2025-11-08","Roanoke","Washington and Lee",14,35,14,35,TRUE
-"20251108_c14j","2025-11-08","Alvernia","Lebanon Valley",7,38,7,38,TRUE
-"20251108_c5vt","2025-11-08","UW-Eau Claire","UW-Whitewater",10,51,10,51,TRUE
-"20251108_cle3","2025-11-08","Nebraska Wesleyan","Buena Vista",21,34,21,34,TRUE
-"20251108_cn19","2025-11-08","Dubuque","Luther",27,20,27,20,TRUE
-"20251108_dh26","2025-11-08","Hamline","St. Olaf",34,41,34,41,TRUE
-"20251108_dpjk","2025-11-08","Concordia-Chicago","Benedictine",7,38,7,38,TRUE
-"20251108_dv30","2025-11-08","Hardin-Simmons","Mary Hardin-Baylor",17,21,17,21,TRUE
-"20251108_e57c","2025-11-08","Grove City","Case Western Reserve",28,14,28,14,TRUE
-"20251108_evqs","2025-11-08","TCNJ","Montclair State",27,30,27,30,TRUE
-"20251108_f8lt","2025-11-08","Centre","Sewanee",28,0,28,0,TRUE
-"20251108_g97k","2025-11-08","St. Lawrence","Buffalo State",24,19,24,19,TRUE
-"20251108_gc3k","2025-11-08","St. Vincent","Waynesburg",24,35,24,35,TRUE
-"20251108_gfa3","2025-11-08","Pacific Lutheran","Lewis and Clark",46,36,46,36,TRUE
-"20251108_gs9e","2025-11-08","Bridgewater","Hampden-Sydney",45,42,45,42,TRUE
-"20251108_gwi1","2025-11-08","Howard Payne","East Texas Baptist",34,27,34,27,TRUE
-"20251108_gxxt","2025-11-08","Anna Maria","Bridgewater State",35,41,35,41,TRUE
-"20251108_h59b","2025-11-08","St. Norbert","Aurora",14,37,14,37,TRUE
-"20251108_hr0t","2025-11-08","Lawrence","Grinnell",6,63,6,63,TRUE
-"20251108_ieua","2025-11-08","Stevenson","Albright",17,7,17,7,TRUE
-"20251108_ihrj","2025-11-08","Illinois College","Cornell",24,0,24,0,TRUE
-"20251108_iwhu","2025-11-08","Hobart","Hilbert",63,6,63,6,TRUE
-"20251108_jx47","2025-11-08","Trinity (Conn.)","Wesleyan",28,31,28,31,TRUE
-"20251108_jyrl","2025-11-08","Chapman","La Verne",30,14,30,14,TRUE
-"20251108_jyzn","2025-11-08","Hartwick","Utica",7,64,7,64,TRUE
-"20251108_k0zn","2025-11-08","Wooster","DePauw",0,59,0,59,TRUE
-"20251108_k9s9","2025-11-08","Western New England","Maine Maritime",70,7,70,7,TRUE
-"20251108_ka36","2025-11-08","Denison","Kenyon",33,18,33,18,TRUE
-"20251108_krd5","2025-11-08","Manchester","Mount St. Joseph",20,48,20,48,TRUE
-"20251108_ku7m","2025-11-08","Brockport","Cortland",14,44,14,44,TRUE
-"20251108_kzf6","2025-11-08","Bluffton","Franklin",57,59,57,59,TRUE
-"20251108_l7ay","2025-11-08","Baldwin Wallace","Ohio Northern",28,30,28,30,TRUE
-"20251108_lp2d","2025-11-08","Averett","Guilford",27,21,27,21,TRUE
-"20251108_lwza","2025-11-08","MIT","SUNY-Maritime",30,27,30,27,TRUE
-"20251108_mbgi","2025-11-08","Wisconsin Lutheran","Rockford",48,3,48,3,TRUE
-"20251108_ngg8","2025-11-08","Gustavus Adolphus","Augsburg",31,10,31,10,TRUE
-"20251108_nm50","2025-11-08","Anderson","Rose-Hulman",0,38,0,38,TRUE
-"20251108_orgz","2025-11-08","Fitchburg State","Plymouth State",0,27,0,27,TRUE
-"20251108_p5ch","2025-11-08","Central","Simpson",35,10,35,10,TRUE
-"20251108_pt8z","2025-11-08","Muskingum","Capital",7,3,7,3,TRUE
-"20251108_qzzj","2025-11-08","Trine","Adrian",21,44,21,44,TRUE
-"20251108_r875","2025-11-08","Westfield State","Mass-Dartmouth",13,33,13,33,TRUE
-"20251108_rhsg","2025-11-08","Whitworth","Willamette",29,0,29,0,TRUE
-"20251108_rkyk","2025-11-08","Westminster (Mo.)","Minnesota-Morris",7,14,7,14,TRUE
-"20251108_s1zc","2025-11-08","St. Scholastica","St. John's",21,70,21,70,TRUE
-"20251108_smbh","2025-11-08","Gallaudet","Shenandoah",14,52,14,52,TRUE
-"20251108_so36","2025-11-08","Wabash","Oberlin",42,13,42,13,TRUE
-"20251108_t1ab","2025-11-08","Ohio Wesleyan","John Carroll",17,55,17,55,TRUE
-"20251108_td0c","2025-11-08","Mount Union","Marietta",30,19,30,19,TRUE
-"20251108_tfg9","2025-11-08","Worcester State","Massachusetts Maritime",17,10,17,10,TRUE
-"20251108_tl4c","2025-11-08","Carleton","Bethel",7,49,7,49,TRUE
-"20251108_ub1q","2025-11-08","North Park","Washington U.",14,42,14,42,TRUE
-"20251108_ug8z","2025-11-08","Claremont-Mudd-Scripps","Redlands",28,14,28,14,TRUE
-"20251108_ukbr","2025-11-08","Texas Lutheran","Lyon",54,10,54,10,TRUE
-"20251108_uldi","2025-11-08","Wilmington","Heidelberg",31,34,31,34,TRUE
-"20251108_vh0d","2025-11-08","Coast Guard","Springfield",10,30,10,30,TRUE
-"20251108_vzlp","2025-11-08","Albion","Olivet",58,42,58,42,TRUE
-"20251108_w3qs","2025-11-08","Hendrix","McMurry",28,34,28,34,TRUE
-"20251108_w9oe","2025-11-08","Moravian","Juniata",38,13,38,13,TRUE
-"20251108_wc79","2025-11-08","Ursinus","Dickinson",22,47,22,47,TRUE
-"20251108_wfal","2025-11-08","Wilkes","Susquehanna",3,26,3,26,TRUE
-"20251108_wjvx","2025-11-08","Carroll","Illinois Wesleyan",34,14,34,14,TRUE
-"20251108_wpbq","2025-11-08","Union","Rochester",14,10,14,10,TRUE
-"20251108_wqdk","2025-11-08","Washington and Jefferson","Geneva",49,7,49,7,TRUE
-"20251108_wzbj","2025-11-08","Maryville (Tenn.)","Berry",7,36,7,36,TRUE
-"20251108_x0k7","2025-11-08","Cal Lutheran","Pomona-Pitzer",18,28,18,28,TRUE
-"20251108_x77w","2025-11-08","McDaniel","Johns Hopkins",0,42,0,42,TRUE
-"20251108_xaqb","2025-11-08","Muhlenberg","Gettysburg",59,27,59,27,TRUE
-"20251108_xb1x","2025-11-08","Hamilton","Bates",24,21,24,21,TRUE
-"20251108_xo8e","2025-11-08","Kalamazoo","Alma",3,53,3,53,TRUE
-"20251108_xrla","2025-11-08","North Central (Ill.)","Elmhurst",58,0,58,0,TRUE
-"20251108_y8wu","2025-11-08","Husson","Nichols",63,19,63,19,TRUE
-"20251108_ykdc","2025-11-08","Brevard","Methodist",47,20,47,20,TRUE
-"20251108_zucq","2025-11-08","Millikin","Wheaton (Ill.)",14,61,14,61,TRUE
-"20251114_ebkj","2025-11-14","Vermont State Castleton","Salisbury",13,63,13,63,TRUE
-"20251114_ha65","2025-11-14","Norwich","MIT",14,48,14,48,TRUE
-"20251114_nnzr","2025-11-14","Hamline","Augsburg",3,43,3,43,TRUE
-"20251114_zidm","2025-11-14","Christopher Newport","TCNJ",27,7,27,7,TRUE
-"20251115_0f1a","2025-11-15","Chicago","Lake Forest",28,34,28,34,TRUE
-"20251115_0hx7","2025-11-15","Cornell","Grinnell",22,17,22,17,TRUE
-"20251115_1cr9","2025-11-15","Gettysburg","McDaniel",36,23,36,23,TRUE
-"20251115_1xn6","2025-11-15","Curry","Endicott",17,45,17,45,TRUE
-"20251115_23uk","2025-11-15","Merchant Marine","Coast Guard",39,38,39,38,TRUE
-"20251115_2bai","2025-11-15","Simpson","Nebraska Wesleyan",23,22,23,22,TRUE
-"20251115_2lnx","2025-11-15","Johns Hopkins","Franklin and Marshall",28,29,28,29,TRUE
-"20251115_31su","2025-11-15","Kalamazoo","Trine",24,25,24,25,TRUE
-"20251115_3iuh","2025-11-15","Thiel","Washington and Jefferson",0,67,0,67,TRUE
-"20251115_3ni7","2025-11-15","Nichols","Western New England",20,63,20,63,TRUE
-"20251115_3xzm","2025-11-15","Coe","Central",13,7,13,7,TRUE
-"20251115_5dtr","2025-11-15","Eastern","Stevenson",16,10,16,10,TRUE
-"20251115_5e2h","2025-11-15","Mount St. Joseph","Rose-Hulman",48,0,48,0,TRUE
-"20251115_5i9x","2025-11-15","Eureka","Concordia (Wis.)",0,35,0,35,TRUE
-"20251115_5lpy","2025-11-15","Centenary (La.)","Austin",14,16,14,16,TRUE
-"20251115_5zo2","2025-11-15","McMurry","Texas Lutheran",27,19,27,19,TRUE
-"20251115_6wik","2025-11-15","Crown","Greenville",38,20,38,20,TRUE
-"20251115_6ynt","2025-11-15","Alfred State","St. John Fisher",14,41,14,41,TRUE
-"20251115_757y","2025-11-15","Lyon","Hendrix",28,55,28,55,TRUE
-"20251115_7vgf","2025-11-15","Calvin","Albion",53,24,53,24,TRUE
-"20251115_7z71","2025-11-15","Susquehanna","Moravian",48,7,48,7,TRUE
-"20251115_82vt","2025-11-15","Willamette","Linfield",19,65,19,65,TRUE
-"20251115_83b6","2025-11-15","Huntingdon","Belhaven",30,13,30,13,TRUE
-"20251115_8d1w","2025-11-15","Aurora","Concordia-Chicago",59,26,59,26,TRUE
-"20251115_8eat","2025-11-15","Concordia-Moorhead","Carleton",31,24,31,24,TRUE
-"20251115_8idn","2025-11-15","Bethany","Allegheny",6,42,6,42,TRUE
-"20251115_8s8s","2025-11-15","UW-La Crosse","UW-Stevens Point",52,0,52,0,TRUE
-"20251115_8sbt","2025-11-15","Minnesota-Morris","Martin Luther",14,36,14,36,TRUE
-"20251115_96v9","2025-11-15","Maine Maritime","Husson",7,48,7,48,TRUE
-"20251115_9ybi","2025-11-15","UW-Platteville","UW-Eau Claire",55,28,55,28,TRUE
-"20251115_a55y","2025-11-15","Framingham State","Worcester State",28,27,28,27,TRUE
-"20251115_acbx","2025-11-15","Lewis and Clark","Pacific",28,21,28,21,TRUE
-"20251115_aunt","2025-11-15","Heidelberg","Baldwin Wallace",38,41,38,41,TRUE
-"20251115_axjs","2025-11-15","Muskingum","Mount Union",7,51,7,51,TRUE
-"20251115_b0cy","2025-11-15","Morrisville State","Alfred",21,34,21,34,TRUE
-"20251115_b72n","2025-11-15","Western Connecticut","Wilkes",0,38,0,38,TRUE
-"20251115_be4a","2025-11-15","Lebanon Valley","Albright",38,35,38,35,TRUE
-"20251115_bkww","2025-11-15","UW-River Falls","UW-Stout",29,19,29,19,TRUE
-"20251115_bofc","2025-11-15","Plymouth State","Mass-Dartmouth",21,42,21,42,TRUE
-"20251115_bpex","2025-11-15","Dickinson","Muhlenberg",17,30,17,30,TRUE
-"20251115_bsr3","2025-11-15","Puget Sound","Whitworth",31,59,31,59,TRUE
-"20251115_cdcf","2025-11-15","East Texas Baptist","Hardin-Simmons",14,63,14,63,TRUE
-"20251115_cdd0","2025-11-15","Lycoming","Juniata",24,16,24,16,TRUE
-"20251115_coz2","2025-11-15","Montclair State","William Paterson",24,21,24,21,TRUE
-"20251115_d97d","2025-11-15","Trinity (Texas)","Maryville (Tenn.)",31,14,31,14,TRUE
-"20251115_drb5","2025-11-15","Methodist","Greensboro",12,13,12,13,TRUE
-"20251115_dst9","2025-11-15","SUNY-Maritime","Springfield",7,23,7,23,TRUE
-"20251115_effl","2025-11-15","Washington U.","Augustana",35,13,35,13,TRUE
-"20251115_ewyn","2025-11-15","RPI","Union",21,28,21,28,TRUE
-"20251115_exa0","2025-11-15","Illinois College","Beloit",38,7,38,7,TRUE
-"20251115_f7tv","2025-11-15","Illinois Wesleyan","North Central (Ill.)",7,24,7,24,TRUE
-"20251115_fdhu","2025-11-15","Anderson","Manchester",26,20,26,20,TRUE
-"20251115_fhoy","2025-11-15","Centre","Rhodes",28,3,28,3,TRUE
-"20251115_fq8m","2025-11-15","Bridgewater State","Massachusetts Maritime",7,20,7,20,TRUE
-"20251115_gg18","2025-11-15","St. Norbert","Lakeland",25,35,25,35,TRUE
-"20251115_glwd","2025-11-15","Utica","Brockport",28,20,28,20,TRUE
-"20251115_gvlj","2025-11-15","Westfield State","Fitchburg State",10,7,10,7,TRUE
-"20251115_h3wh","2025-11-15","Carnegie Mellon","Ursinus",20,27,20,27,TRUE
-"20251115_h5jn","2025-11-15","Cal Lutheran","Chapman",17,27,17,27,TRUE
-"20251115_h8fs","2025-11-15","Luther","Loras",12,45,12,45,TRUE
-"20251115_hd72","2025-11-15","Sewanee","Millsaps",20,34,20,34,TRUE
-"20251115_hern","2025-11-15","Berry","Southwestern",49,7,49,7,TRUE
-"20251115_iaod","2025-11-15","Knox","Monmouth",0,69,0,69,TRUE
-"20251115_igav","2025-11-15","Wisconsin Lutheran","Benedictine",14,10,14,10,TRUE
-"20251115_io1e","2025-11-15","Mary Hardin-Baylor","Howard Payne",65,9,65,9,TRUE
-"20251115_j0ef","2025-11-15","Kenyon","Wittenberg",0,35,0,35,TRUE
-"20251115_jsqc","2025-11-15","Westminster (Mo.)","Northwestern (Minn.)",15,6,15,6,TRUE
-"20251115_ko9g","2025-11-15","N.C. Wesleyan","Brevard",6,45,6,45,TRUE
-"20251115_lgbn","2025-11-15","Wheaton (Ill.)","North Park",52,6,52,6,TRUE
-"20251115_m5el","2025-11-15","Dean","Anna Maria",15,62,15,62,TRUE
-"20251115_m5t6","2025-11-15","Ohio Northern","Otterbein",56,14,56,14,TRUE
-"20251115_mhk5","2025-11-15","Hampden-Sydney","Randolph-Macon",14,42,14,42,TRUE
-"20251115_nhny","2025-11-15","Buffalo State","Hobart",9,35,9,35,TRUE
-"20251115_nj8u","2025-11-15","Geneva","Case Western Reserve",43,16,43,16,TRUE
-"20251115_nkhl","2025-11-15","King's","Misericordia",21,27,21,27,TRUE
-"20251115_nxeh","2025-11-15","Westminster (Pa.)","St. Vincent",57,14,57,14,TRUE
-"20251115_nyha","2025-11-15","Salve Regina","WPI",45,9,45,9,TRUE
-"20251115_oq8v","2025-11-15","Ripon","Lawrence",48,7,48,7,TRUE
-"20251115_p0ch","2025-11-15","Rowan","Kean",47,34,47,34,TRUE
-"20251115_p2bj","2025-11-15","George Fox","Pacific Lutheran",21,55,21,55,TRUE
-"20251115_phob","2025-11-15","Elmhurst","Millikin",22,29,22,29,TRUE
-"20251115_pshq","2025-11-15","Macalester","Gustavus Adolphus",14,38,14,38,TRUE
-"20251115_q4id","2025-11-15","Grove City","Hiram",63,14,63,14,TRUE
-"20251115_r09l","2025-11-15","Bluffton","Marietta",14,37,14,37,TRUE
-"20251115_r4dp","2025-11-15","LaGrange","Southern Virginia",65,27,65,27,TRUE
-"20251115_r9am","2025-11-15","Carroll","Carthage",3,7,3,7,TRUE
-"20251115_re56","2025-11-15","La Verne","Claremont-Mudd-Scripps",0,5,0,5,TRUE
-"20251115_rei3","2025-11-15","Alvernia","FDU-Florham",3,52,3,52,TRUE
-"20251115_rr3o","2025-11-15","St. Olaf","St. John's",21,63,21,63,TRUE
-"20251115_sfz1","2025-11-15","Buena Vista","Wartburg",20,63,20,63,TRUE
-"20251115_tosa","2025-11-15","Franklin","Hanover",18,51,18,51,TRUE
-"20251115_ts6v","2025-11-15","Bethel","St. Scholastica",62,0,62,0,TRUE
-"20251115_ui33","2025-11-15","New England College","University of New England",3,59,3,59,TRUE
-"20251115_up4p","2025-11-15","DePauw","Wabash",41,20,41,20,TRUE
-"20251115_upkg","2025-11-15","Washington and Lee","Shenandoah",14,17,14,17,TRUE
-"20251115_ut1v","2025-11-15","Adrian","Alma",34,35,34,35,TRUE
-"20251115_vmde","2025-11-15","UW-Whitewater","UW-Oshkosh",24,7,24,7,TRUE
-"20251115_vqiy","2025-11-15","Widener","Delaware Valley",7,28,7,28,TRUE
-"20251115_vt5u","2025-11-15","Capital","Wilmington",28,27,28,27,TRUE
-"20251115_wd9p","2025-11-15","Olivet","Hope",6,63,6,63,TRUE
-"20251115_y4uy","2025-11-15","Pomona-Pitzer","Redlands",12,0,12,0,TRUE
-"20251115_yedx","2025-11-15","John Carroll","Denison",48,21,48,21,TRUE
-"20251115_ypjs","2025-11-15","Rochester","St. Lawrence",17,37,17,37,TRUE
-"20251115_zrqc","2025-11-15","Cortland","Ithaca",21,26,21,26,TRUE
-"20251121_dny8","2025-11-21","Merchant Marine","Curry",27,24,27,24,TRUE
-"20251122_1788","2025-11-22","Washington U.","UW-Stout",23,31,23,31,TRUE
-"20251122_3cjz","2025-11-22","Cortland","Springfield",7,21,7,21,TRUE
-"20251122_3edr","2025-11-22","Aurora","Illinois College",49,14,49,14,TRUE
-"20251122_44ni","2025-11-22","RPI","St. John Fisher",35,24,35,24,TRUE
-"20251122_667w","2025-11-22","Crown","Wheaton (Ill.)",14,76,14,76,TRUE
-"20251122_6ygb","2025-11-22","Union","Muhlenberg",26,34,26,34,TRUE
-"20251122_7g8y","2025-11-22","Ohio Northern","Wabash",31,32,31,32,TRUE
-"20251122_7r3l","2025-11-22","Grove City","Hanover",15,23,15,23,TRUE
-"20251122_8ewe","2025-11-22","Coe","Concordia (Wis.)",44,7,44,7,TRUE
-"20251122_dfrn","2025-11-22","Chapman","Whitworth",18,16,18,16,TRUE
-"20251122_hx94","2025-11-22","Hobart","SUNY-Maritime",42,14,42,14,TRUE
-"20251122_ii7v","2025-11-22","Wilkes","Shenandoah",37,35,37,35,TRUE
-"20251122_p3e7","2025-11-22","LaGrange","Framingham State",24,21,24,21,TRUE
-"20251122_p9ff","2025-11-22","Washington and Jefferson","Susquehanna",32,38,32,38,TRUE
-"20251122_xsab","2025-11-22","Misericordia","Carnegie Mellon",17,24,17,24,TRUE
-"20251129_0tvc","2025-11-29","Coe","Bethel",26,51,26,51,TRUE
-"20251129_1h8l","2025-11-29","Muhlenberg","Mount Union",7,49,7,49,TRUE
-"20251129_3gqf","2025-11-29","Chapman","UW-River Falls",7,58,7,58,TRUE
-"20251129_4bix","2025-11-29","Endicott","Salisbury",28,35,28,35,TRUE
-"20251129_57m9","2025-11-29","Hardin-Simmons","Trinity (Texas)",24,34,24,34,TRUE
-"20251129_admb","2025-11-29","LaGrange","Berry",14,18,14,18,TRUE
-"20251129_b9kr","2025-11-29","Susquehanna","Christopher Newport",42,28,42,28,TRUE
-"20251129_ghzw","2025-11-29","Monmouth","St. John's",15,49,15,49,TRUE
-"20251129_h79x","2025-11-29","Eastern","Franklin and Marshall",28,24,28,24,TRUE
-"20251129_p6rx","2025-11-29","UW-La Crosse","Hope",9,7,9,7,TRUE
-"20251129_r5ne","2025-11-29","Wheaton (Ill.)","Wartburg",28,24,28,24,TRUE
-"20251129_s26k","2025-11-29","Randolph-Macon","John Carroll",6,35,6,35,TRUE
-"20251129_t77k","2025-11-29","Alma","UW-Platteville",7,24,7,24,TRUE
-"20251129_txw9","2025-11-29","Hanover","North Central (Ill.)",6,38,6,38,TRUE
-"20251129_y0qp","2025-11-29","DePauw","UW-Whitewater",26,23,26,23,TRUE
-"20251129_zeoo","2025-11-29","Springfield","Johns Hopkins",14,34,14,34,TRUE
-"20251206_bkyu","2025-12-06","St. John's","UW-River Falls",14,42,14,42,TRUE
-"20251206_msui","2025-12-06","Wheaton (Ill.)","DePauw",49,24,49,18,FALSE
-"20251206_pt6d","2025-12-06","UW-Platteville","Bethel",24,35,24,35,TRUE
-"20251206_rxq5","2025-12-06","Susquehanna","Eastern",29,0,29,0,TRUE
-"20251206_snpc","2025-12-06","Trinity (Texas)","Berry",23,31,23,31,TRUE
-"20251206_t8r2","2025-12-06","UW-La Crosse","North Central (Ill.)",27,35,27,35,TRUE
-"20251206_u8yr","2025-12-06","Salisbury","Johns Hopkins",13,45,13,45,TRUE
-"20251206_v1xq","2025-12-06","John Carroll","Mount Union",10,7,10,7,TRUE
-"20251213_5hrf","2025-12-13","Bethel","North Central (Ill.)",21,35,21,35,TRUE
-"20251213_7ppt","2025-12-13","John Carroll","Berry",21,13,21,13,TRUE
-"20251213_862g","2025-12-13","Susquehanna","Johns Hopkins",10,40,10,40,TRUE
-"20251213_z53j","2025-12-13","Wheaton (Ill.)","UW-River Falls",21,46,21,46,TRUE
-"20251220_0smg","2025-12-20","John Carroll","North Central (Ill.)",21,41,21,41,TRUE
+"6461247","2025-09-04","Trinity (Texas)","Texas Lutheran",26,14,26,14,TRUE
+"6461356","2025-09-04","Millsaps","Belhaven",24,50,24,50,TRUE
+"6461480","2025-09-04","Marietta","Westminster (Pa.)",12,8,12,8,TRUE
+"6461490","2025-09-04","Brockport","Buffalo State",41,0,41,0,TRUE
+"6461535","2025-09-04","Averett","N.C. Wesleyan",12,64,12,64,TRUE
+"6461924","2025-09-04","Augsburg","Valley City State",0,27,0,27,TRUE
+"6462034","2025-09-04","Greenville","Illinois College",9,28,9,28,TRUE
+"6462069","2025-09-04","Franklin and Marshall","Lebanon Valley",31,21,31,21,TRUE
+"6462195","2025-09-04","Pacific","Howard Payne",13,21,13,21,TRUE
+"6462268","2025-09-04","Carroll","UW-Eau Claire",7,29,7,29,TRUE
+"6462362","2025-09-04","Coe","Cornell",62,6,62,6,TRUE
+"6462411","2025-09-04","Hiram","Heidelberg",27,65,27,65,TRUE
+"6461264","2025-09-05","Concordia (Wis.)","Thiel",27,8,27,8,TRUE
+"6461334","2025-09-05","SUNY-Maritime","Massachusetts Maritime",21,14,21,14,TRUE
+"6461363","2025-09-05","Hobart","Alfred",23,28,23,28,TRUE
+"6461399","2025-09-05","Dickinson","Randolph-Macon",34,48,34,48,TRUE
+"6461550","2025-09-05","Juniata","Gettysburg",31,30,31,30,TRUE
+"6461676","2025-09-05","Albright","Gallaudet",9,7,9,7,TRUE
+"6461848","2025-09-05","Norwich","St. Lawrence",3,19,3,19,TRUE
+"6461976","2025-09-05","Ursinus","Alvernia",41,17,41,17,TRUE
+"6462322","2025-09-05","McDaniel","Catholic",7,10,7,10,TRUE
+"6462432","2025-09-05","Bridgewater State","Curry",28,35,28,35,TRUE
+"6460259","2025-09-06","Adrian","Valparaiso",10,7,10,7,TRUE
+"6461256","2025-09-06","Hanover","Centre",15,23,15,23,TRUE
+"6461284","2025-09-06","Wooster","Wilmington",35,59,35,59,TRUE
+"6461294","2025-09-06","Hampden-Sydney","Delaware Valley",38,9,38,9,TRUE
+"6461311","2025-09-06","Carleton","UW-Whitewater",14,45,14,45,TRUE
+"6461320","2025-09-06","Misericordia","Endicott",21,31,21,31,TRUE
+"6461328","2025-09-06","Westminster (Mo.)","Manchester",21,14,21,14,TRUE
+"6461348","2025-09-06","St. John Fisher","FDU-Florham",21,0,21,0,TRUE
+"6461373","2025-09-06","Mount St. Joseph","Muskingum",33,27,33,27,TRUE
+"6461389","2025-09-06","Dubuque","UW-Stout",35,38,35,38,TRUE
+"6461409","2025-09-06","DePauw","Rose-Hulman",40,0,40,0,TRUE
+"6461419","2025-09-06","Salisbury","Washington and Lee",42,21,42,21,TRUE
+"6461428","2025-09-06","Wheaton (Ill.)","Mount Union",29,37,29,37,TRUE
+"6461445","2025-09-06","Carnegie Mellon","Chicago",20,0,20,0,TRUE
+"6461471","2025-09-06","Knox","Eureka",13,14,13,14,TRUE
+"6461499","2025-09-06","Wabash","St. Norbert",55,21,55,21,TRUE
+"6461516","2025-09-06","Greensboro","Guilford",21,7,21,7,TRUE
+"6461543","2025-09-06","Maryville (Tenn.)","Hendrix",40,14,40,14,TRUE
+"6461567","2025-09-06","Baldwin Wallace","Wittenberg",31,13,31,13,TRUE
+"6461574","2025-09-06","William Paterson","Western Connecticut",20,21,20,21,TRUE
+"6461583","2025-09-06","Southwestern","McMurry",27,19,27,19,TRUE
+"6461584","2025-09-06","TCNJ","Lycoming",27,24,27,24,TRUE
+"6461598","2025-09-06","Kalamazoo","Austin",14,10,14,10,TRUE
+"6461600","2025-09-06","John Carroll","Waynesburg",48,14,48,14,TRUE
+"6461608","2025-09-06","Alma","UW-River Falls",33,45,33,45,TRUE
+"6461632","2025-09-06","Rhodes","Washington U.",0,49,0,49,TRUE
+"6461677","2025-09-06","Virginia-Lynchburg","Roanoke",7,23,7,23,TRUE
+"6461688","2025-09-06","Kenyon","Bluffton",17,20,17,20,TRUE
+"6461693","2025-09-06","Coast Guard","University of New England",49,56,49,56,TRUE
+"6461696","2025-09-06","Apprentice","Southern Virginia",6,27,6,27,TRUE
+"6461719","2025-09-06","Johns Hopkins","Ithaca",42,14,42,14,TRUE
+"6461721","2025-09-06","Denison","Allegheny",35,24,35,24,TRUE
+"6461752","2025-09-06","Union","Susquehanna",14,33,14,33,TRUE
+"6461772","2025-09-06","Geneva","Widener",18,44,18,44,TRUE
+"6461776","2025-09-06","Millikin","Luther",33,3,33,3,TRUE
+"6461785","2025-09-06","UW-Oshkosh","Linfield",31,14,31,14,TRUE
+"6461790","2025-09-06","Lewis and Clark","Puget Sound",56,20,56,20,TRUE
+"6461793","2025-09-06","Stevenson","Bridgewater",32,27,32,27,TRUE
+"6461806","2025-09-06","UW-Platteville","Aurora",41,0,41,0,TRUE
+"6461859","2025-09-06","Olivet","Rochester",17,38,17,38,TRUE
+"6461874","2025-09-06","RPI","WPI",26,9,26,9,TRUE
+"6461892","2025-09-06","Ky. Christian","Brevard",41,20,41,20,TRUE
+"6461907","2025-09-06","Calvin","Oberlin",88,6,88,6,TRUE
+"6461927","2025-09-06","Huntingdon","Berry",28,58,28,58,TRUE
+"6461940","2025-09-06","Crown","Hamline",21,28,21,28,TRUE
+"6461947","2025-09-06","Gustavus Adolphus","Whitworth",10,23,10,23,TRUE
+"6461968","2025-09-06","Augustana","Simpson",42,41,42,41,TRUE
+"6461986","2025-09-06","St. Scholastica","Wisconsin Lutheran",41,27,41,27,TRUE
+"6461994","2025-09-06","Pacific Lutheran","Cal Lutheran",15,18,15,18,TRUE
+"6462020","2025-09-06","Morrisville State","Kean",14,17,14,17,TRUE
+"6462033","2025-09-06","Methodist","Shenandoah",6,25,6,25,TRUE
+"6462038","2025-09-06","Alfred State","Anderson",6,7,6,7,TRUE
+"6462049","2025-09-06","Northwestern (Minn.)","St. Olaf",7,32,7,32,TRUE
+"6462064","2025-09-06","Nichols","MIT",13,46,13,46,TRUE
+"6462065","2025-09-06","Grove City","Cortland",31,14,31,14,TRUE
+"6462079","2025-09-06","Anna Maria","Eastern",7,46,7,46,TRUE
+"6462091","2025-09-06","Plymouth State","New England College",49,21,49,21,TRUE
+"6462097","2025-09-06","Hilbert","St. Vincent",7,28,7,28,TRUE
+"6462102","2025-09-06","Central","Illinois Wesleyan",27,18,27,18,TRUE
+"6462109","2025-09-06","George Fox","Redlands",7,10,7,10,TRUE
+"6462114","2025-09-06","Lyon","East Texas Baptist",8,47,8,47,TRUE
+"6462124","2025-09-06","North Park","Ripon",35,19,35,19,TRUE
+"6462129","2025-09-06","Bethel (Tenn.)","Mary Hardin-Baylor",23,30,23,30,TRUE
+"6462134","2025-09-06","Hardin-Simmons","Chapman",37,30,37,30,TRUE
+"6462152","2025-09-06","Carthage","Lakeland",51,40,51,40,TRUE
+"6462157","2025-09-06","Martin Luther","Lawrence",33,14,33,14,TRUE
+"6462165","2025-09-06","Ohio Wesleyan","Otterbein",65,28,65,28,TRUE
+"6462170","2025-09-06","Macalester","Grinnell",20,15,20,15,TRUE
+"6462177","2025-09-06","Minnesota-Morris","Concordia-Chicago",16,17,16,17,TRUE
+"6462188","2025-09-06","Lake Forest","Claremont-Mudd-Scripps",7,14,7,14,TRUE
+"6462202","2025-09-06","Hope","Loras",62,0,62,0,TRUE
+"6462211","2025-09-06","Pomona-Pitzer","Willamette",41,17,41,17,TRUE
+"6462215","2025-09-06","Springfield","Western New England",22,23,22,23,TRUE
+"6462239","2025-09-06","Monmouth","Wartburg",7,21,7,21,TRUE
+"6462260","2025-09-06","Buena Vista","Benedictine",0,35,0,35,TRUE
+"6462291","2025-09-06","Sewanee","Bethany",41,6,41,6,TRUE
+"6462325","2025-09-06","Vermont State Castleton","Westfield State",16,12,16,12,TRUE
+"6462343","2025-09-06","Albion","UW-Stevens Point",21,28,21,28,TRUE
+"6462349","2025-09-06","Beloit","Rockford",15,19,15,19,TRUE
+"6462378","2025-09-06","Ohio Northern","Franklin",20,27,20,27,TRUE
+"6462384","2025-09-06","Mayville St.","Concordia-Moorhead",6,17,6,17,TRUE
+"6462403","2025-09-06","Nebraska Wesleyan","Dakota St.",7,37,7,37,TRUE
+"6462412","2025-09-06","Utica","Washington and Jefferson",49,31,49,31,TRUE
+"6462415","2025-09-06","LaGrange","Point",36,14,36,14,TRUE
+"6496410","2025-09-06","Case Western Reserve","Rowan",17,17,14,17,FALSE
+"6459668","2025-09-13","Butler","Hanover",16,7,16,7,TRUE
+"6461248","2025-09-13","Howard Payne","Texas Lutheran",28,18,28,18,TRUE
+"6461265","2025-09-13","Concordia (Wis.)","Calvin",7,34,7,34,TRUE
+"6461275","2025-09-13","King's","Delaware Valley",7,49,7,49,TRUE
+"6461285","2025-09-13","Wilmington","Baldwin Wallace",21,63,21,63,TRUE
+"6461302","2025-09-13","Middlebury","Wesleyan",17,31,17,31,TRUE
+"6461321","2025-09-13","Albright","Misericordia",21,42,21,42,TRUE
+"6461329","2025-09-13","Concordia-Chicago","Manchester",35,14,35,14,TRUE
+"6461336","2025-09-13","Anderson","SUNY-Maritime",0,48,0,48,TRUE
+"6461349","2025-09-13","FDU-Florham","Lebanon Valley",13,37,13,37,TRUE
+"6461355","2025-09-13","Centenary (La.)","Millsaps",14,56,14,56,TRUE
+"6461364","2025-09-13","Ithaca","Alfred",45,14,45,14,TRUE
+"6461374","2025-09-13","Aurora","Mount St. Joseph",35,28,35,28,TRUE
+"6461381","2025-09-13","Williams","Hamilton",24,17,24,17,TRUE
+"6461390","2025-09-13","UW-Platteville","Dubuque",56,27,56,27,TRUE
+"6461400","2025-09-13","Randolph-Macon","Central",0,10,0,10,TRUE
+"6461414","2025-09-13","DePauw","Centre",35,14,35,14,TRUE
+"6461420","2025-09-13","Washington and Lee","Wittenberg",21,24,21,24,TRUE
+"6461439","2025-09-13","Catholic","Capital",20,36,20,36,TRUE
+"6461446","2025-09-13","Chicago","Cornell",28,12,28,12,TRUE
+"6461457","2025-09-13","St. Vincent","Wooster",14,28,14,28,TRUE
+"6461465","2025-09-13","Rose-Hulman","Trine",10,27,10,27,TRUE
+"6461472","2025-09-13","Ripon","Knox",50,7,50,7,TRUE
+"6461481","2025-09-13","Westminster (Pa.)","Franklin and Marshall",27,7,27,7,TRUE
+"6461491","2025-09-13","Hobart","Brockport",10,14,10,14,TRUE
+"6461508","2025-09-13","Wartburg","UW-Stout",16,0,16,0,TRUE
+"6461517","2025-09-13","Roanoke","Greensboro",32,22,32,22,TRUE
+"6461536","2025-09-13","Southern Virginia","Averett",46,14,46,14,TRUE
+"6461544","2025-09-13","Hendrix","Huntingdon",30,28,30,28,TRUE
+"6461551","2025-09-13","Allegheny","Juniata",38,40,38,40,TRUE
+"6461557","2025-09-13","Case Western Reserve","Wabash",28,38,28,38,TRUE
+"6461585","2025-09-13","Wilkes","TCNJ",3,17,3,17,TRUE
+"6461588","2025-09-13","McMurry","Hardin-Simmons",19,24,19,24,TRUE
+"6461601","2025-09-13","Waynesburg","Dickinson",19,52,19,52,TRUE
+"6461610","2025-09-13","Coe","UW-River Falls",47,59,47,59,TRUE
+"6461615","2025-09-13","Austin","Rhodes",17,31,17,31,TRUE
+"6461617","2025-09-13","Fitchburg State","Mass-Dartmouth",24,25,24,25,TRUE
+"6461618","2025-09-13","Bethany","Kalamazoo",7,50,7,50,TRUE
+"6461649","2025-09-13","Hartwick","Buffalo State",29,27,29,27,TRUE
+"6461651","2025-09-13","Lycoming","Montclair State",24,27,24,27,TRUE
+"6461657","2025-09-13","Guilford","Methodist",42,40,42,40,TRUE
+"6461689","2025-09-13","Albion","Bluffton",45,39,45,39,TRUE
+"6461694","2025-09-13","Massachusetts Maritime","Dean",28,0,28,0,TRUE
+"6461695","2025-09-13","WPI","University of New England",3,41,3,41,TRUE
+"6461707","2025-09-13","Husson","Springfield",6,38,6,38,TRUE
+"6461722","2025-09-13","John Carroll","Johns Hopkins",13,27,13,27,TRUE
+"6461753","2025-09-13","Bridgewater","Susquehanna",17,56,17,56,TRUE
+"6461773","2025-09-13","Shenandoah","Geneva",29,28,29,28,TRUE
+"6461779","2025-09-13","Luther","Martin Luther",0,34,0,34,TRUE
+"6461786","2025-09-13","UW-Oshkosh","North Central (Ill.)",14,45,14,45,TRUE
+"6461792","2025-09-13","George Fox","Lewis and Clark",10,38,10,38,TRUE
+"6461795","2025-09-13","Widener","Stevenson",3,19,3,19,TRUE
+"6461810","2025-09-13","Christopher Newport","Gettysburg",49,14,49,14,TRUE
+"6461820","2025-09-13","Puget Sound","Southwestern",43,51,43,51,TRUE
+"6461823","2025-09-13","Eureka","Westminster (Mo.)",6,29,6,29,TRUE
+"6461828","2025-09-13","Amherst","Bates",23,26,23,26,TRUE
+"6461834","2025-09-13","Maryville (Tenn.)","Ohio Wesleyan",48,24,48,24,TRUE
+"6461849","2025-09-13","Norwich","Vermont State Castleton",8,30,8,30,TRUE
+"6461852","2025-09-13","Otterbein","Marietta",31,47,31,47,TRUE
+"6461862","2025-09-13","Rochester","Morrisville State",30,14,30,14,TRUE
+"6461869","2025-09-13","Denison","Alma",27,53,27,53,TRUE
+"6461870","2025-09-13","St. Lawrence","St. John Fisher",23,28,23,28,TRUE
+"6461893","2025-09-13","Brevard","Sewanee",26,10,26,10,TRUE
+"6461901","2025-09-13","Moravian","Rowan",0,56,0,56,TRUE
+"6461923","2025-09-13","Trinity (Conn.)","Colby",6,13,6,13,TRUE
+"6461928","2025-09-13","Berry","LaGrange",48,0,48,0,TRUE
+"6461949","2025-09-13","Whitworth","Eastern Ore.",10,16,10,16,TRUE
+"6461963","2025-09-13","Union","Cortland",6,30,6,30,TRUE
+"6461969","2025-09-13","Simpson","Crown",45,7,45,7,TRUE
+"6461977","2025-09-13","Alvernia","Eastern",14,24,14,24,TRUE
+"6461995","2025-09-13","Simpson (Calif.)","Pacific Lutheran",16,42,16,42,TRUE
+"6462008","2025-09-13","Kean","Ursinus",14,42,14,42,TRUE
+"6462021","2025-09-13","UW-La Crosse","Carnegie Mellon",38,14,38,14,TRUE
+"6462035","2025-09-13","Greenville","Lakeland",29,28,29,28,TRUE
+"6462040","2025-09-13","Alfred State","Hilbert",49,13,49,13,TRUE
+"6462074","2025-09-13","Oberlin","Hiram",21,58,21,58,TRUE
+"6462080","2025-09-13","Framingham State","Anna Maria",31,25,31,25,TRUE
+"6462087","2025-09-13","MIT","New England College",55,0,55,0,TRUE
+"6462092","2025-09-13","Worcester State","Plymouth State",46,47,46,47,TRUE
+"6462122","2025-09-13","Okla. Panhandle","East Texas Baptist",0,28,0,28,TRUE
+"6462146","2025-09-13","Minnesota-Morris","St. John's",0,49,0,49,TRUE
+"6462158","2025-09-13","Lawrence","Monmouth",7,78,7,78,TRUE
+"6462171","2025-09-13","Beloit","Grinnell",0,24,0,24,TRUE
+"6462196","2025-09-13","Pacific","Willamette",42,0,42,0,TRUE
+"6462203","2025-09-13","Loras","Benedictine",13,20,13,20,TRUE
+"6462216","2025-09-13","Western New England","Salve Regina",28,34,28,34,TRUE
+"6462231","2025-09-13","Thiel","Adrian",0,76,0,76,TRUE
+"6462236","2025-09-13","Madonna","Olivet",45,28,45,28,TRUE
+"6462249","2025-09-13","Northwestern (Minn.)","Bethel",3,50,3,50,TRUE
+"6462254","2025-09-13","Belhaven","Trinity (Texas)",0,49,0,49,TRUE
+"6462259","2025-09-13","Wisconsin Lutheran","Buena Vista",6,17,6,17,TRUE
+"6462269","2025-09-13","UW-Eau Claire","Kenyon",35,6,35,6,TRUE
+"6462284","2025-09-13","Arkansas Baptist","Lyon",20,19,20,19,TRUE
+"6462297","2025-09-13","Tufts","Bowdoin",13,0,13,0,TRUE
+"6462307","2025-09-13","Merchant Marine","Nichols",56,24,56,24,TRUE
+"6462310","2025-09-13","Muhlenberg","Endicott",28,20,28,20,TRUE
+"6462334","2025-09-13","Salisbury","McDaniel",62,7,62,7,TRUE
+"6462338","2025-09-13","Hope","Franklin",38,14,38,14,TRUE
+"6462344","2025-09-13","Washington and Jefferson","Hampden-Sydney",31,38,31,38,TRUE
+"6462350","2025-09-13","Rockford","Elmhurst",30,34,30,34,TRUE
+"6462376","2025-09-13","Heidelberg","Ohio Northern",13,33,13,33,TRUE
+"6462401","2025-09-13","Westfield State","Bridgewater State",16,29,16,29,TRUE
+"6462404","2025-09-13","Mayville St.","Nebraska Wesleyan",20,13,20,13,TRUE
+"6462409","2025-09-13","Curry","Coast Guard",24,34,24,34,TRUE
+"6462413","2025-09-13","RPI","Utica",14,41,14,41,TRUE
+"6462418","2025-09-13","Mount Union","Grove City",49,14,49,14,TRUE
+"6462421","2025-09-13","Lake Forest","Illinois College",25,28,25,28,TRUE
+"6462428","2025-09-13","UW-Whitewater","St. Xavier",37,0,37,0,TRUE
+"6459813","2025-09-20","Greensboro","Davidson",0,48,0,48,TRUE
+"6460461","2025-09-20","Roosevelt","UW-Oshkosh",21,38,21,38,TRUE
+"6460710","2025-09-20","Wayne St. (Mich.)","UW-La Crosse",22,31,22,31,TRUE
+"6460793","2025-09-20","Erskine","Brevard",34,38,34,38,TRUE
+"6461249","2025-09-20","Texas Lutheran","Southwestern",38,35,38,35,TRUE
+"6461257","2025-09-20","Hanover","Alma",24,23,24,23,TRUE
+"6461266","2025-09-20","Concordia (Wis.)","Wisconsin Lutheran",27,20,27,20,TRUE
+"6461276","2025-09-20","FDU-Florham","King's",21,27,21,27,TRUE
+"6461286","2025-09-20","Wilmington","Muskingum",49,56,49,56,TRUE
+"6461303","2025-09-20","Bowdoin","Middlebury",10,31,10,31,TRUE
+"6461312","2025-09-20","UW-Whitewater","Mary Hardin-Baylor",26,6,26,6,TRUE
+"6461322","2025-09-20","Misericordia","Widener",21,7,21,7,TRUE
+"6461330","2025-09-20","Manchester","Adrian",0,57,0,57,TRUE
+"6461338","2025-09-20","SUNY-Maritime","Endicott",7,41,7,41,TRUE
+"6461365","2025-09-20","Alfred","St. Lawrence",35,13,35,13,TRUE
+"6461375","2025-09-20","Mount St. Joseph","Hope",28,31,28,31,TRUE
+"6461382","2025-09-20","Colby","Williams",0,38,0,38,TRUE
+"6461391","2025-09-20","Loras","Dubuque",27,34,27,34,TRUE
+"6461401","2025-09-20","Randolph-Macon","Bridgewater",27,3,27,3,TRUE
+"6461415","2025-09-20","Kenyon","DePauw",14,35,14,35,TRUE
+"6461421","2025-09-20","Guilford","Washington and Lee",7,35,7,35,TRUE
+"6461429","2025-09-20","Wheaton (Ill.)","Augustana",50,7,50,7,TRUE
+"6461438","2025-09-20","Millsaps","Hendrix",41,19,41,19,TRUE
+"6461440","2025-09-20","Baldwin Wallace","Capital",44,7,44,7,TRUE
+"6461447","2025-09-20","Illinois College","Chicago",21,24,21,24,TRUE
+"6461458","2025-09-20","Wabash","Wooster",34,7,34,7,TRUE
+"6461466","2025-09-20","Rose-Hulman","Albion",17,25,17,25,TRUE
+"6461473","2025-09-20","Knox","Beloit",16,14,16,14,TRUE
+"6461482","2025-09-20","Westminster (Pa.)","Case Western Reserve",28,23,28,23,TRUE
+"6461492","2025-09-20","Brockport","RPI",24,30,24,30,TRUE
+"6461501","2025-09-20","St. Norbert","Concordia-Chicago",59,28,59,28,TRUE
+"6461509","2025-09-20","UW-Stout","Northwestern (Minn.)",56,13,56,13,TRUE
+"6461526","2025-09-20","Maine Maritime","Norwich",0,63,0,63,TRUE
+"6461537","2025-09-20","Averett","Gallaudet",30,39,30,39,TRUE
+"6461556","2025-09-20","Juniata","McDaniel",7,24,7,24,TRUE
+"6461575","2025-09-20","Gettysburg","Western Connecticut",21,55,21,55,TRUE
+"6461582","2025-09-20","Southern Virginia","Keystone",42,0,42,0,TRUE
+"6461591","2025-09-20","McMurry","Huntingdon",46,52,46,52,TRUE
+"6461602","2025-09-20","Hiram","Waynesburg",27,35,27,35,TRUE
+"6461612","2025-09-20","UW-River Falls","Belhaven",65,0,65,0,TRUE
+"6461620","2025-09-20","Mass-Dartmouth","Framingham State",10,14,10,14,TRUE
+"6461621","2025-09-20","Anderson","Kalamazoo",0,27,0,27,TRUE
+"6461636","2025-09-20","Washington U.","Carroll",41,29,41,29,TRUE
+"6461648","2025-09-20","Willamette","La Verne",29,14,29,14,TRUE
+"6461678","2025-09-20","Delaware Valley","Albright",35,28,35,28,TRUE
+"6461690","2025-09-20","Bluffton","Olivet",37,28,37,28,TRUE
+"6461697","2025-09-20","Westfield State","Dean",48,6,48,6,TRUE
+"6461699","2025-09-20","University of New England","Vermont State Castleton",35,8,35,8,TRUE
+"6461706","2025-09-20","New England College","Fitchburg State",0,48,0,48,TRUE
+"6461709","2025-09-20","WPI","Husson",15,13,15,13,TRUE
+"6461725","2025-09-20","Thiel","Allegheny",0,26,0,26,TRUE
+"6461726","2025-09-20","Johns Hopkins","Susquehanna",40,22,40,22,TRUE
+"6461741","2025-09-20","Ithaca","Hilbert",65,3,65,3,TRUE
+"6461745","2025-09-20","Muhlenberg","Wilkes",26,18,26,18,TRUE
+"6461755","2025-09-20","Buffalo State","Alfred State",20,56,20,56,TRUE
+"6461774","2025-09-20","St. Vincent","Geneva",35,55,35,55,TRUE
+"6461781","2025-09-20","Central","Luther",63,26,63,26,TRUE
+"6461794","2025-09-20","Lewis and Clark","Pomona-Pitzer",21,3,21,3,TRUE
+"6461797","2025-09-20","Stevenson","Alvernia",35,13,35,13,TRUE
+"6461807","2025-09-20","Benedictine","Aurora",36,35,36,35,TRUE
+"6461821","2025-09-20","Cal Lutheran","Puget Sound",55,28,55,28,TRUE
+"6461824","2025-09-20","Eureka","Rockford",40,20,40,20,TRUE
+"6461829","2025-09-20","Bates","Trinity (Conn.)",13,30,13,30,TRUE
+"6461863","2025-09-20","St. John Fisher","Rochester",21,28,21,28,TRUE
+"6461902","2025-09-20","Ursinus","Moravian",35,7,35,7,TRUE
+"6461906","2025-09-20","Utica","Hobart",17,20,17,20,TRUE
+"6461908","2025-09-20","Calvin","Heidelberg",40,37,40,37,TRUE
+"6461919","2025-09-20","Springfield","UW-Platteville",12,28,12,28,TRUE
+"6461930","2025-09-20","Berry","Carnegie Mellon",9,17,9,17,TRUE
+"6461931","2025-09-20","Augsburg","St. Scholastica",30,23,30,23,TRUE
+"6461941","2025-09-20","St. John's","Hamline",59,0,59,0,TRUE
+"6461951","2025-09-20","Redlands","Whitworth",34,17,34,17,TRUE
+"6461958","2025-09-20","Wesleyan","Tufts",20,22,20,22,TRUE
+"6461964","2025-09-20","Morrisville State","Union",7,31,7,31,TRUE
+"6461970","2025-09-20","Wartburg","Simpson",27,13,27,13,TRUE
+"6461996","2025-09-20","Trinity (Texas)","Pacific Lutheran",45,8,45,8,TRUE
+"6462001","2025-09-20","Carthage","North Central (Ill.)",0,62,0,62,TRUE
+"6462050","2025-09-20","Concordia-Moorhead","St. Olaf",16,17,16,17,TRUE
+"6462057","2025-09-20","Dickinson","Lycoming",52,29,52,29,TRUE
+"6462066","2025-09-20","Cortland","Hartwick",59,9,59,9,TRUE
+"6462070","2025-09-20","Catholic","Franklin and Marshall",7,42,7,42,TRUE
+"6462075","2025-09-20","Oberlin","John Carroll",0,63,0,63,TRUE
+"6462081","2025-09-20","Anna Maria","Massachusetts Maritime",33,27,33,27,TRUE
+"6462093","2025-09-20","Plymouth State","Bridgewater State",42,21,42,21,TRUE
+"6462103","2025-09-20","Elmhurst","Illinois Wesleyan",6,42,6,42,TRUE
+"6462110","2025-09-20","Claremont-Mudd-Scripps","George Fox",28,21,28,21,TRUE
+"6462115","2025-09-20","East Texas Baptist","Centenary (La.)",50,33,50,33,TRUE
+"6462125","2025-09-20","North Park","Millikin",17,22,17,22,TRUE
+"6462135","2025-09-20","Louisiana Christian","Hardin-Simmons",17,52,17,52,TRUE
+"6462159","2025-09-20","Cornell","Lawrence",20,0,20,0,TRUE
+"6462172","2025-09-20","Grinnell","Ripon",20,30,20,30,TRUE
+"6462181","2025-09-20","Minnesota-Morris","Crown",20,30,20,30,TRUE
+"6462201","2025-09-20","Wayland Baptist","Howard Payne",21,18,21,18,TRUE
+"6462217","2025-09-20","Worcester State","Western New England",13,48,13,48,TRUE
+"6462221","2025-09-20","Franklin","Trine",27,35,27,35,TRUE
+"6462240","2025-09-20","Monmouth","Lake Forest",49,6,49,6,TRUE
+"6462250","2025-09-20","Bethel","Gustavus Adolphus",41,7,41,7,TRUE
+"6462273","2025-09-20","Martin Luther","UW-Eau Claire",6,42,6,42,TRUE
+"6462286","2025-09-20","Eastern","Lebanon Valley",21,24,21,24,TRUE
+"6462288","2025-09-20","Wittenberg","Ohio Wesleyan",55,17,55,17,TRUE
+"6462295","2025-09-20","Shenandoah","Hampden-Sydney",7,42,7,42,TRUE
+"6462329","2025-09-20","Sewanee","N.C. Wesleyan",33,0,33,0,TRUE
+"6462332","2025-09-20","Centre","LaGrange",6,20,6,20,TRUE
+"6462358","2025-09-20","Chapman","Linfield",13,28,13,28,TRUE
+"6462380","2025-09-20","Hamilton","Amherst",13,23,13,23,TRUE
+"6462390","2025-09-20","Macalester","Carleton",7,51,7,51,TRUE
+"6462405","2025-09-20","Nebraska Wesleyan","Coe",14,62,14,62,TRUE
+"6462406","2025-09-20","Nichols","Coast Guard",60,92,60,92,TRUE
+"6462429","2025-09-20","Salve Regina","William Paterson",24,12,24,12,TRUE
+"6460931","2025-09-27","Mary Hardin-Baylor","Mars Hill",7,21,7,21,TRUE
+"6461250","2025-09-27","East Texas Baptist","Texas Lutheran",24,21,24,21,TRUE
+"6461267","2025-09-27","Benedictine","Concordia (Wis.)",20,28,20,28,TRUE
+"6461277","2025-09-27","Eastern","King's",39,37,39,37,TRUE
+"6461287","2025-09-27","Ohio Northern","Wilmington",41,35,41,35,TRUE
+"6461295","2025-09-27","Lebanon Valley","Delaware Valley",21,18,21,18,TRUE
+"6461304","2025-09-27","Middlebury","Colby",27,17,27,17,TRUE
+"6461323","2025-09-27","Alvernia","Misericordia",10,41,10,41,TRUE
+"6461339","2025-09-27","SUNY-Maritime","Salve Regina",20,28,20,28,TRUE
+"6461350","2025-09-27","Stevenson","FDU-Florham",55,20,55,20,TRUE
+"6461366","2025-09-27","Alfred","St. John Fisher",7,21,7,21,TRUE
+"6461383","2025-09-27","Trinity (Conn.)","Williams",34,28,34,28,TRUE
+"6461392","2025-09-27","Dubuque","Central",16,35,16,35,TRUE
+"6461402","2025-09-27","Washington and Lee","Randolph-Macon",6,24,6,24,TRUE
+"6461413","2025-09-27","DePauw","Wittenberg",28,0,28,0,TRUE
+"6461430","2025-09-27","Carroll","Wheaton (Ill.)",13,61,13,61,TRUE
+"6461441","2025-09-27","Marietta","Capital",24,21,24,21,TRUE
+"6461459","2025-09-27","Wooster","Oberlin",38,0,38,0,TRUE
+"6461493","2025-09-27","Hartwick","Brockport",0,56,0,56,TRUE
+"6461538","2025-09-27","Bridgewater","Averett",41,14,41,14,TRUE
+"6461545","2025-09-27","Rhodes","Hendrix",28,47,28,47,TRUE
+"6461558","2025-09-27","Juniata","TCNJ",0,35,0,35,TRUE
+"6461559","2025-09-27","Denison","Wabash",0,36,0,36,TRUE
+"6461568","2025-09-27","Mount Union","Baldwin Wallace",42,23,42,23,TRUE
+"6461576","2025-09-27","Western Connecticut","Kean",38,7,38,7,TRUE
+"6461594","2025-09-27","Howard Payne","McMurry",24,31,24,31,TRUE
+"6461603","2025-09-27","Waynesburg","Thiel",45,14,45,14,TRUE
+"6461622","2025-09-27","Mass-Dartmouth","Anna Maria",43,47,43,47,TRUE
+"6461624","2025-09-27","Kalamazoo","Calvin",16,24,16,24,TRUE
+"6461638","2025-09-27","North Central (Ill.)","Washington U.",44,14,44,14,TRUE
+"6461650","2025-09-27","La Verne","Chapman",6,56,6,56,TRUE
+"6461652","2025-09-27","Wilkes","Montclair State",24,21,24,21,TRUE
+"6461660","2025-09-27","Hampden-Sydney","Guilford",69,14,69,14,TRUE
+"6461679","2025-09-27","Gallaudet","Roanoke",14,38,14,38,TRUE
+"6461680","2025-09-27","Widener","Albright",9,35,9,35,TRUE
+"6461700","2025-09-27","Dean","Curry",12,52,12,52,TRUE
+"6461701","2025-09-27","Western New England","University of New England",31,37,31,37,TRUE
+"6461711","2025-09-27","Endicott","Husson",48,14,48,14,TRUE
+"6461728","2025-09-27","Geneva","Allegheny",28,16,28,16,TRUE
+"6461743","2025-09-27","Hobart","Ithaca",7,13,7,13,TRUE
+"6461754","2025-09-27","Susquehanna","Christopher Newport",27,41,27,41,TRUE
+"6461757","2025-09-27","Buffalo State","Hilbert",15,8,15,8,TRUE
+"6461809","2025-09-27","Aurora","Eureka",66,0,66,0,TRUE
+"6461830","2025-09-27","Wesleyan","Bates",23,7,23,7,TRUE
+"6461850","2025-09-27","Merchant Marine","Norwich",49,0,49,0,TRUE
+"6461864","2025-09-27","Rochester","RPI",3,31,3,31,TRUE
+"6461882","2025-09-27","Coast Guard","WPI",49,21,49,21,TRUE
+"6461903","2025-09-27","William Paterson","Moravian",38,14,38,14,TRUE
+"6461934","2025-09-27","Augsburg","St. John's",0,63,0,63,TRUE
+"6461942","2025-09-27","Bethel","Hamline",62,12,62,12,TRUE
+"6461965","2025-09-27","St. Lawrence","Union",12,44,12,44,TRUE
+"6461971","2025-09-27","Simpson","Buena Vista",41,0,41,0,TRUE
+"6461987","2025-09-27","Macalester","St. Scholastica",34,37,34,37,TRUE
+"6462015","2025-09-27","Case Western Reserve","Bethany",55,0,55,0,TRUE
+"6462043","2025-09-27","Alfred State","Utica",13,45,13,45,TRUE
+"6462051","2025-09-27","St. Olaf","Carleton",28,35,28,35,TRUE
+"6462056","2025-09-27","Rowan","Lycoming",34,23,34,23,TRUE
+"6462059","2025-09-27","Apprentice","Methodist",19,20,19,20,TRUE
+"6462067","2025-09-27","Cortland","Morrisville State",48,3,48,3,TRUE
+"6462086","2025-09-27","Springfield","MIT",31,7,31,7,TRUE
+"6462094","2025-09-27","Massachusetts Maritime","Plymouth State",10,14,10,14,TRUE
+"6462104","2025-09-27","Illinois Wesleyan","Carthage",34,10,34,10,TRUE
+"6462123","2025-09-27","Elmhurst","North Park",6,34,6,34,TRUE
+"6462142","2025-09-27","Luther","Nebraska Wesleyan",7,44,7,44,TRUE
+"6462166","2025-09-27","Muskingum","Otterbein",37,13,37,13,TRUE
+"6462178","2025-09-27","Concordia-Chicago","Wisconsin Lutheran",6,28,6,28,TRUE
+"6462189","2025-09-27","Claremont-Mudd-Scripps","Pomona-Pitzer",17,25,17,25,TRUE
+"6462222","2025-09-27","Trine","Albion",38,35,38,35,TRUE
+"6462227","2025-09-27","Westminster (Mo.)","Lyon",24,38,24,38,TRUE
+"6462232","2025-09-27","Adrian","Olivet",59,27,59,27,TRUE
+"6462247","2025-09-27","Worcester State","Westfield State",22,31,22,31,TRUE
+"6462266","2025-09-27","Bridgewater State","Framingham State",40,46,40,46,TRUE
+"6462298","2025-09-27","Tufts","Amherst",14,30,14,30,TRUE
+"6462302","2025-09-27","Coe","Wartburg",7,17,7,17,TRUE
+"6462314","2025-09-27","Cal Lutheran","Redlands",27,10,27,10,TRUE
+"6462318","2025-09-27","Hiram","St. Vincent",40,38,40,38,TRUE
+"6462323","2025-09-27","Salisbury","Catholic",55,6,55,6,TRUE
+"6462339","2025-09-27","Alma","Hope",29,26,29,26,TRUE
+"6462351","2025-09-27","Lakeland","Rockford",35,7,35,7,TRUE
+"6462381","2025-09-27","Bowdoin","Hamilton",13,27,13,27,TRUE
+"6462385","2025-09-27","Gustavus Adolphus","Concordia-Moorhead",13,14,13,14,TRUE
+"6462395","2025-09-27","Millikin","Augustana",6,33,6,33,TRUE
+"6462407","2025-09-27","New England College","Nichols",21,41,21,41,TRUE
+"6462419","2025-09-27","Washington and Jefferson","Grove City",34,14,34,14,TRUE
+"6462434","2025-09-27","John Carroll","Kenyon",52,0,52,0,TRUE
+"6462436","2025-09-27","Pikeville","Maryville (Tenn.)",30,34,30,34,TRUE
+"6461625","2025-10-03","Massachusetts Maritime","Mass-Dartmouth",7,31,7,31,TRUE
+"6461731","2025-10-03","Dickinson","Johns Hopkins",10,55,10,55,TRUE
+"6461258","2025-10-04","Hanover","Rose-Hulman",44,10,44,10,TRUE
+"6461268","2025-10-04","Concordia (Wis.)","St. Norbert",24,17,24,17,TRUE
+"6461305","2025-10-04","Amherst","Middlebury",27,17,27,17,TRUE
+"6461313","2025-10-04","UW-La Crosse","UW-Whitewater",23,20,23,20,TRUE
+"6461331","2025-10-04","Manchester","Bluffton",23,39,23,39,TRUE
+"6461340","2025-10-04","Coast Guard","SUNY-Maritime",28,26,28,26,TRUE
+"6461357","2025-10-04","Millsaps","Centre",36,37,36,37,TRUE
+"6461367","2025-10-04","Hartwick","Alfred",24,45,24,45,TRUE
+"6461376","2025-10-04","Anderson","Mount St. Joseph",21,41,21,41,TRUE
+"6461384","2025-10-04","Williams","Bowdoin",35,17,35,17,TRUE
+"6461393","2025-10-04","Nebraska Wesleyan","Dubuque",10,21,10,21,TRUE
+"6461403","2025-10-04","Randolph-Macon","Roanoke",35,17,35,17,TRUE
+"6461416","2025-10-04","Oberlin","DePauw",0,75,0,75,TRUE
+"6461422","2025-10-04","Washington and Lee","Hampden-Sydney",42,34,42,34,TRUE
+"6461431","2025-10-04","Wheaton (Ill.)","North Central (Ill.)",0,35,0,35,TRUE
+"6461442","2025-10-04","Capital","Heidelberg",27,30,27,30,TRUE
+"6461450","2025-10-04","Chicago","Knox",52,0,52,0,TRUE
+"6461460","2025-10-04","Wittenberg","Wooster",12,14,12,14,TRUE
+"6461483","2025-10-04","Bethany","Westminster (Pa.)",0,52,0,52,TRUE
+"6461494","2025-10-04","Brockport","St. John Fisher",24,31,24,31,TRUE
+"6461510","2025-10-04","UW-Stout","UW-Eau Claire",42,17,42,17,TRUE
+"6461518","2025-10-04","Greensboro","Southern Virginia",22,35,22,35,TRUE
+"6461528","2025-10-04","Nichols","Maine Maritime",49,20,49,20,TRUE
+"6461552","2025-10-04","Western Connecticut","Juniata",63,15,62,15,FALSE
+"6461560","2025-10-04","Wabash","John Carroll",28,31,28,31,TRUE
+"6461586","2025-10-04","TCNJ","Salisbury",10,55,10,55,TRUE
+"6461604","2025-10-04","Allegheny","Waynesburg",21,11,21,11,TRUE
+"6461613","2025-10-04","UW-River Falls","UW-Oshkosh",17,21,17,21,TRUE
+"6461628","2025-10-04","Olivet","Kalamazoo",47,44,47,44,TRUE
+"6461640","2025-10-04","Illinois Wesleyan","Washington U.",40,42,40,42,TRUE
+"6461653","2025-10-04","Pomona-Pitzer","La Verne",34,12,34,12,TRUE
+"6461656","2025-10-04","Montclair State","Kean",38,28,38,28,TRUE
+"6461664","2025-10-04","Guilford","Gallaudet",55,0,55,0,TRUE
+"6461704","2025-10-04","Plymouth State","Dean",34,0,34,0,TRUE
+"6461705","2025-10-04","University of New England","Endicott",14,53,14,53,TRUE
+"6461713","2025-10-04","Framingham State","Fitchburg State",22,12,22,12,TRUE
+"6461714","2025-10-04","Husson","Western New England",10,35,10,35,TRUE
+"6461742","2025-10-04","Ithaca","Rochester",10,6,10,6,TRUE
+"6461747","2025-10-04","Catholic","Wilkes",13,15,13,15,TRUE
+"6461760","2025-10-04","Union","Buffalo State",28,6,28,6,TRUE
+"6461775","2025-10-04","Grove City","Geneva",22,9,22,9,TRUE
+"6461783","2025-10-04","Wartburg","Luther",36,3,36,3,TRUE
+"6461796","2025-10-04","Puget Sound","Lewis and Clark",21,58,21,58,TRUE
+"6461811","2025-10-04","Aurora","Lakeland",49,28,49,28,TRUE
+"6461812","2025-10-04","Christopher Newport","Rowan",49,41,49,41,TRUE
+"6461831","2025-10-04","Colby","Bates",13,6,13,6,TRUE
+"6461851","2025-10-04","WPI","Norwich",14,7,14,7,TRUE
+"6461854","2025-10-04","Marietta","Ohio Northern",9,42,9,42,TRUE
+"6461871","2025-10-04","Ohio Wesleyan","Denison",20,35,20,35,TRUE
+"6461886","2025-10-04","Franklin and Marshall","Gettysburg",35,28,35,28,TRUE
+"6461894","2025-10-04","Brevard","Belhaven",20,23,20,23,TRUE
+"6461904","2025-10-04","Moravian","Lycoming",0,17,0,17,TRUE
+"6461909","2025-10-04","RPI","Hobart",36,10,36,10,TRUE
+"6461910","2025-10-04","Calvin","Alma",6,55,6,55,TRUE
+"6461920","2025-10-04","UW-Stevens Point","UW-Platteville",0,52,0,52,TRUE
+"6461933","2025-10-04","Rhodes","Berry",14,54,14,54,TRUE
+"6461943","2025-10-04","Hamline","Macalester",0,29,0,29,TRUE
+"6461953","2025-10-04","Whitworth","Pacific",28,14,28,14,TRUE
+"6461959","2025-10-04","Hamilton","Wesleyan",14,56,14,56,TRUE
+"6461980","2025-10-04","St. Olaf","Augsburg",13,44,13,44,TRUE
+"6461988","2025-10-04","St. Scholastica","Concordia-Moorhead",21,49,21,49,TRUE
+"6461997","2025-10-04","Willamette","Pacific Lutheran",28,31,28,31,TRUE
+"6462009","2025-10-04","Ursinus","Muhlenberg",36,39,36,39,TRUE
+"6462016","2025-10-04","Case Western Reserve","St. Vincent",42,14,42,14,TRUE
+"6462022","2025-10-04","McDaniel","Carnegie Mellon",7,56,7,56,TRUE
+"6462030","2025-10-04","Hilbert","St. Lawrence",14,45,14,45,TRUE
+"6462032","2025-10-04","Methodist","Huntingdon",0,26,0,26,TRUE
+"6462037","2025-10-04","Westminster (Mo.)","Greenville",24,38,24,38,TRUE
+"6462045","2025-10-04","Morrisville State","Alfred State",21,41,21,41,TRUE
+"6462068","2025-10-04","Utica","Cortland",13,28,13,28,TRUE
+"6462082","2025-10-04","Anna Maria","Westfield State",41,14,41,14,TRUE
+"6462088","2025-10-04","MIT","Merchant Marine",3,6,3,6,TRUE
+"6462111","2025-10-04","Linfield","George Fox",35,17,35,17,TRUE
+"6462116","2025-10-04","Mary Hardin-Baylor","East Texas Baptist",42,28,42,28,TRUE
+"6462126","2025-10-04","Augustana","North Park",24,21,24,21,TRUE
+"6462136","2025-10-04","Howard Payne","Hardin-Simmons",14,69,14,69,TRUE
+"6462139","2025-10-04","Centenary (La.)","Austin",15,41,15,41,TRUE
+"6462147","2025-10-04","St. John's","Bethel",10,17,10,17,TRUE
+"6462153","2025-10-04","Carthage","Elmhurst",31,7,31,7,TRUE
+"6462160","2025-10-04","Lawrence","Illinois College",0,59,0,59,TRUE
+"6462167","2025-10-04","Otterbein","Mount Union",7,62,7,62,TRUE
+"6462173","2025-10-04","Monmouth","Grinnell",49,9,49,9,TRUE
+"6462182","2025-10-04","Martin Luther","Minnesota-Morris",28,35,28,35,TRUE
+"6462190","2025-10-04","Claremont-Mudd-Scripps","Cal Lutheran",17,22,17,22,TRUE
+"6462200","2025-10-04","Central","Loras",45,27,45,27,TRUE
+"6462223","2025-10-04","Hope","Trine",55,35,55,35,TRUE
+"6462233","2025-10-04","Albion","Adrian",7,28,7,28,TRUE
+"6462248","2025-10-04","Bridgewater State","Worcester State",10,19,10,19,TRUE
+"6462261","2025-10-04","Buena Vista","Coe",10,37,10,37,TRUE
+"6462270","2025-10-04","Southwestern","Trinity (Texas)",14,65,14,65,TRUE
+"6462278","2025-10-04","Salve Regina","Springfield",14,28,14,28,TRUE
+"6462296","2025-10-04","Bridgewater","Shenandoah",21,24,21,24,TRUE
+"6462299","2025-10-04","Tufts","Trinity (Conn.)",14,41,14,41,TRUE
+"6462303","2025-10-04","Northwestern (Minn.)","Crown",3,22,3,22,TRUE
+"6462315","2025-10-04","Redlands","Chapman",0,27,0,27,TRUE
+"6462319","2025-10-04","Washington and Jefferson","Hiram",70,13,70,13,TRUE
+"6462324","2025-10-04","Curry","New England College",62,7,62,7,TRUE
+"6462326","2025-10-04","Vermont State Castleton","William Paterson",7,32,7,32,TRUE
+"6462352","2025-10-04","Rockford","Benedictine",9,42,9,42,TRUE
+"6462354","2025-10-04","Cornell","Beloit",26,19,26,19,TRUE
+"6462366","2025-10-04","Franklin","Muskingum",34,33,34,33,TRUE
+"6462371","2025-10-04","N.C. Wesleyan","LaGrange",24,41,24,41,TRUE
+"6462388","2025-10-04","Carleton","Gustavus Adolphus",45,28,45,28,TRUE
+"6462396","2025-10-04","Carroll","Millikin",28,17,28,17,TRUE
+"6462423","2025-10-04","Lake Forest","Ripon",38,0,38,0,TRUE
+"6462437","2025-10-04","Eureka","Concordia-Chicago",20,49,20,49,TRUE
+"6461278","2025-10-10","King's","Stevenson",35,28,35,28,TRUE
+"6459675","2025-10-11","Western Connecticut","New Haven",0,69,0,69,TRUE
+"6461251","2025-10-11","Texas Lutheran","Centenary (La.)",55,27,55,27,TRUE
+"6461259","2025-10-11","Hanover","Mount St. Joseph",45,21,45,21,TRUE
+"6461269","2025-10-11","Lakeland","Concordia (Wis.)",34,41,34,41,TRUE
+"6461288","2025-10-11","Mount Union","Wilmington",59,0,59,0,TRUE
+"6461296","2025-10-11","Delaware Valley","Eastern",20,37,20,37,TRUE
+"6461306","2025-10-11","Middlebury","Williams",17,24,17,24,TRUE
+"6461314","2025-10-11","UW-Whitewater","UW-Stevens Point",45,14,45,14,TRUE
+"6461324","2025-10-11","Misericordia","Lebanon Valley",23,21,23,21,TRUE
+"6461332","2025-10-11","Capital","Manchester",52,27,52,27,TRUE
+"6461342","2025-10-11","SUNY-Maritime","Merchant Marine",34,14,34,14,TRUE
+"6461351","2025-10-11","FDU-Florham","Widener",17,20,17,20,TRUE
+"6461358","2025-10-11","Millsaps","Rhodes",45,19,45,19,TRUE
+"6461394","2025-10-11","Dubuque","Wartburg",7,33,7,33,TRUE
+"6461404","2025-10-11","Averett","Randolph-Macon",20,77,20,77,TRUE
+"6461423","2025-10-11","Gallaudet","Washington and Lee",0,45,0,45,TRUE
+"6461432","2025-10-11","Wheaton (Ill.)","Illinois Wesleyan",65,21,65,21,TRUE
+"6461451","2025-10-11","Lawrence","Chicago",0,66,0,66,TRUE
+"6461461","2025-10-11","Denison","Wooster",28,7,28,7,TRUE
+"6461467","2025-10-11","Rose-Hulman","Franklin",35,34,35,34,TRUE
+"6461474","2025-10-11","Grinnell","Knox",17,20,17,20,TRUE
+"6461484","2025-10-11","Westminster (Pa.)","Washington and Jefferson",7,24,7,24,TRUE
+"6461502","2025-10-11","St. Norbert","Wisconsin Lutheran",17,14,17,14,TRUE
+"6461511","2025-10-11","UW-Oshkosh","UW-Stout",16,27,16,27,TRUE
+"6461519","2025-10-11","Huntingdon","Greensboro",17,10,17,10,TRUE
+"6461529","2025-10-11","Maine Maritime","Curry",0,60,0,60,TRUE
+"6461546","2025-10-11","Austin","Hendrix",21,60,21,60,TRUE
+"6461561","2025-10-11","Juniata","Catholic",17,20,17,20,TRUE
+"6461562","2025-10-11","Ohio Wesleyan","Wabash",27,44,27,44,TRUE
+"6461569","2025-10-11","Baldwin Wallace","Otterbein",56,14,56,14,TRUE
+"6461587","2025-10-11","William Paterson","TCNJ",0,42,0,42,TRUE
+"6461596","2025-10-11","Lyon","McMurry",7,65,7,65,TRUE
+"6461605","2025-10-11","Waynesburg","Grove City",14,24,14,24,TRUE
+"6461616","2025-10-11","UW-Platteville","UW-River Falls",21,31,21,31,TRUE
+"6461642","2025-10-11","Washington U.","Carthage",31,23,31,23,TRUE
+"6461654","2025-10-11","St. John Fisher","Hartwick",35,21,35,21,TRUE
+"6461655","2025-10-11","Cal Lutheran","La Verne",23,19,23,19,TRUE
+"6461661","2025-10-11","Rowan","Montclair State",38,26,38,26,TRUE
+"6461668","2025-10-11","Shenandoah","Guilford",45,7,45,7,TRUE
+"6461681","2025-10-11","Roanoke","Bridgewater",24,14,24,14,TRUE
+"6461682","2025-10-11","Albright","Alvernia",38,14,38,14,TRUE
+"6461692","2025-10-11","Bluffton","Anderson",49,7,49,7,TRUE
+"6461717","2025-10-11","Fitchburg State","Worcester State",21,6,21,6,TRUE
+"6461734","2025-10-11","Carnegie Mellon","Johns Hopkins",27,28,27,28,TRUE
+"6461735","2025-10-11","Allegheny","Case Western Reserve",21,62,21,62,TRUE
+"6461744","2025-10-11","Ithaca","St. Lawrence",24,7,24,7,TRUE
+"6461748","2025-10-11","Wilkes","Moravian",26,7,26,7,TRUE
+"6461758","2025-10-11","Lycoming","Susquehanna",7,69,7,69,TRUE
+"6461762","2025-10-11","Buffalo State","RPI",13,57,13,57,TRUE
+"6461777","2025-10-11","Geneva","Thiel",51,38,51,38,TRUE
+"6461798","2025-10-11","Lewis and Clark","Willamette",28,20,28,20,TRUE
+"6461813","2025-10-11","Christopher Newport","Vermont State Castleton",69,7,69,7,TRUE
+"6461815","2025-10-11","Rockford","Aurora",0,48,0,48,TRUE
+"6461822","2025-10-11","Pacific Lutheran","Puget Sound",41,27,41,27,TRUE
+"6461825","2025-10-11","Benedictine","Eureka",56,0,56,0,TRUE
+"6461832","2025-10-11","Bates","Tufts",35,28,35,28,TRUE
+"6461837","2025-10-11","Centre","Maryville (Tenn.)",13,33,13,33,TRUE
+"6461855","2025-10-11","Heidelberg","Marietta",30,27,30,27,TRUE
+"6461865","2025-10-11","Hilbert","Rochester",0,38,0,38,TRUE
+"6461887","2025-10-11","Gettysburg","Dickinson",21,49,21,49,TRUE
+"6461895","2025-10-11","Southern Virginia","Brevard",32,35,32,35,TRUE
+"6461917","2025-10-11","Hobart","Union",16,33,16,33,TRUE
+"6461925","2025-10-11","Wesleyan","Colby",24,7,24,7,TRUE
+"6461935","2025-10-11","Trinity (Texas)","Berry",6,29,6,29,TRUE
+"6461944","2025-10-11","Concordia-Moorhead","Hamline",58,12,58,12,TRUE
+"6461954","2025-10-11","George Fox","Whitworth",16,40,16,40,TRUE
+"6461972","2025-10-11","Coe","Simpson",34,7,34,7,TRUE
+"6461981","2025-10-11","Bethel","Augsburg",56,7,56,7,TRUE
+"6461989","2025-10-11","Carleton","St. Scholastica",41,14,41,14,TRUE
+"6462002","2025-10-11","Millikin","North Central (Ill.)",10,59,10,59,TRUE
+"6462010","2025-10-11","McDaniel","Ursinus",0,52,0,52,TRUE
+"6462023","2025-10-11","Kean","Salisbury",24,38,24,38,TRUE
+"6462039","2025-10-11","Greenville","Northwestern (Minn.)",23,20,23,20,TRUE
+"6462052","2025-10-11","Gustavus Adolphus","St. Olaf",35,21,35,21,TRUE
+"6462060","2025-10-11","LaGrange","Methodist",26,7,26,7,TRUE
+"6462071","2025-10-11","Muhlenberg","Franklin and Marshall",27,28,27,28,TRUE
+"6462076","2025-10-11","Kenyon","Oberlin",57,2,57,2,TRUE
+"6462117","2025-10-11","East Texas Baptist","Howard Payne",18,36,18,36,TRUE
+"6462127","2025-10-11","North Park","Carroll",10,24,10,24,TRUE
+"6462130","2025-10-11","Mary Hardin-Baylor","Hardin-Simmons",7,34,7,34,TRUE
+"6462143","2025-10-11","Luther","Buena Vista",7,31,7,31,TRUE
+"6462148","2025-10-11","Macalester","St. John's",0,70,0,70,TRUE
+"6462183","2025-10-11","Minnesota-Morris","Westminster (Mo.)",30,27,30,27,TRUE
+"6462191","2025-10-11","Redlands","Claremont-Mudd-Scripps",17,10,17,10,TRUE
+"6462198","2025-10-11","Pacific","Linfield",6,23,6,23,TRUE
+"6462205","2025-10-11","Loras","Nebraska Wesleyan",31,28,31,28,TRUE
+"6462241","2025-10-11","Illinois College","Monmouth",15,48,15,48,TRUE
+"6462255","2025-10-11","Belhaven","N.C. Wesleyan",41,38,41,38,TRUE
+"6462272","2025-10-11","Sewanee","Southwestern",31,39,31,39,TRUE
+"6462276","2025-10-11","UW-Eau Claire","UW-La Crosse",21,41,21,41,TRUE
+"6462289","2025-10-11","John Carroll","Wittenberg",44,7,44,7,TRUE
+"6462292","2025-10-11","St. Vincent","Bethany",57,35,57,35,TRUE
+"6462304","2025-10-11","Crown","Martin Luther",17,7,17,7,TRUE
+"6462355","2025-10-11","Beloit","Lake Forest",0,59,0,59,TRUE
+"6462359","2025-10-11","Chapman","Pomona-Pitzer",17,10,17,10,TRUE
+"6462363","2025-10-11","Ripon","Cornell",22,14,22,14,TRUE
+"6462367","2025-10-11","Ohio Northern","Muskingum",54,16,54,16,TRUE
+"6462375","2025-10-11","Trinity (Conn.)","Hamilton",49,0,49,0,TRUE
+"6462383","2025-10-11","Amherst","Bowdoin",34,7,34,7,TRUE
+"6462414","2025-10-11","Morrisville State","Utica",21,27,21,27,TRUE
+"6462224","2025-10-16","Trine","Olivet",59,7,59,7,TRUE
+"6461315","2025-10-17","UW-Stout","UW-Whitewater",2,34,2,34,TRUE
+"6461530","2025-10-17","University of New England","Maine Maritime",77,14,77,14,TRUE
+"6461883","2025-10-17","Springfield","WPI",24,10,24,10,TRUE
+"6461252","2025-10-18","Hendrix","Texas Lutheran",48,50,48,50,TRUE
+"6461260","2025-10-18","Anderson","Hanover",0,58,0,58,TRUE
+"6461270","2025-10-18","Concordia (Wis.)","Aurora",54,45,54,45,TRUE
+"6461279","2025-10-18","Alvernia","King's",0,52,0,52,TRUE
+"6461289","2025-10-18","Wilmington","Otterbein",54,41,54,41,TRUE
+"6461297","2025-10-18","Delaware Valley","FDU-Florham",41,14,41,14,TRUE
+"6461307","2025-10-18","Middlebury","Trinity (Conn.)",26,28,26,28,TRUE
+"6461325","2025-10-18","Misericordia","Stevenson",29,28,29,28,TRUE
+"6461333","2025-10-18","Manchester","Franklin",21,48,21,48,TRUE
+"6461343","2025-10-18","Norwich","SUNY-Maritime",0,42,0,42,TRUE
+"6461368","2025-10-18","Alfred","Cortland",12,65,12,65,TRUE
+"6461377","2025-10-18","Mount St. Joseph","Bluffton",35,7,35,7,TRUE
+"6461385","2025-10-18","Williams","Bates",37,30,37,30,TRUE
+"6461395","2025-10-18","Buena Vista","Dubuque",20,47,20,47,TRUE
+"6461405","2025-10-18","Randolph-Macon","Guilford",47,0,47,0,TRUE
+"6461417","2025-10-18","John Carroll","DePauw",31,27,31,27,TRUE
+"6461433","2025-10-18","Carthage","Wheaton (Ill.)",21,47,21,47,TRUE
+"6461443","2025-10-18","Capital","Ohio Northern",0,56,0,56,TRUE
+"6461452","2025-10-18","Ripon","Chicago",12,37,12,37,TRUE
+"6461462","2025-10-18","Wooster","Ohio Wesleyan",24,20,24,20,TRUE
+"6461468","2025-10-18","Rose-Hulman","Baldwin Wallace",20,52,20,52,TRUE
+"6461475","2025-10-18","Knox","Illinois College",14,64,14,64,TRUE
+"6461485","2025-10-18","Thiel","Westminster (Pa.)",6,48,6,48,TRUE
+"6461495","2025-10-18","Alfred State","Brockport",14,48,14,48,TRUE
+"6461503","2025-10-18","Eureka","St. Norbert",0,44,0,44,TRUE
+"6461520","2025-10-18","Greensboro","Belhaven",26,41,26,41,TRUE
+"6461539","2025-10-18","Hampden-Sydney","Averett",67,7,67,7,TRUE
+"6461553","2025-10-18","Susquehanna","Juniata",56,7,56,7,TRUE
+"6461564","2025-10-18","Wabash","Kenyon",46,12,46,12,TRUE
+"6461577","2025-10-18","Lycoming","Western Connecticut",42,24,42,24,TRUE
+"6461597","2025-10-18","McMurry","Austin",31,13,31,13,TRUE
+"6461606","2025-10-18","Geneva","Waynesburg",62,20,62,20,TRUE
+"6461619","2025-10-18","UW-River Falls","UW-Stevens Point",52,7,52,7,TRUE
+"6461627","2025-10-18","Worcester State","Mass-Dartmouth",7,32,7,32,TRUE
+"6461630","2025-10-18","Kalamazoo","Hope",21,56,21,56,TRUE
+"6461643","2025-10-18","Elmhurst","Washington U.",0,17,0,17,TRUE
+"6461659","2025-10-18","La Verne","Claremont-Mudd-Scripps",19,22,19,22,TRUE
+"6461675","2025-10-18","Salisbury","Montclair State",56,21,56,21,TRUE
+"6461683","2025-10-18","Shenandoah","Roanoke",33,20,33,20,TRUE
+"6461685","2025-10-18","Albright","Eastern",10,17,10,17,TRUE
+"6461715","2025-10-18","Dean","Bridgewater State",25,47,25,47,TRUE
+"6461718","2025-10-18","New England College","Husson",0,48,0,48,TRUE
+"6461730","2025-10-18","Grove City","Allegheny",42,6,42,6,TRUE
+"6461736","2025-10-18","Ursinus","Johns Hopkins",21,52,21,52,TRUE
+"6461766","2025-10-18","Fitchburg State","Massachusetts Maritime",0,10,0,10,TRUE
+"6461784","2025-10-18","Simpson","Luther",36,3,36,3,TRUE
+"6461787","2025-10-18","UW-Eau Claire","UW-Oshkosh",21,28,21,28,TRUE
+"6461800","2025-10-18","Lewis and Clark","George Fox",28,42,28,42,TRUE
+"6461814","2025-10-18","Kean","Christopher Newport",0,49,0,49,TRUE
+"6461838","2025-10-18","Maryville (Tenn.)","Millsaps",21,31,21,31,TRUE
+"6461843","2025-10-18","Willamette","Puget Sound",28,45,28,45,TRUE
+"6461857","2025-10-18","Muskingum","Marietta",35,31,35,31,TRUE
+"6461872","2025-10-18","Denison","Wittenberg",43,40,43,40,TRUE
+"6461888","2025-10-18","Gettysburg","Carnegie Mellon",20,44,20,44,TRUE
+"6461896","2025-10-18","Brevard","LaGrange",10,17,10,17,TRUE
+"6461905","2025-10-18","Moravian","Catholic",20,26,20,26,TRUE
+"6461911","2025-10-18","Adrian","Calvin",48,17,48,17,TRUE
+"6461921","2025-10-18","UW-La Crosse","UW-Platteville",21,38,21,38,TRUE
+"6461926","2025-10-18","Colby","Amherst",13,9,13,9,TRUE
+"6461937","2025-10-18","Berry","Sewanee",44,7,44,7,TRUE
+"6461945","2025-10-18","Hamline","Carleton",14,63,14,63,TRUE
+"6461955","2025-10-18","Whitworth","Linfield",30,20,30,20,TRUE
+"6461960","2025-10-18","Bowdoin","Wesleyan",25,17,25,17,TRUE
+"6461982","2025-10-18","Augsburg","Macalester",32,21,32,21,TRUE
+"6461990","2025-10-18","St. Scholastica","Gustavus Adolphus",6,45,6,45,TRUE
+"6461998","2025-10-18","Pacific","Pacific Lutheran",29,47,29,47,TRUE
+"6462003","2025-10-18","North Central (Ill.)","North Park",75,0,75,0,TRUE
+"6462041","2025-10-18","Greenville","Martin Luther",39,41,39,41,TRUE
+"6462053","2025-10-18","St. Olaf","Bethel",10,64,10,64,TRUE
+"6462061","2025-10-18","Methodist","Southern Virginia",13,30,13,30,TRUE
+"6462073","2025-10-18","Franklin and Marshall","Dickinson",23,20,23,20,TRUE
+"6462083","2025-10-18","Anna Maria","Plymouth State",35,28,35,28,TRUE
+"6462089","2025-10-18","MIT","Coast Guard",14,24,14,24,TRUE
+"6462099","2025-10-18","Gallaudet","Bridgewater",13,73,13,73,TRUE
+"6462105","2025-10-18","Illinois Wesleyan","Millikin",49,27,49,27,TRUE
+"6462118","2025-10-18","Hardin-Simmons","East Texas Baptist",34,16,34,16,TRUE
+"6462131","2025-10-18","Texas Wesleyan","Mary Hardin-Baylor",19,28,19,28,TRUE
+"6462140","2025-10-18","Centenary (La.)","Lyon",23,20,23,20,TRUE
+"6462149","2025-10-18","St. John's","Concordia-Moorhead",41,6,41,6,TRUE
+"6462161","2025-10-18","Beloit","Lawrence",34,0,34,0,TRUE
+"6462174","2025-10-18","Grinnell","Lake Forest",0,70,0,70,TRUE
+"6462179","2025-10-18","Concordia-Chicago","Rockford",37,26,37,26,TRUE
+"6462187","2025-10-18","Northwestern (Minn.)","Minnesota-Morris",21,3,21,3,TRUE
+"6462206","2025-10-18","Wartburg","Loras",40,20,40,20,TRUE
+"6462209","2025-10-18","Nebraska Wesleyan","Central",13,34,13,34,TRUE
+"6462218","2025-10-18","Western New England","Endicott",24,45,24,45,TRUE
+"6462228","2025-10-18","Westminster (Mo.)","Crown",6,19,6,19,TRUE
+"6462242","2025-10-18","Cornell","Monmouth",3,45,3,45,TRUE
+"6462264","2025-10-18","Westfield State","Framingham State",24,35,24,35,TRUE
+"6462274","2025-10-18","Southwestern","Centre",16,19,16,19,TRUE
+"6462281","2025-10-18","Rhodes","Trinity (Texas)",0,63,0,63,TRUE
+"6462287","2025-10-18","Lebanon Valley","Widener",34,14,34,14,TRUE
+"6462293","2025-10-18","Hiram","Bethany",42,21,42,21,TRUE
+"6462300","2025-10-18","Tufts","Hamilton",38,28,38,28,TRUE
+"6462308","2025-10-18","Merchant Marine","Salve Regina",38,34,38,34,TRUE
+"6462316","2025-10-18","Pomona-Pitzer","Redlands",14,16,14,16,TRUE
+"6462327","2025-10-18","TCNJ","Vermont State Castleton",48,7,48,7,TRUE
+"6462341","2025-10-18","Alma","Albion",48,27,48,27,TRUE
+"6462360","2025-10-18","Chapman","Cal Lutheran",35,25,35,25,TRUE
+"6462372","2025-10-18","N.C. Wesleyan","Huntingdon",21,20,21,20,TRUE
+"6462394","2025-10-18","Wisconsin Lutheran","Lakeland",34,31,34,31,TRUE
+"6462399","2025-10-18","Carroll","Augustana",24,31,24,31,TRUE
+"6462408","2025-10-18","Nichols","Curry",27,71,27,71,TRUE
+"6462424","2025-10-18","Muhlenberg","McDaniel",56,7,56,7,TRUE
+"6462430","2025-10-18","William Paterson","Rowan",16,45,16,45,TRUE
+"6462435","2025-10-18","Mount Union","Heidelberg",38,6,38,6,TRUE
+"6462438","2025-10-18","Washington and Jefferson","St. Vincent",56,10,56,10,TRUE
+"6529008","2025-10-18","Keystone","Apprentice",21,45,21,45,TRUE
+"6461253","2025-10-25","Austin","Texas Lutheran",7,55,7,55,TRUE
+"6461271","2025-10-25","Concordia (Wis.)","Concordia-Chicago",47,20,47,20,TRUE
+"6461280","2025-10-25","King's","Lebanon Valley",21,20,21,20,TRUE
+"6461290","2025-10-25","Wilmington","Anderson",34,23,34,23,TRUE
+"6461298","2025-10-25","Stevenson","Delaware Valley",38,41,38,41,TRUE
+"6461308","2025-10-25","Bates","Middlebury",16,34,16,34,TRUE
+"6461316","2025-10-25","UW-Platteville","UW-Whitewater",19,29,19,29,TRUE
+"6461326","2025-10-25","Eastern","Misericordia",28,21,28,21,TRUE
+"6461335","2025-10-25","Manchester","Hanover",7,76,7,76,TRUE
+"6461345","2025-10-25","SUNY-Maritime","WPI",28,7,28,7,TRUE
+"6461352","2025-10-25","FDU-Florham","Albright",18,32,18,32,TRUE
+"6461359","2025-10-25","Millsaps","Berry",20,43,20,43,TRUE
+"6461369","2025-10-25","Utica","Alfred",51,28,51,28,TRUE
+"6461378","2025-10-25","Franklin","Mount St. Joseph",21,52,21,52,TRUE
+"6461386","2025-10-25","Williams","Tufts",20,41,20,41,TRUE
+"6461396","2025-10-25","Dubuque","Simpson",7,27,7,27,TRUE
+"6461406","2025-10-25","Randolph-Macon","Gallaudet",47,7,47,7,TRUE
+"6461412","2025-10-25","DePauw","Denison",35,28,35,28,TRUE
+"6461424","2025-10-25","Bridgewater","Washington and Lee",17,20,17,20,TRUE
+"6461434","2025-10-25","Washington U.","Wheaton (Ill.)",24,28,24,28,TRUE
+"6461444","2025-10-25","Otterbein","Capital",20,19,20,19,TRUE
+"6461453","2025-10-25","Chicago","Grinnell",38,7,38,7,TRUE
+"6461463","2025-10-25","Wooster","John Carroll",7,66,7,66,TRUE
+"6461469","2025-10-25","Bluffton","Rose-Hulman",30,27,30,27,TRUE
+"6461486","2025-10-25","Westminster (Pa.)","Grove City",7,14,7,14,TRUE
+"6461496","2025-10-25","Brockport","Morrisville State",61,3,61,3,TRUE
+"6461504","2025-10-25","Rockford","St. Norbert",10,61,10,61,TRUE
+"6461512","2025-10-25","UW-Stevens Point","UW-Stout",22,42,22,42,TRUE
+"6461521","2025-10-25","Brevard","Greensboro",34,7,34,7,TRUE
+"6461531","2025-10-25","Maine Maritime","New England College",10,14,10,14,TRUE
+"6461540","2025-10-25","Averett","Shenandoah",3,48,3,48,TRUE
+"6461547","2025-10-25","Lyon","Hendrix",21,38,21,38,TRUE
+"6461570","2025-10-25","Marietta","Baldwin Wallace",0,38,0,38,TRUE
+"6461578","2025-10-25","Western Connecticut","Moravian",28,35,28,35,TRUE
+"6461590","2025-10-25","TCNJ","Kean",24,7,24,7,TRUE
+"6461599","2025-10-25","McMurry","Centenary (La.)",52,6,52,6,TRUE
+"6461607","2025-10-25","Waynesburg","Washington and Jefferson",0,56,0,56,TRUE
+"6461623","2025-10-25","UW-River Falls","UW-Eau Claire",73,21,73,21,TRUE
+"6461629","2025-10-25","Mass-Dartmouth","Bridgewater State",15,35,15,35,TRUE
+"6461634","2025-10-25","Albion","Kalamazoo",26,30,26,30,TRUE
+"6461658","2025-10-25","Hartwick","Alfred State",28,54,28,54,TRUE
+"6461663","2025-10-25","La Verne","Pomona-Pitzer",26,8,26,8,TRUE
+"6461665","2025-10-25","Montclair State","Vermont State Castleton",48,20,48,20,TRUE
+"6461684","2025-10-25","Roanoke","Hampden-Sydney",10,35,10,35,TRUE
+"6461708","2025-10-25","Husson","University of New England",28,38,28,38,TRUE
+"6461720","2025-10-25","Dean","Worcester State",27,52,27,52,TRUE
+"6461732","2025-10-25","Allegheny","Hiram",28,13,28,13,TRUE
+"6461737","2025-10-25","Johns Hopkins","Gettysburg",59,21,59,21,TRUE
+"6461746","2025-10-25","Union","Ithaca",19,14,19,14,TRUE
+"6461750","2025-10-25","Wilkes","Lycoming",21,31,21,31,TRUE
+"6461761","2025-10-25","Catholic","Susquehanna",13,69,13,69,TRUE
+"6461763","2025-10-25","Rochester","Buffalo State",23,3,23,3,TRUE
+"6461768","2025-10-25","Fitchburg State","Anna Maria",22,30,22,30,TRUE
+"6461778","2025-10-25","Bethany","Geneva",28,75,28,75,TRUE
+"6461788","2025-10-25","UW-Oshkosh","UW-La Crosse",13,44,13,44,TRUE
+"6461802","2025-10-25","Whitworth","Lewis and Clark",42,35,42,35,TRUE
+"6461816","2025-10-25","Christopher Newport","William Paterson",52,7,52,7,TRUE
+"6461826","2025-10-25","Wisconsin Lutheran","Eureka",42,12,42,12,TRUE
+"6461839","2025-10-25","Maryville (Tenn.)","Southwestern",44,13,44,13,TRUE
+"6461844","2025-10-25","Puget Sound","George Fox",23,48,23,48,TRUE
+"6461853","2025-10-25","Norwich","Coast Guard",28,59,28,59,TRUE
+"6461876","2025-10-25","Cortland","St. John Fisher",31,7,31,7,TRUE
+"6461912","2025-10-25","Trine","Calvin",31,34,31,34,TRUE
+"6461913","2025-10-25","St. Lawrence","Hobart",17,49,17,49,TRUE
+"6461929","2025-10-25","Hamilton","Colby",10,17,10,17,TRUE
+"6461946","2025-10-25","Gustavus Adolphus","Hamline",63,9,63,9,TRUE
+"6461961","2025-10-25","Amherst","Wesleyan",21,31,21,31,TRUE
+"6461978","2025-10-25","Widener","Alvernia",32,14,32,14,TRUE
+"6461983","2025-10-25","Concordia-Moorhead","Augsburg",26,7,26,7,TRUE
+"6461991","2025-10-25","St. Scholastica","St. Olaf",41,44,41,44,TRUE
+"6461999","2025-10-25","Linfield","Pacific Lutheran",31,15,31,15,TRUE
+"6462004","2025-10-25","Augustana","North Central (Ill.)",14,76,14,76,TRUE
+"6462011","2025-10-25","Franklin and Marshall","Ursinus",52,20,52,20,TRUE
+"6462017","2025-10-25","Case Western Reserve","Thiel",55,7,55,7,TRUE
+"6462024","2025-10-25","Carnegie Mellon","Muhlenberg",23,27,23,27,TRUE
+"6462042","2025-10-25","Minnesota-Morris","Greenville",20,27,20,27,TRUE
+"6462062","2025-10-25","Methodist","Belhaven",7,28,7,28,TRUE
+"6462077","2025-10-25","Wittenberg","Oberlin",52,0,52,0,TRUE
+"6462090","2025-10-25","Salve Regina","MIT",20,28,20,28,TRUE
+"6462095","2025-10-25","Plymouth State","Westfield State",42,35,42,35,TRUE
+"6462098","2025-10-25","RPI","Hilbert",69,14,69,14,TRUE
+"6462106","2025-10-25","North Park","Illinois Wesleyan",21,49,21,49,TRUE
+"6462132","2025-10-25","Howard Payne","Mary Hardin-Baylor",17,41,17,41,TRUE
+"6462137","2025-10-25","Nelson","Hardin-Simmons",14,68,14,68,TRUE
+"6462144","2025-10-25","Luther","Coe",21,42,21,42,TRUE
+"6462150","2025-10-25","Carleton","St. John's",10,49,10,49,TRUE
+"6462154","2025-10-25","Millikin","Carthage",7,24,7,24,TRUE
+"6462192","2025-10-25","Claremont-Mudd-Scripps","Chapman",31,37,31,37,TRUE
+"6462199","2025-10-25","Willamette","Pacific",14,35,14,35,TRUE
+"6462207","2025-10-25","Loras","Buena Vista",28,14,28,14,TRUE
+"6462210","2025-10-25","Central","Wartburg",13,28,13,28,TRUE
+"6462219","2025-10-25","Western New England","Curry",31,52,31,52,TRUE
+"6462229","2025-10-25","Martin Luther","Westminster (Mo.)",38,28,38,28,TRUE
+"6462234","2025-10-25","Hope","Adrian",19,17,19,17,TRUE
+"6462237","2025-10-25","Alma","Olivet",53,21,53,21,TRUE
+"6462243","2025-10-25","Monmouth","Beloit",72,0,72,0,TRUE
+"6462251","2025-10-25","Macalester","Bethel",0,53,0,53,TRUE
+"6462265","2025-10-25","Framingham State","Massachusetts Maritime",12,14,12,14,TRUE
+"6462279","2025-10-25","Merchant Marine","Springfield",7,35,7,35,TRUE
+"6462282","2025-10-25","Centre","Trinity (Texas)",14,19,14,19,TRUE
+"6462305","2025-10-25","Crown","Northwestern (Minn.)",16,24,16,24,TRUE
+"6462311","2025-10-25","Endicott","Nichols",56,3,56,3,TRUE
+"6462317","2025-10-25","Redlands","Cal Lutheran",30,24,30,24,TRUE
+"6462330","2025-10-25","Sewanee","Rhodes",28,6,28,6,TRUE
+"6462335","2025-10-25","Salisbury","Rowan",31,28,31,28,TRUE
+"6462346","2025-10-25","Ohio Wesleyan","Kenyon",55,13,55,13,TRUE
+"6462364","2025-10-25","Lake Forest","Cornell",49,24,49,24,TRUE
+"6462368","2025-10-25","Heidelberg","Muskingum",29,14,29,14,TRUE
+"6462373","2025-10-25","Southern Virginia","N.C. Wesleyan",19,10,19,10,TRUE
+"6462374","2025-10-25","Ohio Northern","Mount Union",7,33,7,33,TRUE
+"6462377","2025-10-25","Trinity (Conn.)","Bowdoin",45,3,45,3,TRUE
+"6462391","2025-10-25","Lakeland","Benedictine",35,42,35,42,TRUE
+"6462400","2025-10-25","Elmhurst","Carroll",7,47,7,47,TRUE
+"6462416","2025-10-25","Huntingdon","LaGrange",14,30,14,30,TRUE
+"6462422","2025-10-25","Illinois College","Ripon",31,0,31,0,TRUE
+"6462426","2025-10-25","Dickinson","McDaniel",23,20,23,20,TRUE
+"6461254","2025-11-01","Texas Lutheran","McMurry",42,13,42,13,TRUE
+"6461261","2025-11-01","Hanover","Bluffton",48,0,48,0,TRUE
+"6461272","2025-11-01","Rockford","Concordia (Wis.)",0,35,0,35,TRUE
+"6461281","2025-11-01","Albright","King's",14,24,14,24,TRUE
+"6461291","2025-11-01","Marietta","Wilmington",44,14,44,14,TRUE
+"6461299","2025-11-01","Delaware Valley","Alvernia",43,10,43,10,TRUE
+"6461309","2025-11-01","Middlebury","Hamilton",24,21,24,21,TRUE
+"6461317","2025-11-01","UW-Whitewater","UW-River Falls",14,52,14,52,TRUE
+"6461327","2025-11-01","Misericordia","FDU-Florham",35,16,35,16,TRUE
+"6461337","2025-11-01","Rose-Hulman","Manchester",35,13,35,13,TRUE
+"6461360","2025-11-01","Southwestern","Millsaps",24,27,24,27,TRUE
+"6461370","2025-11-01","Alfred","Brockport",0,51,0,51,TRUE
+"6461379","2025-11-01","Mount St. Joseph","Ohio Northern",42,49,42,49,TRUE
+"6461387","2025-11-01","Wesleyan","Williams",34,28,34,28,TRUE
+"6461397","2025-11-01","Coe","Dubuque",19,7,19,7,TRUE
+"6461407","2025-11-01","Shenandoah","Randolph-Macon",14,31,14,31,TRUE
+"6461411","2025-11-01","DePauw","Ohio Wesleyan",40,10,40,10,TRUE
+"6461425","2025-11-01","Washington and Lee","Averett",61,21,61,21,TRUE
+"6461435","2025-11-01","Wheaton (Ill.)","Elmhurst",65,0,65,0,TRUE
+"6461448","2025-11-01","Capital","Mount Union",17,65,17,65,TRUE
+"6461454","2025-11-01","Monmouth","Chicago",29,0,29,0,TRUE
+"6461464","2025-11-01","Kenyon","Wooster",6,49,6,49,TRUE
+"6461477","2025-11-01","Cornell","Knox",35,14,35,14,TRUE
+"6461487","2025-11-01","Allegheny","Westminster (Pa.)",21,57,21,57,TRUE
+"6461505","2025-11-01","Benedictine","St. Norbert",17,24,17,24,TRUE
+"6461513","2025-11-01","UW-Stout","UW-La Crosse",14,31,14,31,TRUE
+"6461522","2025-11-01","LaGrange","Greensboro",49,20,49,20,TRUE
+"6461532","2025-11-01","Maine Maritime","Endicott",7,69,7,69,TRUE
+"6461548","2025-11-01","Centenary (La.)","Hendrix",10,64,10,64,TRUE
+"6461563","2025-11-01","Juniata","Wilkes",7,38,7,38,TRUE
+"6461565","2025-11-01","Wittenberg","Wabash",21,28,21,28,TRUE
+"6461571","2025-11-01","Baldwin Wallace","Muskingum",35,28,35,28,TRUE
+"6461579","2025-11-01","Susquehanna","Western Connecticut",34,0,34,0,TRUE
+"6461592","2025-11-01","Rowan","TCNJ",44,30,44,30,TRUE
+"6461609","2025-11-01","Waynesburg","Bethany",48,28,48,28,TRUE
+"6461631","2025-11-01","Mass-Dartmouth","Dean",48,7,48,7,TRUE
+"6461637","2025-11-01","Adrian","Kalamazoo",34,7,34,7,TRUE
+"6461644","2025-11-01","Washington U.","Millikin",38,7,38,7,TRUE
+"6461666","2025-11-01","Redlands","La Verne",29,14,29,14,TRUE
+"6461669","2025-11-01","Montclair State","Christopher Newport",42,49,42,49,TRUE
+"6461672","2025-11-01","Guilford","Roanoke",20,21,20,21,TRUE
+"6461710","2025-11-01","Nichols","University of New England",34,58,34,58,TRUE
+"6461723","2025-11-01","Curry","Husson",40,21,40,21,TRUE
+"6461738","2025-11-01","Johns Hopkins","Muhlenberg",47,26,47,26,TRUE
+"6461749","2025-11-01","Buffalo State","Ithaca",7,49,7,49,TRUE
+"6461769","2025-11-01","Bridgewater State","Fitchburg State",38,18,38,18,TRUE
+"6461789","2025-11-01","UW-Oshkosh","UW-Platteville",14,21,14,21,TRUE
+"6461799","2025-11-01","Lebanon Valley","Stevenson",13,15,13,15,TRUE
+"6461803","2025-11-01","Lewis and Clark","Linfield",21,29,21,29,TRUE
+"6461817","2025-11-01","Aurora","Wisconsin Lutheran",49,42,49,42,TRUE
+"6461833","2025-11-01","Bates","Bowdoin",9,17,9,17,TRUE
+"6461840","2025-11-01","Rhodes","Maryville (Tenn.)",22,42,22,42,TRUE
+"6461845","2025-11-01","Pacific","Puget Sound",52,35,52,35,TRUE
+"6461856","2025-11-01","Springfield","Norwich",48,6,48,6,TRUE
+"6461866","2025-11-01","Hobart","Rochester",28,21,28,21,TRUE
+"6461873","2025-11-01","Oberlin","Denison",9,62,9,62,TRUE
+"6461878","2025-11-01","St. John Fisher","Utica",7,31,7,31,TRUE
+"6461879","2025-11-01","WPI","MIT",7,19,7,19,TRUE
+"6461889","2025-11-01","Gettysburg","Ursinus",13,40,13,40,TRUE
+"6461897","2025-11-01","Huntingdon","Brevard",32,26,32,26,TRUE
+"6461914","2025-11-01","Olivet","Calvin",20,50,20,50,TRUE
+"6461932","2025-11-01","Colby","Tufts",33,6,33,6,TRUE
+"6461938","2025-11-01","Berry","Centre",31,13,31,13,TRUE
+"6461948","2025-11-01","Hamline","St. Scholastica",18,49,18,49,TRUE
+"6461956","2025-11-01","Pacific Lutheran","Whitworth",6,10,6,10,TRUE
+"6461966","2025-11-01","Hilbert","Union",13,34,13,34,TRUE
+"6461973","2025-11-01","Simpson","Loras",28,27,28,27,TRUE
+"6461984","2025-11-01","Augsburg","Carleton",17,48,17,48,TRUE
+"6462005","2025-11-01","North Central (Ill.)","Carroll",64,7,64,7,TRUE
+"6462018","2025-11-01","Case Western Reserve","Washington and Jefferson",17,28,17,28,TRUE
+"6462025","2025-11-01","Carnegie Mellon","Dickinson",70,29,70,29,TRUE
+"6462026","2025-11-01","Vermont State Castleton","Kean",9,14,9,14,TRUE
+"6462031","2025-11-01","RPI","St. Lawrence",48,0,48,0,TRUE
+"6462044","2025-11-01","Greenville","Westminster (Mo.)",7,24,7,24,TRUE
+"6462047","2025-11-01","Cortland","Alfred State",49,7,49,7,TRUE
+"6462054","2025-11-01","St. Olaf","Macalester",6,27,6,27,TRUE
+"6462058","2025-11-01","Lycoming","Catholic",38,12,38,12,TRUE
+"6462063","2025-11-01","N.C. Wesleyan","Methodist",48,17,48,17,TRUE
+"6462072","2025-11-01","McDaniel","Franklin and Marshall",3,24,3,24,TRUE
+"6462096","2025-11-01","Framingham State","Plymouth State",26,28,26,28,TRUE
+"6462100","2025-11-01","Hampden-Sydney","Gallaudet",61,8,61,8,TRUE
+"6462107","2025-11-01","Illinois Wesleyan","Augustana",21,42,21,42,TRUE
+"6462112","2025-11-01","George Fox","Willamette",31,9,31,9,TRUE
+"6462119","2025-11-01","East Texas Baptist","Mary Hardin-Baylor",14,62,14,62,TRUE
+"6462128","2025-11-01","Carthage","North Park",10,14,10,14,TRUE
+"6462138","2025-11-01","Hardin-Simmons","Howard Payne",54,24,54,24,TRUE
+"6462151","2025-11-01","St. John's","Gustavus Adolphus",31,13,31,13,TRUE
+"6462162","2025-11-01","Lawrence","Lake Forest",0,72,0,72,TRUE
+"6462168","2025-11-01","Otterbein","Heidelberg",13,69,13,69,TRUE
+"6462175","2025-11-01","Grinnell","Illinois College",7,14,7,14,TRUE
+"6462180","2025-11-01","Concordia-Chicago","Lakeland",16,47,16,47,TRUE
+"6462184","2025-11-01","Crown","Minnesota-Morris",34,15,34,15,TRUE
+"6462193","2025-11-01","Cal Lutheran","Claremont-Mudd-Scripps",21,18,21,18,TRUE
+"6462212","2025-11-01","Buena Vista","Central",27,52,27,52,TRUE
+"6462225","2025-11-01","Alma","Trine",42,28,42,28,TRUE
+"6462252","2025-11-01","Bethel","Concordia-Moorhead",55,9,55,9,TRUE
+"6462256","2025-11-01","Belhaven","Southern Virginia",41,19,41,19,TRUE
+"6462267","2025-11-01","New England College","Western New England",0,55,0,55,TRUE
+"6462277","2025-11-01","UW-Eau Claire","UW-Stevens Point",36,39,36,39,TRUE
+"6462283","2025-11-01","Trinity (Texas)","Sewanee",32,3,32,3,TRUE
+"6462285","2025-11-01","Lyon","Austin",40,28,40,28,TRUE
+"6462301","2025-11-01","Wartburg","Nebraska Wesleyan",34,10,34,10,TRUE
+"6462336","2025-11-01","William Paterson","Salisbury",7,51,7,51,TRUE
+"6462337","2025-11-01","Eastern","Widener",35,0,35,0,TRUE
+"6462340","2025-11-01","Hope","Albion",62,0,62,0,TRUE
+"6462348","2025-11-01","Northwestern (Minn.)","Martin Luther",24,17,24,17,TRUE
+"6462361","2025-11-01","Pomona-Pitzer","Chapman",14,22,14,22,TRUE
+"6462379","2025-11-01","Amherst","Trinity (Conn.)",7,14,7,14,TRUE
+"6462382","2025-11-01","Franklin","Anderson",41,7,41,7,TRUE
+"6462402","2025-11-01","Massachusetts Maritime","Westfield State",21,14,21,14,TRUE
+"6462410","2025-11-01","Coast Guard","Salve Regina",36,31,36,31,TRUE
+"6462420","2025-11-01","St. Vincent","Grove City",14,59,14,59,TRUE
+"6531808","2025-11-01","Anna Maria","Worcester State",45,35,45,35,TRUE
+"6461255","2025-11-08","Texas Lutheran","Lyon",54,10,54,10,TRUE
+"6461262","2025-11-08","Otterbein","Hanover",8,49,8,49,TRUE
+"6461282","2025-11-08","King's","Widener",24,40,24,40,TRUE
+"6461292","2025-11-08","Wilmington","Heidelberg",31,34,31,34,TRUE
+"6461300","2025-11-08","Delaware Valley","Misericordia",51,20,51,20,TRUE
+"6461310","2025-11-08","Tufts","Middlebury",30,33,30,33,TRUE
+"6461318","2025-11-08","UW-Eau Claire","UW-Whitewater",10,51,10,51,TRUE
+"6461341","2025-11-08","Manchester","Mount St. Joseph",20,48,20,48,TRUE
+"6461346","2025-11-08","MIT","SUNY-Maritime",30,27,30,27,TRUE
+"6461353","2025-11-08","FDU-Florham","Eastern",7,28,7,28,TRUE
+"6461361","2025-11-08","Millsaps","Trinity (Texas)",24,42,24,42,TRUE
+"6461371","2025-11-08","Alfred","Alfred State",28,35,28,35,TRUE
+"6461388","2025-11-08","Williams","Amherst",13,14,13,14,TRUE
+"6461398","2025-11-08","Dubuque","Luther",27,20,27,20,TRUE
+"6461418","2025-11-08","Wooster","DePauw",0,59,0,59,TRUE
+"6461426","2025-11-08","Roanoke","Washington and Lee",14,35,14,35,TRUE
+"6461436","2025-11-08","Millikin","Wheaton (Ill.)",14,61,14,61,TRUE
+"6461449","2025-11-08","Muskingum","Capital",7,3,7,3,TRUE
+"6461455","2025-11-08","Chicago","Beloit",40,0,40,0,TRUE
+"6461470","2025-11-08","Anderson","Rose-Hulman",0,38,0,38,TRUE
+"6461478","2025-11-08","Lake Forest","Knox",63,0,63,0,TRUE
+"6461488","2025-11-08","Hiram","Westminster (Pa.)",0,76,0,76,TRUE
+"6461497","2025-11-08","Brockport","Cortland",14,44,14,44,TRUE
+"6461506","2025-11-08","St. Norbert","Aurora",14,37,14,37,TRUE
+"6461514","2025-11-08","UW-Stout","UW-Platteville",23,24,23,24,TRUE
+"6461523","2025-11-08","Greensboro","N.C. Wesleyan",38,29,38,29,TRUE
+"6461533","2025-11-08","Western New England","Maine Maritime",70,7,70,7,TRUE
+"6461541","2025-11-08","Averett","Guilford",27,21,27,21,TRUE
+"6461549","2025-11-08","Hendrix","McMurry",28,34,28,34,TRUE
+"6461554","2025-11-08","Moravian","Juniata",38,13,38,13,TRUE
+"6461566","2025-11-08","Wabash","Oberlin",42,13,42,13,TRUE
+"6461572","2025-11-08","Baldwin Wallace","Ohio Northern",28,30,28,30,TRUE
+"6461580","2025-11-08","Catholic","Western Connecticut",19,52,19,52,TRUE
+"6461589","2025-11-08","Vermont State Castleton","Rowan",7,62,7,62,TRUE
+"6461593","2025-11-08","TCNJ","Montclair State",27,30,27,30,TRUE
+"6461611","2025-11-08","St. Vincent","Waynesburg",24,35,24,35,TRUE
+"6461626","2025-11-08","UW-La Crosse","UW-River Falls",7,41,7,41,TRUE
+"6461633","2025-11-08","Westfield State","Mass-Dartmouth",13,33,13,33,TRUE
+"6461639","2025-11-08","Kalamazoo","Alma",3,53,3,53,TRUE
+"6461645","2025-11-08","North Park","Washington U.",14,42,14,42,TRUE
+"6461667","2025-11-08","Hartwick","Utica",7,64,7,64,TRUE
+"6461671","2025-11-08","Chapman","La Verne",30,14,30,14,TRUE
+"6461686","2025-11-08","Stevenson","Albright",17,7,17,7,TRUE
+"6461698","2025-11-08","Bluffton","Franklin",57,59,57,59,TRUE
+"6461712","2025-11-08","University of New England","Curry",30,47,30,47,TRUE
+"6461724","2025-11-08","Dean","Framingham State",6,31,6,31,TRUE
+"6461727","2025-11-08","Husson","Nichols",63,19,63,19,TRUE
+"6461739","2025-11-08","McDaniel","Johns Hopkins",0,42,0,42,TRUE
+"6461751","2025-11-08","Wilkes","Susquehanna",3,26,3,26,TRUE
+"6461756","2025-11-08","Ithaca","RPI",24,23,24,23,TRUE
+"6461765","2025-11-08","St. Lawrence","Buffalo State",24,19,24,19,TRUE
+"6461770","2025-11-08","Fitchburg State","Plymouth State",0,27,0,27,TRUE
+"6461780","2025-11-08","Washington and Jefferson","Geneva",49,7,49,7,TRUE
+"6461791","2025-11-08","UW-Stevens Point","UW-Oshkosh",15,41,15,41,TRUE
+"6461804","2025-11-08","Pacific Lutheran","Lewis and Clark",46,36,46,36,TRUE
+"6461818","2025-11-08","Salisbury","Christopher Newport",42,45,42,45,TRUE
+"6461827","2025-11-08","Lakeland","Eureka",40,12,40,12,TRUE
+"6461835","2025-11-08","Hamilton","Bates",24,21,24,21,TRUE
+"6461841","2025-11-08","Maryville (Tenn.)","Berry",7,36,7,36,TRUE
+"6461846","2025-11-08","Linfield","Puget Sound",77,14,77,14,TRUE
+"6461858","2025-11-08","Salve Regina","Norwich",38,10,38,10,TRUE
+"6461861","2025-11-08","Mount Union","Marietta",30,19,30,19,TRUE
+"6461867","2025-11-08","Union","Rochester",14,10,14,10,TRUE
+"6461875","2025-11-08","Denison","Kenyon",33,18,33,18,TRUE
+"6461880","2025-11-08","St. John Fisher","Morrisville State",21,7,21,7,TRUE
+"6461884","2025-11-08","WPI","Merchant Marine",14,34,14,34,TRUE
+"6461890","2025-11-08","Muhlenberg","Gettysburg",59,27,59,27,TRUE
+"6461898","2025-11-08","Brevard","Methodist",47,20,47,20,TRUE
+"6461915","2025-11-08","Calvin","Hope",0,52,0,52,TRUE
+"6461918","2025-11-08","Hobart","Hilbert",63,6,63,6,TRUE
+"6461936","2025-11-08","Bowdoin","Colby",6,16,6,16,TRUE
+"6461950","2025-11-08","Hamline","St. Olaf",34,41,34,41,TRUE
+"6461957","2025-11-08","Whitworth","Willamette",29,0,29,0,TRUE
+"6461962","2025-11-08","Trinity (Conn.)","Wesleyan",28,31,28,31,TRUE
+"6461974","2025-11-08","Central","Simpson",35,10,35,10,TRUE
+"6461979","2025-11-08","Alvernia","Lebanon Valley",7,38,7,38,TRUE
+"6461985","2025-11-08","Gustavus Adolphus","Augsburg",31,10,31,10,TRUE
+"6461992","2025-11-08","St. Scholastica","St. John's",21,70,21,70,TRUE
+"6462006","2025-11-08","North Central (Ill.)","Elmhurst",58,0,58,0,TRUE
+"6462012","2025-11-08","Ursinus","Dickinson",22,47,22,47,TRUE
+"6462019","2025-11-08","Grove City","Case Western Reserve",28,14,28,14,TRUE
+"6462027","2025-11-08","Franklin and Marshall","Carnegie Mellon",31,24,31,24,TRUE
+"6462028","2025-11-08","Kean","William Paterson",17,7,17,7,TRUE
+"6462046","2025-11-08","Northwestern (Minn.)","Greenville",17,14,17,14,TRUE
+"6462085","2025-11-08","Anna Maria","Bridgewater State",35,41,35,41,TRUE
+"6462101","2025-11-08","Gallaudet","Shenandoah",14,52,14,52,TRUE
+"6462108","2025-11-08","Carroll","Illinois Wesleyan",34,14,34,14,TRUE
+"6462113","2025-11-08","Pacific","George Fox",21,27,21,27,TRUE
+"6462120","2025-11-08","Howard Payne","East Texas Baptist",34,27,34,27,TRUE
+"6462133","2025-11-08","Hardin-Simmons","Mary Hardin-Baylor",17,21,17,21,TRUE
+"6462141","2025-11-08","Austin","Centenary (La.)",20,10,20,10,TRUE
+"6462155","2025-11-08","Augustana","Carthage",23,3,23,3,TRUE
+"6462163","2025-11-08","Lawrence","Grinnell",6,63,6,63,TRUE
+"6462185","2025-11-08","Westminster (Mo.)","Minnesota-Morris",7,14,7,14,TRUE
+"6462194","2025-11-08","Claremont-Mudd-Scripps","Redlands",28,14,28,14,TRUE
+"6462208","2025-11-08","Loras","Coe",7,63,7,63,TRUE
+"6462226","2025-11-08","Trine","Adrian",21,44,21,44,TRUE
+"6462244","2025-11-08","Ripon","Monmouth",3,58,3,58,TRUE
+"6462245","2025-11-08","Worcester State","Massachusetts Maritime",17,10,17,10,TRUE
+"6462253","2025-11-08","Carleton","Bethel",7,49,7,49,TRUE
+"6462257","2025-11-08","Belhaven","LaGrange",6,38,6,38,TRUE
+"6462262","2025-11-08","Nebraska Wesleyan","Buena Vista",21,34,21,34,TRUE
+"6462271","2025-11-08","Albion","Olivet",58,42,58,42,TRUE
+"6462275","2025-11-08","Southwestern","Rhodes",35,22,35,22,TRUE
+"6462280","2025-11-08","Coast Guard","Springfield",10,30,10,30,TRUE
+"6462294","2025-11-08","Bethany","Thiel",17,12,17,12,TRUE
+"6462306","2025-11-08","Martin Luther","Crown",21,34,21,34,TRUE
+"6462312","2025-11-08","Endicott","New England College",63,0,63,0,TRUE
+"6462331","2025-11-08","Centre","Sewanee",28,0,28,0,TRUE
+"6462345","2025-11-08","Bridgewater","Hampden-Sydney",45,42,45,42,TRUE
+"6462347","2025-11-08","Ohio Wesleyan","John Carroll",17,55,17,55,TRUE
+"6462353","2025-11-08","Wisconsin Lutheran","Rockford",48,3,48,3,TRUE
+"6462365","2025-11-08","Illinois College","Cornell",24,0,24,0,TRUE
+"6462386","2025-11-08","Concordia-Moorhead","Macalester",17,14,17,14,TRUE
+"6462392","2025-11-08","Concordia-Chicago","Benedictine",7,38,7,38,TRUE
+"6462431","2025-11-08","Cal Lutheran","Pomona-Pitzer",18,28,18,28,TRUE
+"6462439","2025-11-08","Southern Virginia","Huntingdon",21,44,21,44,TRUE
+"6461595","2025-11-14","Christopher Newport","TCNJ",27,7,27,7,TRUE
+"6461860","2025-11-14","Norwich","MIT",14,48,14,48,TRUE
+"6461952","2025-11-14","Hamline","Augsburg",3,43,3,43,TRUE
+"6462328","2025-11-14","Vermont State Castleton","Salisbury",13,63,13,63,TRUE
+"6461263","2025-11-15","Franklin","Hanover",18,51,18,51,TRUE
+"6461273","2025-11-15","Eureka","Concordia (Wis.)",0,35,0,35,TRUE
+"6461283","2025-11-15","King's","Misericordia",21,27,21,27,TRUE
+"6461293","2025-11-15","Capital","Wilmington",28,27,28,27,TRUE
+"6461301","2025-11-15","Widener","Delaware Valley",7,28,7,28,TRUE
+"6461319","2025-11-15","UW-Whitewater","UW-Oshkosh",24,7,24,7,TRUE
+"6461344","2025-11-15","Anderson","Manchester",26,20,26,20,TRUE
+"6461347","2025-11-15","SUNY-Maritime","Springfield",7,23,7,23,TRUE
+"6461354","2025-11-15","Alvernia","FDU-Florham",3,52,3,52,TRUE
+"6461362","2025-11-15","Sewanee","Millsaps",20,34,20,34,TRUE
+"6461372","2025-11-15","Morrisville State","Alfred",21,34,21,34,TRUE
+"6461380","2025-11-15","Mount St. Joseph","Rose-Hulman",48,0,48,0,TRUE
+"6461408","2025-11-15","Hampden-Sydney","Randolph-Macon",14,42,14,42,TRUE
+"6461410","2025-11-15","DePauw","Wabash",41,20,41,20,TRUE
+"6461427","2025-11-15","Washington and Lee","Shenandoah",14,17,14,17,TRUE
+"6461437","2025-11-15","Wheaton (Ill.)","North Park",52,6,52,6,TRUE
+"6461456","2025-11-15","Chicago","Lake Forest",28,34,28,34,TRUE
+"6461479","2025-11-15","Knox","Monmouth",0,69,0,69,TRUE
+"6461489","2025-11-15","Westminster (Pa.)","St. Vincent",57,14,57,14,TRUE
+"6461498","2025-11-15","Utica","Brockport",28,20,28,20,TRUE
+"6461507","2025-11-15","St. Norbert","Lakeland",25,35,25,35,TRUE
+"6461515","2025-11-15","UW-River Falls","UW-Stout",29,19,29,19,TRUE
+"6461524","2025-11-15","Methodist","Greensboro",12,13,12,13,TRUE
+"6461534","2025-11-15","Maine Maritime","Husson",7,48,7,48,TRUE
+"6461555","2025-11-15","Lycoming","Juniata",24,16,24,16,TRUE
+"6461573","2025-11-15","Heidelberg","Baldwin Wallace",38,41,38,41,TRUE
+"6461581","2025-11-15","Western Connecticut","Wilkes",0,38,0,38,TRUE
+"6461635","2025-11-15","Plymouth State","Mass-Dartmouth",21,42,21,42,TRUE
+"6461641","2025-11-15","Kalamazoo","Trine",24,25,24,25,TRUE
+"6461646","2025-11-15","Washington U.","Augustana",35,13,35,13,TRUE
+"6461673","2025-11-15","Montclair State","William Paterson",24,21,24,21,TRUE
+"6461687","2025-11-15","Lebanon Valley","Albright",38,35,38,35,TRUE
+"6461702","2025-11-15","Bluffton","Marietta",14,37,14,37,TRUE
+"6461716","2025-11-15","New England College","University of New England",3,59,3,59,TRUE
+"6461729","2025-11-15","Dean","Anna Maria",15,62,15,62,TRUE
+"6461733","2025-11-15","Bethany","Allegheny",6,42,6,42,TRUE
+"6461740","2025-11-15","Johns Hopkins","Franklin and Marshall",28,29,28,29,TRUE
+"6461759","2025-11-15","Cortland","Ithaca",21,26,21,26,TRUE
+"6461764","2025-11-15","Susquehanna","Moravian",48,7,48,7,TRUE
+"6461767","2025-11-15","Buffalo State","Hobart",9,35,9,35,TRUE
+"6461771","2025-11-15","Westfield State","Fitchburg State",10,7,10,7,TRUE
+"6461782","2025-11-15","Geneva","Case Western Reserve",43,16,43,16,TRUE
+"6461801","2025-11-15","Eastern","Stevenson",16,10,16,10,TRUE
+"6461805","2025-11-15","Lewis and Clark","Pacific",28,21,28,21,TRUE
+"6461819","2025-11-15","Aurora","Concordia-Chicago",59,26,59,26,TRUE
+"6461842","2025-11-15","Trinity (Texas)","Maryville (Tenn.)",31,14,31,14,TRUE
+"6461847","2025-11-15","Puget Sound","Whitworth",31,59,31,59,TRUE
+"6461868","2025-11-15","Rochester","St. Lawrence",17,37,17,37,TRUE
+"6461877","2025-11-15","John Carroll","Denison",48,21,48,21,TRUE
+"6461881","2025-11-15","Alfred State","St. John Fisher",14,41,14,41,TRUE
+"6461885","2025-11-15","Salve Regina","WPI",45,9,45,9,TRUE
+"6461891","2025-11-15","Gettysburg","McDaniel",36,23,36,23,TRUE
+"6461899","2025-11-15","N.C. Wesleyan","Brevard",6,45,6,45,TRUE
+"6461916","2025-11-15","Calvin","Albion",53,24,53,24,TRUE
+"6461922","2025-11-15","UW-Platteville","UW-Eau Claire",55,28,55,28,TRUE
+"6461939","2025-11-15","Berry","Southwestern",49,7,49,7,TRUE
+"6461967","2025-11-15","RPI","Union",21,28,21,28,TRUE
+"6461975","2025-11-15","Simpson","Nebraska Wesleyan",23,22,23,22,TRUE
+"6461993","2025-11-15","Bethel","St. Scholastica",62,0,62,0,TRUE
+"6462000","2025-11-15","George Fox","Pacific Lutheran",21,55,21,55,TRUE
+"6462007","2025-11-15","Illinois Wesleyan","North Central (Ill.)",7,24,7,24,TRUE
+"6462013","2025-11-15","Carnegie Mellon","Ursinus",20,27,20,27,TRUE
+"6462029","2025-11-15","Rowan","Kean",47,34,47,34,TRUE
+"6462048","2025-11-15","Crown","Greenville",38,20,38,20,TRUE
+"6462055","2025-11-15","St. Olaf","St. John's",21,63,21,63,TRUE
+"6462121","2025-11-15","East Texas Baptist","Hardin-Simmons",14,63,14,63,TRUE
+"6462145","2025-11-15","Luther","Loras",12,45,12,45,TRUE
+"6462156","2025-11-15","Carroll","Carthage",3,7,3,7,TRUE
+"6462164","2025-11-15","Ripon","Lawrence",48,7,48,7,TRUE
+"6462169","2025-11-15","Ohio Northern","Otterbein",56,14,56,14,TRUE
+"6462176","2025-11-15","Cornell","Grinnell",22,17,22,17,TRUE
+"6462186","2025-11-15","Minnesota-Morris","Martin Luther",14,36,14,36,TRUE
+"6462204","2025-11-15","Mary Hardin-Baylor","Howard Payne",65,9,65,9,TRUE
+"6462213","2025-11-15","Coe","Central",13,7,13,7,TRUE
+"6462214","2025-11-15","Willamette","Linfield",19,65,19,65,TRUE
+"6462220","2025-11-15","Nichols","Western New England",20,63,20,63,TRUE
+"6462230","2025-11-15","Westminster (Mo.)","Northwestern (Minn.)",15,6,15,6,TRUE
+"6462235","2025-11-15","Adrian","Alma",34,35,34,35,TRUE
+"6462238","2025-11-15","Olivet","Hope",6,63,6,63,TRUE
+"6462246","2025-11-15","Framingham State","Worcester State",28,27,28,27,TRUE
+"6462258","2025-11-15","Huntingdon","Belhaven",30,13,30,13,TRUE
+"6462263","2025-11-15","Buena Vista","Wartburg",20,63,20,63,TRUE
+"6462290","2025-11-15","Kenyon","Wittenberg",0,35,0,35,TRUE
+"6462309","2025-11-15","Merchant Marine","Coast Guard",39,38,39,38,TRUE
+"6462313","2025-11-15","Curry","Endicott",17,45,17,45,TRUE
+"6462321","2025-11-15","Grove City","Hiram",63,14,63,14,TRUE
+"6462333","2025-11-15","Centre","Rhodes",28,3,28,3,TRUE
+"6462342","2025-11-15","Thiel","Washington and Jefferson",0,67,0,67,TRUE
+"6462357","2025-11-15","Illinois College","Beloit",38,7,38,7,TRUE
+"6462369","2025-11-15","Muskingum","Mount Union",7,51,7,51,TRUE
+"6462387","2025-11-15","Concordia-Moorhead","Carleton",31,24,31,24,TRUE
+"6462389","2025-11-15","Macalester","Gustavus Adolphus",14,38,14,38,TRUE
+"6462393","2025-11-15","Wisconsin Lutheran","Benedictine",14,10,14,10,TRUE
+"6462397","2025-11-15","Elmhurst","Millikin",22,29,22,29,TRUE
+"6462417","2025-11-15","LaGrange","Southern Virginia",65,27,65,27,TRUE
+"6462425","2025-11-15","Dickinson","Muhlenberg",17,30,17,30,TRUE
+"6462427","2025-11-15","UW-La Crosse","UW-Stevens Point",52,0,52,0,TRUE
+"6462433","2025-11-15","Bridgewater State","Massachusetts Maritime",7,20,7,20,TRUE
+"6532780","2025-11-15","McMurry","Texas Lutheran",27,19,27,19,TRUE
+"6532860","2025-11-15","Cal Lutheran","Chapman",17,27,17,27,TRUE
+"6532895","2025-11-15","Lyon","Hendrix",28,55,28,55,TRUE
+"6532907","2025-11-15","Pomona-Pitzer","Redlands",12,0,12,0,TRUE
+"6533110","2025-11-15","Centenary (La.)","Austin",14,16,14,16,TRUE
+"6533319","2025-11-15","La Verne","Claremont-Mudd-Scripps",0,5,0,5,TRUE
+"6533661","2025-11-21","Merchant Marine","Curry",27,24,27,24,TRUE
+"6529845","2025-11-22","Union","Muhlenberg",26,34,26,34,TRUE
+"6529851","2025-11-22","LaGrange","Framingham State",24,21,24,21,TRUE
+"6529853","2025-11-22","Grove City","Hanover",15,23,15,23,TRUE
+"6529859","2025-11-22","Coe","Concordia (Wis.)",44,7,44,7,TRUE
+"6529861","2025-11-22","Crown","Wheaton (Ill.)",14,76,14,76,TRUE
+"6529867","2025-11-22","Chapman","Whitworth",18,16,18,16,TRUE
+"6529869","2025-11-22","Washington and Jefferson","Susquehanna",32,38,32,38,TRUE
+"6529875","2025-11-22","Cortland","Springfield",7,21,7,21,TRUE
+"6533510","2025-11-22","Wilkes","Shenandoah",37,35,37,35,TRUE
+"6533608","2025-11-22","Ohio Northern","Wabash",31,32,31,32,TRUE
+"6533615","2025-11-22","Aurora","Illinois College",49,14,49,14,TRUE
+"6533616","2025-11-22","Washington U.","UW-Stout",23,31,23,31,TRUE
+"6533658","2025-11-22","Misericordia","Carnegie Mellon",17,24,17,24,TRUE
+"6533664","2025-11-22","RPI","St. John Fisher",35,24,35,24,TRUE
+"6533666","2025-11-22","Hobart","SUNY-Maritime",42,14,42,14,TRUE
+"6529876","2025-11-29","Muhlenberg","Mount Union",7,49,7,49,TRUE
+"6529877","2025-11-29","Randolph-Macon","John Carroll",6,35,6,35,TRUE
+"6529878","2025-11-29","Hardin-Simmons","Trinity (Texas)",24,34,24,34,TRUE
+"6529879","2025-11-29","LaGrange","Berry",14,18,14,18,TRUE
+"6529880","2025-11-29","Hanover","North Central (Ill.)",6,38,6,38,TRUE
+"6529881","2025-11-29","UW-La Crosse","Hope",9,7,9,7,TRUE
+"6529882","2025-11-29","Alma","UW-Platteville",7,24,7,24,TRUE
+"6529883","2025-11-29","Coe","Bethel",26,51,26,51,TRUE
+"6529884","2025-11-29","Wheaton (Ill.)","Wartburg",28,24,28,24,TRUE
+"6529885","2025-11-29","DePauw","UW-Whitewater",26,23,26,23,TRUE
+"6529886","2025-11-29","Monmouth","St. John's",15,49,15,49,TRUE
+"6529887","2025-11-29","Chapman","UW-River Falls",7,58,7,58,TRUE
+"6529888","2025-11-29","Susquehanna","Christopher Newport",42,28,42,28,TRUE
+"6529889","2025-11-29","Eastern","Franklin and Marshall",28,24,28,24,TRUE
+"6529890","2025-11-29","Endicott","Salisbury",28,35,28,35,TRUE
+"6529891","2025-11-29","Springfield","Johns Hopkins",14,34,14,34,TRUE
+"6529892","2025-12-06","John Carroll","Mount Union",10,7,10,7,TRUE
+"6529893","2025-12-06","Trinity (Texas)","Berry",23,31,23,31,TRUE
+"6529894","2025-12-06","UW-La Crosse","North Central (Ill.)",27,35,27,35,TRUE
+"6529895","2025-12-06","UW-Platteville","Bethel",24,35,24,35,TRUE
+"6529896","2025-12-06","Wheaton (Ill.)","DePauw",49,24,49,18,FALSE
+"6529897","2025-12-06","St. John's","UW-River Falls",14,42,14,42,TRUE
+"6529898","2025-12-06","Eastern","Susquehanna",0,29,0,29,TRUE
+"6529899","2025-12-06","Johns Hopkins","Salisbury",45,13,45,13,TRUE
+"6529900","2025-12-13","John Carroll","Berry",21,13,21,13,TRUE
+"6529901","2025-12-13","Bethel","North Central (Ill.)",21,35,21,35,TRUE
+"6529902","2025-12-13","Wheaton (Ill.)","UW-River Falls",21,46,21,46,TRUE
+"6529903","2025-12-13","Susquehanna","Johns Hopkins",10,40,10,40,TRUE
+"6529904","2025-12-20","John Carroll","North Central (Ill.)",21,41,21,41,TRUE
+"6534822","2026-01-04","UW-River Falls","North Central (Ill.)",24,14,24,14,TRUE

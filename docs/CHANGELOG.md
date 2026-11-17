@@ -5,6 +5,45 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Game ids and the game list move to ncaa.com
+
+Decided by Sam (2026-11-16). The 2025 game list now comes from ncaa.com's
+D3 scoreboards (`ncaa_season_games()`, `data-raw/ncaa/2025_games.csv`), not
+from d3football's season index, and `game_id` is the ncaa.com contest id:
+`pbp/2025/6461490.csv` instead of `pbp/2025/20250905_jdn4.csv`. The old id
+is kept only as the game list's `d3football_id` column (no pbp column).
+d3football's index can't be read any more (its firewall), so it couldn't
+list later games anyway.
+
+- **Same content.** Of the 1,230 games built before, 1,228 are identical
+  apart from `game_id`. Two playoff games now follow ncaa.com's home and
+  away, which d3football had the other way round: `6529898` (Eastern at
+  Susquehanna, old `20251206_rxq5`) and `6529899` (Johns Hopkins at
+  Salisbury, old `20251206_u8yr`); only `home`, `away` and their conference
+  columns change.
+- **`week` and `season_type` keep d3football's convention** (ncaa.com's
+  own week is regular week + 1, kept as `ncaa_week` in the game list).
+  Postseason weeks count the postseason weeks with games, so the Stagg
+  Bowl, three weeks after the semifinals, is week 6. All 1,237 matched
+  games keep their date, week and season type.
+- **Added:** the Stagg Bowl (`6534822`, UW-River Falls 24, North Central
+  14): built, reconciles. 25 more games are on ncaa.com's scoreboards but
+  were never in the index with a boxscore id: Saint Francis (Pa.)'s 11
+  games, 13 games d3football listed with no boxscore (one a bowl), and
+  King's at Wilkes (below). Their play-by-play isn't cached, so they are
+  pending.
+- **Dropped from the list:** 6 games only d3football listed: the 5
+  non-NCAA bowls (`20251122_0a83`, `_6buh`, `_7wwr`, `_a800`, `_z95l`) and
+  `20250906_t2lv` (King's at Wilkes, which ncaa.com dates 2025-09-04 as
+  contest 6461274; now a pending game). Two ncaa.com contests: 6529906 (a
+  Stagg Bowl placeholder dated 2025-01-04) and 6533522 (a second listing
+  of the tournament game 6529877).
+- `known_exceptions.csv`, the reports and tests use the new ids. The
+  d3football source keeps its old ids and index.
+
+1,263 games in the list; 1,231 built; 1,228 reconcile (the 3 known source
+gaps).
+
 ## Batch 6 (2025 week 11 and the playoffs): overturned touchdowns, tournament side codes, kickoff-return tries
 
 Fixes from the sixth all-D3 batch (2026-11-16), which finishes the 2025

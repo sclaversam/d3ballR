@@ -794,12 +794,13 @@ team_points <- function(g, team) {
 #'   cached files are used).
 #' @return Invisibly, a named list of the per-game tibbles (by `game_id`).
 #' @export
-build_all_pbp <- function(game_urls, out_dir, check_dir, conf = NULL, loader = NULL, season = NULL) {
+build_all_pbp <- function(game_urls, out_dir, check_dir, conf = NULL, loader = NULL, season = NULL,
+                          index = NULL) {
   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
   season_of <- function(u) if (is.null(loader)) extract_season(u) else rep(as.integer(season), length(u))
   seasons <- unique(stats::na.omit(season_of(game_urls)))
-  indexes <- lapply(seasons, build_season_index)
+  indexes <- if (is.null(index)) lapply(seasons, build_season_index) else rep(list(index), length(seasons))
   names(indexes) <- seasons
   season_dates <- ensure_season_dates(seasons)
 

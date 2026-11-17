@@ -357,3 +357,26 @@ test_that("driveText side codes are paired with the play text's by a yardline vo
   # no driveText tokens (the regular format): nothing to rename
   expect_length(ncaa_spot_token_map(spots, parse_ncaa_drive_text(rep("1 and 10 at 35", 6))), 0)
 })
+
+test_that("ncaa_season_games drops placeholders and second listings, and numbers postseason weeks", {
+  sb <- function(contest, week, date, away, home, as, hs, br = "") data.frame(
+    contest = contest, ncaa_week = week, date = as.Date(date), away = away, home = home,
+    away_score = as, home_score = hs, bracket_round = br, away_conference = "", home_conference = "")
+  weeks <- list(
+    `2` = sb("1", 2, "2025-09-06", "Alpha", "Beta", 7L, 14L),
+    `13` = sb(c("2", "3"), 13, "2025-11-22", c("Gamma", "Gamma"), c("Delta", "Delta"), 3L, 10L, c("1", "")),
+    `17` = sb("4", 17, "2025-12-20", "Beta", "Delta", 21L, 28L, "5"),
+    `19` = sb(c("5", "6"), 19, c("2025-01-04", "2026-01-04"), "Beta", "Delta", 24L, 14L, c("6", ""))
+  )
+  local_mocked_bindings(ncaa_scoreboard_week = function(season, week) weeks[[as.character(week)]])
+  dir <- withr::local_tempdir()
+  dates <- data.frame(season = 2025L, regular_season_end = as.Date("2025-11-15"))
+  g <- ncaa_season_games(2025, weeks = c(2, 13, 17, 19), dir = dir, season_dates = dates)
+  expect_equal(g$game_id, c("1", "2", "4", "6"))
+  expect_equal(g$week, c(1L, 1L, 2L, 3L))
+  expect_equal(g$season_type, c("regular", "postseason", "postseason", "postseason"))
+  d <- attr(g, "dropped")
+  expect_equal(d$contest, c("5", "3"))
+  expect_match(d$why[2], "duplicate of contest 2")
+  expect_true(file.exists(file.path(dir, "2025_games.csv")))
+})

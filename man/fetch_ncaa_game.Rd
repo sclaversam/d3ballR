@@ -7,11 +7,13 @@
 fetch_ncaa_game(game_id, contests, index)
 }
 \arguments{
-\item{game_id}{Season-index game id, e.g. "20250905_jdn4".}
+\item{game_id}{Game id: the ncaa.com contest id, e.g. "6461490" (or,
+with \code{\link[=map_ncaa_contests]{map_ncaa_contests()}}'s table, an old d3football id).}
 
-\item{contests}{Contest table from \code{\link[=map_ncaa_contests]{map_ncaa_contests()}}.}
+\item{contests}{Contest table: \code{\link[=ncaa_contest_table]{ncaa_contest_table()}} of the game list,
+or \code{\link[=map_ncaa_contests]{map_ncaa_contests()}}'s.}
 
-\item{index}{The season index.}
+\item{index}{The game list (\code{\link[=ncaa_season_games]{ncaa_season_games()}}) or the season index.}
 }
 \value{
 A list like \code{\link[=fetch_game]{fetch_game()}}'s: \code{game_id}, \code{season}, \code{teams},
