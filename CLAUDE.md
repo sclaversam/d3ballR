@@ -16,9 +16,8 @@ scope for now.
 
 **Roadmap:** CMU 2025 (done) → Centennial Conference 2025 (done; checkpoint
 tag `checkpoint-centennial-2025`; rebuilt from ncaa.com 2026-11-04) → all of
-D3 2025 from ncaa.com (done 2026-11-17 as far as ncaa.com has it: 1,256
-games; games to patch from stats.ncaa.org in
-`data-raw/ncaa/stats_ncaa_candidates.csv`) → other seasons.
+D3 2025 (done 2026-11-17: all 1,263 games, 7 of them from saved
+stats.ncaa.org pages) → other seasons.
 Everything in `R/` must stay generic: no code may assume a team or a season.
 Each roadmap stage is the same `build_season()` call with a different `teams`
 filter or `season`, not a new pipeline.
@@ -85,6 +84,12 @@ filter or `season`, not a new pipeline.
   - The 2025 Stagg Bowl (UW-River Falls 24, North Central 14, 2026-01-04)
     is contest 6534822; ncaa.com also lists a placeholder 6529906 dated
     2025-01-04, dropped from the game list.
+- **stats.ncaa.org is a hand-fed fallback** (Sam, 2026-11-17), only for
+  games with no ncaa.com play-by-play or that can't be built
+  (`pull_from_stats_ncaa` in `data-raw/ncaa/{season}_stats_ncaa_candidates.csv`).
+  It blocks scripts (Akamai 403): Sam saves the pages from his browser into
+  `data-raw/stats_ncaa/`, and `R/stats_ncaa.R` reads them. Never request it
+  from code.
 - **Conferences come from ncaa.com's scoreboards:** each team's
   `conferences[].conferenceSeo` tag, named through
   `data-raw/ncaa/conference_names.csv` (d3football's names and codes).

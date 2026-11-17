@@ -23,11 +23,11 @@ cfbfastR also puts `firstD_by_poss`, `firstD_by_yards`, `firstD_by_penalty` on t
 
 | flag | rows |
 |---|---|
-| firstD_by_kickoff | 12616 |
-| firstD_by_poss | 16995 |
-| firstD_by_yards | 37337 |
-| firstD_by_penalty | 3395 |
-| new_series | 70343 |
+| firstD_by_kickoff | 12690 |
+| firstD_by_poss | 17092 |
+| firstD_by_yards | 37535 |
+| firstD_by_penalty | 3422 |
+| new_series | 70739 |
 
 Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
@@ -35,7 +35,7 @@ Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**70565 series; 70079 have exactly one `new_series` row on their first snap row; 486 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7189.
+**70964 series; 70475 have exactly one `new_series` row on their first snap row; 489 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7237.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | first_row_text |
 |---|---|---|---|---|---|---|---|---|
@@ -46,6 +46,7 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 6461334 | 92 | 95 | Massachusetts Maritime | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Chase Dombroski rush for 2 yards to the MASSMA39 (Jack Kellner). |
 | 6461550 | 190 | 194 | Gettysburg | 1 & 10 | 190, 192 | more than one new_series row | unexplained | No Huddle-Shotgun Abdinoor,Rocco pass complete short left to Denison,Luke caught at GC40, for 8 yards to the G |
 | 6461676 | 118 | 123 | Gallaudet | 1 & 10 | 118, 122 | more than one new_series row | unexplained | J. Sargent pass incomplete to Jaylen Johnson. |
+| 6461900 | 88 | 88 | Moravian | 1 & 10 | none | no new_series row | unexplained | Team rush for loss of 1 yard to the MUHL19. |
 | 6462432 | 61 | 65 | Curry | 1 & 10 | 61, 63 | more than one new_series row | unexplained | Anthony Santino rush for 5 yards to the CURRY25 (Victo Martinez). |
 | 6462432 | 119 | 122 | Bridgewater State | 1 & 10 | none | no new_series row | unexplained | Isaiah Wright rush for loss of 1 yard to the BRIDGEWA24 (Shane Field). |
 | 6462432 | 129 | 129 | Bridgewater State | 1 & 10 | none | no new_series row | unexplained | Shamus Whiting rush for 18 yards to the BRIDGEWA43 (Shane Field). |
@@ -54,9 +55,11 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 6461525 | 63 | 63 | Hartwick | 1 & 6 | none | no new_series row | unexplained | No Huddle-Shotgun Williams,Akil rush middle for 14 yards gain to the MMA00 TOUCHDOWN, clock 08:39, 1ST DOWN. |
 | 6461567 | 7 | 7 | Baldwin Wallace | 1 & 10 | none | no new_series row | unexplained | No Huddle Bubonics,Charlie pass complete deep right to Birkett,Donovan caught at WIT11, for 22 yards to the WI |
 | 6461696 | 143 | 148 | Southern Virginia | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Watson,Devin pass incomplete short right to Washington,Jireek thrown to SVU43. |
+| 6461703 | 45 | 45 | Framingham State | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Scotty Brown pass complete to Sebastien Guill for 10 yards to the HUS35 (Joseph Dube). |
 | 6461721 | 48 | 53 | Allegheny | 1 & 10 | 48, 51 | more than one new_series row | unexplained | Debvrin Smith rush for 4 yards to the ALL16 (Fin O'Brien3a Cole Compton). |
 | 6461721 | 54 | 56 | Denison | 1 & 10 | 54, 55 | more than one new_series row | unexplained | Tyler Green pass complete to Cade Nowik for 10 yards to the DEN46 (Javi Edwards3a David Williams). |
 | 6461790 | 21 | 24 | Puget Sound | 1 & 15 | none | no new_series row | unexplained | (00:00) No Huddle-Shotgun Teeter,Hayden pass incomplete short middle to Gallagher,Joe thrown to UPS13. |
+| 6461808 | 49 | 50 | Christopher Newport | 1 & 5 | none | no new_series row | unexplained | Connor Barry pass complete to Matt Dzierski for 3 yards to the CNU38 (Xavier Compton). |
 | 6461947 | 110 | 113 | Gustavus Adolphus | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Hennen,Walker rush middle for 3 yards gain to the WHTW12 (Cody,Drew; Letteer,Hunter). |
 | 6462109 | 82 | 82 | George Fox | 1 & 10 | none | no new_series row | unexplained | PENALTY REDLANDS unsportmanlike conduct (Ryan Guilford) 15 yards to the 50 yardline. |
 | 6462124 | 109 | 110 | Ripon | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Dekker,Treston rush middle for 3 yards gain to the NPU20 (Hughes,Dylan). |
@@ -530,6 +533,7 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 
 | game_id | play_index | series_causes | firstD_by_kickoff | firstD_by_poss | firstD_by_yards | firstD_by_penalty | play_text |
 |---|---|---|---|---|---|---|---|
+| 6461900 | 90 | poss + kickoff | TRUE | FALSE | FALSE | FALSE | Dante Mahaffey pass complete to John Runfolo for 2 yards to the MOR48 (Anderson Louis). |
 | 6461700 | 151 | poss + kickoff | TRUE | FALSE | FALSE | FALSE | Ty Tedesco rush for 17 yards to the DEAN31 (Jayden Gaines). |
 | 6461571 | 100 | penalty + kickoff | TRUE | FALSE | FALSE | FALSE | No Huddle-Shotgun Linberger,George rush middle for 5 yards gain to the BAL25 (Stromile,Malachi). |
 | 6462156 | 74 | penalty + kickoff | TRUE | FALSE | FALSE | FALSE | No Huddle-Shotgun Heafner,Easton pass complete short right to Westmoreland,Jackson caught at PIO46, for 13 yar |

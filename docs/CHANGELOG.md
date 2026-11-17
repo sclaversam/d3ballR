@@ -5,6 +5,36 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## The 7 games ncaa.com can't give, built from saved stats.ncaa.org pages
+
+Sam's rule (2026-11-17): stats.ncaa.org only for games with no ncaa.com
+play-by-play or that can't be built. stats.ncaa.org blocks scripts, so Sam
+saved each game's "Play By Play" page from his browser into
+`data-raw/stats_ncaa/` (committed; `data-raw/` isn't in the built package).
+`stats_ncaa_lines()` reads a page into ncaa.com's line table and
+`fetch_stats_ncaa_game()` builds it with the same `ncaa_play_table()` and
+parser. No requests.
+
+All 7 build and reconcile: Moravian at Muhlenberg (`6461900`), Dean at
+Fitchburg State (`6461691`), Montclair State at Merchant Marine
+(`6461647`), Trine at Christopher Newport (`6461808`), Husson at
+Framingham State (`6461703`), UMass Dartmouth at Salve Regina (`6461614`)
+and the national semifinal Johns Hopkins at UW-River Falls (`6529905`). All
+1,263 games in the 2025 list are now built; 1,260 reconcile (the 3 known
+source gaps). No game built from ncaa.com changed.
+
+- Possession: each drive takes its team from its "TEAM drive start" line,
+  and the drive headers' teams only where a drive has none, at the offset
+  the neighbouring drives show (the headers in `6461614` sit one drive off
+  after halftime).
+- Check against ncaa.com on `6529905` (ncaa.com has every play, only not
+  possession): quarters 1-2 have the same snaps, kicks, punts and tries,
+  and the 13 touchdowns the same clocks; stats.ncaa.org files the first 3
+  lines of the 4th quarter under the 3rd (left as is, noted in
+  pipeline.md).
+- Not decided yet: whether the play-by-play gets a `source` column. For
+  now the build report lists the stats.ncaa.org games.
+
 ## The 25 games only on ncaa.com, and the stats.ncaa.org candidate list
 
 2026-11-17, Sam's go-ahead. 31 requests: the 25 games on ncaa.com's
@@ -14,7 +44,7 @@ retry of the 6 empty week-1 games (still empty). All 25 build and
 reconcile; no rule changed and no other game's output changed. 1,256 games
 built, 1,253 reconcile (the 3 known source gaps).
 
-New `data-raw/ncaa/stats_ncaa_candidates.csv`: 16 games to patch from
+New `data-raw/ncaa/{season}_stats_ncaa_candidates.csv`: 16 games to patch from
 stats.ncaa.org by Sam's rule (no play-by-play, can't be built, a big
 portion missing, or a severe smaller issue), each with the ncaa.com link
 and what to check. Two problems found by the scan are new:

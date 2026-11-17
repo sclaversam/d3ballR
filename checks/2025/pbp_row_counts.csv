@@ -18,8 +18,11 @@
 "6461363",2025,"2025-09-05",1,"regular","Hobart","Alfred",162,23,28,23,28,"index",TRUE
 "6461399",2025,"2025-09-05",1,"regular","Dickinson","Randolph-Macon",162,34,48,34,48,"index",TRUE
 "6461550",2025,"2025-09-05",1,"regular","Juniata","Gettysburg",196,31,30,31,30,"index",TRUE
+"6461647",2025,"2025-09-05",1,"regular","Montclair State","Merchant Marine",164,15,29,15,29,"index",TRUE
 "6461676",2025,"2025-09-05",1,"regular","Albright","Gallaudet",144,9,7,9,7,"index",TRUE
+"6461691",2025,"2025-09-05",1,"regular","Dean","Fitchburg State",162,14,49,14,49,"index",TRUE
 "6461848",2025,"2025-09-05",1,"regular","Norwich","St. Lawrence",142,3,19,3,19,"index",TRUE
+"6461900",2025,"2025-09-05",1,"regular","Moravian","Muhlenberg",165,19,38,19,38,"index",TRUE
 "6461976",2025,"2025-09-05",1,"regular","Ursinus","Alvernia",176,41,17,41,17,"index",TRUE
 "6462322",2025,"2025-09-05",1,"regular","McDaniel","Catholic",141,7,10,7,10,"index",TRUE
 "6462432",2025,"2025-09-05",1,"regular","Bridgewater State","Curry",170,28,35,28,35,"index",TRUE
@@ -50,11 +53,13 @@
 "6461598",2025,"2025-09-06",1,"regular","Kalamazoo","Austin",161,14,10,14,10,"index",TRUE
 "6461600",2025,"2025-09-06",1,"regular","John Carroll","Waynesburg",149,48,14,48,14,"index",TRUE
 "6461608",2025,"2025-09-06",1,"regular","Alma","UW-River Falls",228,33,45,33,45,"index",TRUE
+"6461614",2025,"2025-09-06",1,"regular","Mass-Dartmouth","Salve Regina",163,13,34,13,34,"index",TRUE
 "6461632",2025,"2025-09-06",1,"regular","Rhodes","Washington U.",144,0,49,0,49,"index",TRUE
 "6461677",2025,"2025-09-06",1,"regular","Virginia-Lynchburg","Roanoke",162,7,23,7,23,"index",TRUE
 "6461688",2025,"2025-09-06",1,"regular","Kenyon","Bluffton",153,17,20,17,20,"index",TRUE
 "6461693",2025,"2025-09-06",1,"regular","Coast Guard","University of New England",246,49,56,49,56,"index",TRUE
 "6461696",2025,"2025-09-06",1,"regular","Apprentice","Southern Virginia",156,6,27,6,27,"index",TRUE
+"6461703",2025,"2025-09-06",1,"regular","Husson","Framingham State",154,40,13,40,13,"index",TRUE
 "6461719",2025,"2025-09-06",1,"regular","Johns Hopkins","Ithaca",155,42,14,42,14,"index",TRUE
 "6461721",2025,"2025-09-06",1,"regular","Denison","Allegheny",161,35,24,35,24,"index",TRUE
 "6461752",2025,"2025-09-06",1,"regular","Union","Susquehanna",170,14,33,14,33,"index",TRUE
@@ -64,6 +69,7 @@
 "6461790",2025,"2025-09-06",1,"regular","Lewis and Clark","Puget Sound",190,56,20,56,20,"index",TRUE
 "6461793",2025,"2025-09-06",1,"regular","Stevenson","Bridgewater",175,32,27,32,27,"index",TRUE
 "6461806",2025,"2025-09-06",1,"regular","UW-Platteville","Aurora",163,41,0,41,0,"index",TRUE
+"6461808",2025,"2025-09-06",1,"regular","Trine","Christopher Newport",156,7,38,7,38,"index",TRUE
 "6461859",2025,"2025-09-06",1,"regular","Olivet","Rochester",160,17,38,17,38,"index",TRUE
 "6461874",2025,"2025-09-06",1,"regular","RPI","WPI",149,26,9,26,9,"index",TRUE
 "6461892",2025,"2025-09-06",1,"regular","Ky. Christian","Brevard",149,41,20,41,20,"index",TRUE
@@ -1254,4 +1260,5 @@
 "6529902",2025,"2025-12-13",4,"postseason","Wheaton (Ill.)","UW-River Falls",201,21,46,21,46,"index",TRUE
 "6529903",2025,"2025-12-13",4,"postseason","Susquehanna","Johns Hopkins",146,10,40,10,40,"index",TRUE
 "6529904",2025,"2025-12-20",5,"postseason","John Carroll","North Central (Ill.)",152,21,41,21,41,"index",TRUE
+"6529905",2025,"2025-12-20",5,"postseason","Johns Hopkins","UW-River Falls",206,41,48,41,48,"index",TRUE
 "6534822",2025,"2026-01-04",6,"postseason","UW-River Falls","North Central (Ill.)",165,24,14,24,14,"index",TRUE

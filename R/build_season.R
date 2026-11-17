@@ -61,13 +61,18 @@ build_season <- function(season, teams = NULL, max_requests = Inf, delay = 6,
   games <- idx[in_scope | idx$game_id %in% existing, ]
   message(season, ": ", nrow(games), " games in scope (", sum(games$game_id %in% existing), " already built)")
 
+  stats_games <- character()
   if (source == "ncaa") {
     contests <- ncaa_contest_table(idx)
-    prefetch_ncaa_games(contests$contest[contests$game_id %in% games$game_id])
+    # games ncaa.com can't give, built from a stats.ncaa.org page Sam saved
+    stats_games <- stats_ncaa_games(season, idx)
+    prefetch_ncaa_games(contests$contest[contests$game_id %in% games$game_id & !contests$game_id %in% names(stats_games)])
     conf <- ncaa_conference_table(season, idx)
+    loader <- function(id) {
+      if (id %in% names(stats_games)) fetch_stats_ncaa_game(id, stats_games[[id]], idx) else fetch_ncaa_game(id, contests, idx)
+    }
     built <- build_all_pbp(games$game_id, out_dir = out_dir, check_dir = check_dir, conf = conf,
-                           loader = function(id) fetch_ncaa_game(id, contests, idx), season = season,
-                           index = idx)
+                           loader = loader, season = season, index = idx)
   } else {
     # fetch game pages first: they're the priority within a capped run. Team
     # pages (conferences) come after, and are filled in by later runs if the
@@ -76,7 +81,8 @@ build_season <- function(season, teams = NULL, max_requests = Inf, delay = 6,
     conf <- build_conference_table(season, unique(c(games$home, games$away)))
     built <- build_all_pbp(games$boxscore_url, out_dir = out_dir, check_dir = check_dir, conf = conf)
   }
-  write_build_report(season, teams, games, built, conf, check_dir, source = source, out_dir = out_dir)
+  write_build_report(season, teams, games, built, conf, check_dir, source = source, out_dir = out_dir,
+                     stats_games = stats_games)
   write_first_down_report(built, check_dir)
   if (fetch_refused()) message("d3football refused a request; the rest of this run used the cache only. Rerun later to continue.")
   invisible(built)
@@ -142,7 +148,7 @@ prefetch_ncaa_games <- function(contests) {
 #' @param out_dir Where the per-game CSVs are (named in the report).
 #' @keywords internal
 write_build_report <- function(season, teams, games, built, conf, check_dir, source = "ncaa",
-                               out_dir = file.path("pbp", season)) {
+                               out_dir = file.path("pbp", season), stats_games = character()) {
   md_table <- function(df) {
     if (!nrow(df)) return("None.")
     df[] <- lapply(df, function(x) ifelse(is.na(x), "", as.character(x)))
@@ -239,6 +245,10 @@ write_build_report <- function(season, teams, games, built, conf, check_dir, sou
            if (source == "ncaa") " games agree (" else " games with known conferences agree (", sum(is.na(cc$agree)),
            if (source == "ncaa") " with no cached d3football marker). Disagreements:" else " not checkable yet). Disagreements:"), "",
     md_table(if (nrow(cc)) cc[cc$agree %in% FALSE, ] else cc), "",
+    if (length(stats_games)) c("## Built from stats.ncaa.org", "",
+      "Games ncaa.com can't give (no play-by-play, or a file that can't be built), built from a stats.ncaa.org page saved by hand in `data-raw/stats_ncaa/` (see `stats_ncaa_games()`):", "",
+      md_table(data.frame(game_id = names(stats_games), file = basename(unname(stats_games)),
+                          built = names(stats_games) %in% vapply(built, function(g) g$game_id[1], character(1)))), "") else NULL,
     "## Failed games", "",
     md_table(broken), "",
     if (source == "ncaa") c(

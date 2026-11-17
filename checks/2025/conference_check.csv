@@ -18,8 +18,11 @@
 "6461363","2025-09-05","regular","Hobart","Alfred","Liberty League","Empire 8",FALSE,FALSE,,
 "6461399","2025-09-05","regular","Dickinson","Randolph-Macon","Centennial Conference","ODAC",FALSE,FALSE,FALSE,TRUE
 "6461550","2025-09-05","regular","Juniata","Gettysburg","Landmark Conference","Centennial Conference",FALSE,FALSE,FALSE,TRUE
+"6461647","2025-09-05","regular","Montclair State","Merchant Marine","NJAC","NEWMAC",FALSE,FALSE,,
 "6461676","2025-09-05","regular","Albright","Gallaudet","Middle Atlantic Conference","SCAC",FALSE,FALSE,,
+"6461691","2025-09-05","regular","Dean","Fitchburg State","MASCAC","MASCAC",TRUE,TRUE,,
 "6461848","2025-09-05","regular","Norwich","St. Lawrence","NEWMAC","Liberty League",FALSE,FALSE,,
+"6461900","2025-09-05","regular","Moravian","Muhlenberg","Landmark Conference","Centennial Conference",FALSE,FALSE,FALSE,TRUE
 "6461976","2025-09-05","regular","Ursinus","Alvernia","Centennial Conference","Middle Atlantic Conference",FALSE,FALSE,FALSE,TRUE
 "6462322","2025-09-05","regular","McDaniel","Catholic","Centennial Conference","Landmark Conference",FALSE,FALSE,FALSE,TRUE
 "6462432","2025-09-05","regular","Bridgewater State","Curry","MASCAC","Conference of New England",FALSE,FALSE,,
@@ -50,11 +53,13 @@
 "6461598","2025-09-06","regular","Kalamazoo","Austin","MIAA","SCAC",FALSE,FALSE,,
 "6461600","2025-09-06","regular","John Carroll","Waynesburg","NCAC","Presidents' Athletic Conference",FALSE,FALSE,FALSE,TRUE
 "6461608","2025-09-06","regular","Alma","UW-River Falls","MIAA","WIAC",FALSE,FALSE,FALSE,TRUE
+"6461614","2025-09-06","regular","Mass-Dartmouth","Salve Regina","MASCAC","NEWMAC",FALSE,FALSE,,
 "6461632","2025-09-06","regular","Rhodes","Washington U.","Southern Athletic Association","NCAC",FALSE,FALSE,,
 "6461677","2025-09-06","regular","Virginia-Lynchburg","Roanoke",,"ODAC",FALSE,FALSE,,
 "6461688","2025-09-06","regular","Kenyon","Bluffton","NCAC","Heartland Collegiate Athletic Conference",FALSE,FALSE,,
 "6461693","2025-09-06","regular","Coast Guard","University of New England","NEWMAC","Conference of New England",FALSE,FALSE,,
 "6461696","2025-09-06","regular","Apprentice","Southern Virginia",,"USA South",FALSE,FALSE,,
+"6461703","2025-09-06","regular","Husson","Framingham State","Conference of New England","MASCAC",FALSE,FALSE,,
 "6461719","2025-09-06","regular","Johns Hopkins","Ithaca","Centennial Conference","Liberty League",FALSE,FALSE,FALSE,TRUE
 "6461721","2025-09-06","regular","Denison","Allegheny","NCAC","Presidents' Athletic Conference",FALSE,FALSE,,
 "6461752","2025-09-06","regular","Union","Susquehanna","Liberty League","Landmark Conference",FALSE,FALSE,FALSE,TRUE
@@ -64,6 +69,7 @@
 "6461790","2025-09-06","regular","Lewis and Clark","Puget Sound","Northwest Conference","Northwest Conference",TRUE,TRUE,,
 "6461793","2025-09-06","regular","Stevenson","Bridgewater","Middle Atlantic Conference","ODAC",FALSE,FALSE,,
 "6461806","2025-09-06","regular","UW-Platteville","Aurora","WIAC","NACC",FALSE,FALSE,,
+"6461808","2025-09-06","regular","Trine","Christopher Newport","MIAA","NJAC",FALSE,FALSE,FALSE,TRUE
 "6461859","2025-09-06","regular","Olivet","Rochester","MIAA","Liberty League",FALSE,FALSE,,
 "6461874","2025-09-06","regular","RPI","WPI","Liberty League","NEWMAC",FALSE,FALSE,,
 "6461892","2025-09-06","regular","Ky. Christian","Brevard",,"USA South",FALSE,FALSE,,
@@ -1254,4 +1260,5 @@
 "6529902","2025-12-13","postseason","Wheaton (Ill.)","UW-River Falls","College Conference of Illinois and Wisconsin","WIAC",FALSE,FALSE,FALSE,TRUE
 "6529903","2025-12-13","postseason","Susquehanna","Johns Hopkins","Landmark Conference","Centennial Conference",FALSE,FALSE,FALSE,TRUE
 "6529904","2025-12-20","postseason","John Carroll","North Central (Ill.)","NCAC","College Conference of Illinois and Wisconsin",FALSE,FALSE,FALSE,TRUE
+"6529905","2025-12-20","postseason","Johns Hopkins","UW-River Falls","Centennial Conference","WIAC",FALSE,FALSE,FALSE,TRUE
 "6534822","2026-01-04","postseason","UW-River Falls","North Central (Ill.)","WIAC","College Conference of Illinois and Wisconsin",FALSE,FALSE,,

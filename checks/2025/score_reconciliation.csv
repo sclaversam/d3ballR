@@ -18,8 +18,11 @@
 "6461363","2025-09-05","Hobart","Alfred",23,28,23,28,TRUE
 "6461399","2025-09-05","Dickinson","Randolph-Macon",34,48,34,48,TRUE
 "6461550","2025-09-05","Juniata","Gettysburg",31,30,31,30,TRUE
+"6461647","2025-09-05","Montclair State","Merchant Marine",15,29,15,29,TRUE
 "6461676","2025-09-05","Albright","Gallaudet",9,7,9,7,TRUE
+"6461691","2025-09-05","Dean","Fitchburg State",14,49,14,49,TRUE
 "6461848","2025-09-05","Norwich","St. Lawrence",3,19,3,19,TRUE
+"6461900","2025-09-05","Moravian","Muhlenberg",19,38,19,38,TRUE
 "6461976","2025-09-05","Ursinus","Alvernia",41,17,41,17,TRUE
 "6462322","2025-09-05","McDaniel","Catholic",7,10,7,10,TRUE
 "6462432","2025-09-05","Bridgewater State","Curry",28,35,28,35,TRUE
@@ -50,11 +53,13 @@
 "6461598","2025-09-06","Kalamazoo","Austin",14,10,14,10,TRUE
 "6461600","2025-09-06","John Carroll","Waynesburg",48,14,48,14,TRUE
 "6461608","2025-09-06","Alma","UW-River Falls",33,45,33,45,TRUE
+"6461614","2025-09-06","Mass-Dartmouth","Salve Regina",13,34,13,34,TRUE
 "6461632","2025-09-06","Rhodes","Washington U.",0,49,0,49,TRUE
 "6461677","2025-09-06","Virginia-Lynchburg","Roanoke",7,23,7,23,TRUE
 "6461688","2025-09-06","Kenyon","Bluffton",17,20,17,20,TRUE
 "6461693","2025-09-06","Coast Guard","University of New England",49,56,49,56,TRUE
 "6461696","2025-09-06","Apprentice","Southern Virginia",6,27,6,27,TRUE
+"6461703","2025-09-06","Husson","Framingham State",40,13,40,13,TRUE
 "6461719","2025-09-06","Johns Hopkins","Ithaca",42,14,42,14,TRUE
 "6461721","2025-09-06","Denison","Allegheny",35,24,35,24,TRUE
 "6461752","2025-09-06","Union","Susquehanna",14,33,14,33,TRUE
@@ -64,6 +69,7 @@
 "6461790","2025-09-06","Lewis and Clark","Puget Sound",56,20,56,20,TRUE
 "6461793","2025-09-06","Stevenson","Bridgewater",32,27,32,27,TRUE
 "6461806","2025-09-06","UW-Platteville","Aurora",41,0,41,0,TRUE
+"6461808","2025-09-06","Trine","Christopher Newport",7,38,7,38,TRUE
 "6461859","2025-09-06","Olivet","Rochester",17,38,17,38,TRUE
 "6461874","2025-09-06","RPI","WPI",26,9,26,9,TRUE
 "6461892","2025-09-06","Ky. Christian","Brevard",41,20,41,20,TRUE
@@ -1254,4 +1260,5 @@
 "6529902","2025-12-13","Wheaton (Ill.)","UW-River Falls",21,46,21,46,TRUE
 "6529903","2025-12-13","Susquehanna","Johns Hopkins",10,40,10,40,TRUE
 "6529904","2025-12-20","John Carroll","North Central (Ill.)",21,41,21,41,TRUE
+"6529905","2025-12-20","Johns Hopkins","UW-River Falls",41,48,41,48,TRUE
 "6534822","2026-01-04","UW-River Falls","North Central (Ill.)",24,14,24,14,TRUE
