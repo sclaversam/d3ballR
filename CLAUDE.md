@@ -43,11 +43,7 @@ filter or `season`, not a new pipeline.
   `/game/{contest}/play-by-play`. Every response is cached in
   `data-raw/cache/ncaa/` (gitignored). An ncaa.com 502 means the game's
   play-by-play isn't available yet; it stays pending.
-- **Terms of use:** NCAA's terms forbid scraping without permission. Sam's
-  professor and the NCAA told him (2026-11-17) that accessing the
-  play-by-play the way other public R packages do is fine. Keep requests
-  few, cached and throttled anyway; d3football's bot challenge is still not
-  to be bypassed.
+- **Terms of use:** keep requests few, cached and throttled.
 - **The game list is ncaa.com's** (decided by Sam, 2026-11-16):
   `ncaa_season_games()` reads the season's cached D3 scoreboards into
   `data-raw/ncaa/{season}_games.csv`, and `game_id` is the ncaa.com contest
