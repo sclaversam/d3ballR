@@ -10,7 +10,8 @@ ncaa_scoreboard_week(season, week)
 \item{season}{Season year.}
 
 \item{week}{ncaa.com week number (1, 2, ...). ncaa.com numbers weeks
-its own way; they don't match the season index's weeks.}
+its own way (2025: d3football's regular week + 1; see
+\code{\link[=ncaa_season_games]{ncaa_season_games()}}).}
 }
 \value{
 A data frame, one row per game: \code{contest} (ncaa.com contest id),

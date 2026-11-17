@@ -43,13 +43,6 @@ test_that("drive_row_team reads drive headers and starts, with or without a cloc
                c("LaGrange", "LaGrange College", "Virginia-Lynchburg", "Point"))
 })
 
-test_that("a game stopped early: the line score's last column is the final", {
-  ls <- data.frame(Scoring = c("Case Western Reserve (1-0)", "Rowan (0-1)"), `1` = c("14", "7"),
-                   `2` = c("0", "0"), `3` = c("0", "10"), `3rd QTR - 04:19` = c("14", "17"), check.names = FALSE)
-  expect_equal(unname(find_line_score_finals(list(ls))), c(14L, 17L))
-  expect_equal(find_line_score_teams(list(ls)), c("Case Western Reserve", "Rowan"))
-})
-
 test_that("score_points: defensive try returns and kicking-team muff touchdowns", {
   kept <- data.frame(
     play_type = c("extra_point", "punt_no_return", "punt_with_return"),
@@ -97,11 +90,6 @@ test_that("parse_coin_receiver handles the StatCrew wordings", {
   expect_equal(parse_coin_receiver("Gettysburg wins toss, defers, CMU to receive and defend west"), "CMU")
   expect_equal(parse_coin_receiver("Carnegie Mellon to receive and defend the East end zone"), "Carnegie Mellon")
   expect_true(is.na(parse_coin_receiver("Muhlenberg won the toss and deferred")))
-})
-
-test_that("parse_matchup reads Away at Home", {
-  tbls <- list(data.frame(X1 = "Carnegie Mellon at Chicago - Chicago Logo, Illinois 09/06/2025 - 12:00 PM"))
-  expect_equal(parse_matchup(tbls), c(away = "Carnegie Mellon", home = "Chicago"))
 })
 
 test_that("clock helpers round-trip and pad", {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats_ncaa.R
 \name{fetch_stats_ncaa_game}
 \alias{fetch_stats_ncaa_game}
-\title{Build one game from a saved stats.ncaa.org page, in \code{\link[=fetch_game]{fetch_game()}}'s shape}
+\title{Build one game from a saved stats.ncaa.org page, ready for \code{\link[=build_pbp]{build_pbp()}}}
 \usage{
 fetch_stats_ncaa_game(game_id, file, index)
 }

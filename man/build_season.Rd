@@ -9,7 +9,6 @@ build_season(
   teams = NULL,
   max_requests = Inf,
   delay = 6,
-  source = c("ncaa", "d3football"),
   out_dir = NULL,
   check_dir = NULL
 )
@@ -17,47 +16,41 @@ build_season(
 \arguments{
 \item{season}{Season year.}
 
-\item{teams}{Team names (scoreboard spelling) to filter to, or NULL for
-the whole season.}
+\item{teams}{Team names (the game list's spelling) to filter to, or NULL
+for the whole season.}
 
 \item{max_requests}{Maximum new network requests in this call.}
 
 \item{delay}{Seconds between requests.}
 
-\item{source}{"ncaa" (default) or "d3football".}
+\item{out_dir}{Per-game CSVs. NULL means \verb{pbp/\{season\}/}.}
 
-\item{out_dir}{Per-game CSVs. NULL means \verb{pbp/\{season\}/} for ncaa.com
-and \verb{pbp/d3football/\{season\}/} for d3football, so the two sources never
-mix in one folder.}
-
-\item{check_dir}{Reports. NULL means \verb{checks/\{season\}/} or
-\verb{checks/d3football/\{season\}/} likewise.}
+\item{check_dir}{Reports. NULL means \verb{checks/\{season\}/}.}
 }
 \value{
 Invisibly, the list of built games.
 }
 \description{
 One pipeline for every stage of the roadmap. The games come from
-ncaa.com's scoreboards (\code{\link[=ncaa_season_games]{ncaa_season_games()}}; for \code{source = "d3football"}, the season index \code{\link[=build_season_index]{build_season_index()}}): with \code{teams = NULL}, every game in the list; with \code{teams}, only games involving one of them (e.g. a
-conference's members: any of their games, including non-conference,
-playoff and bowl games). Games already in \code{out_dir} are always rebuilt
-too, so \code{out_dir} and the reports in \code{check_dir} always cover every game
-built so far for the season.
+ncaa.com's scoreboards (\code{\link[=ncaa_season_games]{ncaa_season_games()}}): with \code{teams = NULL},
+every game in the list; with \code{teams}, only games involving one of them
+(e.g. a conference's members: any of their games, including
+non-conference and playoff games). Games already in \code{out_dir} are always
+rebuilt too, so \code{out_dir} and the reports in \code{check_dir} always cover
+every game built so far for the season.
 }
 \details{
-The play-by-play comes from ncaa.com (\code{source = "ncaa"}, the default)
-requested directly from R (see \code{\link[=fetch_ncaa_json]{fetch_ncaa_json()}}; an ncaa-api server
-is optional): each game's (contest's)
-play-by-play is fetched (\code{\link[=prefetch_ncaa_games]{prefetch_ncaa_games()}}) and rebuilt into the
-play table the parser reads (\code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}). \code{source = "d3football"} reads d3football boxscore pages instead, which now works
-only from pages already in the cache (d3football's firewall blocks
-scripts).
+Each game's play-by-play is requested from ncaa.com directly from R (see
+\code{\link[=fetch_ncaa_json]{fetch_ncaa_json()}}; an ncaa-api server is optional), fetched by
+\code{\link[=prefetch_ncaa_games]{prefetch_ncaa_games()}}, and rebuilt into the (situation, play) table the
+parser reads by \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}. The few games ncaa.com can't give
+are built from a stats.ncaa.org page saved by hand instead
+(\code{\link[=stats_ncaa_games]{stats_ncaa_games()}}, \code{\link[=fetch_stats_ncaa_game]{fetch_stats_ncaa_game()}}).
 
-Steps: fetch every game not yet cached, then the team-to-conference
-table for every team in those games (\code{\link[=build_conference_table]{build_conference_table()}}), then
-build each game (\code{\link[=build_all_pbp]{build_all_pbp()}}), then the build report
-(\code{\link[=write_build_report]{write_build_report()}}). Conference columns are NA for teams not yet
-looked up and fill in on a later run.
+Steps: fetch every game not yet cached, read each team's conference off
+the cached scoreboards (\code{\link[=ncaa_conference_table]{ncaa_conference_table()}}), build each game
+(\code{\link[=build_all_pbp]{build_all_pbp()}}), then write the build report (\code{\link[=write_build_report]{write_build_report()}})
+and the first-down report (\code{\link[=write_first_down_report]{write_first_down_report()}}).
 
 Fetching is cached (nothing is requested twice), throttled (\code{delay}
 seconds apart) and capped (\code{max_requests} new requests per call).

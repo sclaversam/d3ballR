@@ -181,7 +181,7 @@ stats_ncaa_drive_text <- function(x) {
   ifelse(is.na(m[, 1]), NA_character_, paste0(m[, 2], " and ", dist, " at ", m[, 4]))
 }
 
-#' Build one game from a saved stats.ncaa.org page, in [fetch_game()]'s shape
+#' Build one game from a saved stats.ncaa.org page, ready for [build_pbp()]
 #'
 #' The stats.ncaa.org counterpart of [fetch_ncaa_game()]: the page is read
 #' with [stats_ncaa_lines()] and rebuilt with [ncaa_play_table()]. Home and

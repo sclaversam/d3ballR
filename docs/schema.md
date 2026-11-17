@@ -1,9 +1,9 @@
 # Play-by-play schema (71 columns)
 
-Every column of the per-game play-by-play CSVs in `pbp/{season}/{game_id}.csv`
-(built from ncaa.com) and `pbp/d3football/{season}/{game_id}.csv` (built from
-d3football.com, the old source), and the conventions needed to read them. The
-columns are the same for both sources. How the files are built and checked
+Every column of the per-game play-by-play CSVs in `pbp/{season}/{game_id}.csv`,
+and the conventions needed to read them. Games are built from ncaa.com, or,
+for the few it can't give, from a saved stats.ncaa.org page; the columns are
+the same. How the files are built and checked
 is in [`pipeline.md`](pipeline.md); how the schema got here is in
 [`CHANGELOG.md`](CHANGELOG.md).
 
@@ -157,8 +157,8 @@ clock and seconds columns are NA in periods 5+.
 
 | # | column | type | definition | NA behavior | notes |
 |---|---|---|---|---|---|
-| 1 | `game_id` | character | ncaa.com builds (`pbp/{season}/`): the ncaa.com contest id, e.g. `"6461490"` (since 2026-11-16). d3football builds (`pbp/d3football/`): the d3football boxscore id, e.g. `"20250906_e064"`. | Never NA. | Constant per file; the file name. Joins to the game list `data-raw/ncaa/{season}_games.csv`, whose `d3football_id` column is the old id. Read it as character. |
-| 2 | `season` | integer | Season year. | Never NA. | From the boxscore URL path, never the date. |
+| 1 | `game_id` | character | The ncaa.com contest id, e.g. `"6461490"` (since 2026-11-16; before, d3football's boxscore id, e.g. `"20250906_e064"`). | Never NA. | Constant per file; the file name. Joins to the game list `data-raw/ncaa/{season}_games.csv`, whose `d3football_id` column is the old id. Read it as character. |
+| 2 | `season` | integer | Season year. | Never NA. | The season the game list belongs to, never read off the date (a January bowl or the Stagg Bowl is the season before). |
 | 3 | `game_date` | character | Game date, `YYYY-MM-DD`. | Never NA. | |
 | 4 | `week` | integer | Week of the season. | Never NA. | d3football's (and cfbfastR's) convention: regular weeks count from the week of the first Saturday in September (a game before it is week 0); postseason restarts at 1 and counts the postseason weeks with games (the tournament rounds; the Stagg Bowl is 6). Not ncaa.com's week number (regular week + 1 in 2025). |
 | 5 | `season_type` | character | `"regular"` or `"postseason"`. | Never NA. | Postseason for NCAA tournament games and any game after the regular-season end date (`data-raw/season_dates.csv`). All 2020 games are regular. |

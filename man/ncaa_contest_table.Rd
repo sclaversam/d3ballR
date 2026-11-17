@@ -10,7 +10,9 @@ ncaa_contest_table(games)
 \item{games}{Output of \code{\link[=ncaa_season_games]{ncaa_season_games()}}.}
 }
 \value{
-A data frame like \code{\link[=map_ncaa_contests]{map_ncaa_contests()}}'s.
+A data frame: \code{game_id}, \code{contest}, \code{ncaa_away}, \code{ncaa_home},
+\code{ncaa_away_score}, \code{ncaa_home_score}, \code{home_away_flip} (FALSE),
+\code{date_diff} (0).
 }
 \description{
 \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}} looks games up in a contest table. With ncaa.com's

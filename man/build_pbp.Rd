@@ -4,23 +4,23 @@
 \alias{build_pbp}
 \title{Build one game's play-by-play table}
 \usage{
-build_pbp(game_url, index = NULL, season_dates = NULL, conf = NULL)
+build_pbp(game, index = NULL, season_dates = NULL, conf = NULL)
 }
 \arguments{
-\item{game_url}{A d3football boxscore URL without the \verb{?view=} suffix
-(the page is read with \code{\link[=fetch_game]{fetch_game()}}), or a game already read, as a
-list in \code{\link[=fetch_game]{fetch_game()}}'s shape (e.g. from \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}).}
+\item{game}{A game already read: a list with \code{game_id}, \code{season},
+\code{teams}, \code{finals}, \code{matchup}, \code{header_date} and \code{plays} (the
+(situation, play) table), from \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}} or
+\code{\link[=fetch_stats_ncaa_game]{fetch_stats_ncaa_game()}}.}
 
-\item{index}{Season index for the game's season. If NULL, the cached
-\verb{data-raw/index/\{season\}.csv} is used when present (no network);
-otherwise a date-based week is used and logged (see \code{\link[=game_calendar]{game_calendar()}}).}
+\item{index}{The game list for the game's season (\code{\link[=ncaa_season_games]{ncaa_season_games()}}).
+If NULL, or the game isn't in it, a date-based week is used and logged
+(see \code{\link[=game_calendar]{game_calendar()}}).}
 
 \item{season_dates}{Season-dates table; if NULL, \code{\link[=ensure_season_dates]{ensure_season_dates()}}
 for the game's season (adds it from Wikipedia if missing).}
 
-\item{conf}{Conference data from \code{\link[=build_conference_table]{build_conference_table()}}; if NULL, the
-cached \code{data-raw/conferences/{season}*.csv} files are used when present
-(no network), else the conference columns are NA.}
+\item{conf}{Conference data from \code{\link[=ncaa_conference_table]{ncaa_conference_table()}}; if NULL, the
+conference columns are NA.}
 }
 \value{
 A tibble, one row per kept play, with the columns in
@@ -28,8 +28,8 @@ A tibble, one row per kept play, with the columns in
 \code{week_source} ("index" or "date fallback"), \code{unclassified} (rows the
 classifier put in its unknown \code{other} bucket; should be NULL),
 \code{shared_conference} (both
-teams in one conference; for the cross-check), \code{finals} (line-score
-final scores by canonical team name), \code{kickoffs} (the
+teams in one conference), \code{finals} (final scores by canonical team
+name), \code{kickoffs} (the
 per-kickoff possession decisions from \code{\link[=assign_kickoffs]{assign_kickoffs()}}),
 \code{score_checks} (each score line vs the parsed points),
 \code{first_down_text} (the text-only first-down flags), and \code{next_snap}
@@ -38,11 +38,11 @@ per-kickoff possession decisions from \code{\link[=assign_kickoffs]{assign_kicko
 elapsed time vs the clock anchors).
 }
 \description{
-Works for any d3football game. Keeps the five event types (\code{play},
-\code{kickoff}, \code{extra_point}, \code{two_point}, \code{penalty_no_play}), after using
-the dropped administrative rows to derive \code{period}, \code{pos_team}, the
-kickoff teams, and the clock. \code{season}, \code{game_date}, \code{week} and
-\code{season_type} come from the season index (see \code{\link[=build_season_index]{build_season_index()}}).
+Works for any game. Keeps the five event types (\code{play}, \code{kickoff},
+\code{extra_point}, \code{two_point}, \code{penalty_no_play}), after using the dropped
+administrative rows to derive \code{period}, \code{pos_team}, the kickoff teams,
+and the clock. \code{season}, \code{game_date}, \code{week} and \code{season_type} come from
+the game list (see \code{\link[=ncaa_season_games]{ncaa_season_games()}}).
 See \code{R/classify.R} and \code{R/parse_play_type.R} for the upstream row_type /
 play_type classification this builds on.
 }

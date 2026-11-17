@@ -9,7 +9,7 @@ ncaa_conference_table(season, index, weeks = 1:20, dir = "data-raw/ncaa")
 \arguments{
 \item{season}{Season year.}
 
-\item{index}{The season index (\code{\link[=build_season_index]{build_season_index()}}).}
+\item{index}{The game list (\code{\link[=ncaa_season_games]{ncaa_season_games()}}).}
 
 \item{weeks}{ncaa.com week numbers to read.}
 
@@ -17,7 +17,7 @@ ncaa_conference_table(season, index, weeks = 1:20, dir = "data-raw/ncaa")
 \verb{\{season\}_conferences.csv} is written.}
 }
 \value{
-The same shape as \code{\link[=build_conference_table]{build_conference_table()}}: a list with
+A list with
 \code{table} (\code{season}, \code{team}, \code{conference}, \code{conference_code},
 \code{ncaa_conference}) and \code{markers} (\code{season}, \code{team}, \code{game_id},
 \code{conference_marker}; one row per index game, \code{team} is the home team).
@@ -29,11 +29,11 @@ its conference, named through \code{data-raw/ncaa/conference_names.csv}
 (d3football's names and codes, e.g. "Centennial Conference", "CC").
 Tags not in that table (non-D3 conferences such as "nec", and
 "diii-independent") and blank tags give NA, as for an independent or a
-non-D3 opponent. The scoreboards are the ones \code{\link[=map_ncaa_contests]{map_ncaa_contests()}}
+non-D3 opponent. The scoreboards are the ones \code{\link[=ncaa_season_games]{ncaa_season_games()}}
 reads, so nothing new is fetched once they are cached.
 }
 \details{
 ncaa.com has no conference-game marker, so \code{conference_marker} is TRUE
-for a regular-season game (the season index's \code{season_type}) between two
+for a regular-season game (the game list's \code{season_type}) between two
 teams of the same conference. Playoff and bowl games are FALSE.
 }
