@@ -98,8 +98,10 @@ rules:
   default) and capped by `max_requests`, as before.
 - **Pending:** an HTTP 502 means ncaa.com has no play-by-play for the game
   (yet); the game is listed as pending and retried on a later run.
-- **Terms:** NCAA's terms of use forbid scraping without permission, so
-  keep requests few and get a go-ahead before large runs.
+- **Terms:** NCAA's terms of use forbid scraping without permission. Sam's
+  professor and the NCAA told him (2026-11-17) that accessing the
+  play-by-play the way other public R packages do is fine. Requests stay
+  few, cached and throttled, with a go-ahead before large runs.
 
 **d3football** (the old source) now serves scripts a JavaScript bot
 challenge. Its pages are read from the cache only; do not try to get past
