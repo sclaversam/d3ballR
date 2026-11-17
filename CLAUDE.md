@@ -16,8 +16,9 @@ scope for now.
 
 **Roadmap:** CMU 2025 (done) → Centennial Conference 2025 (done; checkpoint
 tag `checkpoint-centennial-2025`; rebuilt from ncaa.com 2026-11-04) → all of
-D3 2025 from ncaa.com (done 2026-11-16 as far as ncaa.com has it: 1,230
-games) → other seasons.
+D3 2025 from ncaa.com (done 2026-11-17 as far as ncaa.com has it: 1,256
+games; games to patch from stats.ncaa.org in
+`data-raw/ncaa/stats_ncaa_candidates.csv`) → other seasons.
 Everything in `R/` must stay generic: no code may assume a team or a season.
 Each roadmap stage is the same `build_season()` call with a different `teams`
 filter or `season`, not a new pipeline.

@@ -5,6 +5,23 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## The 25 games only on ncaa.com, and the stats.ncaa.org candidate list
+
+2026-11-17, Sam's go-ahead. 31 requests: the 25 games on ncaa.com's
+scoreboards that d3football never gave a boxscore id (Saint Francis
+(Pa.)'s 11, 13 listed without a boxscore, King's at Wilkes) and one more
+retry of the 6 empty week-1 games (still empty). All 25 build and
+reconcile; no rule changed and no other game's output changed. 1,256 games
+built, 1,253 reconcile (the 3 known source gaps).
+
+New `data-raw/ncaa/stats_ncaa_candidates.csv`: 16 games to patch from
+stats.ncaa.org by Sam's rule (no play-by-play, can't be built, a big
+portion missing, or a severe smaller issue), each with the ncaa.com link
+and what to check. Two problems found by the scan are new:
+`6461643` (Elmhurst at Washington U., only the first half in ncaa.com's
+file) and quarters filed under the wrong period in `6461596` (Lyon at
+McMurry) and `6531808` (Anna Maria at Worcester State).
+
 ## Game ids and the game list move to ncaa.com
 
 Decided by Sam (2026-11-16). The 2025 game list now comes from ncaa.com's

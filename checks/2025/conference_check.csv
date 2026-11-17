@@ -1,5 +1,7 @@
 "game_id","game_date","season_type","away","home","away_team_conference","home_team_conference","conference_game","shared_conference","d3_marker","agree"
+"6459331","2025-08-28","regular","Saint Francis","ULM",,,FALSE,FALSE,,
 "6461247","2025-09-04","regular","Trinity (Texas)","Texas Lutheran","Southern Athletic Association","SCAC",FALSE,FALSE,,
+"6461274","2025-09-04","regular","King's","Wilkes","Middle Atlantic Conference","Landmark Conference",FALSE,FALSE,,
 "6461356","2025-09-04","regular","Millsaps","Belhaven","Southern Athletic Association","USA South",FALSE,FALSE,,
 "6461480","2025-09-04","regular","Marietta","Westminster (Pa.)","Ohio Athletic Conference","Presidents' Athletic Conference",FALSE,FALSE,FALSE,TRUE
 "6461490","2025-09-04","regular","Brockport","Buffalo State","Empire 8","Liberty League",FALSE,FALSE,,
@@ -21,6 +23,7 @@
 "6461976","2025-09-05","regular","Ursinus","Alvernia","Centennial Conference","Middle Atlantic Conference",FALSE,FALSE,FALSE,TRUE
 "6462322","2025-09-05","regular","McDaniel","Catholic","Centennial Conference","Landmark Conference",FALSE,FALSE,FALSE,TRUE
 "6462432","2025-09-05","regular","Bridgewater State","Curry","MASCAC","Conference of New England",FALSE,FALSE,,
+"6459279","2025-09-06","regular","Saint Francis","Buffalo",,,FALSE,FALSE,,
 "6460259","2025-09-06","regular","Adrian","Valparaiso","MIAA",,FALSE,FALSE,,
 "6461256","2025-09-06","regular","Hanover","Centre","Heartland Collegiate Athletic Conference","Southern Athletic Association",FALSE,FALSE,,
 "6461284","2025-09-06","regular","Wooster","Wilmington","NCAC","Ohio Athletic Conference",FALSE,FALSE,,
@@ -38,6 +41,7 @@
 "6461471","2025-09-06","regular","Knox","Eureka","Midwest Conference","NACC",FALSE,FALSE,,
 "6461499","2025-09-06","regular","Wabash","St. Norbert","NCAC","NACC",FALSE,FALSE,,
 "6461516","2025-09-06","regular","Greensboro","Guilford","USA South","ODAC",FALSE,FALSE,,
+"6461525","2025-09-06","regular","Maine Maritime","Hartwick","Conference of New England","Empire 8",FALSE,FALSE,,
 "6461543","2025-09-06","regular","Maryville (Tenn.)","Hendrix","Southern Athletic Association","SCAC",FALSE,FALSE,,
 "6461567","2025-09-06","regular","Baldwin Wallace","Wittenberg","Ohio Athletic Conference","NCAC",FALSE,FALSE,,
 "6461574","2025-09-06","regular","William Paterson","Western Connecticut","NJAC","Landmark Conference",FALSE,FALSE,FALSE,TRUE
@@ -107,6 +111,7 @@
 "6462415","2025-09-06","regular","LaGrange","Point","USA South",,FALSE,FALSE,,
 "6496410","2025-09-06","regular","Case Western Reserve","Rowan","Presidents' Athletic Conference","NJAC",FALSE,FALSE,,
 "6459668","2025-09-13","regular","Butler","Hanover",,"Heartland Collegiate Athletic Conference",FALSE,FALSE,,
+"6460367","2025-09-13","regular","Saint Francis","Central Conn. St.",,,FALSE,FALSE,,
 "6461248","2025-09-13","regular","Howard Payne","Texas Lutheran","American Southwest Conference","SCAC",FALSE,FALSE,,
 "6461265","2025-09-13","regular","Concordia (Wis.)","Calvin","NACC","MIAA",FALSE,FALSE,,
 "6461275","2025-09-13","regular","King's","Delaware Valley","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,TRUE,TRUE
@@ -131,6 +136,7 @@
 "6461472","2025-09-13","regular","Ripon","Knox","Midwest Conference","Midwest Conference",TRUE,TRUE,,
 "6461481","2025-09-13","regular","Westminster (Pa.)","Franklin and Marshall","Presidents' Athletic Conference","Centennial Conference",FALSE,FALSE,FALSE,TRUE
 "6461491","2025-09-13","regular","Hobart","Brockport","Liberty League","Empire 8",FALSE,FALSE,,
+"6461500","2025-09-13","regular","St. Norbert","UW-Stevens Point","NACC","WIAC",FALSE,FALSE,,
 "6461508","2025-09-13","regular","Wartburg","UW-Stout","American Rivers Conference","WIAC",FALSE,FALSE,,
 "6461517","2025-09-13","regular","Roanoke","Greensboro","ODAC","USA South",FALSE,FALSE,,
 "6461536","2025-09-13","regular","Southern Virginia","Averett","USA South","ODAC",FALSE,FALSE,,
@@ -206,6 +212,7 @@
 "6462338","2025-09-13","regular","Hope","Franklin","MIAA","Heartland Collegiate Athletic Conference",FALSE,FALSE,,
 "6462344","2025-09-13","regular","Washington and Jefferson","Hampden-Sydney","Presidents' Athletic Conference","ODAC",FALSE,FALSE,,
 "6462350","2025-09-13","regular","Rockford","Elmhurst","NACC","College Conference of Illinois and Wisconsin",FALSE,FALSE,,
+"6462370","2025-09-13","regular","N.C. Wesleyan","Apprentice","USA South",,FALSE,FALSE,,
 "6462376","2025-09-13","regular","Heidelberg","Ohio Northern","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
 "6462401","2025-09-13","regular","Westfield State","Bridgewater State","MASCAC","MASCAC",TRUE,TRUE,,
 "6462404","2025-09-13","regular","Mayville St.","Nebraska Wesleyan",,"American Rivers Conference",FALSE,FALSE,,
@@ -215,6 +222,7 @@
 "6462421","2025-09-13","regular","Lake Forest","Illinois College","Midwest Conference","Midwest Conference",TRUE,TRUE,,
 "6462428","2025-09-13","regular","UW-Whitewater","St. Xavier","WIAC",,FALSE,FALSE,,
 "6459813","2025-09-20","regular","Greensboro","Davidson","USA South",,FALSE,FALSE,,
+"6460368","2025-09-20","regular","Delaware St.","Saint Francis",,,FALSE,FALSE,,
 "6460461","2025-09-20","regular","Roosevelt","UW-Oshkosh",,"WIAC",FALSE,FALSE,,
 "6460710","2025-09-20","regular","Wayne St. (Mich.)","UW-La Crosse",,"WIAC",FALSE,FALSE,FALSE,TRUE
 "6460793","2025-09-20","regular","Erskine","Brevard",,"USA South",FALSE,FALSE,,
@@ -306,6 +314,7 @@
 "6462159","2025-09-20","regular","Cornell","Lawrence","Midwest Conference","Midwest Conference",TRUE,TRUE,,
 "6462172","2025-09-20","regular","Grinnell","Ripon","Midwest Conference","Midwest Conference",TRUE,TRUE,,
 "6462181","2025-09-20","regular","Minnesota-Morris","Crown","UMAC","UMAC",TRUE,TRUE,,
+"6462197","2025-09-20","regular","UW-Stevens Point","Pacific","WIAC","Northwest Conference",FALSE,FALSE,,
 "6462201","2025-09-20","regular","Wayland Baptist","Howard Payne",,"American Southwest Conference",FALSE,FALSE,,
 "6462217","2025-09-20","regular","Worcester State","Western New England","MASCAC","Conference of New England",FALSE,FALSE,,
 "6462221","2025-09-20","regular","Franklin","Trine","Heartland Collegiate Athletic Conference","MIAA",FALSE,FALSE,,
@@ -323,6 +332,7 @@
 "6462405","2025-09-20","regular","Nebraska Wesleyan","Coe","American Rivers Conference","American Rivers Conference",TRUE,TRUE,,
 "6462406","2025-09-20","regular","Nichols","Coast Guard","Conference of New England","NEWMAC",FALSE,FALSE,,
 "6462429","2025-09-20","regular","Salve Regina","William Paterson","NEWMAC","NJAC",FALSE,FALSE,,
+"6460322","2025-09-27","regular","Saint Francis","Bucknell",,,FALSE,FALSE,,
 "6460931","2025-09-27","regular","Mary Hardin-Baylor","Mars Hill","American Southwest Conference",,FALSE,FALSE,,
 "6461250","2025-09-27","regular","East Texas Baptist","Texas Lutheran","American Southwest Conference","SCAC",FALSE,FALSE,,
 "6461267","2025-09-27","regular","Benedictine","Concordia (Wis.)","NACC","NACC",TRUE,TRUE,,
@@ -342,6 +352,7 @@
 "6461441","2025-09-27","regular","Marietta","Capital","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
 "6461459","2025-09-27","regular","Wooster","Oberlin","NCAC","NCAC",TRUE,TRUE,,
 "6461493","2025-09-27","regular","Hartwick","Brockport","Empire 8","Empire 8",TRUE,TRUE,,
+"6461527","2025-09-27","regular","Keystone","Maine Maritime",,"Conference of New England",FALSE,FALSE,,
 "6461538","2025-09-27","regular","Bridgewater","Averett","ODAC","ODAC",TRUE,TRUE,,
 "6461545","2025-09-27","regular","Rhodes","Hendrix","Southern Athletic Association","SCAC",FALSE,FALSE,,
 "6461558","2025-09-27","regular","Juniata","TCNJ","Landmark Conference","NJAC",FALSE,FALSE,FALSE,TRUE
@@ -457,6 +468,7 @@
 "6461811","2025-10-04","regular","Aurora","Lakeland","NACC","NACC",TRUE,TRUE,,
 "6461812","2025-10-04","regular","Christopher Newport","Rowan","NJAC","NJAC",TRUE,TRUE,TRUE,TRUE
 "6461831","2025-10-04","regular","Colby","Bates","NESCAC","NESCAC",TRUE,TRUE,,
+"6461836","2025-10-04","regular","Maryville (Tenn.)","Sewanee","Southern Athletic Association","Southern Athletic Association",TRUE,TRUE,,
 "6461851","2025-10-04","regular","WPI","Norwich","NEWMAC","NEWMAC",TRUE,TRUE,,
 "6461854","2025-10-04","regular","Marietta","Ohio Northern","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
 "6461871","2025-10-04","regular","Ohio Wesleyan","Denison","NCAC","NCAC",TRUE,TRUE,,
@@ -519,6 +531,7 @@
 "6462437","2025-10-04","regular","Eureka","Concordia-Chicago","NACC","NACC",TRUE,TRUE,,
 "6461278","2025-10-10","regular","King's","Stevenson","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,,
 "6459675","2025-10-11","regular","Western Connecticut","New Haven","Landmark Conference",,FALSE,FALSE,FALSE,TRUE
+"6460351","2025-10-11","regular","Saint Francis","Duquesne",,,FALSE,FALSE,,
 "6461251","2025-10-11","regular","Texas Lutheran","Centenary (La.)","SCAC","SCAC",TRUE,TRUE,,
 "6461259","2025-10-11","regular","Hanover","Mount St. Joseph","Heartland Collegiate Athletic Conference","Heartland Collegiate Athletic Conference",TRUE,TRUE,,
 "6461269","2025-10-11","regular","Lakeland","Concordia (Wis.)","NACC","NACC",TRUE,TRUE,,
@@ -617,6 +630,7 @@
 "6462367","2025-10-11","regular","Ohio Northern","Muskingum","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,,
 "6462375","2025-10-11","regular","Trinity (Conn.)","Hamilton","NESCAC","NESCAC",TRUE,TRUE,,
 "6462383","2025-10-11","regular","Amherst","Bowdoin","NESCAC","NESCAC",TRUE,TRUE,,
+"6462398","2025-10-11","regular","Augustana","Elmhurst","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
 "6462414","2025-10-11","regular","Morrisville State","Utica","Empire 8","Empire 8",TRUE,TRUE,,
 "6462224","2025-10-16","regular","Trine","Olivet","MIAA","MIAA",TRUE,TRUE,,
 "6461315","2025-10-17","regular","UW-Stout","UW-Whitewater","WIAC","WIAC",TRUE,TRUE,,
@@ -730,6 +744,7 @@
 "6462435","2025-10-18","regular","Mount Union","Heidelberg","Ohio Athletic Conference","Ohio Athletic Conference",TRUE,TRUE,TRUE,TRUE
 "6462438","2025-10-18","regular","Washington and Jefferson","St. Vincent","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
 "6529008","2025-10-18","regular","Keystone","Apprentice",,,FALSE,FALSE,,
+"6460311","2025-10-25","regular","Robert Morris","Saint Francis",,,FALSE,FALSE,,
 "6461253","2025-10-25","regular","Austin","Texas Lutheran","SCAC","SCAC",TRUE,TRUE,,
 "6461271","2025-10-25","regular","Concordia (Wis.)","Concordia-Chicago","NACC","NACC",TRUE,TRUE,,
 "6461280","2025-10-25","regular","King's","Lebanon Valley","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,TRUE,TRUE
@@ -846,6 +861,7 @@
 "6462416","2025-10-25","regular","Huntingdon","LaGrange","USA South","USA South",TRUE,TRUE,,
 "6462422","2025-10-25","regular","Illinois College","Ripon","Midwest Conference","Midwest Conference",TRUE,TRUE,,
 "6462426","2025-10-25","regular","Dickinson","McDaniel","Centennial Conference","Centennial Conference",TRUE,TRUE,TRUE,TRUE
+"6460369","2025-11-01","regular","Wagner","Saint Francis",,,FALSE,FALSE,,
 "6461254","2025-11-01","regular","Texas Lutheran","McMurry","SCAC","American Southwest Conference",FALSE,FALSE,,
 "6461261","2025-11-01","regular","Hanover","Bluffton","Heartland Collegiate Athletic Conference","Heartland Collegiate Athletic Conference",TRUE,TRUE,,
 "6461272","2025-11-01","regular","Rockford","Concordia (Wis.)","NACC","NACC",TRUE,TRUE,,
@@ -884,6 +900,7 @@
 "6461631","2025-11-01","regular","Mass-Dartmouth","Dean","MASCAC","MASCAC",TRUE,TRUE,,
 "6461637","2025-11-01","regular","Adrian","Kalamazoo","MIAA","MIAA",TRUE,TRUE,,
 "6461644","2025-11-01","regular","Washington U.","Millikin","NCAC","College Conference of Illinois and Wisconsin",FALSE,FALSE,,
+"6461662","2025-11-01","regular","Morrisville State","Hartwick","Empire 8","Empire 8",TRUE,TRUE,,
 "6461666","2025-11-01","regular","Redlands","La Verne","SCIAC","SCIAC",TRUE,TRUE,,
 "6461669","2025-11-01","regular","Montclair State","Christopher Newport","NJAC","NJAC",TRUE,TRUE,TRUE,TRUE
 "6461672","2025-11-01","regular","Guilford","Roanoke","ODAC","ODAC",TRUE,TRUE,,
@@ -948,10 +965,12 @@
 "6462283","2025-11-01","regular","Trinity (Texas)","Sewanee","Southern Athletic Association","Southern Athletic Association",TRUE,TRUE,,
 "6462285","2025-11-01","regular","Lyon","Austin","SCAC","SCAC",TRUE,TRUE,,
 "6462301","2025-11-01","regular","Wartburg","Nebraska Wesleyan","American Rivers Conference","American Rivers Conference",TRUE,TRUE,,
+"6462320","2025-11-01","regular","Thiel","Hiram","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
 "6462336","2025-11-01","regular","William Paterson","Salisbury","NJAC","NJAC",TRUE,TRUE,TRUE,TRUE
 "6462337","2025-11-01","regular","Eastern","Widener","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,TRUE,TRUE
 "6462340","2025-11-01","regular","Hope","Albion","MIAA","MIAA",TRUE,TRUE,,
 "6462348","2025-11-01","regular","Northwestern (Minn.)","Martin Luther","UMAC","UMAC",TRUE,TRUE,,
+"6462356","2025-11-01","regular","Beloit","Ripon","Midwest Conference","Midwest Conference",TRUE,TRUE,,
 "6462361","2025-11-01","regular","Pomona-Pitzer","Chapman","SCIAC","SCIAC",TRUE,TRUE,,
 "6462379","2025-11-01","regular","Amherst","Trinity (Conn.)","NESCAC","NESCAC",TRUE,TRUE,,
 "6462382","2025-11-01","regular","Franklin","Anderson","Heartland Collegiate Athletic Conference","Heartland Collegiate Athletic Conference",TRUE,TRUE,,
@@ -959,6 +978,7 @@
 "6462410","2025-11-01","regular","Coast Guard","Salve Regina","NEWMAC","NEWMAC",TRUE,TRUE,,
 "6462420","2025-11-01","regular","St. Vincent","Grove City","Presidents' Athletic Conference","Presidents' Athletic Conference",TRUE,TRUE,,
 "6531808","2025-11-01","regular","Anna Maria","Worcester State",,"MASCAC",FALSE,FALSE,,
+"6460370","2025-11-08","regular","Mercyhurst","Saint Francis",,,FALSE,FALSE,,
 "6461255","2025-11-08","regular","Texas Lutheran","Lyon","SCAC","SCAC",TRUE,TRUE,,
 "6461262","2025-11-08","regular","Otterbein","Hanover","Ohio Athletic Conference","Heartland Collegiate Athletic Conference",FALSE,FALSE,,
 "6461282","2025-11-08","regular","King's","Widener","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,,
@@ -1080,6 +1100,7 @@
 "6461860","2025-11-14","regular","Norwich","MIT","NEWMAC","NEWMAC",TRUE,TRUE,,
 "6461952","2025-11-14","regular","Hamline","Augsburg","MIAC","MIAC",TRUE,TRUE,,
 "6462328","2025-11-14","regular","Vermont State Castleton","Salisbury","NJAC","NJAC",TRUE,TRUE,TRUE,TRUE
+"6460264","2025-11-15","regular","LIU","Saint Francis",,,FALSE,FALSE,,
 "6461263","2025-11-15","regular","Franklin","Hanover","Heartland Collegiate Athletic Conference","Heartland Collegiate Athletic Conference",TRUE,TRUE,,
 "6461273","2025-11-15","regular","Eureka","Concordia (Wis.)","NACC","NACC",TRUE,TRUE,,
 "6461283","2025-11-15","regular","King's","Misericordia","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,TRUE,TRUE
@@ -1110,6 +1131,7 @@
 "6461635","2025-11-15","regular","Plymouth State","Mass-Dartmouth","MASCAC","MASCAC",TRUE,TRUE,,
 "6461641","2025-11-15","regular","Kalamazoo","Trine","MIAA","MIAA",TRUE,TRUE,,
 "6461646","2025-11-15","regular","Washington U.","Augustana","NCAC","College Conference of Illinois and Wisconsin",FALSE,FALSE,,
+"6461670","2025-11-15","regular","Hilbert","Hartwick","Liberty League","Empire 8",FALSE,FALSE,,
 "6461673","2025-11-15","regular","Montclair State","William Paterson","NJAC","NJAC",TRUE,TRUE,,
 "6461687","2025-11-15","regular","Lebanon Valley","Albright","Middle Atlantic Conference","Middle Atlantic Conference",TRUE,TRUE,TRUE,TRUE
 "6461702","2025-11-15","regular","Bluffton","Marietta","Heartland Collegiate Athletic Conference","Ohio Athletic Conference",FALSE,FALSE,,
@@ -1145,6 +1167,7 @@
 "6462029","2025-11-15","regular","Rowan","Kean","NJAC","NJAC",TRUE,TRUE,TRUE,TRUE
 "6462048","2025-11-15","regular","Crown","Greenville","UMAC","UMAC",TRUE,TRUE,,
 "6462055","2025-11-15","regular","St. Olaf","St. John's","MIAC","MIAC",TRUE,TRUE,,
+"6462078","2025-11-15","regular","Oberlin","Ohio Wesleyan","NCAC","NCAC",TRUE,TRUE,,
 "6462121","2025-11-15","regular","East Texas Baptist","Hardin-Simmons","American Southwest Conference","American Southwest Conference",TRUE,TRUE,,
 "6462145","2025-11-15","regular","Luther","Loras","Midwest Conference","American Rivers Conference",FALSE,FALSE,,
 "6462156","2025-11-15","regular","Carroll","Carthage","College Conference of Illinois and Wisconsin","College Conference of Illinois and Wisconsin",TRUE,TRUE,,
@@ -1185,6 +1208,7 @@
 "6533110","2025-11-15","regular","Centenary (La.)","Austin","SCAC","SCAC",TRUE,TRUE,,
 "6533319","2025-11-15","regular","La Verne","Claremont-Mudd-Scripps","SCIAC","SCIAC",TRUE,TRUE,,
 "6533661","2025-11-21","postseason","Merchant Marine","Curry","NEWMAC","Conference of New England",FALSE,FALSE,,
+"6460104","2025-11-22","postseason","Saint Francis","Stonehill",,,FALSE,FALSE,,
 "6529845","2025-11-22","postseason","Union","Muhlenberg","Liberty League","Centennial Conference",FALSE,FALSE,FALSE,TRUE
 "6529851","2025-11-22","postseason","LaGrange","Framingham State","USA South","MASCAC",FALSE,FALSE,,
 "6529853","2025-11-22","postseason","Grove City","Hanover","Presidents' Athletic Conference","Heartland Collegiate Athletic Conference",FALSE,FALSE,,
@@ -1195,6 +1219,7 @@
 "6529875","2025-11-22","postseason","Cortland","Springfield","Empire 8","NEWMAC",FALSE,FALSE,FALSE,TRUE
 "6533510","2025-11-22","postseason","Wilkes","Shenandoah","Landmark Conference","ODAC",FALSE,FALSE,FALSE,TRUE
 "6533608","2025-11-22","postseason","Ohio Northern","Wabash","Ohio Athletic Conference","NCAC",FALSE,FALSE,,
+"6533609","2025-11-22","postseason","Mount St. Joseph","Westminster (Pa.)","Heartland Collegiate Athletic Conference","Presidents' Athletic Conference",FALSE,FALSE,,
 "6533615","2025-11-22","postseason","Aurora","Illinois College","NACC","Midwest Conference",FALSE,FALSE,,
 "6533616","2025-11-22","postseason","Washington U.","UW-Stout","NCAC","WIAC",FALSE,FALSE,,
 "6533658","2025-11-22","postseason","Misericordia","Carnegie Mellon","Middle Atlantic Conference","Centennial Conference",FALSE,FALSE,FALSE,TRUE

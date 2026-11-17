@@ -1,5 +1,7 @@
 "game_id","game_date","away","home","away_final","home_final","away_pts_parsed","home_pts_parsed","score_reconciled"
+"6459331","2025-08-28","Saint Francis","ULM",0,29,0,29,TRUE
 "6461247","2025-09-04","Trinity (Texas)","Texas Lutheran",26,14,26,14,TRUE
+"6461274","2025-09-04","King's","Wilkes",16,19,16,19,TRUE
 "6461356","2025-09-04","Millsaps","Belhaven",24,50,24,50,TRUE
 "6461480","2025-09-04","Marietta","Westminster (Pa.)",12,8,12,8,TRUE
 "6461490","2025-09-04","Brockport","Buffalo State",41,0,41,0,TRUE
@@ -21,6 +23,7 @@
 "6461976","2025-09-05","Ursinus","Alvernia",41,17,41,17,TRUE
 "6462322","2025-09-05","McDaniel","Catholic",7,10,7,10,TRUE
 "6462432","2025-09-05","Bridgewater State","Curry",28,35,28,35,TRUE
+"6459279","2025-09-06","Saint Francis","Buffalo",6,45,6,45,TRUE
 "6460259","2025-09-06","Adrian","Valparaiso",10,7,10,7,TRUE
 "6461256","2025-09-06","Hanover","Centre",15,23,15,23,TRUE
 "6461284","2025-09-06","Wooster","Wilmington",35,59,35,59,TRUE
@@ -38,6 +41,7 @@
 "6461471","2025-09-06","Knox","Eureka",13,14,13,14,TRUE
 "6461499","2025-09-06","Wabash","St. Norbert",55,21,55,21,TRUE
 "6461516","2025-09-06","Greensboro","Guilford",21,7,21,7,TRUE
+"6461525","2025-09-06","Maine Maritime","Hartwick",7,56,7,56,TRUE
 "6461543","2025-09-06","Maryville (Tenn.)","Hendrix",40,14,40,14,TRUE
 "6461567","2025-09-06","Baldwin Wallace","Wittenberg",31,13,31,13,TRUE
 "6461574","2025-09-06","William Paterson","Western Connecticut",20,21,20,21,TRUE
@@ -107,6 +111,7 @@
 "6462415","2025-09-06","LaGrange","Point",36,14,36,14,TRUE
 "6496410","2025-09-06","Case Western Reserve","Rowan",17,17,14,17,FALSE
 "6459668","2025-09-13","Butler","Hanover",16,7,16,7,TRUE
+"6460367","2025-09-13","Saint Francis","Central Conn. St.",7,31,7,31,TRUE
 "6461248","2025-09-13","Howard Payne","Texas Lutheran",28,18,28,18,TRUE
 "6461265","2025-09-13","Concordia (Wis.)","Calvin",7,34,7,34,TRUE
 "6461275","2025-09-13","King's","Delaware Valley",7,49,7,49,TRUE
@@ -131,6 +136,7 @@
 "6461472","2025-09-13","Ripon","Knox",50,7,50,7,TRUE
 "6461481","2025-09-13","Westminster (Pa.)","Franklin and Marshall",27,7,27,7,TRUE
 "6461491","2025-09-13","Hobart","Brockport",10,14,10,14,TRUE
+"6461500","2025-09-13","St. Norbert","UW-Stevens Point",17,41,17,41,TRUE
 "6461508","2025-09-13","Wartburg","UW-Stout",16,0,16,0,TRUE
 "6461517","2025-09-13","Roanoke","Greensboro",32,22,32,22,TRUE
 "6461536","2025-09-13","Southern Virginia","Averett",46,14,46,14,TRUE
@@ -206,6 +212,7 @@
 "6462338","2025-09-13","Hope","Franklin",38,14,38,14,TRUE
 "6462344","2025-09-13","Washington and Jefferson","Hampden-Sydney",31,38,31,38,TRUE
 "6462350","2025-09-13","Rockford","Elmhurst",30,34,30,34,TRUE
+"6462370","2025-09-13","N.C. Wesleyan","Apprentice",49,16,49,16,TRUE
 "6462376","2025-09-13","Heidelberg","Ohio Northern",13,33,13,33,TRUE
 "6462401","2025-09-13","Westfield State","Bridgewater State",16,29,16,29,TRUE
 "6462404","2025-09-13","Mayville St.","Nebraska Wesleyan",20,13,20,13,TRUE
@@ -215,6 +222,7 @@
 "6462421","2025-09-13","Lake Forest","Illinois College",25,28,25,28,TRUE
 "6462428","2025-09-13","UW-Whitewater","St. Xavier",37,0,37,0,TRUE
 "6459813","2025-09-20","Greensboro","Davidson",0,48,0,48,TRUE
+"6460368","2025-09-20","Delaware St.","Saint Francis",39,10,39,10,TRUE
 "6460461","2025-09-20","Roosevelt","UW-Oshkosh",21,38,21,38,TRUE
 "6460710","2025-09-20","Wayne St. (Mich.)","UW-La Crosse",22,31,22,31,TRUE
 "6460793","2025-09-20","Erskine","Brevard",34,38,34,38,TRUE
@@ -306,6 +314,7 @@
 "6462159","2025-09-20","Cornell","Lawrence",20,0,20,0,TRUE
 "6462172","2025-09-20","Grinnell","Ripon",20,30,20,30,TRUE
 "6462181","2025-09-20","Minnesota-Morris","Crown",20,30,20,30,TRUE
+"6462197","2025-09-20","UW-Stevens Point","Pacific",36,13,36,13,TRUE
 "6462201","2025-09-20","Wayland Baptist","Howard Payne",21,18,21,18,TRUE
 "6462217","2025-09-20","Worcester State","Western New England",13,48,13,48,TRUE
 "6462221","2025-09-20","Franklin","Trine",27,35,27,35,TRUE
@@ -323,6 +332,7 @@
 "6462405","2025-09-20","Nebraska Wesleyan","Coe",14,62,14,62,TRUE
 "6462406","2025-09-20","Nichols","Coast Guard",60,92,60,92,TRUE
 "6462429","2025-09-20","Salve Regina","William Paterson",24,12,24,12,TRUE
+"6460322","2025-09-27","Saint Francis","Bucknell",23,30,23,30,TRUE
 "6460931","2025-09-27","Mary Hardin-Baylor","Mars Hill",7,21,7,21,TRUE
 "6461250","2025-09-27","East Texas Baptist","Texas Lutheran",24,21,24,21,TRUE
 "6461267","2025-09-27","Benedictine","Concordia (Wis.)",20,28,20,28,TRUE
@@ -342,6 +352,7 @@
 "6461441","2025-09-27","Marietta","Capital",24,21,24,21,TRUE
 "6461459","2025-09-27","Wooster","Oberlin",38,0,38,0,TRUE
 "6461493","2025-09-27","Hartwick","Brockport",0,56,0,56,TRUE
+"6461527","2025-09-27","Keystone","Maine Maritime",47,22,47,22,TRUE
 "6461538","2025-09-27","Bridgewater","Averett",41,14,41,14,TRUE
 "6461545","2025-09-27","Rhodes","Hendrix",28,47,28,47,TRUE
 "6461558","2025-09-27","Juniata","TCNJ",0,35,0,35,TRUE
@@ -457,6 +468,7 @@
 "6461811","2025-10-04","Aurora","Lakeland",49,28,49,28,TRUE
 "6461812","2025-10-04","Christopher Newport","Rowan",49,41,49,41,TRUE
 "6461831","2025-10-04","Colby","Bates",13,6,13,6,TRUE
+"6461836","2025-10-04","Maryville (Tenn.)","Sewanee",40,7,40,7,TRUE
 "6461851","2025-10-04","WPI","Norwich",14,7,14,7,TRUE
 "6461854","2025-10-04","Marietta","Ohio Northern",9,42,9,42,TRUE
 "6461871","2025-10-04","Ohio Wesleyan","Denison",20,35,20,35,TRUE
@@ -519,6 +531,7 @@
 "6462437","2025-10-04","Eureka","Concordia-Chicago",20,49,20,49,TRUE
 "6461278","2025-10-10","King's","Stevenson",35,28,35,28,TRUE
 "6459675","2025-10-11","Western Connecticut","New Haven",0,69,0,69,TRUE
+"6460351","2025-10-11","Saint Francis","Duquesne",7,52,7,52,TRUE
 "6461251","2025-10-11","Texas Lutheran","Centenary (La.)",55,27,55,27,TRUE
 "6461259","2025-10-11","Hanover","Mount St. Joseph",45,21,45,21,TRUE
 "6461269","2025-10-11","Lakeland","Concordia (Wis.)",34,41,34,41,TRUE
@@ -617,6 +630,7 @@
 "6462367","2025-10-11","Ohio Northern","Muskingum",54,16,54,16,TRUE
 "6462375","2025-10-11","Trinity (Conn.)","Hamilton",49,0,49,0,TRUE
 "6462383","2025-10-11","Amherst","Bowdoin",34,7,34,7,TRUE
+"6462398","2025-10-11","Augustana","Elmhurst",48,7,48,7,TRUE
 "6462414","2025-10-11","Morrisville State","Utica",21,27,21,27,TRUE
 "6462224","2025-10-16","Trine","Olivet",59,7,59,7,TRUE
 "6461315","2025-10-17","UW-Stout","UW-Whitewater",2,34,2,34,TRUE
@@ -730,6 +744,7 @@
 "6462435","2025-10-18","Mount Union","Heidelberg",38,6,38,6,TRUE
 "6462438","2025-10-18","Washington and Jefferson","St. Vincent",56,10,56,10,TRUE
 "6529008","2025-10-18","Keystone","Apprentice",21,45,21,45,TRUE
+"6460311","2025-10-25","Robert Morris","Saint Francis",24,14,24,14,TRUE
 "6461253","2025-10-25","Austin","Texas Lutheran",7,55,7,55,TRUE
 "6461271","2025-10-25","Concordia (Wis.)","Concordia-Chicago",47,20,47,20,TRUE
 "6461280","2025-10-25","King's","Lebanon Valley",21,20,21,20,TRUE
@@ -846,6 +861,7 @@
 "6462416","2025-10-25","Huntingdon","LaGrange",14,30,14,30,TRUE
 "6462422","2025-10-25","Illinois College","Ripon",31,0,31,0,TRUE
 "6462426","2025-10-25","Dickinson","McDaniel",23,20,23,20,TRUE
+"6460369","2025-11-01","Wagner","Saint Francis",23,20,23,20,TRUE
 "6461254","2025-11-01","Texas Lutheran","McMurry",42,13,42,13,TRUE
 "6461261","2025-11-01","Hanover","Bluffton",48,0,48,0,TRUE
 "6461272","2025-11-01","Rockford","Concordia (Wis.)",0,35,0,35,TRUE
@@ -884,6 +900,7 @@
 "6461631","2025-11-01","Mass-Dartmouth","Dean",48,7,48,7,TRUE
 "6461637","2025-11-01","Adrian","Kalamazoo",34,7,34,7,TRUE
 "6461644","2025-11-01","Washington U.","Millikin",38,7,38,7,TRUE
+"6461662","2025-11-01","Morrisville State","Hartwick",13,24,13,24,TRUE
 "6461666","2025-11-01","Redlands","La Verne",29,14,29,14,TRUE
 "6461669","2025-11-01","Montclair State","Christopher Newport",42,49,42,49,TRUE
 "6461672","2025-11-01","Guilford","Roanoke",20,21,20,21,TRUE
@@ -948,10 +965,12 @@
 "6462283","2025-11-01","Trinity (Texas)","Sewanee",32,3,32,3,TRUE
 "6462285","2025-11-01","Lyon","Austin",40,28,40,28,TRUE
 "6462301","2025-11-01","Wartburg","Nebraska Wesleyan",34,10,34,10,TRUE
+"6462320","2025-11-01","Thiel","Hiram",48,20,48,20,TRUE
 "6462336","2025-11-01","William Paterson","Salisbury",7,51,7,51,TRUE
 "6462337","2025-11-01","Eastern","Widener",35,0,35,0,TRUE
 "6462340","2025-11-01","Hope","Albion",62,0,62,0,TRUE
 "6462348","2025-11-01","Northwestern (Minn.)","Martin Luther",24,17,24,17,TRUE
+"6462356","2025-11-01","Beloit","Ripon",0,49,0,49,TRUE
 "6462361","2025-11-01","Pomona-Pitzer","Chapman",14,22,14,22,TRUE
 "6462379","2025-11-01","Amherst","Trinity (Conn.)",7,14,7,14,TRUE
 "6462382","2025-11-01","Franklin","Anderson",41,7,41,7,TRUE
@@ -959,6 +978,7 @@
 "6462410","2025-11-01","Coast Guard","Salve Regina",36,31,36,31,TRUE
 "6462420","2025-11-01","St. Vincent","Grove City",14,59,14,59,TRUE
 "6531808","2025-11-01","Anna Maria","Worcester State",45,35,45,35,TRUE
+"6460370","2025-11-08","Mercyhurst","Saint Francis",16,15,16,15,TRUE
 "6461255","2025-11-08","Texas Lutheran","Lyon",54,10,54,10,TRUE
 "6461262","2025-11-08","Otterbein","Hanover",8,49,8,49,TRUE
 "6461282","2025-11-08","King's","Widener",24,40,24,40,TRUE
@@ -1080,6 +1100,7 @@
 "6461860","2025-11-14","Norwich","MIT",14,48,14,48,TRUE
 "6461952","2025-11-14","Hamline","Augsburg",3,43,3,43,TRUE
 "6462328","2025-11-14","Vermont State Castleton","Salisbury",13,63,13,63,TRUE
+"6460264","2025-11-15","LIU","Saint Francis",10,3,10,3,TRUE
 "6461263","2025-11-15","Franklin","Hanover",18,51,18,51,TRUE
 "6461273","2025-11-15","Eureka","Concordia (Wis.)",0,35,0,35,TRUE
 "6461283","2025-11-15","King's","Misericordia",21,27,21,27,TRUE
@@ -1110,6 +1131,7 @@
 "6461635","2025-11-15","Plymouth State","Mass-Dartmouth",21,42,21,42,TRUE
 "6461641","2025-11-15","Kalamazoo","Trine",24,25,24,25,TRUE
 "6461646","2025-11-15","Washington U.","Augustana",35,13,35,13,TRUE
+"6461670","2025-11-15","Hilbert","Hartwick",0,52,0,52,TRUE
 "6461673","2025-11-15","Montclair State","William Paterson",24,21,24,21,TRUE
 "6461687","2025-11-15","Lebanon Valley","Albright",38,35,38,35,TRUE
 "6461702","2025-11-15","Bluffton","Marietta",14,37,14,37,TRUE
@@ -1145,6 +1167,7 @@
 "6462029","2025-11-15","Rowan","Kean",47,34,47,34,TRUE
 "6462048","2025-11-15","Crown","Greenville",38,20,38,20,TRUE
 "6462055","2025-11-15","St. Olaf","St. John's",21,63,21,63,TRUE
+"6462078","2025-11-15","Oberlin","Ohio Wesleyan",0,35,0,35,TRUE
 "6462121","2025-11-15","East Texas Baptist","Hardin-Simmons",14,63,14,63,TRUE
 "6462145","2025-11-15","Luther","Loras",12,45,12,45,TRUE
 "6462156","2025-11-15","Carroll","Carthage",3,7,3,7,TRUE
@@ -1185,6 +1208,7 @@
 "6533110","2025-11-15","Centenary (La.)","Austin",14,16,14,16,TRUE
 "6533319","2025-11-15","La Verne","Claremont-Mudd-Scripps",0,5,0,5,TRUE
 "6533661","2025-11-21","Merchant Marine","Curry",27,24,27,24,TRUE
+"6460104","2025-11-22","Saint Francis","Stonehill",10,20,10,20,TRUE
 "6529845","2025-11-22","Union","Muhlenberg",26,34,26,34,TRUE
 "6529851","2025-11-22","LaGrange","Framingham State",24,21,24,21,TRUE
 "6529853","2025-11-22","Grove City","Hanover",15,23,15,23,TRUE
@@ -1195,6 +1219,7 @@
 "6529875","2025-11-22","Cortland","Springfield",7,21,7,21,TRUE
 "6533510","2025-11-22","Wilkes","Shenandoah",37,35,37,35,TRUE
 "6533608","2025-11-22","Ohio Northern","Wabash",31,32,31,32,TRUE
+"6533609","2025-11-22","Mount St. Joseph","Westminster (Pa.)",21,40,21,40,TRUE
 "6533615","2025-11-22","Aurora","Illinois College",49,14,49,14,TRUE
 "6533616","2025-11-22","Washington U.","UW-Stout",23,31,23,31,TRUE
 "6533658","2025-11-22","Misericordia","Carnegie Mellon",17,24,17,24,TRUE

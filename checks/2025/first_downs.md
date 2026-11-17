@@ -23,11 +23,11 @@ cfbfastR also puts `firstD_by_poss`, `firstD_by_yards`, `firstD_by_penalty` on t
 
 | flag | rows |
 |---|---|
-| firstD_by_kickoff | 12382 |
-| firstD_by_poss | 16629 |
-| firstD_by_yards | 36674 |
-| firstD_by_penalty | 3333 |
-| new_series | 69018 |
+| firstD_by_kickoff | 12616 |
+| firstD_by_poss | 16995 |
+| firstD_by_yards | 37337 |
+| firstD_by_penalty | 3395 |
+| new_series | 70343 |
 
 Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
@@ -35,7 +35,7 @@ Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**69236 series; 68754 have exactly one `new_series` row on their first snap row; 482 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7033.
+**70565 series; 70079 have exactly one `new_series` row on their first snap row; 486 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7189.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | first_row_text |
 |---|---|---|---|---|---|---|---|---|
@@ -51,6 +51,7 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 6462432 | 129 | 129 | Bridgewater State | 1 & 10 | none | no new_series row | unexplained | Shamus Whiting rush for 18 yards to the BRIDGEWA43 (Shane Field). |
 | 6462432 | 142 | 143 | Bridgewater State | 1 & 10 | none | no new_series row | unexplained | Sean Brown rush for 2 yards to the BRIDGEWA27 (Shane Field). |
 | 6461294 | 31 | 34 | Hampden-Sydney | 1 & 25 | none | no new_series row | unexplained | Shotgun Hicks,Terry rush right for 6 yards gain to the DVU47 (Clark,Jeremiah) PENALTY DVU Offside (Mahana,Jame |
+| 6461525 | 63 | 63 | Hartwick | 1 & 6 | none | no new_series row | unexplained | No Huddle-Shotgun Williams,Akil rush middle for 14 yards gain to the MMA00 TOUCHDOWN, clock 08:39, 1ST DOWN. |
 | 6461567 | 7 | 7 | Baldwin Wallace | 1 & 10 | none | no new_series row | unexplained | No Huddle Bubonics,Charlie pass complete deep right to Birkett,Donovan caught at WIT11, for 22 yards to the WI |
 | 6461696 | 143 | 148 | Southern Virginia | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Watson,Devin pass incomplete short right to Washington,Jireek thrown to SVU43. |
 | 6461721 | 48 | 53 | Allegheny | 1 & 10 | 48, 51 | more than one new_series row | unexplained | Debvrin Smith rush for 4 yards to the ALL16 (Fin O'Brien3a Cole Compton). |
@@ -108,6 +109,7 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 6462236 | 27 | 32 | Madonna | 1 & 10 | 27, 30 | more than one new_series row | unexplained | Kwame Miller rush for 4 yards to the MADONNA46 (Austin Straub). |
 | 6462236 | 58 | 61 | Olivet | 1 & 10 | 58, 61 | more than one new_series row | unexplained | Daniel Avila pass incomplete to Wade Brashears (Corey Watkins). |
 | 6462236 | 145 | 146 | Olivet | 1 & 10 | 145, 146 | more than one new_series row | unexplained | Daniel Avila pass complete to Julian Toscano for 24 yards to the OLIVET49, 1ST DOWN OLIVET (Corey Watkins;Rees |
+| 6462370 | 122 | 125 | N.C. Wesleyan | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Trae Sechrest rush for loss of 1 yard to the NCWU5 (Benny Nena;Austin Moore). |
 | 6462401 | 143 | 147 | Westfield State | 1 & 10 | 143, 146 | more than one new_series row | unexplained | Miles Foerster pass incomplete to Nate Moreira. |
 | 6462404 | 55 | 55 | Nebraska Wesleyan | 1 & 10 | none | no new_series row | unexplained | Stortenbecker,Ryan punt 35 yards to the MSU39. |
 | 6462404 | 101 | 101 | Nebraska Wesleyan | 1 & 10 | none | no new_series row | unexplained | Shotgun White,Connor pass incomplete deep left to Felder,Jaheim thrown to MSU35, 1ST DOWN, PENALTY MSU Holding |
@@ -422,6 +424,7 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 6462029 | 133 | 133 | Rowan | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | No Huddle-Shotgun Welsey,Matt pass complete deep left to Martin,Shane caught at KEAN08, for 50 yards to the KE |
 | 6462048 | 98 | 101 | Crown | 1 & 10 | none | no new_series row | unexplained | Shotgun Williams,Devin rush middle for 2 yards gain to the GU09 (Benavidez,Samuel; Velasquez,Elias). |
 | 6462048 | 133 | 136 | Crown | 1 & 10 | none | no new_series row | unexplained | Shotgun Soloman,Donovan rush middle for 2 yards gain to the GU29 (King,RJ). |
+| 6462078 | 136 | 137 | Ohio Wesleyan | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun Morrell,Brady rush right for 3 yards gain to the OBE33, out of bounds at OBE33. |
 | 6462156 | 72 | 72 | Carthage | 1 & 10 | none | no new_series row | unexplained | PENALTY PIO UNS: Unsportsmanlike Conduct (Huber,Clayton) 15 yards from PIO35 to PIO20. NO PLAY. |
 | 6462164 | 6 | 9 | Lawrence | 1 & 20 | none | no new_series row | unexplained | Anthony Zavala rush for 2 yards to the LAWRENCE27 (Simeon Roundtre; Wyatt Dahl). |
 | 6462164 | 37 | 40 | Lawrence | 1 & 10 | none | no new_series row | unexplained | Korbyn Lempo rush for 1 yard to the LAWRENCE26 (Jax Spoden). |
@@ -456,6 +459,7 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 6529867 | 95 | 97 | Whitworth | 2 & 10 | none | no new_series row | unexplained | (10:24) No Huddle-Shotgun K.Solano rush left for 2 yards gain to the WHTW18 (T.Hill; K.Sieben) |
 | 6529869 | 33 | 36 | Susquehanna | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun M.Surtz rush middle for 3 yards gain to the SUSQU32 (A.Smith) |
 | 6529869 | 48 | 51 | Washington and Jefferson | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun K.Stahl pass complete short left to K.Derosa caught at W&J30, for 6 yards to the W&J43 (X.Ma |
+| 6533609 | 132 | 135 | Westminster (Pa.) | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); d3 printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Shotgun Goode,Quentin pass complete short left to DiSora,Gianni caught at WES21, for 5 yards loss to the WES19 |
 | 6529878 | 75 | 77 | Hardin-Simmons | 1 & 10 | 75, 76 | more than one new_series row | unexplained | No Huddle-Shotgun K.Brown pass incomplete short right thrown to TU45 QB hurried by J.Nwobodo PENALTY TU Roughi |
 | 6529879 | 7 | 7 | Berry | 1 & 10 | none | no new_series row | unexplained | No Huddle-Shotgun J.Rogers rush middle for 24 yards gain to the LCF48 (J.Sanders), 1ST DOWN |
 | 6529879 | 34 | 35 | LaGrange | 1 & 10 | none | no new_series row | unexplained | Shotgun T.Bozeman rush right for 1 yard loss to the LCF49 (C.Lewis) |

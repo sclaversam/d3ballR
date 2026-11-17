@@ -140,11 +140,18 @@ first-down exclusivity and placement.
   (old id `20251220_vlfc`; every play tagged with one team), listed in the
   build report. Non-NCAA bowl games aren't on ncaa.com's scoreboards, so
   since the switch to ncaa.com's game list they aren't in it at all.
-- **Games only on ncaa.com wait for a fetch:** 25 games on ncaa.com's 2025
-  scoreboards were never in d3football's index with a boxscore id (Saint
-  Francis (Pa.)'s 11 games, 13 games d3football listed without a
-  boxscore, King's at Wilkes). Their play-by-play isn't cached; they are
-  pending.
+- **Games to patch from stats.ncaa.org:** `data-raw/ncaa/stats_ncaa_candidates.csv`
+  lists the 2025 games whose ncaa.com file is unusable or badly
+  incomplete, by Sam's rule (2026-11-17): (a) no play-by-play at all, (b)
+  can't be built, (c) a big portion missing, (d) a severe smaller issue
+  (doesn't reconcile and no rule can fix it, a missing touchdown, quarters
+  mislabelled, downs unreliable). Each row has the ncaa.com link and what
+  to check on stats.ncaa.org. stats.ncaa.org blocks scripts (Akamai 403
+  on the first request), so a patch would come from a page Sam saves in
+  his browser. (c) came from a scan of every file for a regulation quarter
+  with no or few lines; thin 4th quarters in blowouts (running clock) and
+  `6462325`, called for thunderstorms in the 4th quarter, are not
+  problems.
 - **Dead-ball penalties before a kickoff in tournament files** ("PENALTY
   CROWN Personal Foul 15 yards from WHEIL35 to WHEIL50. NO PLAY", driveText
   "- and -") have no situation, so they are unclassified and dropped
@@ -302,10 +309,10 @@ read), 44 reconcile (`msui` is a source gap).
 2. **Centennial 2025**: done; rebuilt from ncaa.com on 2026-11-04.
 3. **All of D3 2025 from ncaa.com** (done as far as ncaa.com has it,
    2026-11-16): `build_season(2025)`. Since 2026-11-16 the game list is
-   ncaa.com's (1,263 games); 1,231 built (with the Stagg Bowl), 1,228
-   reconcile (3 known source gaps). Not built: 6 week-1 games ncaa.com
-   still has no play-by-play for (retried in batch 6), 25 games only on
-   ncaa.com not yet fetched, and the national semifinal `6529905`.
+   ncaa.com's (1,263 games); 1,256 built, 1,253 reconcile (3 known source
+   gaps). Not built: 6 week-1 games ncaa.com still has no play-by-play for
+   (retried 2026-11-17) and the national semifinal `6529905`. Games to
+   patch from stats.ncaa.org: see Known issues.
    Conferences come from ncaa.com's scoreboards for every team. Expect new
    StatCrew formats to surface. The score-reconciliation test and the
    `first_downs.md` series check are the main guards.
