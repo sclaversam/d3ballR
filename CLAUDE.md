@@ -93,11 +93,6 @@ filter or `season`, not a new pipeline.
   ncaa.com has no conference-game marker, so a conference game is a
   regular-season game between two teams of the same conference; it matches
   d3football's "*" marker on all 58 Centennial 2025 games.
-- **d3football.com is no longer used** (its scraper, the season index and
-  the `pbp/d3football/` builds were removed on 2026-11-17; they are in git
-  history up to 0e64fd9). Its firewall serves scripts a JavaScript bot
-  challenge. Do not try to get around it: no browser automation, no reusing
-  browser cookies such as `aws-waf-token`.
 - **User-Agent:** `fetch_ncaa_json()` sends "d3ballR (CMU student
   research)". Every request goes through the shared counter and throttle in
   `R/fetch.R`.
