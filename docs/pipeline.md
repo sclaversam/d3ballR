@@ -90,9 +90,6 @@ rules:
   play-by-play the way other public R packages do is fine. Requests stay
   few, cached and throttled, with a go-ahead before large runs.
 
-**d3football** (the old source) serves scripts a JavaScript bot challenge;
-its scraper was removed on 2026-11-17. Do not try to get past the challenge
-(no browser automation, no reused browser cookies).
 
 ## Validation
 
