@@ -442,6 +442,12 @@ ot_periods <- function(kept) {
 #' right after a try or scoring play by the other team, in regulation, is
 #' `firstD_by_kickoff` even when the source has no kickoff line, and so is
 #' the first snap of a regulation half with no kickoff row before it.
+#' A snap by a different team than the snap before it (regulation, no
+#' kickoff in between) that nothing else flagged is `firstD_by_poss`: the
+#' play that handed over the ball is missing or is a no-play row. An
+#' interception or lost fumble the offense gets back is `firstD_by_poss` on
+#' the next snap, and a blocked punt / field goal the kicking team recovers
+#' past the line to gain is `firstD_by_yards`.
 #' Finally, the first snap of each overtime possession is `firstD_by_poss`:
 #' a change of team, or the same team again after its possession ended (a
 #' try or score, a field goal attempt, a failed 4th down), since ncaa.com
@@ -467,11 +473,24 @@ derive_series_flags <- function(kept, nxt) {
   kicked <- kept$play_type %in% c("punt_no_return", "punt_with_return", "punt_blocked",
                                   "field_goal_missed", "field_goal_blocked")
   regained_kick <- kicked & live & kept$fumble_vec & same_team & kept$down[sn] %in% 1L
+  # a blocked punt / field goal the kicking team recovers past the line to
+  # gain is its first down (6461248: blocked on 4th and 2 at the TLU33,
+  # recovered at the TLU46)
+  blocked_regained <- kept$play_type %in% c("punt_blocked", "field_goal_blocked") & live & same_team &
+    kept$down[sn] %in% 1L
+  # an interception or lost fumble that the offense gets back (a fumble on
+  # the return): two changes of possession, and a new series (6461517)
+  # (the next snap must be a 1st down: a review's "Original Play" text can
+  # make an overturned interception read as one, 6461292)
+  double_turnover <- kept$turnover %in% TRUE & !(kept$downs_turnover %in% TRUE) & live & same_team &
+    kept$down[sn] %in% 1L
 
   # causes, on the causing row
   cause <- rep(NA_character_, n)
   cause[!excluded & kept$firstD_by_penalty & same_team] <- "penalty"
   cause[!excluded & kept$firstD_by_yards & live & same_team] <- "yards"
+  cause[!excluded & blocked_regained] <- "yards"
+  cause[!excluded & double_turnover] <- "poss"
   cause[!excluded & live & kept$play_type != "kickoff" & (other_team | regained_kick)] <- "poss"
   cause[!excluded & live & kept$play_type == "kickoff"] <- "kickoff"
 
@@ -511,6 +530,9 @@ derive_series_flags <- function(kept, nxt) {
   # some kickoff lines)
   for (t in snaps[kept$period[snaps] <= 4L & is.na(best[snaps])]) {
     p <- t - 1L
+    # look past penalties on the try (6462377: extra point, delay of game on
+    # the try, then the other team's snap with no kickoff line)
+    while (p >= 1L && kept$try_phase[p] %in% TRUE && kept$play_type[p] == "penalty_no_play") p <- p - 1L
     if (p < 1L || kept$half[p] != kept$half[t]) next
     after_score <- kept$play_type[p] %in% c("extra_point", "two_point") | kept$scoring_play[p] %in% TRUE
     if (after_score && !is.na(kept$pos_team[p]) && !is.na(kept$pos_team[t]) && kept$pos_team[p] != kept$pos_team[t]) {
@@ -529,6 +551,23 @@ derive_series_flags <- function(kept, nxt) {
     if (is.na(t) || !is.na(best[t]) || any(kept$play_type[in_half[in_half < t]] == "kickoff")) next
     best[t] <- "kickoff"
     causes_at[t] <- "kickoff (no kickoff line in the source)"
+  }
+
+  # a change of offense with nothing flagged: the play that handed the ball
+  # over is missing from the source or is a no-play row (6462412: W&J's
+  # replayed 4th down is missing; Utica snaps next). In regulation, a snap by
+  # a different team than the snap before it, with no kickoff in between,
+  # starts a series by change of possession.
+  reg_snaps <- snaps[kept$period[snaps] <= 4L]
+  for (m in seq_along(reg_snaps)[-1]) {
+    t <- reg_snaps[m]
+    p <- reg_snaps[m - 1L]
+    if (!is.na(best[t]) || kept$half[p] != kept$half[t]) next
+    if (any(kept$play_type[p:t] == "kickoff")) next
+    if (!is.na(kept$pos_team[p]) && !is.na(kept$pos_team[t]) && kept$pos_team[p] != kept$pos_team[t]) {
+      best[t] <- "poss"
+      causes_at[t] <- "poss (change of offense; no causing play in the source)"
+    }
   }
 
   # first snap of each overtime possession. ncaa.com files every overtime

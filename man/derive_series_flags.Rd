@@ -54,6 +54,12 @@ one snap, precedence kickoff > poss > yards > penalty decides. A snap
 right after a try or scoring play by the other team, in regulation, is
 \code{firstD_by_kickoff} even when the source has no kickoff line, and so is
 the first snap of a regulation half with no kickoff row before it.
+A snap by a different team than the snap before it (regulation, no
+kickoff in between) that nothing else flagged is \code{firstD_by_poss}: the
+play that handed over the ball is missing or is a no-play row. An
+interception or lost fumble the offense gets back is \code{firstD_by_poss} on
+the next snap, and a blocked punt / field goal the kicking team recovers
+past the line to gain is \code{firstD_by_yards}.
 Finally, the first snap of each overtime possession is \code{firstD_by_poss}:
 a change of team, or the same team again after its possession ended (a
 try or score, a field goal attempt, a failed 4th down), since ncaa.com

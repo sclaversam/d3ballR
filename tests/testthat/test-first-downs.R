@@ -5,6 +5,7 @@
 series_rows <- function(...) {
   d <- data.frame(...)
   defaults <- list(penalty_no_play = FALSE, scoring_play = FALSE, try_phase = FALSE, fumble_vec = FALSE,
+                   turnover = FALSE, downs_turnover = FALSE,
                    firstD_by_yards = FALSE, firstD_by_penalty = FALSE, half = 1L, period = 1L,
                    down = 1L, distance = 10L, yards_to_goal = 75L)
   for (nm in names(defaults)) if (!nm %in% names(d)) d[[nm]] <- defaults[[nm]]
@@ -22,7 +23,8 @@ flags_of <- function(d, lead_in = TRUE) {
     lead$play_type <- c("kickoff", "rush")
     lead$down <- c(NA, 2L)
     lead$scrimmage_play <- c(FALSE, TRUE)
-    for (nm in c("penalty_no_play", "scoring_play", "try_phase", "fumble_vec", "firstD_by_yards", "firstD_by_penalty")) lead[[nm]] <- FALSE
+    for (nm in c("penalty_no_play", "scoring_play", "try_phase", "fumble_vec", "firstD_by_yards", "firstD_by_penalty",
+                 "turnover", "downs_turnover")) lead[[nm]] <- FALSE
     d <- rbind(lead, d)
   }
   out <- derive_series_flags(d, next_snap_index(d))
@@ -274,4 +276,31 @@ test_that("situation_suspect: a distance of zero or less", {
                     down = c(1L, 2L, 1L), distance = c(10L, -5L, 10L), yards_to_goal = c(81L, 66L, 56L))
   d$new_series <- c(TRUE, FALSE, TRUE)
   expect_equal(flag_situation_suspect(d), c(FALSE, TRUE, FALSE))
+})
+
+test_that("a change of offense with no causing play starts a series (6462412)", {
+  # A's replayed 4th down is missing from the source; B snaps next
+  d <- series_rows(play_type = c("pass_complete", "penalty_no_play", "pass_complete", "rush"),
+                   pos_team = c("A", "A", "B", "B"), down = c(4L, 4L, 1L, 2L),
+                   penalty_no_play = c(TRUE, TRUE, FALSE, FALSE))
+  expect_equal(flags_of(d), c("-", "-", "poss", "-"))
+})
+
+test_that("an interception the offense gets back starts a new series (6461517)", {
+  d <- series_rows(play_type = c("pass_intercepted", "rush", "rush"), pos_team = "A", down = c(3L, 1L, 2L))
+  d$turnover <- c(TRUE, FALSE, FALSE); d$downs_turnover <- FALSE
+  expect_equal(flags_of(d), c("-", "poss", "-"))
+})
+
+test_that("a blocked punt the kicking team recovers past the line to gain is its first down (6461248)", {
+  d <- series_rows(play_type = c("punt_blocked", "rush", "rush"), pos_team = "A", down = c(4L, 1L, 2L))
+  expect_equal(flags_of(d), c("-", "yards", "-"))
+})
+
+test_that("a missing kickoff after a try with a penalty on it (6462377)", {
+  d <- series_rows(play_type = c("rush", "extra_point", "penalty_no_play", "pass_complete"),
+                   pos_team = c("A", "A", "A", "B"), down = c(1L, NA, 1L, 1L),
+                   scoring_play = c(TRUE, FALSE, FALSE, FALSE), penalty_no_play = c(FALSE, FALSE, TRUE, FALSE))
+  d$try_phase <- c(FALSE, TRUE, TRUE, FALSE)
+  expect_equal(flags_of(d), c("-", "-", "-", "kickoff"))
 })

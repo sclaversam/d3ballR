@@ -5,6 +5,41 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## New series: change of offense, double turnovers, blocked kicks regained
+
+Decided by Sam (2026-11-25), from the grouping of the unexplained series
+exceptions. Only `new_series` changed (19 rows in 18 games: 70,852 -> 70,871
+rows); 1,262 of 1,263 still reconcile.
+
+- **Change of offense with nothing flagged** (10 exceptions): the play that
+  handed over the ball is missing from the source, or is a no-play row
+  (6462412: Wash. & Jeff.'s replayed 4th down is missing; Utica snaps
+  next). In regulation, a snap by a different team than the snap before it,
+  with no kickoff between, now starts a series by change of possession.
+- **Interception or lost fumble the offense gets back** (6 of 7): a return
+  fumble gives the ball back (6461517). Two changes of possession: a new
+  series, when the next snap is a 1st down (a review's "Original Play" text
+  can make an overturned interception read as one, 6461292).
+- **Blocked punt / field goal recovered by the kicking team past the line
+  to gain** (2): its first down (6461248: blocked on 4th and 2 at the
+  TLU33, recovered at the TLU46).
+- **Missing kickoff after a try with a penalty on it** (6462377): the
+  "snap by the other team right after a try" rule now looks past penalty
+  rows on the try.
+
+Not changed: a fumble the offense recovers on a single run (4 exceptions).
+Measuring to the "recovered at" spot was tried and made 47 plays disagree
+with the next snap: StatCrew's fumble spots often contradict the run's own
+"for N yards to the X", which is the one the next snap agrees with. Left as
+a source inconsistency.
+
+Found, not fixed: after a score with no kickoff line, the receiving team's
+first row is sometimes credited to the scoring team (6461529 play 19,
+"PENALTY MAINEMA false start" under Curry; 6461700 play 56), so its series
+starts one row late.
+
+Series check: 188 exceptions in 70,840 series (was 207).
+
 ## Playoff files: the line to gain after a penalty first down
 
 In playoff files ncaa.com leaves the distance blank and `ncaa_play_table()`

@@ -261,6 +261,9 @@ net_multi_carrier_yards <- function(kept, text_team) {
   pre <- stringr::str_remove(kept$play_text, stringr::regex("\\(Original Play:.*?\\)", ignore_case = TRUE))
   pre <- stringr::str_remove(pre, "PENALTY .*$")
   n_seg <- stringr::str_count(pre, stringr::regex("\\bfor (no gain|loss of \\d+ yards?|\\d+ yards?)", ignore_case = TRUE))
+  # more than one run. Not a fumble with a single run: its "fumbled at" /
+  # "recovered at" spots often contradict the run's own "for N yards to the
+  # X", and the "for N yards" is the one the next snap agrees with
   multi <- n_seg > 1 & kept$play_type %in% c("rush", "pass_complete", "sack", "kneel") &
     !kept$penalty_no_play & !(kept$turnover %in% TRUE & !(kept$downs_turnover %in% TRUE)) &
     !is.na(kept$yards_to_goal)
