@@ -45,7 +45,7 @@ parse_play_type <- function(classified) {
   is_play <- classified$row_type == "play"
   ic <- function(pattern) stringr::regex(pattern, ignore_case = TRUE)
   # up to two direction words before the result: "pass short right complete"
-  # (20251018_6y68) as well as the usual "pass complete short right"
+  # (6461766) as well as the usual "pass complete short right"
   pass_dir <- "(?: (?:short|deep|outside|middle|left|right)){0,2}"
 
   play_type <- dplyr::case_when(

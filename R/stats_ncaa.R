@@ -186,7 +186,7 @@ stats_ncaa_drive_text <- function(x) {
 #' The stats.ncaa.org counterpart of [fetch_ncaa_game()]: the page is read
 #' with [stats_ncaa_lines()] and rebuilt with [ncaa_play_table()]. Home and
 #' away follow the game list; the page's two teams are matched to them by
-#' name ([ncaa_to_index_name()], then the order on the page: away first). The
+#' name (then the order on the page: away first). The
 #' final score is the game list's, else the page's.
 #'
 #' @param game_id Our game id (the ncaa.com contest id).
@@ -233,8 +233,8 @@ fetch_stats_ncaa_game <- function(game_id, file, index) {
 #'
 #' Sam saves pages under stats.ncaa.org's own contest id (`6489674.html`)
 #' or ours; either is fine. Each page is matched to a game in the game list
-#' by date (at most a day apart) and teams ([ncaa_to_index_name()] on the
-#' page's names, either order).
+#' by date (at most a day apart) and teams (the page's names, either
+#' order).
 #'
 #' @param games The game list ([ncaa_season_games()]).
 #' @param dir Folder of saved pages (`.html` / `.htm`).
@@ -248,7 +248,7 @@ stats_ncaa_files <- function(games, dir = "data-raw/stats_ncaa") {
   for (f in fs) {
     s <- tryCatch(stats_ncaa_lines(f), error = function(e) { message(conditionMessage(e)); NULL })
     if (is.null(s)) next
-    t <- ncaa_to_index_name(unname(s$teams))
+    t <- unname(s$teams)
     d <- abs(as.numeric(as.Date(games$game_date) - s$date))
     hit <- which(d <= 1 & ((games$away == t[1] & games$home == t[2]) | (games$away == t[2] & games$home == t[1])))
     if (length(hit) != 1) {

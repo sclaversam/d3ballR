@@ -48,7 +48,9 @@ rows with no connected next snap. It is then moved to the next snap row
 in the same half and, in overtime, the same period: that row is the first
 snap of the new series. A snap that replays the same down after a no-play
 penalty is never a series start. If two causes point at
-one snap, precedence kickoff > poss > yards > penalty decides. Finally,
+one snap, precedence kickoff > poss > yards > penalty decides. A snap
+right after a try or scoring play by the other team, in regulation, is
+\code{firstD_by_kickoff} even when the source has no kickoff line. Finally,
 the first snap of each overtime possession is \code{firstD_by_poss}.
 }
 \keyword{internal}

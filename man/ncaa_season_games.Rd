@@ -16,18 +16,17 @@ ncaa_season_games(
 
 \item{weeks}{ncaa.com week numbers to read.}
 
-\item{dir}{Folder for the game list and the crosswalk.}
+\item{dir}{Folder for the game list.}
 
 \item{season_dates}{Output of \code{\link[=read_season_dates]{read_season_dates()}} (NULL: read it).}
 }
 \value{
 A data frame, one row per game: \code{game_id}, \code{season},
 \code{game_date}, \code{week}, \code{season_type}, \code{home}, \code{away}, \code{home_score},
-\code{away_score}, \code{ncaa_week}, \code{bracket_round}, \code{d3football_id}.
+\code{away_score}, \code{bracket_round}.
 }
 \description{
-Since 2026-11-16 the game list (and \code{game_id}) comes from ncaa.com, not
-from d3football's season index (whose scraper was removed on 2026-11-17). Every contest on the season's weekly
+Every contest on the season's weekly
 scoreboards (\code{weeks}, cached) is one game; \code{game_id} is its ncaa.com
 contest id ("6461490"). A contest listed in more than one week is kept
 once. Dropped (listed in the result's \code{dropped} attribute, with why):
@@ -44,21 +43,14 @@ the lower id (2025: 6533522, beside 6529877).
 \details{
 The columns:
 \itemize{
-\item \code{home}, \code{away}: ncaa.com's home and away teams, spelled as d3football
-spells them (\code{\link[=ncaa_to_index_name]{ncaa_to_index_name()}}; names not in the table are
-ncaa.com's short names).
+\item \code{home}, \code{away}: ncaa.com's home and away teams, by ncaa.com's short
+names ("Alfred St.", "Carnegie Mellon").
 \item \code{season_type}: "postseason" for NCAA tournament games (a
 \code{bracket_round} on the scoreboard) and for games after the regular
 season's end (\code{\link[=classify_season_type]{classify_season_type()}}); "regular" otherwise.
-\item \code{week}: d3football's convention, which cfbfastR also uses: regular
-weeks count from the week of the first Saturday in September
-(\code{\link[=date_based_week]{date_based_week()}}; a game before it is week 0); postseason weeks
-count the weeks after the regular season that have games, so they are
-the tournament's rounds (1 = first round, ..., 6 = the Stagg Bowl).
-ncaa.com's own week is kept in \code{ncaa_week} (2025: regular week + 1).
-\item \code{d3football_id}: the game's old d3football boxscore id, from the old
-contest crosswalk (\verb{\{season\}_contests.csv}, kept as data; 2025 only)
-where it exists.
+\item \code{week}: ncaa.com's scoreboard week (decided by Sam, 2026-11-17). It
+counts on through the postseason: in 2025 the regular season is weeks
+1-12 and the tournament weeks 13-17, with the Stagg Bowl in week 19.
 }
 
 Writes \verb{\{dir\}/\{season\}_games.csv}.

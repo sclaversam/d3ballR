@@ -13,7 +13,7 @@ build_pbp(game, index = NULL, season_dates = NULL, conf = NULL)
 \code{\link[=fetch_stats_ncaa_game]{fetch_stats_ncaa_game()}}.}
 
 \item{index}{The game list for the game's season (\code{\link[=ncaa_season_games]{ncaa_season_games()}}).
-If NULL, or the game isn't in it, a date-based week is used and logged
+If NULL, or the game isn't in it, \code{week} is NA (logged)
 (see \code{\link[=game_calendar]{game_calendar()}}).}
 
 \item{season_dates}{Season-dates table; if NULL, \code{\link[=ensure_season_dates]{ensure_season_dates()}}
@@ -34,8 +34,7 @@ per-kickoff possession decisions from \code{\link[=assign_kickoffs]{assign_kicko
 \code{score_checks} (each score line vs the parsed points),
 \code{first_down_text} (the text-only first-down flags), and \code{next_snap}
 (row index of the next scrimmage snap in the half), \code{clock_discards}
-(stated clocks dropped as inconsistent), \code{footer_clock} (drive-footer
-elapsed time vs the clock anchors).
+(stated clocks dropped as inconsistent).
 }
 \description{
 Works for any game. Keeps the five event types (\code{play}, \code{kickoff},

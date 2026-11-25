@@ -19,7 +19,8 @@ play-text token to use instead (empty when nothing is renamed).
 Some ncaa.com files (tournament games) name the field sides in
 \code{driveText} with one code ("1 and 10 at CHA36", "WRF41", "  U35") and in
 the play text with another ("to the CHAP36", "UWRF41", "UWP35"). The two
-are paired by a vote, as \code{\link[=infer_text_team]{infer_text_team()}} does for d3football: when a
+are paired by a vote, as \code{\link[=infer_text_team]{infer_text_team()}} pairs play-text and
+situation codes: when a
 line's last spot is "CHAP36" and the next line's driveText reads "at
 CHA36", the same yard number (not 50) pairs CHA with CHAP. Of the two
 pairings of driveText's two tokens with the play text's two most frequent

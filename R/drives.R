@@ -2,7 +2,7 @@
 #'
 #' Rows after a touchdown, field goal or safety and before the next kickoff,
 #' the next live (not nullified) snap, or a period change: the extra point / two-point try,
-#' plus any penalty or marker rows d3 prints around it. (In overtime no
+#' plus any penalty or marker rows printed around it. (In overtime no
 #' kickoff follows a score, so the other team's first snap closes it.)
 #' They are untimed and belong to the scoring sequence, not to a new
 #' possession.
@@ -58,7 +58,7 @@ is_scoring_snap <- function(kept) {
 #'   the next kickoff) stay on the drive of the scoring play, even after a
 #'   defensive touchdown where the try is by the other team.
 #'
-#' d3's own drive-footer boundaries are not used: StatCrew sometimes splits
+#' StatCrew drive-footer boundaries are not used: StatCrew sometimes splits
 #' one possession into two "drives" (a re-kick after a punt penalty, a
 #' penalty on a field goal), and those are merged here because the same
 #' team keeps the ball. The opening kickoff is drive 1; no NAs.

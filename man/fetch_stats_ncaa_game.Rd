@@ -20,6 +20,6 @@ A list like \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}'s, with \code{sour
 The stats.ncaa.org counterpart of \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}: the page is read
 with \code{\link[=stats_ncaa_lines]{stats_ncaa_lines()}} and rebuilt with \code{\link[=ncaa_play_table]{ncaa_play_table()}}. Home and
 away follow the game list; the page's two teams are matched to them by
-name (\code{\link[=ncaa_to_index_name]{ncaa_to_index_name()}}, then the order on the page: away first). The
+name (then the order on the page: away first). The
 final score is the game list's, else the page's.
 }

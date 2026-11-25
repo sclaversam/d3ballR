@@ -19,6 +19,6 @@ left out.
 \description{
 Sam saves pages under stats.ncaa.org's own contest id (\verb{6489674.html})
 or ours; either is fine. Each page is matched to a game in the game list
-by date (at most a day apart) and teams (\code{\link[=ncaa_to_index_name]{ncaa_to_index_name()}} on the
-page's names, either order).
+by date (at most a day apart) and teams (the page's names, either
+order).
 }

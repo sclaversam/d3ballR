@@ -16,7 +16,7 @@ Logical vector.
 \description{
 Rows after a touchdown, field goal or safety and before the next kickoff,
 the next live (not nullified) snap, or a period change: the extra point / two-point try,
-plus any penalty or marker rows d3 prints around it. (In overtime no
+plus any penalty or marker rows printed around it. (In overtime no
 kickoff follows a score, so the other team's first snap closes it.)
 They are untimed and belong to the scoring sequence, not to a new
 possession.

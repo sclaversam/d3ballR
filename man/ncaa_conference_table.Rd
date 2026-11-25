@@ -26,7 +26,8 @@ A list with
 ncaa.com's weekly scoreboards tag each team in each game with its
 conference ("centennial", "wiac", ...). Each team's most common tag is
 its conference, named through \code{inst/extdata/conference_names.csv}
-(d3football's names and codes, e.g. "Centennial Conference", "CC").
+(a readable name and a short code per tag, e.g. "Centennial Conference",
+"CC").
 Tags not in that table (non-D3 conferences such as "nec", and
 "diii-independent") and blank tags give NA, as for an independent or a
 non-D3 opponent. The scoreboards are the ones \code{\link[=ncaa_season_games]{ncaa_season_games()}}
