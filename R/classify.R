@@ -24,9 +24,25 @@ verb_pattern <- "\\b(rush|pass(?: (?:short|deep|outside|middle|left|right)){0,2}
 #' "wins toss and defers", "won the toss", "will receive", "to receive and
 #' defend", "will defend". Some StatCrew formats say "wins toss and will
 #' kickoff", which is why [classify_plays()] checks this before the kickoff
-#' rule.
+#' rule. Also "Coin Toss: CNU wins and defers", "Olivet won toss, defers",
+#' "Hanover wins coin toss", "wins the opening toss", "Westfield State Wins,
+#' Defers" (2025 sweep).
 #' @keywords internal
-toss_pattern <- "wins (the )?toss|will receive|will defend|to receive and defen[ds]e?|won the toss"
+toss_pattern <- "wins (the )?(opening |coin )*toss|will receive|will defend|to receive and defen[ds]e?|won (the )?(opening |coin )*toss|coin ?toss|\\bwins, defers\\b"
+
+#' Scorer's-note patterns: lines a stat crew types between plays that are
+#' not plays. Each is its own row type in [classify_plays()] and is dropped.
+#' @keywords internal
+note_patterns <- c(
+  injury = "injured on the play|delay due to injury",
+  two_minute_timeout = "^(two|2)[- ]?minute( (timeout|time out|warning))?\\b|^2:00 (minute )?(timeout|time out|warning)\\b",
+  clock_note = "^\\d+ sec(ond)?s?( left| on clock)?\\.?$",
+  captains = "cap(t|tains?)?\\s*:",
+  disqualification = "has been disqualified|\\bdq\\b",
+  qb_hurry = "^QB hurry by ",
+  game_delay = "weather delay|game suspended|called off|game in delay",
+  jersey_change = "\\bnow wearing\\b"
+)
 
 #' Classify each play-by-play row into a type
 #'
@@ -58,6 +74,17 @@ toss_pattern <- "wins (the )?toss|will receive|will defend|to receive and defen[
 #'   it's dropped. An accepted one ("... NO PLAY", a dead-ball foul before
 #'   the next kickoff) is a `penalty_no_play` with no down.
 #' - `blank` — a row whose text is just "." (after a coin toss, or at the half)
+#' - `score_banner` — a running-score line with a poll ranking in front
+#'   ("#7/8 Bethel (MN) 14, Augsburg 0"); not read as a score
+#'
+#' Scorer's notes, matched only on rows no other rule claimed
+#' (`note_patterns`): `injury` ("NAME injured on the play"),
+#' `two_minute_timeout` ("Two-Minute Timeout", "2:00 warning"),
+#' `clock_note` ("17 sec on clock"), `captains` ("MAR Capt: 10 ..."),
+#' `disqualification`, `qb_hurry` ("QB hurry by NAME."), `game_delay`
+#' ("Weather Delay", "Game suspended"), `jersey_change` ("5 now wearing 1").
+#' What's left in `other` after these (2025: 12 rows) are free-form comments
+#' on the play next to them ("sweep right", "ABORTED SNAP").
 #'
 #' `other` is the unknown bucket and should come back empty; anything landing
 #' there means a new row shape has appeared and the classifier needs a new
@@ -127,8 +154,8 @@ classify_plays <- function(plays) {
     is_dd & stringr::str_detect(plays$play, "^[1-4](st|nd|rd|th) and \\d+\\.?$") ~ "down_distance_echo",
     is_dd & is_toss ~ "coin_toss",
     is_dd & stringr::str_detect(plays$play, stringr::regex("ball on", ignore_case = TRUE)) ~ "spot_correction",
-    is_dd & stringr::str_detect(plays$play, " in at | at QB for ") ~ "substitution",
-    is_dd & stringr::str_detect(plays$play, stringr::regex("review", ignore_case = TRUE)) ~ "replay_review",
+    is_dd & stringr::str_detect(plays$play, " in at | at QB for |^\\d+ (still )?at qb\\.?$" |> stringr::regex(ignore_case = TRUE)) ~ "substitution",
+    is_dd & stringr::str_detect(plays$play, stringr::regex("review|\\bchallenges?\\b|\\bupheld\\b|\\boverturned\\b", ignore_case = TRUE)) ~ "replay_review",
     same & stringr::str_detect(plays$play, stringr::regex("^back to top$|^Quarters:", ignore_case = TRUE)) ~ "nav",
     blank_sit & stringr::str_detect(plays$play, stringr::regex("^PENALTY\\b.*\\b(declined|offsetting)\\b", ignore_case = TRUE)) ~ "penalty_note",
     # an accepted dead-ball foul between a try and the next kickoff, enforced
@@ -138,8 +165,18 @@ classify_plays <- function(plays) {
     blank_sit & stringr::str_detect(plays$play, stringr::regex("^PENALTY\\b.*\\bNO PLAY\\b", ignore_case = TRUE)) ~ "penalty_no_play",
     is_dd & stringr::str_detect(plays$play, stringr::regex("^(Spiked\\.?|\\d:00 minute warning\\.?|2-Minute Timeout\\.?|\\d:00 Officials Timeout\\.?|two minute warning\\.?|recovered by .+)$", ignore_case = TRUE)) ~ "annotation",
     stringr::str_detect(plays$play, "^\\.?$") ~ "blank",
+    # a running-score line with a poll ranking in front ("#7/8 Bethel (MN)
+    # 14, Augsburg 0", 6461981): not read as a score (the ranking isn't a
+    # team name), dropped
+    blank_sit & stringr::str_detect(plays$play, "^#\\d+(/\\d+)? .*\\d+, .*\\d+$") ~ "score_banner",
     TRUE ~ "other"
   )
+
+  # scorer's notes: only rows no rule above claimed
+  for (type in names(note_patterns)) {
+    hit <- row_type == "other" & stringr::str_detect(plays$play, stringr::regex(note_patterns[[type]], ignore_case = TRUE))
+    row_type[hit] <- type
+  }
 
   dplyr::mutate(plays, row_type = row_type)
 }

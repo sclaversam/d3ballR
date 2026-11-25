@@ -14,6 +14,8 @@ toss_pattern
 "wins toss and defers", "won the toss", "will receive", "to receive and
 defend", "will defend". Some StatCrew formats say "wins toss and will
 kickoff", which is why \code{\link[=classify_plays]{classify_plays()}} checks this before the kickoff
-rule.
+rule. Also "Coin Toss: CNU wins and defers", "Olivet won toss, defers",
+"Hanover wins coin toss", "wins the opening toss", "Westfield State Wins,
+Defers" (2025 sweep).
 }
 \keyword{internal}

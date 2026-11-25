@@ -43,9 +43,21 @@ Two more non-play types, with no down-and-distance requirement:
 \itemize{
 \item \code{penalty_note} — a declined or offsetting penalty on its own row with no
 situation (seen between a touchdown and its try). It changes nothing, so
-it's dropped. An accepted penalty in that spot still lands in \code{other}.
+it's dropped. An accepted one ("... NO PLAY", a dead-ball foul before
+the next kickoff) is a \code{penalty_no_play} with no down.
 \item \code{blank} — a row whose text is just "." (after a coin toss, or at the half)
+\item \code{score_banner} — a running-score line with a poll ranking in front
+("#7/8 Bethel (MN) 14, Augsburg 0"); not read as a score
 }
+
+Scorer's notes, matched only on rows no other rule claimed
+(\code{note_patterns}): \code{injury} ("NAME injured on the play"),
+\code{two_minute_timeout} ("Two-Minute Timeout", "2:00 warning"),
+\code{clock_note} ("17 sec on clock"), \code{captains} ("MAR Capt: 10 ..."),
+\code{disqualification}, \code{qb_hurry} ("QB hurry by NAME."), \code{game_delay}
+("Weather Delay", "Game suspended"), \code{jersey_change} ("5 now wearing 1").
+What's left in \code{other} after these (2025: 12 rows) are free-form comments
+on the play next to them ("sweep right", "ABORTED SNAP").
 
 \code{other} is the unknown bucket and should come back empty; anything landing
 there means a new row shape has appeared and the classifier needs a new

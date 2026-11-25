@@ -21,6 +21,23 @@ test_that("classify_plays keeps an accepted dead-ball foul before a kickoff (bla
   expect_equal(classify_plays(plays)$row_type, c("penalty_no_play", "penalty_no_play", "penalty_note"))
 })
 
+test_that("classify_plays types scorer's notes", {
+  plays <- tibble::tibble(
+    situation = c(rep("1st and 10 at MAR35", 12), ""),
+    play = c(
+      "Lewis,Brayden injured on the play", "TWO MINUTE TIME OUT", "2:00 minute timeout",
+      "17 sec on clock", "MuskCap:5 C Gurney 9 G Gurney 56 Page", "Ripon Smith,Joe has been disqualified",
+      "QB hurry by J. Laureano.", "Weather Delay (8:20 on 3rd quarter clock)", "MCMURRY 5 now wearing 1.",
+      "Olivet won toss, defers. Trine receive and defend south goal.", "Castleton Challenges TD - Upheld",
+      "sweep right", "#7/8 Bethel (MN) 14, Augsburg 0"
+    )
+  )
+  expect_equal(classify_plays(plays)$row_type, c(
+    "injury", "two_minute_timeout", "two_minute_timeout", "clock_note", "captains", "disqualification",
+    "qb_hurry", "game_delay", "jersey_change", "coin_toss", "replay_review", "other", "score_banner"
+  ))
+})
+
 test_that("classify_plays types the all-D3 row shapes (no 'other')", {
   plays <- tibble::tibble(
     situation = c("3 plays, -12 yards, 2:23 elapsed", "2nd and 3 at AUG41", "1st and 10 at MUHL48",

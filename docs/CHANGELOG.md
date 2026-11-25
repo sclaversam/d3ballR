@@ -5,6 +5,23 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Scorer's notes get their own row types (288 to 12 unclassified)
+
+Asked by Sam (2026-11-25). The build report's "Unclassified rows" (the
+classifier's `other` bucket, dropped) were 288 scorer's notes, so a real
+play in a new format would be hard to spot among them. `classify_plays()`
+now types them: `injury` (138), `two_minute_timeout` (75), `coin_toss`
+(20 more phrasings: "Coin Toss: CNU wins and defers", "Olivet won toss,
+defers"), `captains` (10), `score_banner` (9, a score line with a poll
+ranking in front), `disqualification` (7), `clock_note` (5), `qb_hurry`
+(5), `game_delay` (3), `substitution` (2, "1 at QB"), `jersey_change` (1),
+`replay_review` (1, "Castleton Challenges TD - Upheld"). All are dropped,
+as before. The 12 left in `other` are free-form comments on the play next
+to them ("sweep right", "ABORTED SNAP", "Invalid fair catch signal"), each
+checked: the play itself is on its own line. Rebuilt offline: no game file
+changes (the new coin-toss rows name no receiver the kickoff logic didn't
+already have).
+
 ## Dead-ball fouls before a kickoff are kept (6 rows)
 
 Asked by Sam (2026-11-25). An accepted dead-ball foul between a try and
