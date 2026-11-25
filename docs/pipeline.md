@@ -87,10 +87,6 @@ rules:
   play-by-play the way other public R packages do is fine. Requests stay
   few, cached and throttled, with a go-ahead before large runs.
 
-**Bot challenges:** never try to get past one (stats.ncaa.org's Akamai
-block, or any JavaScript challenge): no browser automation, no reused
-browser cookies.
-
 ## Validation
 
 Run on every build; reports in `checks/{season}/`. 2025 results:
@@ -152,9 +148,7 @@ first-down exclusivity and placement.
   reconciles when ncaa.com's doesn't (`6461552`, `6529896`): the 9 rows
   with `pull_from_stats_ncaa` TRUE. The rest stay as ncaa.com has them,
   documented.
-  stats.ncaa.org blocks scripts (Akamai 403
-  on the first request), so a patch would come from a page Sam saves in
-  his browser. (c) came from a scan of every file for a regulation quarter
+  A patch comes from a page Sam saves in his browser. (c) came from a scan of every file for a regulation quarter
   with no or few lines; thin 4th quarters in blowouts (running clock) and
   `6462325`, called for thunderstorms in the 4th quarter, are not
   problems. Checked by Sam on stats.ncaa.org (2026-11-17), recorded in the file's

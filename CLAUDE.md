@@ -81,17 +81,13 @@ filter or `season`, not a new pipeline.
   games with no ncaa.com play-by-play, that can't be built, or whose
   stats.ncaa.org version reconciles when ncaa.com's doesn't
   (`pull_from_stats_ncaa` in `data-raw/ncaa/{season}_stats_ncaa_candidates.csv`).
-  It blocks scripts (Akamai 403): Sam saves the pages from his browser into
-  `data-raw/stats_ncaa/`, and `R/stats_ncaa.R` reads them. Never request it
-  from code.
+  Sam saves the pages from his browser into `data-raw/stats_ncaa/`, and
+  `R/stats_ncaa.R` reads them.
 - **Conferences come from ncaa.com's scoreboards:** each team's
   `conferences[].conferenceSeo` tag, named through
   `inst/extdata/conference_names.csv` (a name and code per tag). ncaa.com
   has no conference-game marker, so a conference game is a regular-season
   game between two teams of the same conference.
-- **Bot challenges:** never try to get around one (stats.ncaa.org's Akamai
-  block, or any site's JavaScript challenge): no browser automation, no
-  reused browser cookies.
 - **User-Agent:** `fetch_ncaa_json()` sends "d3ballR (CMU student
   research)". Every request goes through the shared counter and throttle in
   `R/fetch.R`.
