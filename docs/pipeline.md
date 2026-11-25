@@ -106,6 +106,7 @@ run over every built game: score reconciliation, the clock invariants, and
 
 ## Known issues
 
+- **Unclassified rows:** none in 2025.
 - **First-down series exceptions:** 144 of 70,840 series (0.2%) in
   `first_downs.md` don't have exactly one `new_series` flag on their first
   snap (477 before the 2026-11-17 fixes, 262 before the 2026-11-25 ones;
@@ -162,15 +163,9 @@ run over every built game: score reconciliation, the clock invariants, and
   came before halftime), so it is kept and isn't in `known_exceptions.csv`
   (that list is for games that don't reconcile), but its second half is
   missing.
-- **Unclassified rows:** 12 lines in 2025 the classifier can't type are
-  dropped (listed in `build_report.md`): scorer's notes such as "ABORTED
-  SNAP", "direct snap", "85 recovered onside".
 - **`yards_gained` is not defined** for interceptions, punts, field goals,
   kickoffs or tries. It is NA until a convention is chosen (return yards, kick
   distance, net).
-- **"Penalty after touchdown before PAT" marker rows** (UW-La Crosse at CMU,
-  plays 106 and 161) are kept as dead-ball penalty rows. They should probably
-  be dropped.
 - **Rule-derived first downs:** first downs in games whose StatCrew format
   never prints "1ST DOWN" come from a yardage rule. That rule matches the
   printed flag exactly where the flag exists.

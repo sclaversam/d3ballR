@@ -134,6 +134,9 @@ classify_plays <- function(plays) {
     # a safety recorded on its own line with no play verb ("N.C. Wesleyan
     # SAFETY, clock 03:20." -- e.g. an intentional safety): still a snap
     is_dd & stringr::str_detect(plays$play, "\\bSAFETY\\b") ~ "play",
+    # a heading the stat crew types above a penalty line ("Penalty after
+    # touchdown before PAT", 6462021 plays 106 and 161): not a penalty itself
+    stringr::str_detect(plays$play, stringr::regex("^penalty after touchdown before (the )?(pat|try)\\.?$", ignore_case = TRUE)) ~ "penalty_heading",
     is_dd & !has_verb & stringr::str_detect(plays$play, stringr::regex("penalty", ignore_case = TRUE)) ~ "penalty_no_play",
     stringr::str_detect(plays$play, stringr::regex("drive start", ignore_case = TRUE)) ~ "drive_start",
     same & stringr::str_detect(plays$play, " at( \\d{1,2}:\\d{2})?$") ~ "drive_header",
@@ -177,6 +180,13 @@ classify_plays <- function(plays) {
     hit <- row_type == "other" & stringr::str_detect(plays$play, stringr::regex(note_patterns[[type]], ignore_case = TRUE))
     row_type[hit] <- type
   }
+  # any other short comment on the play before, with no play in it ("ABORTED
+  # SNAP", "middle screen, long run", "Hurdled defender to score"): no
+  # snap verb, no yardage, at most 8 words
+  short_note <- row_type == "other" & !has_verb &
+    !stringr::str_detect(plays$play, stringr::regex("\\d+ yards?|penalty|touchdown|fumble|intercept", ignore_case = TRUE)) &
+    stringr::str_count(stringr::str_squish(plays$play), "\\S+") <= 8
+  row_type[short_note] <- "scorer_note"
 
   dplyr::mutate(plays, row_type = row_type)
 }

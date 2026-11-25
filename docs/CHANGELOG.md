@@ -5,6 +5,19 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Scorer's comments and the PAT heading
+
+- **`scorer_note`** (new row type, not kept): a short line with no play in
+  it under a play, the scorer's comment on it ("ABORTED SNAP", "middle
+  screen, long run", "Hurdled defender to score"): no snap verb, no
+  yardage, no penalty / touchdown / fumble / interception, at most 8 words.
+  The 12 unclassified rows of 2025; they were already dropped, so no game
+  changed. Unclassified rows: 0.
+- **`penalty_heading`** (new row type, not kept): "Penalty after touchdown
+  before PAT", a heading the stat crew types above the penalty line. It was
+  kept as an empty `penalty_no_play` row (6462021 plays 106 and 161); both
+  are dropped, and that game's later `play_index` values move up by 1-2.
+
 ## The receiving team's first row after a score with no kickoff line
 
 Rows after a score belong to the scoring team until the kickoff. When

@@ -52,18 +52,5 @@ None.
 
 Rows the classifier couldn't type (its `other` bucket). They are dropped, so any here may hide a play: each needs a classifier rule.
 
-| game_id | situation | play |
-|---|---|---|
-| 6462325 | 1st and 10 at VERMONT48 | bad snap in shotgun previous play |
-| 6462325 | 1st and 10 at WESTFIEL31 | middle screen, long run |
-| 6461849 | 1st and 10 at VERMONT35 | blocked by own teammate |
-| 6461622 | 1st and Goal at ANNAMAR3 | Hurdled defender to score |
-| 6462247 | 4th and Goal at WESTFIEL8 | direct snap |
-| 6462247 | 1st and 10 at WESTFIEL35 | snapped through end zone |
-| 6462082 | 1st and Goal at WESTFIEL3 | sweep right |
-| 6461486 | 1st and 10 at WES25 | Invalid fair catch signal |
-| 6461929 | 3rd and 15 at HAMILTON20 | ABORTED SNAP |
-| 6462095 | 1st and 10 at PLYMOUTH35 | lobbed to right corner of endzone |
-| 6461936 | 2nd and 20 at BOWDOIN25 | ABORTED SNAP |
-| 6461729 | 2nd and 8 at DEAN33 | 85 recovered onside |
+None.
 

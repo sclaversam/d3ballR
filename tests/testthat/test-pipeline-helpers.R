@@ -34,7 +34,7 @@ test_that("classify_plays types scorer's notes", {
   )
   expect_equal(classify_plays(plays)$row_type, c(
     "injury", "two_minute_timeout", "two_minute_timeout", "clock_note", "captains", "disqualification",
-    "qb_hurry", "game_delay", "jersey_change", "coin_toss", "replay_review", "other", "score_banner"
+    "qb_hurry", "game_delay", "jersey_change", "coin_toss", "replay_review", "scorer_note", "score_banner"
   ))
 })
 
@@ -298,4 +298,10 @@ test_that("split_infractions: glued codes, accepted + declined, yard lines with 
   expect_equal(x[[4]]$token, "FITCHBUR"); expect_equal(x[[4]]$yards, 5L)
   expect_equal(x[[5]]$token, "OBER"); expect_equal(x[[5]]$yards, 20L)
   expect_equal(x[[6]]$status, c("declined", "accepted")); expect_equal(x[[6]]$yards[2], 5L)
+})
+
+test_that("scorer's comments and the PAT heading aren't plays (2026-11-25)", {
+  p <- data.frame(situation = c("3rd and 15 at HAMILTON20", "1st and 10 at WESTFIEL31", "1st and 10 at 50", "1st and Goal at ANNAMAR3"),
+                  play = c("ABORTED SNAP", "middle screen, long run", "Penalty after touchdown before PAT", "Hurdled defender to score"))
+  expect_equal(classify_plays(p)$row_type, c("scorer_note", "scorer_note", "penalty_heading", "scorer_note"))
 })
