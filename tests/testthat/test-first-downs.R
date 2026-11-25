@@ -147,8 +147,7 @@ test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {
     # play 11 (10-yard catch + face mask) causes a new series; play 12 starts
     # it. (Play 11 is itself flagged: play 10 reached the line to gain.)
     r <- g[g$play_index == 12, ]
-    expect_true(r$firstD_by_yards)
-    expect_false(r$firstD_by_penalty)
+    expect_true(r$new_series)
     expect_equal(r$down, 1L)
   }
   # 6462069 (old id 6462069, Franklin and Marshall at Lebanon Valley)
@@ -157,16 +156,14 @@ test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {
     g <- utils::read.csv(hz, na.strings = "")
     # play 15: F&M punt; play 16: LVC false start (NO PLAY) = first snap row of
     # LVC's series; play 17: the replayed 1st down
-    expect_true(g$firstD_by_poss[g$play_index == 16])
     expect_true(g$new_series[g$play_index == 16])
-    r17 <- g[g$play_index == 17, c("firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards", "firstD_by_penalty", "new_series")]
-    expect_false(any(unlist(r17)))
+    expect_false(g$new_series[g$play_index == 17])
   }
   for (f in files) {
     g <- utils::read.csv(f, na.strings = "")
-    k <- g[, c("firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards", "firstD_by_penalty")]
-    expect_identical(g$new_series, rowSums(k) == 1, label = paste(basename(f), "exactly one flag when new_series"))
-    expect_true(all(rowSums(k) <= 1), label = paste(basename(f), "at most one flag"))
+    expect_false(any(c("firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards", "firstD_by_penalty") %in% names(g)),
+                 label = paste(basename(f), "only new_series in the output"))
+    expect_false(anyNA(g$new_series), label = paste(basename(f), "new_series never NA"))
     expect_false(any(g$new_series[g$play_type %in% c("kickoff", "extra_point", "two_point")]),
                  label = paste(basename(f), "no flag on kickoffs or tries"))
     expect_false(any(g$new_series[is.na(g$down)]), label = paste(basename(f), "flags only on snap rows"))

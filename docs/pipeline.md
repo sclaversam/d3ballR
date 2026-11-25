@@ -58,7 +58,7 @@ ncaa.com yet) are listed as pending, and the next run continues from there.
 | Rebuild table | ncaa.com's lines become the (situation, play) table the parser reads (the layout of a StatCrew play-by-play page): situations from `driveText` with the yardline side recovered, quarter markers, drive headers, score lines, and labelled extra points ncaa.com left out. | `R/ncaa.R` (`fetch_ncaa_game`, `ncaa_play_table`) | |
 | Classify | Label every row of the page: snap, kickoff, try, dead-ball penalty, or one of the non-play types (drive header / footer, quarter marker, timeout, ...). | `R/classify.R`, `R/parse_play_type.R` | |
 | Derive | Period, possession, team names, kickoff teams, drives, down / distance / yards to goal, penalties, outcome flags, score, first downs and series, clock. | `R/build_pbp.R` and the files it calls: `teams.R`, `kickoffs.R`, `drives.R`, `scores.R`, `parse_penalties.R`, `parse_outcomes.R`, `game_state.R`, `parse_clock.R` | |
-| Assemble | One 71-column table per game. | `R/build_pbp.R` (`build_pbp`, `build_all_pbp`) | `pbp/{season}/{game_id}.csv` |
+| Assemble | One 67-column table per game. | `R/build_pbp.R` (`build_pbp`, `build_all_pbp`) | `pbp/{season}/{game_id}.csv` |
 | Validate | Reports for the season. | `R/validation.R`, `R/build_season.R` | `checks/{season}/` |
 
 **One pipeline for everything.** `build_season()` runs all the stages. The
@@ -95,14 +95,14 @@ Run on every build; reports in `checks/{season}/`. 2025 results:
 |---|---|---|
 | `build_report.md`, `score_reconciliation.csv` | Every game's points by team, summed from `score_pts`, equal the final (ncaa.com scoreboard). Also lists the games built from stats.ncaa.org, pending and failed games, and unclassified rows. | 1,262 of 1,263 (the other is a known source gap) |
 | `conference_check.csv` | Each game's conference columns and `conference_game` (same conference, regular season). | |
-| `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: cfbfastR comparison and edge cases. | 317 exceptions in 70,968 series (0.4%); 155 are labelled source quirks (see Known issues). |
+| `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: counts by cause and edge cases. | 262 exceptions in 70,972 series (0.4%); 156 are labelled source quirks (see Known issues). |
 | `kickoff_possession.csv` | Each kickoff's kicking and receiving team, the rule that decided it, and any disagreement. | |
 | `clock_bounds.csv` | No missing or inverted clock range in regulation, and `clock_start` inside its range. | Empty. |
 | `end_state.csv` | Every change of possession with the next snap's own down / distance / yards to goal, labeled by team. | |
 
 `tests/testthat/` holds unit tests for every parsing rule and data tests that
 run over every built game: score reconciliation, the clock invariants, and
-first-down exclusivity and placement.
+`new_series` placement.
 
 ## Known issues
 

@@ -5,6 +5,20 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Only `new_series`: the four `firstD_by_*` columns dropped
+
+Decided by Sam (2026-11-25): keep cfbfastR's layout in mind but don't copy
+every column. The output keeps `new_series` and drops `firstD_by_kickoff`,
+`firstD_by_poss`, `firstD_by_yards` and `firstD_by_penalty` (71 -> 67
+columns). Nothing else changed: every game is identical apart from the four
+columns, and `new_series` is the same.
+
+The causes are still computed (`derive_series_flags()`, which `new_series`
+is built from) and passed to `checks/{season}/first_downs.md` through the
+`series_detail` attribute as `series_cause`, so the report still counts
+series by cause (2025: kickoff 12,823, poss 17,121, yards 37,583, penalty
+3,442). The series check is unchanged: 262 exceptions in 70,972 series.
+
 ## Overtime: periods 5, 6, 7 and the possession's yard line
 
 Decided by Sam (2026-11-25): number overtime periods 5, 6, 7, ... as

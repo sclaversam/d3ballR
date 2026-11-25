@@ -343,8 +343,7 @@ pbp_columns <- c(
   "field_goal_attempt", "field_goal_made", "punt",
   "yds_kickoff", "yds_kickoff_return", "yds_punted", "yds_punt_return", "yds_fg",
   "scoring_play", "score_pts",
-  "drive_result", "firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards",
-  "firstD_by_penalty", "new_series", "penalty_flag", "penalty_yards_signed",
+  "drive_result", "new_series", "penalty_flag", "penalty_yards_signed",
   "penalized_team", "penalty_no_play", "penalty_declined", "penalty_play_text", "situation",
   "play_text"
 )
@@ -644,7 +643,15 @@ build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
   attr(out, "score_checks") <- rs$checks
   attr(out, "first_down_text") <- kept[, c("fd_yards_text", "fd_penalty_text")]
   attr(out, "next_snap") <- nxt
+  # The cause of each new series (kickoff / poss / yards / penalty) is kept
+  # for the first-downs report only; the output has just `new_series`.
+  cause_flags <- c(kickoff = "firstD_by_kickoff", poss = "firstD_by_poss",
+                   yards = "firstD_by_yards", penalty = "firstD_by_penalty")
+  cause_mat <- as.matrix(kept[, cause_flags])
   attr(out, "series_detail") <- data.frame(
+    series_cause = ifelse(rowSums(cause_mat) > 0,
+                          names(cause_flags)[max.col(cause_mat, ties.method = "first")],
+                          NA_character_),
     series_causes = kept$series_causes,
     cause_play_index = kept$play_index[kept$series_cause_row],
     try_phase = kept$try_phase
