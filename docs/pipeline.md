@@ -106,9 +106,9 @@ first-down exclusivity and placement.
 
 ## Known issues
 
-- **First-down series exceptions (left as known issues, Sam 2026-11-17):**
-  317 of 70,968 series (0.4%) in `first_downs.md` don't have exactly one
-  `new_series` flag on their first snap (477 before the 2026-11-17 fixes;
+- **First-down series exceptions:** 261 of 70,968 series (0.4%) in
+  `first_downs.md` don't have exactly one `new_series` flag on their first
+  snap (477 before the 2026-11-17 fixes, 317 before the 2026-11-25 ones;
   see the CHANGELOG). By cause:
   - 105: the source's down counter: the play earned a first down (its
     "1ST DOWN" text or its yardage) but the next situation reads 2nd or
@@ -116,13 +116,11 @@ first-down exclusivity and placement.
   - 48: the source re-prints "1st and 10" after a dead-ball penalty on the
     offense, so a replayed down looks like a new series. Labelled.
   - 2: laterals (`yards_gained` reads only the first segment). Labelled.
-  - 162 unexplained (145 series with no flag, 13 with two, 4 with the flag
-    on a later row), concentrated in a few host files (most in 6529867,
-    6529897, 6462024, 6462236, 6529883, 6529885). Causes traced so far, not
-    fixed: a yard-line side error (6462357: IC36 + 26 yards placed at
-    IC47); the checker not splitting a series where a 12-yard gain reaches
-    a new 1st and 10 (6462304); source gaps (Alfred at Ithaca: missing
-    opening kickoff; Bowdoin at Williams: dropped lines).
+  - 106 unexplained (spread over about 100 games, at most a few each):
+    being worked through. Traced so far: 6462357 play 67 is a snap by
+    Illinois College right after its own turnover on downs (a source
+    error). The "IC36 + 26 yards placed at IC47" case once listed here is
+    correct: the play ends with a 15-yard unsportsmanlike foul on IC.
 - **Added extra points:** 100 extra points in the 58 games have no line on
   ncaa.com and are added, labelled in `play_text`: 91 proved by the running
   score, 9 (CMU home games, no running score) by ncaa.com's scoring summary.

@@ -329,8 +329,12 @@ series_next_snap <- function(kept, nxt) {
 #' penalty is never a series start. If two causes point at
 #' one snap, precedence kickoff > poss > yards > penalty decides. A snap
 #' right after a try or scoring play by the other team, in regulation, is
-#' `firstD_by_kickoff` even when the source has no kickoff line. Finally,
-#' the first snap of each overtime possession is `firstD_by_poss`.
+#' `firstD_by_kickoff` even when the source has no kickoff line, and so is
+#' the first snap of a regulation half with no kickoff row before it.
+#' Finally, the first snap of each overtime possession is `firstD_by_poss`:
+#' a change of team, or the same team again after its possession ended (a
+#' try or score, a field goal attempt, a failed 4th down), since ncaa.com
+#' files every OT period under one period 5.
 #'
 #' @param kept Kept rows after [derive_first_downs()], with `play_type`,
 #'   `pos_team`, `penalty_no_play`, `scoring_play`, `try_phase`,
@@ -402,10 +406,34 @@ derive_series_flags <- function(kept, nxt) {
     }
   }
 
-  # first snap of each overtime possession
+  # the same at the start of a half: in regulation, the first snap of a half
+  # with no kickoff row before it in that half starts a series by kickoff
+  # (ncaa.com dropped the opening or second-half kickoff line: 42 in 2025)
+  for (h in unique(kept$half[snaps[kept$period[snaps] <= 4L]])) {
+    in_half <- which(kept$half == h & kept$period <= 4L)
+    t <- snaps[snaps %in% in_half][1]
+    if (is.na(t) || !is.na(best[t]) || any(kept$play_type[in_half[in_half < t]] == "kickoff")) next
+    best[t] <- "kickoff"
+    causes_at[t] <- "kickoff (no kickoff line in the source)"
+  }
+
+  # first snap of each overtime possession. ncaa.com files every overtime
+  # period under one "Overtime(1)" period, so a team that went second in one
+  # OT period and first in the next has two possessions in a row (6461689):
+  # the same team starts a new possession when its last one ended in
+  # between (a try or score, a field goal attempt, or a 4th down that didn't
+  # convert)
+  fg_types <- c("field_goal_good", "field_goal_missed", "field_goal_blocked")
   for (t in snaps[kept$period[snaps] > 4L]) {
     prev <- snaps[snaps < t & kept$period[snaps] == kept$period[t]]
-    first_of_possession <- !length(prev) || !identical(kept$pos_team[prev[length(prev)]], kept$pos_team[t])
+    p <- if (length(prev)) prev[length(prev)] else NA_integer_
+    ended <- !is.na(p) && {
+      between <- p:(t - 1L)
+      any(kept$play_type[between] %in% c("extra_point", "two_point", fg_types)) ||
+        any(kept$scoring_play[between] %in% TRUE) ||
+        (kept$down[p] %in% 4L && !isTRUE(kept$firstD_by_yards[p]) && !isTRUE(kept$firstD_by_penalty[p]))
+    }
+    first_of_possession <- is.na(p) || !identical(kept$pos_team[p], kept$pos_team[t]) || ended
     if (first_of_possession && (is.na(best[t]) || rank[best[t]] > rank["poss"])) {
       best[t] <- "poss"
       if (is.na(causes_at[t])) causes_at[t] <- "overtime possession"

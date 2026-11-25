@@ -50,7 +50,11 @@ snap of the new series. A snap that replays the same down after a no-play
 penalty is never a series start. If two causes point at
 one snap, precedence kickoff > poss > yards > penalty decides. A snap
 right after a try or scoring play by the other team, in regulation, is
-\code{firstD_by_kickoff} even when the source has no kickoff line. Finally,
-the first snap of each overtime possession is \code{firstD_by_poss}.
+\code{firstD_by_kickoff} even when the source has no kickoff line, and so is
+the first snap of a regulation half with no kickoff row before it.
+Finally, the first snap of each overtime possession is \code{firstD_by_poss}:
+a change of team, or the same team again after its possession ended (a
+try or score, a field goal attempt, a failed 4th down), since ncaa.com
+files every OT period under one period 5.
 }
 \keyword{internal}

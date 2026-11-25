@@ -12,8 +12,21 @@ series_rows <- function(...) {
   d$down[!d$scrimmage_play] <- NA
   d
 }
-flags_of <- function(d) {
+# Each sequence is the middle of a half: a lead-in (a kickoff, then a
+# 2nd-down snap by the first row's team, in the first row's half and period)
+# goes in front, so the first row isn't the first snap of a half (which, with
+# no kickoff before it, is a series by kickoff), and is dropped from the result.
+flags_of <- function(d, lead_in = TRUE) {
+  if (lead_in) {
+    lead <- d[c(1, 1), ]
+    lead$play_type <- c("kickoff", "rush")
+    lead$down <- c(NA, 2L)
+    lead$scrimmage_play <- c(FALSE, TRUE)
+    for (nm in c("penalty_no_play", "scoring_play", "try_phase", "fumble_vec", "firstD_by_yards", "firstD_by_penalty")) lead[[nm]] <- FALSE
+    d <- rbind(lead, d)
+  }
   out <- derive_series_flags(d, next_snap_index(d))
+  if (lead_in) out <- out[-(1:2), ]
   vapply(seq_len(nrow(out)), function(i) {
     f <- c("kickoff", "poss", "yards", "penalty")[c(out$firstD_by_kickoff[i], out$firstD_by_poss[i],
                                                      out$firstD_by_yards[i], out$firstD_by_penalty[i])]
@@ -68,6 +81,20 @@ test_that("overtime: the first snap of each OT possession is firstD_by_poss (inc
                    pos_team = c("A", "A", "A", "B", "B"), period = c(4L, 5L, 5L, 5L, 5L), half = 2L,
                    down = c(4L, 1L, 4L, 1L, 2L))
   expect_equal(flags_of(d), c("-", "poss", "-", "poss", "-"))
+})
+
+test_that("overtime: ncaa.com's single OT period -- the same team twice in a row after its try is a new possession", {
+  # OT1: A scores, B scores; OT2: B goes first (all filed under period 5)
+  d <- series_rows(play_type = c("rush", "rush", "extra_point", "rush", "rush", "extra_point", "rush", "rush"),
+                   pos_team = c("A", "A", "A", "B", "B", "B", "B", "B"), period = 5L, half = 2L,
+                   down = c(1L, 2L, NA, 1L, 2L, NA, 1L, 2L), scoring_play = c(FALSE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE))
+  expect_equal(flags_of(d, lead_in = FALSE), c("poss", "-", "-", "poss", "-", "-", "poss", "-"))
+})
+
+test_that("a half with no kickoff line: its first snap is firstD_by_kickoff", {
+  d <- series_rows(play_type = c("rush", "rush", "rush", "pass_complete"), pos_team = c("A", "A", "B", "B"),
+                   half = c(1L, 1L, 2L, 2L), period = c(2L, 2L, 3L, 3L), down = c(1L, 2L, 1L, 2L))
+  expect_equal(flags_of(d, lead_in = FALSE), c("kickoff", "-", "kickoff", "-"))
 })
 
 test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {

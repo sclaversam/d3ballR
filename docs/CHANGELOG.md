@@ -5,6 +5,34 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Series flags: missing half-opening kickoffs and overtime periods (317 to 261)
+
+Asked by Sam (2026-11-25), working down the unexplained `first_downs.md`
+exceptions (`derive_series_flags()`). Only flag columns change: 56 rows in
+55 games gain a flag, no other column changes, and no new exception
+appears. 1,262 of 1,263 still reconcile.
+
+- **A half with no kickoff line** (45 rows: 19 opening kickoffs, the rest
+  second-half kickoffs, most starting at the receiver's 25). ncaa.com
+  dropped the kickoff line, so the half's first snap had no flag. In
+  regulation, the first snap of a half with no kickoff row before it is now
+  `firstD_by_kickoff`, the same rule already used for a snap right after a
+  try with no kickoff line (2026-11-17).
+- **Overtime periods** (11 rows in 11 games). ncaa.com files every OT
+  period under one "Overtime(1)" period, so `period` is 5 for all of them
+  (a source quirk; not renumbered). The team that goes second in one OT
+  period goes first in the next, so it has two possessions in a row, and
+  the "team changed" test missed the second (6461689: Bluffton scores in
+  OT1, opens OT2 at play 180). A same-team snap in OT is now a new
+  possession (`firstD_by_poss`) when the team's last possession ended in
+  between: a try or score, a field goal attempt, or a 4th down that didn't
+  convert.
+
+Also corrected in `pipeline.md`: the unexplained exceptions aren't
+concentrated in a few host files (they're spread over about 100 games),
+and 6462357's "IC36 + 26 yards placed at IC47" isn't an error (the play
+ends with a 15-yard unsportsmanlike foul on IC).
+
 ## Scorer's notes get their own row types (288 to 12 unclassified)
 
 Asked by Sam (2026-11-25). The build report's "Unclassified rows" (the
