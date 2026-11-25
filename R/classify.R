@@ -55,7 +55,8 @@ toss_pattern <- "wins (the )?toss|will receive|will defend|to receive and defen[
 #' Two more non-play types, with no down-and-distance requirement:
 #' - `penalty_note` — a declined or offsetting penalty on its own row with no
 #'   situation (seen between a touchdown and its try). It changes nothing, so
-#'   it's dropped. An accepted penalty in that spot still lands in `other`.
+#'   it's dropped. An accepted one ("... NO PLAY", a dead-ball foul before
+#'   the next kickoff) is a `penalty_no_play` with no down.
 #' - `blank` — a row whose text is just "." (after a coin toss, or at the half)
 #'
 #' `other` is the unknown bucket and should come back empty; anything landing
@@ -130,6 +131,11 @@ classify_plays <- function(plays) {
     is_dd & stringr::str_detect(plays$play, stringr::regex("review", ignore_case = TRUE)) ~ "replay_review",
     same & stringr::str_detect(plays$play, stringr::regex("^back to top$|^Quarters:", ignore_case = TRUE)) ~ "nav",
     blank_sit & stringr::str_detect(plays$play, stringr::regex("^PENALTY\\b.*\\b(declined|offsetting)\\b", ignore_case = TRUE)) ~ "penalty_note",
+    # an accepted dead-ball foul between a try and the next kickoff, enforced
+    # on the kickoff ("PENALTY MON UNS: Unsportsmanlike Conduct (J.Samuels)
+    # 15 yards from MON35 to MON20. NO PLAY", 6529886): no down, so no
+    # situation, but it is a play
+    blank_sit & stringr::str_detect(plays$play, stringr::regex("^PENALTY\\b.*\\bNO PLAY\\b", ignore_case = TRUE)) ~ "penalty_no_play",
     is_dd & stringr::str_detect(plays$play, stringr::regex("^(Spiked\\.?|\\d:00 minute warning\\.?|2-Minute Timeout\\.?|\\d:00 Officials Timeout\\.?|two minute warning\\.?|recovered by .+)$", ignore_case = TRUE)) ~ "annotation",
     stringr::str_detect(plays$play, "^\\.?$") ~ "blank",
     TRUE ~ "other"

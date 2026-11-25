@@ -9,6 +9,18 @@ test_that("classify_plays types a kickoff with a return penalty as kickoff", {
   expect_equal(classify_plays(plays)$row_type, c("kickoff", "kickoff"))
 })
 
+test_that("classify_plays keeps an accepted dead-ball foul before a kickoff (blank situation)", {
+  plays <- tibble::tibble(
+    situation = c("", "", ""),
+    play = c(
+      "PENALTY MON UNS: Unsportsmanlike Conduct (J.Samuels) 15 yards from MON35 to MON20. NO PLAY",
+      "PENALTY CROWN Personal Foul (T.Nelson) 15 yards from WHEIL35 to WHEIL50. NO PLAY",
+      "PENALTY WHE Holding declined."
+    )
+  )
+  expect_equal(classify_plays(plays)$row_type, c("penalty_no_play", "penalty_no_play", "penalty_note"))
+})
+
 test_that("classify_plays types the all-D3 row shapes (no 'other')", {
   plays <- tibble::tibble(
     situation = c("3 plays, -12 yards, 2:23 elapsed", "2nd and 3 at AUG41", "1st and 10 at MUHL48",

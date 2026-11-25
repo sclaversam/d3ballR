@@ -5,6 +5,21 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Dead-ball fouls before a kickoff are kept (6 rows)
+
+Asked by Sam (2026-11-25). An accepted dead-ball foul between a try and
+the next kickoff ("PENALTY MON UNS: Unsportsmanlike Conduct (J.Samuels) 15
+yards from MON35 to MON20. NO PLAY") has no down, so its situation is
+blank, and `classify_plays()` put it in `other` and dropped it. It is now a
+`penalty_no_play` row with no down or yard line, `pos_team` the kicking
+team (the team that just scored, as cfbfastR files a pre-kickoff foul),
+and the usual penalty columns (`penalized_team`, `penalty_yards_signed`
+±15). No series flag, like kickoffs and tries. 6 rows in 3 playoff games
+(6529861, 6529867, 6529886); every other column of every other row is
+unchanged (only `play_index` shifts). 1,262 of 1,263 still reconcile;
+series exceptions still 317; unclassified rows 294 to 288 (the rest are
+scorer's notes: injuries, timeouts, captains).
+
 ## First-down flags: five fixes (477 to 317 series exceptions)
 
 Asked by Sam (2026-11-17): check the `first_downs.md` exceptions; the ones

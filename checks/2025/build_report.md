@@ -330,9 +330,6 @@ Rows the classifier couldn't type (its `other` bucket). They are dropped, so any
 | 6529851 | 1st and 10 at LAGRANGE35 | Framingham State wins the opening toss and defers to the second half |
 | 6529851 | 3rd and 1 at LAGRANGE29 | Two-Minute Timeout |
 | 6529851 | 3rd and 8 at FRAMINGH38 | Two-Minute Timeout |
-| 6529861 |  | PENALTY CROWN Personal Foul (T.Nelson) 15 yards from WHEIL35 to WHEIL50. NO PLAY |
-| 6529861 |  | PENALTY CROWN UNS: Unsportsmanlike Conduct (T.Frisinger) 15 yards from CROWN35 to CROWN20. NO PLAY |
-| 6529867 |  | PENALTY CHAP UNS: Unsportsmanlike Conduct 15 yards from CHAP35 to CHAP20. NO PLAY |
 | 6533608 |  | Crouch,Tanner injured on the play |
 | 6533608 | 1st and 10 at WABASH35 | Garcia,Evan injured on the play |
 | 6533608 | 2nd and 10 at WABASH10 | Harris,William injured on the play |
@@ -344,8 +341,5 @@ Rows the classifier couldn't type (its `other` bucket). They are dropped, so any
 | 6533616 | 3rd and 9 at UWS48 | David,Andrew injured on the play |
 | 6533616 | 1st and 10 at WashU40 | Brouillet,Sam injured on the play |
 | 6533616 | 3rd and 3 at UWS8 | Lewis,Brayden injured on the play |
-| 6529886 |  | PENALTY MON UNS: Unsportsmanlike Conduct (J.Samuels) 15 yards from MON35 to MON20. NO PLAY |
-| 6529886 |  | PENALTY MON UNS: Unsportsmanlike Conduct (A.Cikauskas) 15 yards from SJU35 to SJU50. NO PLAY |
-| 6529886 |  | PENALTY SJU UNS: Unsportsmanlike Conduct (M.Oftedahl) 15 yards from SJU35 to SJU20. NO PLAY |
 | 6529888 | 1st and 10 at SUSQU35 | Coin Toss: CNU wins and defers... |
 
