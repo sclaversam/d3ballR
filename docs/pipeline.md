@@ -95,7 +95,7 @@ Run on every build; reports in `checks/{season}/`. 2025 results:
 |---|---|---|
 | `build_report.md`, `score_reconciliation.csv` | Every game's points by team, summed from `score_pts`, equal the final (ncaa.com scoreboard). Also lists the games built from stats.ncaa.org, pending and failed games, and unclassified rows. | 1,262 of 1,263 (the other is a known source gap) |
 | `conference_check.csv` | Each game's conference columns and `conference_game` (same conference, regular season). | |
-| `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: counts by cause and edge cases. | 223 exceptions in 70,825 series (0.3%); 121 are labelled source quirks, all `situation_suspect` (see Known issues). |
+| `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: counts by cause and edge cases. | 220 exceptions in 70,825 series (0.3%); 118 are labelled source quirks, all `situation_suspect` (see Known issues). |
 | `kickoff_possession.csv` | Each kickoff's kicking and receiving team, the rule that decided it, and any disagreement. | |
 | `clock_bounds.csv` | No missing or inverted clock range in regulation, and `clock_start` inside its range. | Empty. |
 | `end_state.csv` | Every change of possession with the next snap's own down / distance / yards to goal, labeled by team. | |
@@ -106,18 +106,17 @@ run over every built game: score reconciliation, the clock invariants, and
 
 ## Known issues
 
-- **First-down series exceptions:** 223 of 70,825 series (0.3%) in
+- **First-down series exceptions:** 220 of 70,825 series (0.3%) in
   `first_downs.md` don't have exactly one `new_series` flag on their first
   snap (477 before the 2026-11-17 fixes, 317 and then 262 before the
   2026-11-25 ones; see the CHANGELOG). By cause:
-  - 106: the play earned a first down (its "1ST DOWN" text or its yardage)
+  - 105: the play earned a first down (its "1ST DOWN" text or its yardage)
     but the next situation reads 2nd or 3rd down: ncaa.com's down counter
     skipped the 1st down, or it dropped a 1st-down play that gained nothing.
     The flag follows the play; the rows are `situation_suspect`.
   - 13: after a false start, delay of game or illegal substitution on 1st
     down, ncaa.com prints 1st and 10 again instead of 1st and 15. The rows
     are `situation_suspect`.
-  - 2: laterals (`yards_gained` reads only the first segment). Labelled.
   - 102 unexplained (20 of them also caught by `situation_suspect`):
     being worked through. Traced so far: 6462357 play 67 is a snap by
     Illinois College right after its own turnover on downs (a source

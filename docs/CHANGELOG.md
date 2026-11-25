@@ -5,6 +5,26 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## `yards_gained` on laterals and recovered fumbles: net from the snap
+
+`yards_gained` is the play's net yards before penalties. On plays with more
+than one carrier it read the first "for N yards" only (6462082 play 130:
+"rush for loss of 3 yards ..., fumble ... recovered by ANNAMAR Cadet ...,
+Cadet for 9 yards to the WESTFIEL19" from the 25 was −3, really +6 on 4th
+and 3, a first down). The later numbers can't be added up: StatCrew measures
+some from the snap ("for 15 yards to the TU43 lateral to Hancock for 18
+yards gain to the TU43") and some from the hand-off. `net_multi_carrier_yards()`
+(new) measures from the snap to the play's last spot instead, for rushes,
+completions, sacks and kneels with more than one yardage clause, no
+no-play penalty and no turnover (a turnover on downs isn't one: it's read
+from the yards, and the outcome flags are read again after). A replay
+review's "(Original Play: ...)" is ignored.
+
+2025: 57 plays changed. On the 44 where the next snap's spot (less penalty
+yards) can check it, 43 match (0 matched before); the other is a holding
+enforced from a spot (6461751), also right. First downs that follow: both
+lateral series exceptions and one skipped-1st-down one are gone (220 now).
+
 ## `situation_suspect`, and dead-ball fouls between series (Rule 5-2-7)
 
 Decided by Sam (2026-11-25). Two changes; nothing else in the output moved

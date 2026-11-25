@@ -229,3 +229,58 @@ strip_review_note <- function(x) {
     ""
   )
 }
+
+#' Net yards on plays with more than one run (laterals, recovered fumbles)
+#'
+#' `yards_gained` is the play's net yardage: from the snap spot to where the
+#' play ended, before any penalty is enforced (penalty yards are
+#' `penalty_yards_signed`). On most plays that is the "for N yards" number.
+#' A play with more than one carrier has several: "pass complete ... for 15
+#' yards to the TU43 lateral to Hancock for 18 yards gain to the TU43", or
+#' "rush for loss of 3 yards to the WESTFIEL28, fumble ... recovered by
+#' ANNAMAR Cadet at WESTFIEL28, Cadet for 9 yards to the WESTFIEL19".
+#' StatCrew doesn't write the later numbers consistently (some are measured
+#' from the snap, some from the hand-off), so they can't be added up. The
+#' spots are consistent: this takes the play's LAST spot (the last "to the X"
+#' / "at X" before any penalty clause) and measures from the snap.
+#'
+#' Applied to rushes, completions, sacks and kneels with more than one
+#' yardage clause, not wiped out by a penalty, and not a turnover (a lost
+#' fumble keeps the yards up to the fumble). A turnover on downs is read from
+#' the yards, so it doesn't count here; the caller reads the outcome flags
+#' again afterwards. Other plays keep
+#' [parse_yards_gained()]'s value.
+#'
+#' @param kept Kept rows with `play_text`, `play_type`, `penalty_no_play`,
+#'   `turnover`, `pos_team`, `yards_to_goal`, `yards_gained`.
+#' @param text_team Output of [infer_text_team()].
+#' @return Integer vector, the corrected `yards_gained`.
+#' @keywords internal
+net_multi_carrier_yards <- function(kept, text_team) {
+  # a replay review's "(Original Play: ...)" is the overturned play, not this one
+  pre <- stringr::str_remove(kept$play_text, stringr::regex("\\(Original Play:.*?\\)", ignore_case = TRUE))
+  pre <- stringr::str_remove(pre, "PENALTY .*$")
+  n_seg <- stringr::str_count(pre, stringr::regex("\\bfor (no gain|loss of \\d+ yards?|\\d+ yards?)", ignore_case = TRUE))
+  multi <- n_seg > 1 & kept$play_type %in% c("rush", "pass_complete", "sack", "kneel") &
+    !kept$penalty_no_play & !(kept$turnover %in% TRUE & !(kept$downs_turnover %in% TRUE)) &
+    !is.na(kept$yards_to_goal)
+  out <- kept$yards_gained
+  for (i in which(multi)) {
+    spots <- stringr::str_match_all(pre[i], text_yard_pattern)[[1]]
+    pos <- stringr::str_locate_all(pre[i], text_yard_pattern)[[1]][, 1]
+    keep <- spots[, 2] %in% names(text_team)
+    spots <- spots[keep, , drop = FALSE]
+    pos <- pos[keep]
+    mid <- stringr::str_locate_all(pre[i], "\\b(?:to|at) the 50(?: yard ?line)?\\b")[[1]][, 1]
+    last_tok <- if (length(pos)) max(pos) else -1L
+    last_mid <- if (length(mid)) max(mid) else -1L
+    if (last_tok < 0 && last_mid < 0) next
+    end_ytg <- if (last_mid > last_tok) 50L else {
+      s <- spots[which.max(pos), ]
+      n <- as.integer(s[3])
+      if (identical(unname(text_team[s[2]]), kept$pos_team[i])) 100L - n else n
+    }
+    out[i] <- kept$yards_to_goal[i] - end_ytg
+  }
+  as.integer(out)
+}

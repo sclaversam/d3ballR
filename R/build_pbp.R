@@ -571,6 +571,10 @@ build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
   kept <- parse_penalties(kept, text_team)
   kept$yards_gained <- parse_yards_gained(kept$play_text, kept$play_type, kept$penalty_no_play)
   kept <- parse_outcome_flags(kept, text_team)
+  # net yards on multi-carrier plays need the turnover flags; the flags'
+  # turnover on downs needs the yards, so they're read again
+  kept$yards_gained <- net_multi_carrier_yards(kept, text_team)
+  kept <- parse_outcome_flags(kept, text_team)
   # a labelled safety on a foul in the end zone counts despite "NO PLAY"
   kept$safety[labelled_safety(kept$play_text)] <- TRUE
   kept <- assign_drives(kept)

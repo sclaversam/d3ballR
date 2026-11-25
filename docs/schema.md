@@ -54,7 +54,13 @@ after a defensive touchdown. Each overtime possession is its own drive.
 **`yards_gained` is play yards only.** It is the play's own "for N yards", read
 from the text before any `PENALTY` clause; enforcement yardage never counts.
 A 10-yard catch plus an 11-yard face mask is `yards_gained = 10` and
-`penalty_yards_signed = +11`, never 21.
+`penalty_yards_signed = +11`, never 21. It is the play's **net** yards: from
+the snap spot to where the play ended. On a play with more than one carrier
+(a lateral, or a fumble the offense recovers and advances) it is measured
+from the snap to the play's last spot, not read from the "for N yards"
+numbers, which StatCrew writes inconsistently on those plays. 6529845: "pass
+complete for loss of 1 yard to the MUHL31, Dinardo for 18 yards to the
+MUHL13" from the MUHL30 is `yards_gained = 17`.
 
 **Kick details.** The 5 kick yardage columns (`yds_kickoff`,
 `yds_kickoff_return`, `yds_punted`, `yds_punt_return`, `yds_fg`) are read
@@ -243,7 +249,7 @@ clock and seconds columns are NA in periods 5+.
 | 32 | `Goal_To_Go` | logical | The line to gain is the goal line. | NA wherever `down` is NA. | Literal "and Goal", or `distance == yards_to_goal`. |
 | 33 | `play_type` | character | What happened. Snaps: `rush`, `pass_complete`, `pass_incomplete`, `pass_intercepted`, `sack`, `kneel`, `punt_no_return`, `punt_with_return`, `punt_blocked`, `field_goal_good`, `field_goal_missed`, `field_goal_blocked`, `safety` (a row reading only "TEAM SAFETY", with no play described). Other rows: `kickoff`, `extra_point`, `two_point`, `penalty_no_play` (dead-ball penalty, no snap). | Never NA. | A snap wiped out by a penalty keeps its call (e.g. `pass_complete`); check `penalty_no_play`. |
 | 34 | `scrimmage_play` | logical | The row has a down: a snap or a dead-ball penalty. | Never NA. | FALSE on kickoffs and tries. |
-| 35 | `yards_gained` | integer | Yards gained on the play itself, penalty yardage excluded. | NA on no-play rows, and on interceptions, punts, field goals, kickoffs, tries (not defined yet). | Filled for `rush`, `pass_complete`, `sack`, `kneel`; 0 for `pass_incomplete`. |
+| 35 | `yards_gained` | integer | Yards gained on the play itself, penalty yardage excluded. | NA on no-play rows, and on interceptions, punts, field goals, kickoffs, tries (not defined yet). | Filled for `rush`, `pass_complete`, `sack`, `kneel`; 0 for `pass_incomplete`. Net from the snap to the last spot on laterals and recovered fumbles (see conventions). |
 | 36 | `rush` | logical | Designed run: `rush` or `kneel`. | Never NA. | A sack is not a rush here (NCAA counts it as one). |
 | 37 | `pass_attempt` | logical | Pass attempt: complete, incomplete, or intercepted. | Never NA. | Sacks and two-point passes are FALSE. cfbfastR name; cfbfastR's `pass` (not included) also counts sacks. |
 | 38 | `completion` | logical | Completed pass. | Never NA. | |

@@ -21,9 +21,9 @@ cfbfastR has four `firstD_by_*` columns instead (computed independently, so they
 |---|---|
 | kickoff | 12817 |
 | poss | 17121 |
-| yards | 37583 |
+| yards | 37584 |
 | penalty | 3342 |
-| all (new_series) | 70863 |
+| all (new_series) | 70864 |
 
 Every `new_series` row has exactly one cause, and no other row has one: **yes**.
 
@@ -31,14 +31,13 @@ Every `new_series` row has exactly one cause, and no other row has one: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**70825 series; 70602 have exactly one `new_series` row on their first snap row; 223 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7088.
+**70825 series; 70605 have exactly one `new_series` row on their first snap row; 220 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7088.
 
-Violations whose series has `situation_suspect` rows (the source's down / distance contradicts the play before): **139**. Rows with `situation_suspect`: **503**.
+Violations whose series has `situation_suspect` rows (the source's down / distance contradicts the play before): **138**. Rows with `situation_suspect`: **501**.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | situation_suspect | first_row_text |
 |---|---|---|---|---|---|---|---|---|---|
 | 6461550 | 190 | 194 | Gettysburg | 1 & 10 | 190, 192 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | No Huddle-Shotgun Abdinoor,Rocco pass complete short left to Denison,Luke caught at GC40, for 8 yards to the G |
-| 6461676 | 118 | 123 | Gallaudet | 1 & 10 | 118, 122 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | J. Sargent pass incomplete to Jaylen Johnson. |
 | 6462432 | 61 | 65 | Curry | 1 & 10 | 61, 63 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | Anthony Santino rush for 5 yards to the CURRY25 (Victo Martinez). |
 | 6461294 | 31 | 34 | Hampden-Sydney | 1 & 25 | none | no new_series row | unexplained | FALSE | Shotgun Hicks,Terry rush right for 6 yards gain to the DVU47 (Clark,Jeremiah) PENALTY DVU Offside (Mahana,Jame |
 | 6461525 | 63 | 63 | Hartwick | 1 & 6 | none | no new_series row | unexplained | FALSE | No Huddle-Shotgun Williams,Akil rush middle for 14 yards gain to the MMA00 TOUCHDOWN, clock 08:39, 1ST DOWN. |
@@ -115,7 +114,6 @@ Violations whose series has `situation_suspect` rows (the source's down / distan
 | 6462016 | 3 | 7 | CWRU | 1 & 10 | 3, 5, 6 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | Andy Kavcic rush for 2 yards to the CWRU43 (Tyler Harpst3a Nile Thomas). |
 | 6462016 | 29 | 33 | CWRU | 1 & 10 | 29, 32 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | Sam DeTillio sacked for loss of 9 yards to the SVC49 (Nile Thomas3a Nathan Parker). |
 | 6462082 | 108 | 108 | Westfield St. | 1 & 10 | none | no new_series row | unexplained | FALSE | Manny Mengata rush for 4 yards to the WESTFIEL45, fumble forced by JeLani White, fumble by Manny Mengata recov |
-| 6462082 | 131 | 132 | Anna Maria | 1 & 10 | none | no new_series row | previous play has more than one yardage segment (a lateral): yards_gained reads only the first, so its first down is missed | FALSE | Nikolay Boyce pass complete to Tyler Garretson for 6 yards to the WESTFIEL13 (Tom Cascio). |
 | 6462261 | 20 | 23 | Coe | 1 & 10 | 20, 21 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | No Huddle-Shotgun Kelly,Brady pass complete deep right to Senters,Jeron caught at BVU10, for 44 yards to the B |
 | 6461324 | 99 | 99 | Lebanon Valley | 4 & 20 | none | no new_series row | unexplained | FALSE | No Huddle-Shotgun Hunter,Jacob pass intercepted by Sisko,Ryan at LVC00, Touchback. |
 | 6461324 | 100 | 100 | Lebanon Valley | 1 & 10 | none | no new_series row | unexplained | FALSE | No Huddle-Shotgun Grimm,Avrey rush right for 13 yards gain to the LVC33 (Malarkey,Nathan), 1ST DOWN. |
@@ -212,7 +210,6 @@ Violations whose series has `situation_suspect` rows (the source's down / distan
 | 6462321 | 143 | 146 | Grove City | 1 & 10 | 143, 145 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | Zier Williams rush for 7 yards to the HIR33 (Navio Steadman;De Mercilliott). |
 | 6462357 | 67 | 67 | Illinois Col. | 1 & 10 | none | no new_series row | unexplained | FALSE | No Huddle Banovz,Zack pass incomplete short right to Miller,Lleyton thrown to BEL10 broken up by Sumoro,Ayouba |
 | 6532895 | 19 | 23 | Hendrix | 1 & 10 | 19, 21 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | No Huddle-Shotgun Wall,Kobey rush left for 6 yards gain to the Lyon36 fumbled by Wall,Kobey at Lyon40 forced b |
-| 6529845 | 112 | 112 | Union (NY) | 1 & 10 | none | no new_series row | previous play has more than one yardage segment (a lateral): yards_gained reads only the first, so its first down is missed | FALSE | Dj Wright rush for 1 yard to the MUHL12 (George Europe), PENALTY MUHL face mask (George Europe) 6 yards to the |
 | 6529853 | 129 | 130 | Hanover | 1 & 10 | 130 | new_series not on the first snap row | unexplained | TRUE | No Huddle-Shotgun E.Roudebush pass complete short right to C.Shelby caught at HAN30, for 15 yards to the HAN34 |
 | 6529861 | 57 | 57 | Wheaton (IL) | 1 & 10 | none | no new_series row | unexplained | FALSE | No Huddle-Shotgun M.Forcucci pass complete short right to C.Titherington caught at WHEIL39, for 20 yards to th |
 | 6529867 | 59 | 59 | Chapman | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TRUE | (00:09) No Huddle-Shotgun T.Pacheco pass incomplete deep middle to K.Zimmerman thrown to WHTW00 broken up by H |

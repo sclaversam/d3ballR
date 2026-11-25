@@ -260,3 +260,25 @@ test_that("a penalty's team code can be glued to the infraction name", {
   expect_equal(x$token, "CC")
   expect_equal(x$yards, 10L)
 })
+
+test_that("yards_gained on laterals and recovered fumbles is the net from the snap to the last spot", {
+  tt <- c(WESTFIEL = "Westfield St.", ANNAMAR = "Anna Maria", MUHL = "Muhlenberg", UNION = "Union (NY)", WIDU = "Widener", MOR = "Moravian")
+  k <- data.frame(
+    play_text = c(
+      # 6462082 play 130: fumble recovered by a teammate and advanced (25 -> 19)
+      "Nikolay Boyce rush for loss of 3 yards to the WESTFIEL28, fumble by Nikolay Boyce recovered by ANNAMAR Jeremiah Cadet at WESTFIEL28, Jeremiah Cadet for 9 yards to the WESTFIEL19 (Tafari Proctor).",
+      # 6529845 play 111: catch, then a lateral (30 -> 13)
+      "Patch Flanagan pass complete to Joe Curran for loss of 1 yard to the MUHL31, Michael Dinardo for 18 yards to the MUHL13 (George Europe).",
+      # one carrier: unchanged
+      "Dj Wright rush for 1 yard to the MUHL12 (George Europe), PENALTY MUHL face mask (George Europe) 6 yards to the MUHL06.",
+      # 6461772 play 76: a review's overturned original play is ignored
+      "Romano,Caleb pass complete short left to Tyson,Seth caught at WIDU16, for 7 yards to the WIDU08, out of bounds at WIDU08. WIDU is challenging the ruling on the field - \"Incomplete pass\". PLAY OVERTURNED. (Original Play: C.Romano pass complete short right to K.Baker caught at WIDU00, for 0 yards to the WIDU15, End Of Play)."),
+    play_type = c("rush", "pass_complete", "rush", "pass_complete"),
+    pos_team = c("Anna Maria", "Union (NY)", "Union (NY)", "Moravian"),
+    yards_to_goal = c(25L, 30L, 13L, 15L), yards_gained = c(-3L, -1L, 1L, 7L),
+    penalty_no_play = FALSE, turnover = c(TRUE, FALSE, FALSE, FALSE), downs_turnover = c(TRUE, FALSE, FALSE, FALSE))
+  expect_equal(net_multi_carrier_yards(k, tt), c(6L, 17L, 1L, 7L))
+  # a lost fumble keeps the yards to the fumble
+  k$downs_turnover[1] <- FALSE
+  expect_equal(net_multi_carrier_yards(k, tt)[1], -3L)
+})
