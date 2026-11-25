@@ -18,7 +18,7 @@ Logical, per row (FALSE on rows without a down).
 TRUE on snap rows where ncaa.com's down / distance can't be right given
 the plays before it, from the first such row to the end of its series.
 The printed values are kept as they are (\code{down}, \code{distance}, \code{situation});
-this column says not to trust them. Two cases:
+this column says not to trust them. Three cases:
 \enumerate{
 \item \strong{A new series that doesn't start at 1st down.} The previous play
 reached the line to gain ("1ST DOWN" in its text, or its yardage), so
@@ -35,6 +35,14 @@ the rest of the series is then short.
 }
 }
 \details{
+\enumerate{
+\item \strong{A distance of zero or less} ("2nd and -5", "4th and -3"): the line
+to gain was reached but the down didn't reset. In playoff files the
+distance is blank and rebuilt from the line to gain, which only moves
+when the source's down goes back to 1st, so a skipped 1st down shows up
+this way.
+}
+
 Dead-ball personal fouls before the ball is ready for play
 (\code{\link[=pre_ready_foul_row]{pre_ready_foul_row()}}) are not case 2: by Rule 5-2-7 they really are
 followed by 1st and 10.

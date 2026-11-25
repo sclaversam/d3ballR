@@ -917,7 +917,11 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
     ltg <- NA_integer_
     prev <- NA_integer_
     for (i in which(is_snap | need)) {
-      no_play_prev <- !is.na(prev) && stringr::str_detect(txt[prev], stringr::regex("NO PLAY", ignore_case = TRUE))
+      # a replay of the same 1st down after a no-play penalty keeps the line
+      # to gain, unless the penalty awarded a first down ("Pass Interference
+      # ... 1ST DOWN. NO PLAY", 6529887): that is a new series
+      no_play_prev <- !is.na(prev) && stringr::str_detect(txt[prev], stringr::regex("NO PLAY", ignore_case = TRUE)) &&
+        !stringr::str_detect(txt[prev], stringr::regex("1ST DOWN", ignore_case = TRUE))
       new_series <- is.na(prev) || lines$team_id[i] != lines$team_id[prev] ||
         (dt$down[i] == 1L && !(dt$down[prev] %in% 1L && no_play_prev))
       if (new_series && !is.na(ytg[i])) ltg <- max(ytg[i] - 10L, 0L)

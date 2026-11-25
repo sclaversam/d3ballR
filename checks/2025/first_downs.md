@@ -21,9 +21,9 @@ cfbfastR has four `firstD_by_*` columns instead (computed independently, so they
 |---|---|
 | kickoff | 12817 |
 | poss | 17121 |
-| yards | 37584 |
+| yards | 37572 |
 | penalty | 3342 |
-| all (new_series) | 70864 |
+| all (new_series) | 70852 |
 
 Every `new_series` row has exactly one cause, and no other row has one: **yes**.
 
@@ -31,9 +31,9 @@ Every `new_series` row has exactly one cause, and no other row has one: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**70825 series; 70605 have exactly one `new_series` row on their first snap row; 220 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7088.
+**70840 series; 70633 have exactly one `new_series` row on their first snap row; 207 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7088.
 
-Violations whose series has `situation_suspect` rows (the source's down / distance contradicts the play before): **138**. Rows with `situation_suspect`: **501**.
+Violations whose series has `situation_suspect` rows (the source's down / distance contradicts the play before): **128**. Rows with `situation_suspect`: **491**.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | situation_suspect | first_row_text |
 |---|---|---|---|---|---|---|---|---|---|
@@ -217,7 +217,6 @@ Violations whose series has `situation_suspect` rows (the source's down / distan
 | 6529867 | 81 | 85 | Chapman | 1 & 10 | 84, 85 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | (02:02) No Huddle-Shotgun F.Huss rush middle for 2 yards gain to the CHAP43 (L.Watkins) |
 | 6529869 | 33 | 36 | Susquehanna | 1 & 10 | none | no new_series row | unexplained | FALSE | No Huddle-Shotgun M.Surtz rush middle for 3 yards gain to the SUSQU32 (A.Smith) |
 | 6529869 | 48 | 51 | Wash. & Jeff. | 1 & 10 | none | no new_series row | unexplained | FALSE | No Huddle-Shotgun K.Stahl pass complete short left to K.Derosa caught at W&J30, for 6 yards to the W&J43 (X.Ma |
-| 6529878 | 75 | 77 | Hardin-Simmons | 1 & 10 | 75, 76 | more than one new_series row | unexplained | FALSE | No Huddle-Shotgun K.Brown pass incomplete short right thrown to TU45 QB hurried by J.Nwobodo PENALTY TU Roughi |
 | 6529879 | 34 | 35 | LaGrange | 1 & 10 | none | no new_series row | unexplained | FALSE | Shotgun T.Bozeman rush right for 1 yard loss to the LCF49 (C.Lewis) |
 | 6529879 | 67 | 71 | Berry | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TRUE | No Huddle-Shotgun A.Hunter pass complete short left to K.Smith caught at BCF42, for 9 yards to the BCF42, End  |
 | 6529879 | 116 | 118 | LaGrange | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TRUE | Shotgun T.Bozeman rush left for 6 yards gain to the LCF28 (J.Murray) |
@@ -227,32 +226,20 @@ Violations whose series has `situation_suspect` rows (the source's down / distan
 | 6529883 | 99 | 101 | Coe | 1 & 10 | none | no new_series row | unexplained | FALSE | No Huddle B.Kelly rush for 2 yards loss to the BET46, End Of Play |
 | 6529883 | 177 | 178 | Coe | 1 & 10 | none | no new_series row | unexplained | TRUE | No Huddle B.Kelly sacked for loss of 5 yards to the BET47 (A.Abed) |
 | 6529883 | 180 | 184 | Coe | 1 & 10 | 180, 184 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | No Huddle B.Kelly pass complete short to T.Cunningham caught at BET23, for 2 yards to the BET23, End Of Play |
-| 6529884 | 30 | 35 | Wartburg | 1 & 10 | 30, 31, 32 | more than one new_series row | unexplained | TRUE | No Huddle-Shotgun D.Swanstrom rush left for 0 yards to the WAR36 (O.Downing; C.Coburn) PENALTY WAR Holding (B. |
-| 6529884 | 41 | 42 | Wheaton (IL) | 1 & 10 | none | no new_series row | unexplained | FALSE | Shotgun C.Duck rush right for 17 yards loss to the WHE00 fumbled by C.Duck at WHE13 forced by O.Hatcher recove |
+| 6529884 | 41 | 42 | Wheaton (IL) | 1 & 10 | none | no new_series row | unexplained | TRUE | Shotgun C.Duck rush right for 17 yards loss to the WHE00 fumbled by C.Duck at WHE13 forced by O.Hatcher recove |
 | 6529885 | 35 | 38 | DePauw | 1 & 10 | 35, 37 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | No Huddle-Shotgun C.Johnson rush middle for 4 yards gain to the DEPAUW47 (J.Fowler) |
-| 6529885 | 117 | 120 | DePauw | 1 & 10 | 117, 118, 119, 120 | more than one new_series row | unexplained | TRUE | No Huddle-Shotgun S.Ballentine pass incomplete deep right to R.Ballentine thrown to UWW05 PENALTY UWW Pass Int |
-| 6529885 | 150 | 152 | Wis.-Whitewater | 1 & 10 | 150, 151, 152 | more than one new_series row | unexplained | TRUE | No Huddle-Shotgun J.Klinkner pass incomplete deep middle to J.Brooks thrown to DEPAUW35 PENALTY DEPAUW Pass In |
-| 6529887 | 18 | 22 | UW-River Falls | 1 & 10 | 18, 19, 20, 22 | more than one new_series row | unexplained | TRUE | No Huddle-Shotgun K.Blaha pass incomplete short left to B.Rohrer thrown to CHAP45 PENALTY CHAP Pass Interferen |
-| 6529889 | 38 | 40 | Franklin & Marshall | 1 & 10 | 38, 39, 40 | more than one new_series row | unexplained | TRUE | No Huddle-Shotgun T.Tremba pass incomplete deep right to G.Lewis thrown to EAS20 broken up by J.James PENALTY  |
 | 6529890 | 93 | 95 | Endicott | 1 & 10 | 95 | new_series not on the first snap row | unexplained | TRUE | No Huddle-Shotgun B.Metayer rush middle for 1 yard gain to the EC 24 (C.Sollenberger; J.Celentano) |
 | 6529892 | 71 | 71 | Mount Union | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TRUE | Kneel down by M.Maloney at UMU24 for loss of 1 yard |
 | 6529893 | 33 | 37 | Trinity (TX) | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TRUE | Shotgun J.Milo rush left for 0 yards to the TUF15 (W.Johnson) |
 | 6529894 | 155 | 159 | North Central (IL) | 1 & 10 | 158 | new_series not on the first snap row | unexplained | TRUE | No Huddle-Shotgun D.McNeal rush right for 4 yards gain to the NCC35 (N.Jorndt) |
-| 6529895 | 57 | 59 | Bethel (MN) | 1 & 10 | 57, 58, 59 | more than one new_series row | unexplained | TRUE | No Huddle A.Rundell pass intercepted by R.Francis at MET25 R.Francis return 20 yards to the MET05, End Of Play |
 | 6529897 | 15 | 15 | UW-River Falls | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TRUE | No Huddle-Shotgun K.Blaha pass complete short right to B.Wesolowski caught at SJU44, for 16 yards to the SJU28 |
-| 6529897 | 48 | 51 | UW-River Falls | 1 & 10 | 48, 49, 50, 51 | more than one new_series row | unexplained | TRUE | No Huddle-Shotgun K.Blaha pass incomplete short left to B.Rohrer thrown to SJU18 PENALTY SJU Pass Interference |
-| 6529897 | 83 | 86 | Saint John's (MN) | 1 & 10 | 83, 84, 85 | more than one new_series row | unexplained | TRUE | No Huddle-Shotgun T.Feeney sacked for loss of 10 yards to the SJU15 (J.Olson, C.McKenzie) PENALTY UWRF Persona |
-| 6529897 | 115 | 119 | Saint John's (MN) | 1 & 10 | 115, 116, 118 | more than one new_series row | unexplained | TRUE | No Huddle-Shotgun T.Feeney pass incomplete short middle to J.Gendreau thrown to SJU08 PENALTY UWRF Pass Interf |
 | 6529897 | 187 | 187 | UW-River Falls | 1 & 38 | none | no new_series row | unexplained | FALSE | No Huddle-Shotgun K.Blaha pass complete short right to J.Reed caught at SJU38, for 38 yards to the SJU00 TOUCH |
 | 6529898 | 25 | 28 | Susquehanna | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TRUE | Shotgun M.Surtz rush left for 4 yards gain to the EAST21 (D.Dunbar) |
-| 6529898 | 117 | 119 | Eastern | 1 & 10 | 117, 118, 119 | more than one new_series row | unexplained | TRUE | Shotgun B.Nabb pass incomplete short right to E.Swinton thrown to EAST30 PENALTY SUS Roughing The Passer (N.We |
-| 6529899 | 63 | 64 | Salisbury | 1 & 10 | 63, 64 | more than one new_series row | unexplained | FALSE | S.McGowan pass incomplete deep left to M.Brubaker thrown to SAL50 PENALTY JHU Pass Interference (K.Olah) 15 ya |
 | 6529901 | 21 | 23 | North Central (IL) | 1 & 10 | none | no new_series row | unexplained | FALSE | No Huddle-Shotgun J.Williams rush right for 9 yards gain to the Bethel08 (C.Taylor) |
 | 6529901 | 141 | 143 | North Central (IL) | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TRUE | No Huddle-Shotgun G.Wilson pass incomplete deep right to J.Rummell thrown to Bethel00 |
 | 6529901 | 180 | 183 | North Central (IL) | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TRUE | No Huddle-Shotgun G.Blaise rush left for 3 yards loss to the NCC48 (P.Conant) |
 | 6529902 | 43 | 46 | Wheaton (IL) | 1 & 10 | 43, 46 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | No Huddle-Shotgun M.Forcucci pass complete short right to C.Titherington caught at UWRF29, for 9 yards to the  |
 | 6529902 | 47 | 50 | Wheaton (IL) | 1 & 10 | none | no new_series row | unexplained | TRUE | No Huddle-Shotgun M.Forcucci pass complete short left to C.Duck caught at UWRF17, for 4 yards to the UWRF13 (T |
-| 6529902 | 100 | 102 | Wheaton (IL) | 1 & 10 | 100, 101, 102 | more than one new_series row | unexplained | TRUE | No Huddle-Shotgun M.Forcucci pass incomplete short middle to W.Jewett thrown to UWRF46 PENALTY UWRF Pass Inter |
 | 6529903 | 43 | 47 | Johns Hopkins | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TRUE | No Huddle-Shotgun B.Harvey pass complete short right to C.Crotty caught at JHU46, for 9 yards to the JHU48, ou |
 | 6529904 | 46 | 49 | John Carroll | 1 & 10 | 47, 48, 49 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play) | TRUE | No Huddle N.Semptimphelter pass complete short right to C.Klimak caught at JCU20, for 11 yards to the JCU36 (M |
 | 6529904 | 51 | 54 | North Central (IL) | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | TRUE | No Huddle-Shotgun D.McNeal rush middle for 0 yards to the NCC18 (M.Rus; A.LaCarte) |

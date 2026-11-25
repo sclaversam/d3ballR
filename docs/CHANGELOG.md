@@ -5,6 +5,20 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Playoff files: the line to gain after a penalty first down
+
+In playoff files ncaa.com leaves the distance blank and `ncaa_play_table()`
+rebuilds it from the line to gain. A 1st down after a no-play penalty on 1st
+down was taken as a replay of the same down, keeping the old line, even when
+the penalty awarded a first down ("Pass Interference ... 1ST DOWN. NO
+PLAY"), so the series read "1st and -5", "2nd and -6" and every later play
+looked like a new first down (6529887 plays 18-20, 6529897 plays 48-51). A
+no-play penalty with "1ST DOWN" now starts a new series there. All 13
+"more than one new_series row" series exceptions were this: 220 -> 207.
+
+`situation_suspect` gets a third case: a distance of zero or less (19 rows
+in 2025; the line to gain was reached but the source's down didn't reset).
+
 ## `yards_gained` on laterals and recovered fumbles: net from the snap
 
 `yards_gained` is the play's net yards before penalties. On plays with more

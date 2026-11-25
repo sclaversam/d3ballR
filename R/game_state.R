@@ -569,7 +569,7 @@ derive_series_flags <- function(kept, nxt) {
 #' TRUE on snap rows where ncaa.com's down / distance can't be right given
 #' the plays before it, from the first such row to the end of its series.
 #' The printed values are kept as they are (`down`, `distance`, `situation`);
-#' this column says not to trust them. Two cases:
+#' this column says not to trust them. Three cases:
 #' 1. **A new series that doesn't start at 1st down.** The previous play
 #'    reached the line to gain ("1ST DOWN" in its text, or its yardage), so
 #'    `new_series` is TRUE, but the source's situation reads 2nd (or 3rd, 4th)
@@ -582,6 +582,12 @@ derive_series_flags <- function(kept, nxt) {
 #'    out the snap), the down is replayed with the distance moved back
 #'    (1st and 15), but the source prints 1st and 10 again; every distance in
 #'    the rest of the series is then short.
+#'
+#' 3. **A distance of zero or less** ("2nd and -5", "4th and -3"): the line
+#'    to gain was reached but the down didn't reset. In playoff files the
+#'    distance is blank and rebuilt from the line to gain, which only moves
+#'    when the source's down goes back to 1st, so a skipped 1st down shows up
+#'    this way.
 #'
 #' Dead-ball personal fouls before the ball is ready for play
 #' ([pre_ready_foul_row()]) are not case 2: by Rule 5-2-7 they really are
@@ -616,6 +622,9 @@ flag_situation_suspect <- function(kept) {
       fresh <- min(10L, kept$yards_to_goal[j])
       if (isTRUE(kept$distance[j] == fresh) && !isTRUE(kept$distance[j] == moved)) suspect <- TRUE
     }
+    # case 3: a distance of zero or less (not goal to go): the line to gain
+    # was reached but the down didn't reset
+    if (isTRUE(kept$distance[j] <= 0L)) suspect <- TRUE
     out[j] <- suspect
     prev <- j
   }

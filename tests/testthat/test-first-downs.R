@@ -267,3 +267,11 @@ test_that("situation_suspect: a dead-ball personal foul followed by 1st and 10 i
   d$new_series <- c(FALSE, TRUE, FALSE)
   expect_equal(flag_situation_suspect(d), c(FALSE, FALSE, FALSE))
 })
+
+test_that("situation_suspect: a distance of zero or less", {
+  # 6529853: 15-yard catch on 1st and 10, the source keeps counting: 2nd and -5
+  d <- suspect_rows(play_type = c("pass_complete", "rush", "rush"), pos_team = "A",
+                    down = c(1L, 2L, 1L), distance = c(10L, -5L, 10L), yards_to_goal = c(81L, 66L, 56L))
+  d$new_series <- c(TRUE, FALSE, TRUE)
+  expect_equal(flag_situation_suspect(d), c(FALSE, TRUE, FALSE))
+})

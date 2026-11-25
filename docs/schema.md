@@ -143,7 +143,7 @@ series** (the 1st-and-10 or 1st-and-goal row), never on the play that caused it.
 printed, never corrected. On a few hundred rows a season those values can't
 be right given the plays before them, and `situation_suspect` is TRUE there.
 It marks the first such snap and every snap after it to the end of the
-series, since one wrong down shifts the rest. Two cases:
+series, since one wrong down shifts the rest. Three cases:
 
 1. **A new series that doesn't start at 1st down.** The previous play
    reached the line to gain (its text says "1ST DOWN", or its yardage
@@ -178,6 +178,12 @@ series, since one wrong down shifts the rest. Two cases:
    **not** this case: that 1st and 10 is correct (Rule 5-2-7, above).
    Fouls by the defense aren't checked, since some carry an automatic
    first down.
+
+3. **A distance of zero or less** ("2nd and -5", "4th and -3"): the line to
+   gain was reached, but the down didn't go back to 1st. In playoff files
+   ncaa.com leaves the distance blank and d3ballR rebuilds it from the line
+   to gain, so a skipped 1st down there shows up as a negative distance
+   (6529853: a 15-yard catch on 1st and 10, then "2nd and -5").
 
 Use it to leave these rows out of anything that groups plays by down or
 distance (3rd-down rates, a model with down as an input), or to check
