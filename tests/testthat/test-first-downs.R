@@ -14,14 +14,14 @@ series_rows <- function(...) {
   d
 }
 # Each sequence is the middle of a half: a lead-in (a kickoff, then a
-# 2nd-down snap by the first row's team, in the first row's half and period)
+# 1st-down snap by the first row's team, in the first row's half and period)
 # goes in front, so the first row isn't the first snap of a half (which, with
 # no kickoff before it, is a series by kickoff), and is dropped from the result.
 flags_of <- function(d, lead_in = TRUE) {
   if (lead_in) {
     lead <- d[c(1, 1), ]
     lead$play_type <- c("kickoff", "rush")
-    lead$down <- c(NA, 2L)
+    lead$down <- c(NA, 1L)
     lead$scrimmage_play <- c(FALSE, TRUE)
     for (nm in c("penalty_no_play", "scoring_play", "try_phase", "fumble_vec", "firstD_by_yards", "firstD_by_penalty",
                  "turnover", "downs_turnover")) lead[[nm]] <- FALSE
@@ -32,6 +32,7 @@ flags_of <- function(d, lead_in = TRUE) {
   vapply(seq_len(nrow(out)), function(i) {
     f <- c("kickoff", "poss", "yards", "penalty")[c(out$firstD_by_kickoff[i], out$firstD_by_poss[i],
                                                      out$firstD_by_yards[i], out$firstD_by_penalty[i])]
+    if (out$series_cause[i] %in% "situation") f <- "situation"
     stopifnot(out$new_series[i] == (length(f) == 1), length(f) <= 1)
     if (length(f)) f else "-"
   }, character(1))
@@ -303,4 +304,11 @@ test_that("a missing kickoff after a try with a penalty on it (6462377)", {
                    scoring_play = c(TRUE, FALSE, FALSE, FALSE), penalty_no_play = c(FALSE, FALSE, TRUE, FALSE))
   d$try_phase <- c(FALSE, TRUE, TRUE, FALSE)
   expect_equal(flags_of(d), c("-", "-", "-", "kickoff"))
+})
+
+test_that("a fresh 1st down in the source after a later down, with no causing line, starts a series", {
+  # 6461694: false start on 3rd and 4, then "1st and 10"
+  d <- series_rows(play_type = c("rush", "penalty_no_play", "rush", "rush"), pos_team = "A",
+                   down = c(2L, 3L, 1L, 2L), penalty_no_play = c(FALSE, TRUE, FALSE, FALSE))
+  expect_equal(flags_of(d), c("-", "-", "situation", "-"))
 })

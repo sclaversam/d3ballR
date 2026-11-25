@@ -15,7 +15,9 @@ derive_series_flags(kept, nxt)
 }
 \value{
 \code{kept} with the five flags (replacing the raw yards / penalty
-flags) and \code{series_cause_row} / \code{series_causes} for the report.
+flags), \code{series_cause} (kickoff / poss / yards / penalty / situation, NA
+off series starts) and \code{series_cause_row} / \code{series_causes} for the
+report.
 }
 \description{
 cfbfastR column names. Each flag sits on the FIRST SNAP of a new series
@@ -60,6 +62,9 @@ play that handed over the ball is missing or is a no-play row. An
 interception or lost fumble the offense gets back is \code{firstD_by_poss} on
 the next snap, and a blocked punt / field goal the kicking team recovers
 past the line to gain is \code{firstD_by_yards}.
+A 1st down in the source right after a later down by the same team, in
+regulation, that nothing else flagged starts a series too (cause
+"situation": the causing line is missing; it sets \code{new_series} only).
 Finally, the first snap of each overtime possession is \code{firstD_by_poss}:
 a change of team, or the same team again after its possession ended (a
 try or score, a field goal attempt, a failed 4th down), since ncaa.com

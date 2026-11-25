@@ -196,7 +196,7 @@ write_first_down_report <- function(built, check_dir) {
   out_flagged <- do.call(rbind, outside)
   n_series <- length(series_rows)
 
-  causes <- c("kickoff", "poss", "yards", "penalty")
+  causes <- c("kickoff", "poss", "yards", "penalty", "situation")
   counts <- data.frame(cause = c(causes, "all (new_series)"),
                        rows = c(vapply(causes, function(k) sum(a$series_cause %in% k), integer(1)),
                                 sum(a$new_series)))
@@ -219,6 +219,7 @@ write_first_down_report <- function(built, check_dir) {
     "- **poss:** first snap row after a change of possession (punt, interception, lost fumble, downs, missed / blocked FG, or a punt / FG the kicking team regains after a muff or return fumble), and the first snap row of each overtime possession.",
     "- **yards:** same offense; the previous play reached the line to gain.",
     "- **penalty:** same offense; the previous play didn't, and an accepted penalty awarded the first down (a declined penalty never counts).",
+    "- **situation:** same offense; ncaa.com shows a 1st down right after a 2nd / 3rd / 4th down and no line causes it (the line is missing). Regulation only.",
     "",
     "cfbfastR has four `firstD_by_*` columns instead (computed independently, so they can overlap); d3ballR keeps only `new_series` (decided 2026-11-25).", "",
     "## Counts", "",

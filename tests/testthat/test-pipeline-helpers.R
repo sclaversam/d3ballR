@@ -282,3 +282,20 @@ test_that("yards_gained on laterals and recovered fumbles is the net from the sn
   k$downs_turnover[1] <- FALSE
   expect_equal(net_multi_carrier_yards(k, tt)[1], -3L)
 })
+
+test_that("split_infractions: glued codes, accepted + declined, yard lines with a space, 12 men", {
+  tk <- c("BEL", "GRE", "MC", "SEW", "OBER", "HIRAM", "FITCHBUR", "LU", "RU", "CMU", "UCHI")
+  x <- split_infractions(c(
+    "PENALTY BEL Roughing The Passer (Chaffier,Tre) BEL Offside declined 15 yards from GRE36 to BEL49, 1ST DOWN. NO PLAY.",
+    "PENALTY MCUNR: Unnecessary Roughness (Boutan,Zabian) 15 yards from SEW31 to SEW46, 1ST DOWN. NO PLAY.",
+    "PENALTY LU Face Mask 20 yards from RU 48 to LU32, 1ST DOWN.",
+    "PENALTY FITCHBUR 12 men on the field 5 yards to the FITCHBUR13, NO PLAY.",
+    "PENALTY OBER UNS: Unsportsmanlike Conduct (Eaton,Jayden) HIRAM Offside (Shellman,Tony) 20 yards from OBER49 to OBER39. NO PLAY",
+    "PENALTY CMU Holding declined CMU Running Into The Kicker (Smith) 5 yards from UCHI47 to CMU48"), tk)
+  expect_equal(x[[1]]$status, c("accepted", "declined")); expect_equal(x[[1]]$yards[1], 15L)
+  expect_equal(x[[2]]$token, "MC"); expect_equal(x[[2]]$yards, 15L)
+  expect_equal(x[[3]]$token, "LU")
+  expect_equal(x[[4]]$token, "FITCHBUR"); expect_equal(x[[4]]$yards, 5L)
+  expect_equal(x[[5]]$token, "OBER"); expect_equal(x[[5]]$yards, 20L)
+  expect_equal(x[[6]]$status, c("declined", "accepted")); expect_equal(x[[6]]$yards[2], 5L)
+})

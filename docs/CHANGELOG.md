@@ -5,6 +5,38 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## New series on a source 1st down with no causing line; penalty splitting
+
+Decided by Sam (2026-11-25): when ncaa.com shows a 1st down that no line
+explains, it is a new series. In regulation, a 1st down by the same team
+right after a 2nd / 3rd / 4th down that nothing else flagged now gets
+`new_series` (internal cause "situation"; 39 rows in 2025). Examples:
+6461794 (offsetting fouls on 2nd and 13, then "1st and 10"), 6461694 (a
+false start on 3rd and 4, then "1st and 10"), 6461995 ("TURNOVER ON DOWNS",
+then the same team on 1st and 10).
+
+Reviewing those rows found penalty first downs the parser missed, fixed in
+`split_infractions()` (20 rows' penalty columns changed):
+
+- **Team code glued to an all-caps foul code**: "PENALTY MCUNR: Unnecessary
+  Roughness" had no team (`penalized_team` NA). 9 rows.
+- **An accepted foul followed by a declined one**: "PENALTY BEL Roughing
+  The Passer BEL Offside declined 15 yards ..." read as one declined
+  infraction; the 15 yards now go to the roughing foul. 7 rows.
+- **A yard line written with a space** ("from RU 48 to LU32") read as a
+  second team's infraction ("Lakeland; Rockford"). 4 rows.
+
+The clause is now cut at each team code, and an infraction with no ending
+of its own takes the next one's, as before ("A Holding B UNS 25 yards":
+A, 25 yards).
+
+17 of 9,729 no-play penalties move the ball the opposite way from the team
+named (6461555: "PENALTY JUNIATA false start 5 yards to the JUNIATA09",
+moving Juniata forward), spread over 16 games: a source typo or a
+`pos_team` error, left as is.
+
+Series check: 144 exceptions in 70,840 series (was 188).
+
 ## New series: change of offense, double turnovers, blocked kicks regained
 
 Decided by Sam (2026-11-25), from the grouping of the unexplained series

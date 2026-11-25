@@ -95,7 +95,7 @@ Run on every build; reports in `checks/{season}/`. 2025 results:
 |---|---|---|
 | `build_report.md`, `score_reconciliation.csv` | Every game's points by team, summed from `score_pts`, equal the final (ncaa.com scoreboard). Also lists the games built from stats.ncaa.org, pending and failed games, and unclassified rows. | 1,262 of 1,263 (the other is a known source gap) |
 | `conference_check.csv` | Each game's conference columns and `conference_game` (same conference, regular season). | |
-| `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: counts by cause and edge cases. | 188 exceptions in 70,840 series (0.3%); 118 are labelled source quirks, all `situation_suspect` (see Known issues). |
+| `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: counts by cause and edge cases. | 144 exceptions in 70,840 series (0.2%); 119 are labelled source quirks, all `situation_suspect` (see Known issues). |
 | `kickoff_possession.csv` | Each kickoff's kicking and receiving team, the rule that decided it, and any disagreement. | |
 | `clock_bounds.csv` | No missing or inverted clock range in regulation, and `clock_start` inside its range. | Empty. |
 | `end_state.csv` | Every change of possession with the next snap's own down / distance / yards to goal, labeled by team. | |
@@ -106,29 +106,28 @@ run over every built game: score reconciliation, the clock invariants, and
 
 ## Known issues
 
-- **First-down series exceptions:** 188 of 70,840 series (0.3%) in
+- **First-down series exceptions:** 144 of 70,840 series (0.2%) in
   `first_downs.md` don't have exactly one `new_series` flag on their first
-  snap (477 before the 2026-11-17 fixes, 317 and then 262 before the
-  2026-11-25 ones; see the CHANGELOG). By cause:
+  snap (477 before the 2026-11-17 fixes, 262 before the 2026-11-25 ones;
+  see the CHANGELOG). By cause:
   - 105: the play earned a first down (its "1ST DOWN" text or its yardage)
     but the next situation reads 2nd or 3rd down: ncaa.com's down counter
     skipped the 1st down, or it dropped a 1st-down play that gained nothing.
     The flag follows the play; the rows are `situation_suspect`.
-  - 13: after a false start, delay of game or illegal substitution on 1st
+  - 14: after a false start, delay of game or illegal substitution on 1st
     down, ncaa.com prints 1st and 10 again instead of 1st and 15. The rows
     are `situation_suspect`.
-  - 70 unexplained, grouped 2026-11-25 (all source except the last):
-    25 spot jumps with no play or penalty to explain them (a line is
-    missing); 18 a fresh 1st and 10 with no cause in the text; 9 "TURNOVER
-    ON DOWNS" but the same team snaps next; 8 an offensive no-play penalty
-    on 2nd-4th down followed by 1st and 10; 4 a fumble on a single run whose
-    "recovered at" spot contradicts its "for N yards"; 1 an interception
-    wiped out by a penalty with no "NO PLAY"; 4 flag on the wrong row in
-    playoff games (not yet traced); and 1 a receiving team's first row
-    credited to the scoring team after a missing kickoff. Traced so far: 6462357 play 67 is a snap by
-    Illinois College right after its own turnover on downs (a source
-    error). The "IC36 + 26 yards placed at IC47" case once listed here is
-    correct: the play ends with a 15-yard unsportsmanlike foul on IC.
+  - 13: spot jumps with no play or penalty to explain them (a line is
+    missing). Source.
+  - 8: a fresh 1st and 10 after a 1st down with no cause in the text.
+    Source.
+  - 4: flag on the wrong row in playoff games, after a kickoff-return
+    penalty row ("PENALTY HAN Holding 10 yards from HAN29 to HAN19"). Not
+    yet fixed.
+- **Receiving team's first row credited to the scorer:** after a score with
+  no kickoff line, the receiving team's first row is sometimes the scoring
+  team's (6461529 play 19, "PENALTY MAINEMA false start" under Curry), so
+  its series starts a row late. About 5 rows. Not yet fixed.
 - **Added tries:** 2,232 tries in 924 of the 2025 games have no line on
   ncaa.com and are added, labelled in `play_text` ("[added by d3ballR:
   ...]"): 2,013 proved by the running score, 218 (no running score) by

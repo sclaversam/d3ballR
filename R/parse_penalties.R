@@ -29,7 +29,11 @@ is_no_play <- function(play_text) {
 #' (convention 5).
 #'
 #' The team code is followed by a space, or (in some host files) by the
-#' infraction name with no space ("PENALTY CCHolding 10 yards ...").
+#' infraction name with no space ("PENALTY CCHolding 10 yards ...",
+#' "MCUNR: Unnecessary Roughness"). The clause is cut at each team code;
+#' when an infraction is followed by a declined one that carries the
+#' enforcement yards ("BEL Roughing The Passer BEL Offside declined 15
+#' yards from ..."), the yards belong to the first.
 #'
 #' @param clause Character vector: text from the first "PENALTY" onward.
 #' @param tokens The game's play-text team tokens (names of
@@ -39,20 +43,54 @@ is_no_play <- function(play_text) {
 #'   "offsetting").
 #' @keywords internal
 split_infractions <- function(clause, tokens) {
-  pattern <- paste0(
-    # the team code, then a space or, in some files, the infraction name
-    # glued straight on ("PENALTY MCHolding", "GUIllegal")
-    "\\b", token_regex(tokens), "(?: |(?=[A-Z][a-z])).*?",
-    "(?:(\\d+) yards? (?:from|to)|(?i:(declined)|(off-?setting))|(?=, 1ST DOWN))"
-  )
+  # where an infraction starts: a team code, then a space (not a yard
+  # number: "from EC 28") or, in some files, the infraction name glued on
+  # ("PENALTY MCHolding", "GUIllegal", "MCUNR: Unnecessary Roughness")
+  # ("12 men on the field" is a foul name, "EC 28" a yard line)
+  start_pat <- paste0("\\b", token_regex(tokens), "(?:(?= (?!\\d{1,2}\\b(?! men)))|(?=[A-Z][a-z])|(?=[A-Z]{2,4}:))")
+  yard_pat <- "(\\d+) yards? (?:from|to)"
+  empty <- data.frame(token = character(), yards = integer(), status = character())
   lapply(clause, function(cl) {
-    if (is.na(cl)) return(data.frame(token = character(), yards = integer(), status = character()))
-    m <- stringr::str_match_all(cl, pattern)[[1]]
-    data.frame(
-      token = m[, 2],
-      yards = ifelse(is.na(m[, 3]) & is.na(m[, 4]) & is.na(m[, 5]), 0L, suppressWarnings(as.integer(m[, 3]))),
-      status = ifelse(!is.na(m[, 4]), "declined", ifelse(!is.na(m[, 5]), "offsetting", "accepted"))
-    )
+    if (is.na(cl)) return(empty)
+    loc <- stringr::str_locate_all(cl, start_pat)[[1]]
+    if (!nrow(loc)) return(empty)
+    tok <- stringr::str_sub(cl, loc[, 1], loc[, 2])
+    ends <- c(loc[-1, 1] - 1L, nchar(cl))
+    chunk <- stringr::str_sub(cl, loc[, 1], ends)
+    yards <- suppressWarnings(as.integer(stringr::str_match(chunk, yard_pat)[, 2]))
+    declined <- stringr::str_detect(chunk, stringr::regex("declined", ignore_case = TRUE))
+    offsetting <- stringr::str_detect(chunk, stringr::regex("off-?setting", ignore_case = TRUE))
+    first_down <- stringr::str_detect(chunk, ", 1ST DOWN")
+    status <- ifelse(declined, "declined", ifelse(offsetting, "offsetting", "accepted"))
+    # "A Roughing The Passer B Offside declined 15 yards from ...": the
+    # yards printed after a declined infraction are the accepted one's
+    # before it, which has no ending of its own (6461520)
+    # Any other infraction with no ending of its own runs on to the next
+    # ending, which it takes ("A Holding B UNS 25 yards ...": A, 25 yards;
+    # "A Holding B UNR offsetting C UNS offsetting": A and C offsetting).
+    pending <- status == "accepted" & is.na(yards) & !first_down
+    drop <- rep(FALSE, length(chunk))
+    for (k in seq_along(chunk)[-1]) {
+      j <- k - 1L
+      while (j >= 1L && drop[j]) j <- j - 1L
+      if (j < 1L || !pending[j]) next
+      if (status[k] == "declined" && !is.na(yards[k])) {
+        yards[j] <- yards[k]
+        yards[k] <- NA_integer_
+      } else {
+        yards[j] <- yards[k]
+        status[j] <- status[k]
+        first_down[j] <- first_down[k]
+        pending[j] <- pending[k]
+        drop[k] <- TRUE
+      }
+      if (!pending[j]) pending[j] <- FALSE
+    }
+    # an infraction needs an ending: yards, declined, offsetting, or a bare
+    # ", 1ST DOWN" (accepted, 0 yards); anything else isn't one
+    keep <- !drop & (!is.na(yards) | status != "accepted" | first_down)
+    yards[status == "accepted" & is.na(yards)] <- 0L
+    data.frame(token = tok, yards = yards, status = status)[keep, , drop = FALSE]
   })
 }
 

@@ -448,6 +448,9 @@ ot_periods <- function(kept) {
 #' interception or lost fumble the offense gets back is `firstD_by_poss` on
 #' the next snap, and a blocked punt / field goal the kicking team recovers
 #' past the line to gain is `firstD_by_yards`.
+#' A 1st down in the source right after a later down by the same team, in
+#' regulation, that nothing else flagged starts a series too (cause
+#' "situation": the causing line is missing; it sets `new_series` only).
 #' Finally, the first snap of each overtime possession is `firstD_by_poss`:
 #' a change of team, or the same team again after its possession ended (a
 #' try or score, a field goal attempt, a failed 4th down), since ncaa.com
@@ -458,7 +461,9 @@ ot_periods <- function(kept) {
 #'   `fumble_vec`, `down`, `half`, `period`.
 #' @param nxt Output of [next_snap_index()].
 #' @return `kept` with the five flags (replacing the raw yards / penalty
-#'   flags) and `series_cause_row` / `series_causes` for the report.
+#'   flags), `series_cause` (kickoff / poss / yards / penalty / situation, NA
+#'   off series starts) and `series_cause_row` / `series_causes` for the
+#'   report.
 #' @keywords internal
 derive_series_flags <- function(kept, nxt) {
   n <- nrow(kept)
@@ -511,7 +516,7 @@ derive_series_flags <- function(kept, nxt) {
     if (length(j)) j[1] else NA_integer_
   }, integer(1))
 
-  rank <- c(kickoff = 1L, poss = 2L, yards = 3L, penalty = 4L)
+  rank <- c(kickoff = 1L, poss = 2L, yards = 3L, penalty = 4L, situation = 5L)
   best <- rep(NA_character_, n)
   causes_at <- rep(NA_character_, n)
   cause_row <- rep(NA_integer_, n)
@@ -570,6 +575,24 @@ derive_series_flags <- function(kept, nxt) {
     }
   }
 
+  # a fresh 1st down in the source with no line causing it (decided by Sam,
+  # 2026-11-25): in regulation, a 1st down by the same team right after a
+  # 2nd / 3rd / 4th down that nothing else flagged starts a series. The
+  # source's down is taken as it is; the line that caused it (a penalty, a
+  # play) is usually missing (6461794: offsetting fouls on 2nd and 13, then
+  # "1st and 10"; 6461694: a false start on 3rd and 4, then "1st and 10").
+  for (m in seq_along(reg_snaps)[-1]) {
+    t <- reg_snaps[m]
+    p <- reg_snaps[m - 1L]
+    if (!is.na(best[t]) || kept$half[p] != kept$half[t]) next
+    if (any(kept$play_type[p:t] == "kickoff")) next
+    if (identical(kept$pos_team[p], kept$pos_team[t]) && kept$down[t] %in% 1L &&
+        !is.na(kept$down[p]) && kept$down[p] > 1L) {
+      best[t] <- "situation"
+      causes_at[t] <- "situation (a fresh 1st down in the source; no causing line)"
+    }
+  }
+
   # first snap of each overtime possession. ncaa.com files every overtime
   # period under one "Overtime(1)" period, so a team that went second in one
   # OT period and first in the next has two possessions in a row (6461689):
@@ -598,6 +621,7 @@ derive_series_flags <- function(kept, nxt) {
   kept$firstD_by_yards <- best %in% "yards"
   kept$firstD_by_penalty <- best %in% "penalty"
   kept$new_series <- !is.na(best)
+  kept$series_cause <- best
   kept$series_cause_row <- cause_row
   kept$series_causes <- causes_at
   kept

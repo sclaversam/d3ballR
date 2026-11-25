@@ -32,6 +32,10 @@ only from "N yard(s) from/to", never from the play's "for N yards"
 }
 \details{
 The team code is followed by a space, or (in some host files) by the
-infraction name with no space ("PENALTY CCHolding 10 yards ...").
+infraction name with no space ("PENALTY CCHolding 10 yards ...",
+"MCUNR: Unnecessary Roughness"). The clause is cut at each team code;
+when an infraction is followed by a declined one that carries the
+enforcement yards ("BEL Roughing The Passer BEL Offside declined 15
+yards from ..."), the yards belong to the first.
 }
 \keyword{internal}

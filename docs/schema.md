@@ -122,7 +122,13 @@ includes its touchdown.
 **New series.** `new_series` is TRUE on the **first snap row of each new
 series** (the 1st-and-10 or 1st-and-goal row), never on the play that caused it.
 - **Causes:** a kickoff, a change of possession (including each overtime
-  possession), the previous play's yardage, or an accepted penalty. The
+  possession), the previous play's yardage, or an accepted penalty. And
+  one fallback: in regulation, when ncaa.com shows a 1st down for the same
+  team right after a 2nd, 3rd or 4th down and no line causes it (a
+  "TURNOVER ON DOWNS" the same team snaps after, offsetting fouls then
+  "1st and 10", a false start on 3rd down then "1st and 10"), the source's
+  1st down is taken as a new series: the causing line is usually missing
+  (decided by Sam, 2026-11-25). The
   cause isn't in the output (cfbfastR's four `firstD_by_*` columns were
   dropped, 2026-11-25); `checks/{season}/first_downs.md` counts them.
 - **First snap row:** it can be a `penalty_no_play` row, such as a false start
