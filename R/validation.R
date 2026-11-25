@@ -88,14 +88,17 @@ write_pbp_checks <- function(games, check_dir = "checks") {
 #' -> false start -> 1st & 15, stays in the series). When "moved" and "fresh"
 #' give the same distance (1st & 25 -> 1st & 10 at the 10), the situation
 #' can't tell; the row's own `new_series` decides, so that case can't create
-#' a violation.
+#' a violation. Dead-ball personal fouls before the ball is ready for play
+#' ([pre_ready_foul_row()]) belong to no series.
 #'
 #' @param g One built game (data frame).
 #' @param try_phase Logical, per row.
 #' @return Integer series id per row (NA on rows that aren't snap rows).
 #' @keywords internal
 segment_series <- function(g, try_phase) {
-  snap <- !is.na(g$down) & !try_phase
+  # a dead-ball personal foul before the ball is ready for play is in no
+  # series (Rule 5-2-7; see pre_ready_foul_row())
+  snap <- !is.na(g$down) & !try_phase & !pre_ready_foul_row(g)
   rows <- which(snap)
   id <- rep(NA_integer_, nrow(g))
   cur <- 0L
@@ -154,7 +157,7 @@ write_first_down_report <- function(built, check_dir) {
     g <- as.data.frame(g)
     sid <- segment_series(g, d$try_phase)
     x <- cbind(g[, c("game_id", "play_index", "period", "pos_team", "play_type", "down", "distance",
-                     "penalty_no_play", flags, "play_text")], d, series_id = sid)
+                     "penalty_no_play", flags, "situation_suspect", "play_text")], d, series_id = sid)
     x$play_text <- substr(x$play_text, 1, 110)
     all_rows[[length(all_rows) + 1]] <- x
     outside[[length(outside) + 1]] <- x[is.na(sid) & x$new_series, ]
@@ -180,8 +183,9 @@ write_first_down_report <- function(built, check_dir) {
             !length(flagged) & n_seg > 1 ~ "previous play has more than one yardage segment (a lateral): yards_gained reads only the first, so its first down is missed",
             !length(flagged) & prev_deadball_off_pen ~ "previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk)",
             length(flagged) == 1 & r$down[1] != 1L ~ "series starts with a down other than 1st: the source kept the old down for the new offense after a change of possession (source quirk)",
-            length(flagged) > 1 & all(r$down[flagged[-1]] > 1L, na.rm = TRUE) ~ "the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter missed it, so the situation-only series runs on (source quirk; the flag follows the play)",
+            length(flagged) > 1 & all(r$down[flagged[-1]] > 1L, na.rm = TRUE) ~ "the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter skipped the 1st down, or it dropped a 1st-down play that gained nothing (source quirk; the flag follows the play)",
             TRUE ~ "unexplained"),
+          situation_suspect = any(r$situation_suspect),
           first_row_text = r$play_text[1]
         )
       }
@@ -225,6 +229,8 @@ write_first_down_report <- function(built, check_dir) {
     paste0("**", n_series, " series; ", n_series - nrow(viol), " have exactly one `new_series` row on their first snap row; ",
            nrow(viol), " violations.** Flagged rows outside any series (kickoffs, tries): **", nrow(out_flagged), "**. ",
            "Replays after a no-play penalty inside a series (correctly unflagged): ", replays, "."), "",
+    paste0("Violations whose series has `situation_suspect` rows (the source's down / distance contradicts the play before): **",
+           if (nrow(viol)) sum(viol$situation_suspect) else 0L, "**. Rows with `situation_suspect`: **", sum(a$situation_suspect), "**."), "",
     md_table(viol), "",
     if (nrow(out_flagged)) md_table(out_flagged[, c("game_id", "play_index", "play_type", "new_series", "series_cause", "play_text")]) else NULL,
     "## Snaps where different causes pointed (precedence applied)", "",

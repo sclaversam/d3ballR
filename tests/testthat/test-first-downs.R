@@ -164,6 +164,8 @@ test_that("built games: game 1 play 11 -> play 12, placement, exclusivity", {
     expect_false(any(c("firstD_by_kickoff", "firstD_by_poss", "firstD_by_yards", "firstD_by_penalty") %in% names(g)),
                  label = paste(basename(f), "only new_series in the output"))
     expect_false(anyNA(g$new_series), label = paste(basename(f), "new_series never NA"))
+    expect_false(anyNA(g$situation_suspect), label = paste(basename(f), "situation_suspect never NA"))
+    expect_false(any(g$situation_suspect & is.na(g$down)), label = paste(basename(f), "situation_suspect only on rows with a down"))
     expect_false(any(g$new_series[g$play_type %in% c("kickoff", "extra_point", "two_point")]),
                  label = paste(basename(f), "no flag on kickoffs or tries"))
     expect_false(any(g$new_series[is.na(g$down)]), label = paste(basename(f), "flags only on snap rows"))
@@ -193,4 +195,75 @@ test_that("a first down that an offensive penalty after the play didn't take awa
   # the same holding with the next snap the same 1st down moved back: no first down
   k2 <- k; k2$yards_to_goal <- c(70L, 80L); k2$distance <- c(10L, 20L)
   expect_false(derive_first_downs(k2, c(2L, NA))$firstD_by_yards[1])
+})
+
+test_that("dead-ball personal fouls before the ball is ready for play are recognised (Rule 5-2-7)", {
+  k <- data.frame(penalty_no_play = c(TRUE, TRUE, TRUE, TRUE, FALSE, TRUE),
+                  play_text = c("PENALTY GFU Personal Foul (Iokia,Sheyden) 15 yards from WHTW45 to GFU40. NO PLAY.",
+                                "PENALTY MC UNS: Unsportsmanlike Conduct (Brown,DaRell) 15 yards from MC49 to MC34. NO PLAY.",
+                                "PENALTY TUF False Start 5 yards from TUF20 to TUF15. NO PLAY",
+                                "pass incomplete, PENALTY BV personal foul 15 yards, NO PLAY.",
+                                "PENALTY SUS UNR: Unnecessary Roughness 15 yards from SUS46 to SUS31.",
+                                "PENALTY X UNS: Unsportsmanlike Conduct X False Start 20 yards. NO PLAY."))
+  # a false start is after the ball is ready; a foul on a snap isn't a dead-ball
+  # row; a row that names a foul of each kind isn't skipped
+  expect_equal(pre_ready_foul_row(k), c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE))
+})
+
+test_that("a dead-ball personal foul between series: the new series starts at the snap after it", {
+  # 6461954: roughing the passer gives George Fox a first down; George Fox's
+  # personal foul (dead ball, before the ready) is enforced before the new
+  # line to gain is set; the series starts at the snap after it
+  d <- series_rows(play_type = c("pass_incomplete", "penalty_no_play", "pass_incomplete", "rush"),
+                   pos_team = "A", down = c(3L, 1L, 1L, 2L),
+                   penalty_no_play = c(TRUE, TRUE, FALSE, FALSE), firstD_by_penalty = c(TRUE, FALSE, FALSE, FALSE),
+                   play_text = c("pass incomplete PENALTY B Roughing The Passer 15 yards, 1ST DOWN. NO PLAY.",
+                                 "PENALTY A Personal Foul 15 yards from B45 to A40. NO PLAY.", "pass incomplete", "rush"))
+  expect_equal(flags_of(d), c("-", "-", "penalty", "-"))
+  # a false start in the same spot is part of the new series (it starts there)
+  d$play_text[2] <- "PENALTY A False Start 5 yards from B45 to B50. NO PLAY."
+  expect_equal(flags_of(d), c("-", "penalty", "-", "-"))
+})
+
+suspect_rows <- function(...) {
+  d <- series_rows(...)
+  if (is.null(d$penalized_team)) d$penalized_team <- NA_character_
+  if (is.null(d$play_text)) d$play_text <- "play"
+  d$try_phase <- FALSE
+  d
+}
+
+test_that("situation_suspect: a new series printed as 2nd and 10, to the end of the series", {
+  # 6462216: 7-yard rush on 2nd and 2 reaches the line; the source prints
+  # 2nd and 10, then 3rd and 10; the next series is clean again
+  d <- suspect_rows(play_type = c("rush", "rush", "pass_incomplete", "pass_incomplete", "rush"),
+                    pos_team = "A", down = c(2L, 2L, 3L, 1L, 2L), distance = c(2L, 10L, 10L, 10L, 6L),
+                    yards_to_goal = c(20L, 13L, 13L, 9L, 5L))
+  d$new_series <- c(FALSE, TRUE, FALSE, TRUE, FALSE)
+  expect_equal(flag_situation_suspect(d), c(FALSE, TRUE, TRUE, FALSE, FALSE))
+})
+
+test_that("situation_suspect: a false start on 1st and 10 followed by 1st and 10 again", {
+  # 6529893: false start TUF20 -> TUF15, then "1st and 10 at TUF15" (should be 1st and 15)
+  d <- suspect_rows(play_type = c("penalty_no_play", "rush", "rush"), pos_team = "A",
+                    down = c(1L, 1L, 2L), distance = 10L, yards_to_goal = c(80L, 85L, 85L),
+                    penalty_no_play = c(TRUE, FALSE, FALSE), penalized_team = c("A", NA, NA),
+                    play_text = c("PENALTY TUF False Start 5 yards from TUF20 to TUF15. NO PLAY", "rush", "rush"))
+  d$new_series <- c(TRUE, FALSE, FALSE)
+  expect_equal(flag_situation_suspect(d), c(FALSE, TRUE, TRUE))
+  # printed correctly (1st and 15): nothing suspect
+  d$distance <- c(10L, 15L, 15L)
+  expect_equal(flag_situation_suspect(d), c(FALSE, FALSE, FALSE))
+  # a defensive foul isn't checked (it can carry an automatic first down)
+  d$distance <- 10L; d$penalized_team[1] <- "B"
+  expect_equal(flag_situation_suspect(d), c(FALSE, FALSE, FALSE))
+})
+
+test_that("situation_suspect: a dead-ball personal foul followed by 1st and 10 is not suspect (Rule 5-2-7)", {
+  d <- suspect_rows(play_type = c("penalty_no_play", "pass_incomplete", "rush"), pos_team = "A",
+                    down = c(1L, 1L, 2L), distance = 10L, yards_to_goal = c(45L, 60L, 60L),
+                    penalty_no_play = c(TRUE, FALSE, FALSE), penalized_team = c("A", NA, NA),
+                    play_text = c("PENALTY A Personal Foul 15 yards from B45 to A40. NO PLAY.", "pass", "rush"))
+  d$new_series <- c(FALSE, TRUE, FALSE)
+  expect_equal(flag_situation_suspect(d), c(FALSE, FALSE, FALSE))
 })

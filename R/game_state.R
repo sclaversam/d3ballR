@@ -281,6 +281,35 @@ derive_drive_result <- function(kept) {
   res
 }
 
+#' Dead-ball fouls before the ball is ready for play
+#'
+#' NCAA Rule 5-2-7: the penalty for a dead-ball foul after a series ends and
+#' before the ball is ready for play is enforced *before* the line to gain is
+#' set, so the next series is a fresh 1st and 10 from the enforced spot;
+#' a dead-ball foul after the ball is ready for play (false start, delay of
+#' game, illegal substitution, encroachment) is enforced after it (1st and
+#' 15). The first kind are the personal-foul family: personal foul,
+#' unsportsmanlike conduct, unnecessary roughness, taunting, late hit,
+#' fighting. This marks rows that are a penalty with no snap (the text starts
+#' with "PENALTY" and the row is `penalty_no_play`) and name only fouls of the
+#' first kind. Such a row between two series belongs to neither: the new
+#' series starts at the next snap.
+#'
+#' @param kept Rows with `play_text` and `penalty_no_play`.
+#' @return Logical, per row.
+#' @keywords internal
+pre_ready_foul_row <- function(kept) {
+  txt <- kept$play_text
+  if (is.null(txt)) return(rep(FALSE, nrow(kept)))
+  pre_ready <- stringr::regex(paste0("personal foul|unsportsman|unsportman|\\bUNS\\b|\\bUNR\\b|",
+                                     "unnecessary rough|taunt|late hit|fighting"), ignore_case = TRUE)
+  after_ready <- stringr::regex(paste0("false start|delay of game|illegal (substitution|procedure|formation|shift|motion)|",
+                                       "encroach|offside|neutral zone|too many|snap infraction|illegal participation"),
+                                ignore_case = TRUE)
+  kept$penalty_no_play %in% TRUE & !is.na(txt) & stringr::str_detect(txt, "^\\s*PENALTY\\b") &
+    stringr::str_detect(txt, pre_ready) & !stringr::str_detect(txt, after_ready)
+}
+
 #' Next snap that can start a new series for this row
 #'
 #' The next scrimmage snap in the same half ([next_snap_index()]), except
@@ -405,7 +434,9 @@ ot_periods <- function(kept) {
 #' rows with no connected next snap. It is then moved to the next snap row
 #' (a snap, or a penalty_no_play row: a dead-ball penalty or a nullified snap)
 #' in the same half and, in overtime, the same period: that row is the first
-#' snap of the new series. A snap that replays the same down after a no-play
+#' snap of the new series. A dead-ball personal foul before the ball is ready
+#' for play ([pre_ready_foul_row()]) is skipped: by Rule 5-2-7 it is enforced
+#' before the new line to gain is set, so the series starts after it. A snap that replays the same down after a no-play
 #' penalty is never a series start. If two causes point at
 #' one snap, precedence kickoff > poss > yards > penalty decides. A snap
 #' right after a try or scoring play by the other team, in regulation, is
@@ -448,8 +479,11 @@ derive_series_flags <- function(kept, nxt) {
   # or nullified snap), not a try -- in the same half; in overtime, the same
   # period. The series starts on that row; a replay of the same down after a
   # no-play penalty comes later and is never a series start.
+  # A dead-ball personal foul before the ball is ready for play (Rule 5-2-7)
+  # is enforced before the new line to gain is set: it is between the two
+  # series, and the new series starts at the snap after it.
   is_snap <- (kept$play_type %in% play_type_categories | kept$play_type == "penalty_no_play") &
-    !kept$try_phase & !is.na(kept$down)
+    !kept$try_phase & !is.na(kept$down) & !pre_ready_foul_row(kept)
   snaps <- which(is_snap)
   target <- vapply(seq_len(n), function(i) {
     if (is.na(cause[i])) return(NA_integer_)
@@ -528,4 +562,62 @@ derive_series_flags <- function(kept, nxt) {
   kept$series_cause_row <- cause_row
   kept$series_causes <- causes_at
   kept
+}
+
+#' Snaps whose down and distance contradict the play before them
+#'
+#' TRUE on snap rows where ncaa.com's down / distance can't be right given
+#' the plays before it, from the first such row to the end of its series.
+#' The printed values are kept as they are (`down`, `distance`, `situation`);
+#' this column says not to trust them. Two cases:
+#' 1. **A new series that doesn't start at 1st down.** The previous play
+#'    reached the line to gain ("1ST DOWN" in its text, or its yardage), so
+#'    `new_series` is TRUE, but the source's situation reads 2nd (or 3rd, 4th)
+#'    down, usually "2nd and 10" at the spot. Either the source's down counter
+#'    skipped the 1st down, or it dropped a 1st-down play that gained nothing
+#'    (an incomplete pass); the play-by-play can't tell which, so every down
+#'    in the rest of the series may be one too high.
+#' 2. **A replayed 1st down printed as a fresh 1st and 10.** After a no-play
+#'    penalty on the offense on 1st down (a false start, a holding that wiped
+#'    out the snap), the down is replayed with the distance moved back
+#'    (1st and 15), but the source prints 1st and 10 again; every distance in
+#'    the rest of the series is then short.
+#'
+#' Dead-ball personal fouls before the ball is ready for play
+#' ([pre_ready_foul_row()]) are not case 2: by Rule 5-2-7 they really are
+#' followed by 1st and 10.
+#'
+#' @param kept Kept rows with `down`, `distance`, `yards_to_goal`,
+#'   `pos_team`, `penalized_team`, `penalty_no_play`, `play_type`,
+#'   `try_phase`, `new_series`, `half`, `period`.
+#' @return Logical, per row (FALSE on rows without a down).
+#' @keywords internal
+flag_situation_suspect <- function(kept) {
+  n <- nrow(kept)
+  out <- rep(FALSE, n)
+  snap <- !is.na(kept$down) & !kept$try_phase & !pre_ready_foul_row(kept)
+  rows <- which(snap)
+  suspect <- FALSE
+  prev <- NA_integer_
+  for (j in rows) {
+    connected <- !is.na(prev) && kept$half[j] == kept$half[prev] &&
+      ((kept$period[j] <= 4L & kept$period[prev] <= 4L) | kept$period[j] == kept$period[prev]) &&
+      identical(kept$pos_team[j], kept$pos_team[prev]) &&
+      !any(kept$play_type[seq_len(j - 1L)][seq_len(j - 1L) > prev] == "kickoff")
+    if (!connected || kept$new_series[j]) suspect <- FALSE
+    # case 1: a new series printed with a later down
+    if (kept$new_series[j] && !(kept$down[j] %in% 1L)) suspect <- TRUE
+    # case 2: a replayed 1st down after an offensive no-play penalty printed
+    # as a fresh 1st and 10 (or goal)
+    if (connected && !kept$new_series[j] && kept$penalty_no_play[prev] %in% TRUE &&
+        isTRUE(kept$penalized_team[prev] == kept$pos_team[prev]) &&
+        kept$down[prev] %in% 1L && kept$down[j] %in% 1L) {
+      moved <- kept$distance[prev] - (kept$yards_to_goal[prev] - kept$yards_to_goal[j])
+      fresh <- min(10L, kept$yards_to_goal[j])
+      if (isTRUE(kept$distance[j] == fresh) && !isTRUE(kept$distance[j] == moved)) suspect <- TRUE
+    }
+    out[j] <- suspect
+    prev <- j
+  }
+  out
 }

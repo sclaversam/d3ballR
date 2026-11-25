@@ -25,6 +25,7 @@ net yardage (a replay of the same 1st down after a penalty, e.g. 1st & 10
 -> false start -> 1st & 15, stays in the series). When "moved" and "fresh"
 give the same distance (1st & 25 -> 1st & 10 at the 10), the situation
 can't tell; the row's own \code{new_series} decides, so that case can't create
-a violation.
+a violation. Dead-ball personal fouls before the ball is ready for play
+(\code{\link[=pre_ready_foul_row]{pre_ready_foul_row()}}) belong to no series.
 }
 \keyword{internal}

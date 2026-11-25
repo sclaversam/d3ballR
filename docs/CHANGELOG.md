@@ -5,6 +5,39 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## `situation_suspect`, and dead-ball fouls between series (Rule 5-2-7)
+
+Decided by Sam (2026-11-25). Two changes; nothing else in the output moved
+(1,262 of 1,263 still reconcile).
+
+- **`new_series` after a dead-ball personal foul.** NCAA Rule 5-2-7: a
+  dead-ball foul after a series ends and before the ball is ready for play
+  is enforced before the new line to gain is set, so the next snap is a
+  fresh 1st and 10 from the enforced spot; a foul after the ready (false
+  start, delay of game) is enforced after it (1st and 15). ncaa.com follows
+  the rule (6462436 plays 152-154: unsportsmanlike conduct, "1st and 10",
+  false start, "1st and 15"). `new_series` used to go on the foul row;
+  it now goes on the snap after it, and the foul row is in no series
+  (`pre_ready_foul_row()`: personal foul, unsportsmanlike conduct,
+  unnecessary roughness, taunting, late hit, fighting, with no snap). 308
+  rows changed: 101 starts moved one row later, and 106 starts were
+  removed where one series had been counted twice (6461250 plays 71-72: a
+  foul after a punt, then the first snap; 6461293 play 79: a foul on a
+  kickoff return before a re-kick). `new_series` rows: 70,969 -> 70,863.
+  The 36 series exceptions this caused are gone; the earlier label
+  ("the source re-prints 1st and 10 ... source quirk") was wrong for them.
+- **`situation_suspect`** (new column 60; 68 columns). The printed down and
+  distance are kept, and this column marks snaps where they contradict the
+  plays before: a new series printed as 2nd down (a skipped 1st down or a
+  dropped 1st-down play), or a replayed 1st down after an offensive no-play
+  penalty printed as a fresh 1st and 10 (`flag_situation_suspect()`). It
+  runs from that snap to the end of the series. 2025: 503 rows; it covers
+  all 106 skipped-1st-down exceptions, the 13 pre-snap foul ones, 20 of the
+  unexplained, and 84 drive starts after a kick or turnover printed as 2nd
+  down (not series exceptions, since a team change always starts a series).
+
+Series check: 223 exceptions in 70,825 series (was 262 in 70,972).
+
 ## Only `new_series`: the four `firstD_by_*` columns dropped
 
 Decided by Sam (2026-11-25): keep cfbfastR's layout in mind but don't copy

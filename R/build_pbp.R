@@ -343,7 +343,7 @@ pbp_columns <- c(
   "field_goal_attempt", "field_goal_made", "punt",
   "yds_kickoff", "yds_kickoff_return", "yds_punted", "yds_punt_return", "yds_fg",
   "scoring_play", "score_pts",
-  "drive_result", "new_series", "penalty_flag", "penalty_yards_signed",
+  "drive_result", "new_series", "situation_suspect", "penalty_flag", "penalty_yards_signed",
   "penalized_team", "penalty_no_play", "penalty_declined", "penalty_play_text", "situation",
   "play_text"
 )
@@ -595,6 +595,7 @@ build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
   clk <- derive_clock(classified, kept)
   kept <- clk$kept
   kept$period <- ot_periods(kept)
+  kept$situation_suspect <- flag_situation_suspect(kept)
   kept$home <- unname(team_map[game$matchup[["home"]]])
   kept$away <- unname(team_map[game$matchup[["away"]]])
 

@@ -13,7 +13,7 @@ gap for Division III.
 
 - **Coverage:** every game on ncaa.com's 2025 Division III scoreboards:
   1,263 games, regular season through the Stagg Bowl.
-- **Shape:** one row per event, 67 columns ([schema](docs/schema.md)). Names
+- **Shape:** one row per event, 68 columns ([schema](docs/schema.md)). Names
   follow cfbfastR where an equivalent exists.
 - **Checks:** 1,262 of 1,263 games' play-by-play points reconcile with the
   final score (the other is missing its 4th quarter at the source), and every
@@ -46,7 +46,7 @@ na.strings = "")`.
 | Drive and clock | `drive_number`, `period`, exact snap and end clocks, the snap-clock range, seconds remaining |
 | Situation | possession, score before the play, `down`, `distance`, `yards_to_goal`, `Goal_To_Go`, and the next snap's situation |
 | Play | `play_type`, `yards_gained`, outcome flags (rush, pass, sack, turnover, touchdown, ...), scoring, `drive_result` |
-| Series | `new_series` |
+| Series | `new_series`, `situation_suspect` (ncaa.com's down / distance contradicts the plays before) |
 | Penalties | signed yards, penalized team, no-play, declined, raw text |
 | Audit | raw `situation`, raw `play_text` |
 

@@ -46,7 +46,9 @@ the yards / penalty first-down flags), excluding scoring plays, tries and
 rows with no connected next snap. It is then moved to the next snap row
 (a snap, or a penalty_no_play row: a dead-ball penalty or a nullified snap)
 in the same half and, in overtime, the same period: that row is the first
-snap of the new series. A snap that replays the same down after a no-play
+snap of the new series. A dead-ball personal foul before the ball is ready
+for play (\code{\link[=pre_ready_foul_row]{pre_ready_foul_row()}}) is skipped: by Rule 5-2-7 it is enforced
+before the new line to gain is set, so the series starts after it. A snap that replays the same down after a no-play
 penalty is never a series start. If two causes point at
 one snap, precedence kickoff > poss > yards > penalty decides. A snap
 right after a try or scoring play by the other team, in regulation, is
