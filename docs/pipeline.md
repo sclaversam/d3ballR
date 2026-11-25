@@ -129,10 +129,10 @@ run over every built game: score reconciliation, the clock invariants, and
     Illinois College right after its own turnover on downs (a source
     error). The "IC36 + 26 yards placed at IC47" case once listed here is
     correct: the play ends with a 15-yard unsportsmanlike foul on IC.
-- **Added extra points:** 100 extra points in the 58 games have no line on
-  ncaa.com and are added, labelled in `play_text`: 91 proved by the running
-  score, 9 (CMU home games, no running score) by ncaa.com's scoring summary.
-  The final-score fallback is not needed in Centennial 2025.
+- **Added tries:** 2,232 tries in 924 of the 2025 games have no line on
+  ncaa.com and are added, labelled in `play_text` ("[added by d3ballR:
+  ...]"): 2,013 proved by the running score, 218 (no running score) by
+  ncaa.com's scoring summary, and 1 field goal.
 - **stats.ncaa.org pages' own quirks** (handled in `stats_ncaa_lines()`):
   it is a different StatCrew file from ncaa.com's (names "Blaha,Kaleb" for
   "K.Blaha"; drive-start lines everywhere). Drive headers can sit a group
@@ -167,13 +167,9 @@ run over every built game: score reconciliation, the clock invariants, and
   came before halftime), so it is kept and isn't in `known_exceptions.csv`
   (that list is for games that don't reconcile), but its second half is
   missing.
-- **Dead-ball penalties before a kickoff in tournament files** ("PENALTY
-  CROWN Personal Foul 15 yards from WHEIL35 to WHEIL50. NO PLAY", driveText
-  "- and -") have no situation, so they are unclassified and dropped
-  (`6529861`, `6529867`, `6529886`; 6 rows). The kickoff
-  text still shows the new spot.
-- **`yards_gained` on a lateral** reads only the first yardage segment. So a
-  first down earned after a lateral is missed (1 series in 2025).
+- **Unclassified rows:** 12 lines in 2025 the classifier can't type are
+  dropped (listed in `build_report.md`): scorer's notes such as "ABORTED
+  SNAP", "direct snap", "85 recovered onside".
 - **`yards_gained` is not defined** for interceptions, punts, field goals,
   kickoffs or tries. It is NA until a convention is chosen (return yards, kick
   distance, net).
@@ -183,8 +179,8 @@ run over every built game: score reconciliation, the clock invariants, and
 - **Rule-derived first downs:** first downs in games whose StatCrew format
   never prints "1ST DOWN" come from a yardage rule. That rule matches the
   printed flag exactly where the flag exists.
-- **20 teams have no ncaa.com conference tag** (non-D3 opponents such as
-  Anna Maria, Madonna, Point); their conference columns are NA.
+- **41 teams have no ncaa.com conference tag** (non-D3 opponents such as
+  Buffalo, New Haven, Davidson); their conference columns are NA.
 - **Older seasons:** only 2025 has been built. Other seasons' ncaa.com
   scoreboards may differ or not exist (2020 was a spring season; folded
   conferences need extra codes in `inst/extdata/conference_names.csv`); nobody has
