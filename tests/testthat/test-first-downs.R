@@ -330,3 +330,19 @@ test_that("situation_suspect: a source-only 1st down, and a spot jump", {
   d$new_series <- c(TRUE, FALSE, FALSE)
   expect_equal(flag_situation_suspect(d), c(FALSE, TRUE, TRUE))
 })
+
+test_that("the receiving team's first row after a score with no kickoff line (6461529)", {
+  k <- data.frame(play_type = c("field_goal_good", "pass_incomplete", "rush"),
+                  pos_team = c("Curry", "Curry", "Maine Maritime"), period = 2L, half = 1L,
+                  down = c(4L, 1L, 1L), distance = c(9L, 10L, 10L), distance_is_goal = FALSE,
+                  yard_side = c("MAINEMA", "MAINEMA", "MAINEMA"), try_phase = FALSE)
+  own <- c(Curry = "CURRY", `Maine Maritime` = "MAINEMA")
+  out <- receiving_team_after_missing_kickoff(k, c("Curry", "Maine Maritime"), own)
+  expect_equal(out$pos_team, c("Curry", "Maine Maritime", "Maine Maritime"))
+  # with a kickoff line: nothing changes
+  k2 <- k[c(1, 1, 2, 3), ]; k2$play_type[2] <- "kickoff"; k2$down[2] <- NA
+  expect_equal(receiving_team_after_missing_kickoff(k2, c("Curry", "Maine Maritime"), own)$pos_team, k2$pos_team)
+  # a field goal that ends regulation, then overtime: nothing changes
+  k3 <- k; k3$period <- c(4L, 5L, 5L); k3$pos_team[3] <- "Curry"
+  expect_equal(receiving_team_after_missing_kickoff(k3, c("Curry", "Maine Maritime"), own)$pos_team, k3$pos_team)
+})

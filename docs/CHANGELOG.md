@@ -5,6 +5,24 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## The receiving team's first row after a score with no kickoff line
+
+Rows after a score belong to the scoring team until the kickoff. When
+ncaa.com leaves the kickoff line out, nothing switched possession, and the
+receiving team's first rows were credited to the scorer (6461529: Curry's
+field goal, then "Will Keach pass incomplete, 1st and 10 at MAINEMA25"
+under Curry; Keach is Maine Maritime's quarterback). New
+`receiving_team_after_missing_kickoff()`: in regulation, after a try or a
+good field goal with no kickoff line before the other team's first snap,
+the rows from the first "1st and 10" on the other team's side up to that
+snap go to the other team (the scorer's next play is the kickoff, and its
+try never reads "1st and 10"). Within the period only: a field goal that
+ends regulation is followed by overtime, which has no kickoff (6461310).
+
+2025: 6 rows in 5 games (6461529 plays 19 and 45, 6461689 play 19, 6461700
+play 56, 6462164 plays 4-5); `pos_team` and what depends on it changed
+there.
+
 ## `situation_suspect` on every contradiction
 
 Decided by Sam (2026-11-25): `situation_suspect` is TRUE wherever ncaa.com's

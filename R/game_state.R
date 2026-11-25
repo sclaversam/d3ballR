@@ -703,3 +703,50 @@ flag_situation_suspect <- function(kept) {
   }
   out
 }
+
+#' The receiving team's first rows after a score with no kickoff line
+#'
+#' Rows after a score belong to the scoring team until the kickoff
+#' ([flag_try_phase()], [try_phase_team()]). When ncaa.com leaves the kickoff
+#' line out, nothing switches possession, and the receiving team's first
+#' rows are credited to the scorer (6461529: Curry's field goal, then "Will
+#' Keach pass incomplete, 1st and 10 at MAINEMA25" under Curry; Keach is
+#' Maine Maritime's quarterback). The scoring team can't have a 1st and 10
+#' right after it scores: its next play is the kickoff, and its try never
+#' reads "1st and 10". So in regulation, after a try or a good field goal,
+#' when no kickoff line comes before the other team's first snap, every row
+#' from the first "1st and 10" on the other team's side of the field (a
+#' touchback or return spot) up to that snap goes to the other team, and
+#' leaves the try phase.
+#'
+#' @param kept Kept rows with `play_type`, `pos_team`, `period`, `half`,
+#'   `down`, `distance`, `distance_is_goal`, `yard_side`, `try_phase`.
+#' @param teams The two team names.
+#' @param own_side Output of [infer_own_side()] (team name -> own token).
+#' @return `kept` with `pos_team` and `try_phase` corrected on those rows.
+#' @keywords internal
+receiving_team_after_missing_kickoff <- function(kept, teams, own_side) {
+  n <- nrow(kept)
+  ends <- which(kept$play_type %in% c("extra_point", "two_point", "field_goal_good") & kept$period <= 4L)
+  for (s in ends) {
+    scorer <- kept$pos_team[s]
+    if (is.na(scorer)) next
+    receiver <- other_team(scorer, teams)
+    k <- s + 1L
+    # (within the period: a field goal that ends regulation is followed by
+    # overtime, which has no kickoff, 6461310)
+    while (k <= n && kept$period[k] == kept$period[s] && kept$play_type[k] != "kickoff" &&
+           (is.na(kept$down[k]) || identical(kept$pos_team[k], scorer))) k <- k + 1L
+    # a kickoff came first (the normal case), or the period ended
+    if (k > n || kept$period[k] != kept$period[s] || kept$play_type[k] == "kickoff") next
+    rows <- seq_len(n)[seq_len(n) > s & seq_len(n) < k & !is.na(kept$down)]
+    first <- rows[kept$down[rows] %in% 1L & kept$distance[rows] %in% 10L &
+                    !(kept$distance_is_goal[rows] %in% TRUE) &
+                    kept$yard_side[rows] %in% unname(own_side[receiver])][1]
+    if (is.na(first)) next
+    fix <- rows[rows >= first]
+    kept$pos_team[fix] <- receiver
+    kept$try_phase[fix] <- FALSE
+  }
+  kept
+}

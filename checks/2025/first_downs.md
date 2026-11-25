@@ -20,12 +20,12 @@ cfbfastR has four `firstD_by_*` columns instead (computed independently, so they
 
 | cause | rows |
 |---|---|
-| kickoff | 12819 |
-| poss | 17138 |
+| kickoff | 12823 |
+| poss | 17134 |
 | yards | 37574 |
-| penalty | 3346 |
+| penalty | 3348 |
 | situation | 39 |
-| all (new_series) | 70916 |
+| all (new_series) | 70918 |
 
 Every `new_series` row has exactly one cause, and no other row has one: **yes**.
 
@@ -33,7 +33,7 @@ Every `new_series` row has exactly one cause, and no other row has one: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**70840 series; 70696 have exactly one `new_series` row on their first snap row; 144 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7088.
+**70842 series; 70698 have exactly one `new_series` row on their first snap row; 144 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7092.
 
 Violations whose series has `situation_suspect` rows (the source's down / distance contradicts the play before): **144**. Rows with `situation_suspect`: **1311**.
 

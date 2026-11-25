@@ -564,6 +564,7 @@ build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
   kept$pos_team <- try_phase_team(kept, scores, teams, kickoffs, actor_map,
                                   scorer = scoring_team(kept, text_team, teams))
   kept$pos_team <- dead_ball_penalty_team(kept)
+  kept <- receiving_team_after_missing_kickoff(kept, teams, own_side)
   kept$def_pos_team <- other_team(kept$pos_team, teams)
 
   kept$yards_to_goal <- compute_yards_to_goal(kept, own_side)

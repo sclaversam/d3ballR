@@ -124,10 +124,6 @@ run over every built game: score reconciliation, the clock invariants, and
   - 4: flag on the wrong row in playoff games, after a kickoff-return
     penalty row ("PENALTY HAN Holding 10 yards from HAN29 to HAN19"). Not
     yet fixed.
-- **Receiving team's first row credited to the scorer:** after a score with
-  no kickoff line, the receiving team's first row is sometimes the scoring
-  team's (6461529 play 19, "PENALTY MAINEMA false start" under Curry), so
-  its series starts a row late. About 5 rows. Not yet fixed.
 - **Added tries:** 2,232 tries in 924 of the 2025 games have no line on
   ncaa.com and are added, labelled in `play_text` ("[added by d3ballR:
   ...]"): 2,013 proved by the running score, 218 (no running score) by
