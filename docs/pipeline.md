@@ -95,7 +95,7 @@ Run on every build; reports in `checks/{season}/`. 2025 results:
 |---|---|---|
 | `build_report.md`, `score_reconciliation.csv` | Every game's points by team, summed from `score_pts`, equal the final (ncaa.com scoreboard). Also lists the games built from stats.ncaa.org, pending and failed games, and unclassified rows. | 1,262 of 1,263 (the other is a known source gap) |
 | `conference_check.csv` | Each game's conference columns and `conference_game` (same conference, regular season). | |
-| `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: counts by cause and edge cases. | 144 exceptions in 70,840 series (0.2%); 119 are labelled source quirks, all `situation_suspect` (see Known issues). |
+| `first_downs.md` | Series formed from the situation alone (`segment_series()`). Each must have exactly one `new_series` row, on its first snap row. Also: counts by cause and edge cases. | 144 exceptions in 70,840 series (0.2%), all `situation_suspect` (see Known issues). |
 | `kickoff_possession.csv` | Each kickoff's kicking and receiving team, the rule that decided it, and any disagreement. | |
 | `clock_bounds.csv` | No missing or inverted clock range in regulation, and `clock_start` inside its range. | Empty. |
 | `end_state.csv` | Every change of possession with the next snap's own down / distance / yards to goal, labeled by team. | |

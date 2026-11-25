@@ -5,6 +5,26 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## `situation_suspect` on every contradiction
+
+Decided by Sam (2026-11-25): `situation_suspect` is TRUE wherever ncaa.com's
+down, distance or spot contradicts the plays in the file, whatever the
+reason, not only in the patterns added so far. Two cases are new, and one
+widened:
+
+- **A 1st down nothing in the file explains** (new): the rows the
+  "situation" series rule starts (39).
+- **A spot jump** (new): the snap is 3+ yards from where the play before
+  ended, with no penalty on it (173 series). 140,758 of 141,021 such snap
+  pairs match exactly.
+- **A 1st down with the wrong distance** (widened): any distance the ball's
+  movement doesn't give, not just a fresh 1st and 10, and after any 1st
+  down that didn't earn a new series, not just an offensive no-play
+  penalty (6461294: a penalty back 9 yards, then "1st and 25").
+
+2025: 1,311 rows (was 486); all 144 series exceptions are now covered. Only
+`situation_suspect` changed.
+
 ## New series on a source 1st down with no causing line; penalty splitting
 
 Decided by Sam (2026-11-25): when ncaa.com shows a 1st down that no line

@@ -232,6 +232,9 @@ suspect_rows <- function(...) {
   d <- series_rows(...)
   if (is.null(d$penalized_team)) d$penalized_team <- NA_character_
   if (is.null(d$play_text)) d$play_text <- "play"
+  if (is.null(d$penalty_flag)) d$penalty_flag <- d$penalty_no_play
+  if (is.null(d$yards_gained)) d$yards_gained <- NA_integer_
+  if (is.null(d$series_cause)) d$series_cause <- NA_character_
   d$try_phase <- FALSE
   d
 }
@@ -257,9 +260,9 @@ test_that("situation_suspect: a false start on 1st and 10 followed by 1st and 10
   # printed correctly (1st and 15): nothing suspect
   d$distance <- c(10L, 15L, 15L)
   expect_equal(flag_situation_suspect(d), c(FALSE, FALSE, FALSE))
-  # a defensive foul isn't checked (it can carry an automatic first down)
+  # a defensive foul with no first down flagged: still a contradiction
   d$distance <- 10L; d$penalized_team[1] <- "B"
-  expect_equal(flag_situation_suspect(d), c(FALSE, FALSE, FALSE))
+  expect_equal(flag_situation_suspect(d), c(FALSE, TRUE, TRUE))
 })
 
 test_that("situation_suspect: a dead-ball personal foul followed by 1st and 10 is not suspect (Rule 5-2-7)", {
@@ -311,4 +314,19 @@ test_that("a fresh 1st down in the source after a later down, with no causing li
   d <- series_rows(play_type = c("rush", "penalty_no_play", "rush", "rush"), pos_team = "A",
                    down = c(2L, 3L, 1L, 2L), penalty_no_play = c(FALSE, TRUE, FALSE, FALSE))
   expect_equal(flags_of(d), c("-", "-", "situation", "-"))
+})
+
+test_that("situation_suspect: a source-only 1st down, and a spot jump", {
+  # 6461694: false start on 3rd and 4, then "1st and 10" (new_series by situation)
+  d <- suspect_rows(play_type = c("penalty_no_play", "rush", "rush"), pos_team = "A",
+                    down = c(3L, 1L, 2L), distance = c(4L, 10L, 8L), yards_to_goal = c(63L, 58L, 56L),
+                    penalty_no_play = c(TRUE, FALSE, FALSE), yards_gained = c(NA, 2L, 1L))
+  d$new_series <- c(FALSE, TRUE, FALSE); d$series_cause <- c(NA, "situation", NA)
+  expect_equal(flag_situation_suspect(d), c(FALSE, TRUE, TRUE))
+  # 6461947: rush for 6 to the 29, next snap at the 15
+  d <- suspect_rows(play_type = c("rush", "rush", "rush"), pos_team = "A",
+                    down = c(1L, 1L, 2L), distance = c(10L, 10L, 7L), yards_to_goal = c(35L, 15L, 12L),
+                    yards_gained = c(6L, 3L, 4L))
+  d$new_series <- c(TRUE, FALSE, FALSE)
+  expect_equal(flag_situation_suspect(d), c(FALSE, TRUE, TRUE))
 })

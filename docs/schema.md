@@ -145,17 +145,17 @@ series** (the 1st-and-10 or 1st-and-goal row), never on the play that caused it.
   never a series start.
 - **Unflagged rows:** kickoffs, tries and mid-series snaps are FALSE.
 
-**Suspect situations.** `down`, `distance` and `situation` are what ncaa.com
-printed, never corrected. On a few hundred rows a season those values can't
-be right given the plays before them, and `situation_suspect` is TRUE there.
-It marks the first such snap and every snap after it to the end of the
-series, since one wrong down shifts the rest. Three cases:
+**Suspect situations.** `down`, `distance`, `yards_to_goal` and `situation`
+are what ncaa.com printed, never corrected. `situation_suspect` is TRUE on
+every snap where they **contradict the plays in the file**, from the first
+such snap to the end of its series (one wrong down shifts the rest): 1,311
+rows in 2025 (0.6%). It doesn't say why. It can be a typo, a down counter
+that skipped, or a line missing from the file; where the file can't tell,
+the row is still marked. The cases:
 
-1. **A new series that doesn't start at 1st down.** The previous play
-   reached the line to gain (its text says "1ST DOWN", or its yardage
-   covers the distance), or the ball changed hands, so a new series began,
-   but ncaa.com prints the next snap as 2nd down (nearly always "2nd and 10"
-   at the spot). Example, 6462216:
+1. **A new series that doesn't start at 1st down.** The play before
+   reached the line to gain or the ball changed hands, but ncaa.com prints
+   2nd down. 6462216:
 
    | play | situation | play_text | `new_series` | `situation_suspect` |
    |---|---|---|---|---|
@@ -163,33 +163,30 @@ series, since one wrong down shifts the rest. Three cases:
    | 24 | 2nd and 10 at SRU13 | pass incomplete | TRUE | TRUE |
    | 25 | 3rd and 10 at SRU13 | pass incomplete | FALSE | TRUE |
 
-   Either ncaa.com's down counter skipped the 1st down (plays 24 and 25 are
-   really 1st and 2nd down), or it dropped a 1st-down play that gained
-   nothing, such as an incomplete pass (and the printed downs are right).
-   The play-by-play can't tell which. `new_series` is right either way.
-   The same happens at the start of drives: the first snap after a
-   kickoff or punt printed as "2nd and 10".
-2. **A replayed 1st down printed as a fresh 1st and 10.** After a no-play
-   penalty on the offense on 1st down (a false start, or a holding that
-   wipes out the snap) the down is replayed with the distance moved back,
-   but ncaa.com prints 1st and 10 again. Example, 6529893:
+2. **A 1st down with the wrong distance.** After a 1st down that didn't
+   earn a new series (a false start, a short gain, a penalty), the next
+   1st down's distance isn't the old one moved by the ball. 6529893:
 
    | play | situation | play_text | `situation_suspect` |
    |---|---|---|---|
    | 32 | 1st and 10 at TUF20 | PENALTY TUF False Start 5 yards from TUF20 to TUF15. NO PLAY | FALSE |
    | 33 | 1st and 10 at TUF15 | rush for 0 yards to the TUF15 | TRUE (should be 1st and 15) |
-   | 34 | 2nd and 10 at TUF15 | PENALTY BCF Offside ... NO PLAY | TRUE (should be 2nd and 15) |
+   | 34 | 2nd and 10 at TUF15 | PENALTY BCF Offside ... NO PLAY | TRUE |
 
    A dead-ball personal foul between series followed by 1st and 10 is
    **not** this case: that 1st and 10 is correct (Rule 5-2-7, above).
-   Fouls by the defense aren't checked, since some carry an automatic
-   first down.
-
-3. **A distance of zero or less** ("2nd and -5", "4th and -3"): the line to
-   gain was reached, but the down didn't go back to 1st. In playoff files
-   ncaa.com leaves the distance blank and d3ballR rebuilds it from the line
-   to gain, so a skipped 1st down there shows up as a negative distance
-   (6529853: a 15-yard catch on 1st and 10, then "2nd and -5").
+3. **A distance of zero or less** ("2nd and -5"): the line to gain was
+   reached but the down didn't go back to 1st (6529853).
+4. **A 1st down nothing in the file explains.** ncaa.com shows a 1st down
+   right after a 2nd, 3rd or 4th down and no line causes it ("TURNOVER ON
+   DOWNS" and the same team snaps next; a false start on 3rd and 4, then
+   "1st and 10", 6461694). `new_series` is TRUE there (see New series), and
+   so is this.
+5. **A spot jump.** The snap is 3 or more yards from where the play before
+   ended, with no penalty on that play (6461947: "rush for 6 yards to the
+   WHTW29", then "1st and 10 at WHTW15"). Of 141,021 such snap pairs in
+   2025, 140,758 match exactly. Plays with a penalty aren't checked, since
+   spot fouls are enforced from elsewhere.
 
 Use it to leave these rows out of anything that groups plays by down or
 distance (3rd-down rates, a model with down as an input), or to check
@@ -286,7 +283,7 @@ clock and seconds columns are NA in periods 5+.
 | 57 | `score_pts` | integer | Points scored on the row, from `pos_team`'s view. | Never NA. | TD +6, FG +3, PAT +1, two-point +2, defensive TD −6, safety conceded −2, try returned by the defense −2. A punt the kicking team recovers in the end zone after a muff is +6. |
 | 58 | `drive_result` | character | How the row's drive ended, repeated on every row of the drive. | Never NA. | `TD`, `FG`, `MISSED FG`, `BLOCKED FG`, `PUNT`, `BLOCKED PUNT`, `INT`, `FUMBLE`, `DOWNS`, `SAFETY`, `END OF HALF`, `END OF GAME`, `ONSIDE`. A defensive TD is labeled by how the offense lost the ball. |
 | 59 | `new_series` | logical | The row is the first snap row of a new series. | Never NA. | Set by a kickoff, a change of possession (or a new overtime possession), the previous play reaching the line to gain, or an accepted penalty awarding a first down (a declined penalty never counts). A dead-ball personal foul between series is in neither; the series starts at the snap after it. See New series. cfbfastR has four `firstD_by_*` cause columns instead. |
-| 60 | `situation_suspect` | logical | ncaa.com's `down` / `distance` on this snap contradict the plays before it: a new series printed as 2nd down, or a replayed 1st down after an offensive no-play penalty printed as a fresh 1st and 10. TRUE from that snap to the end of its series. | Never NA; FALSE on rows without a down. | The printed values are kept; this says not to trust them. FALSE doesn't prove they're right. See Suspect situations. d3ballR only. |
+| 60 | `situation_suspect` | logical | ncaa.com's `down`, `distance` or spot on this snap contradict the plays in the file (a new series printed as 2nd down, a 1st down with the wrong distance, a distance of 0 or less, a 1st down nothing explains, a spot jump of 3+ yards). TRUE from that snap to the end of its series. | Never NA; FALSE on rows without a down. | The printed values are kept; this says not to trust them. FALSE doesn't prove they're right. See Suspect situations. d3ballR only. |
 | 61 | `penalty_flag` | logical | The row mentions a penalty. | Never NA. | |
 | 62 | `penalty_yards_signed` | integer | Net accepted penalty yards, from `pos_team`'s view. | NA with no penalty or when every infraction was declined. | + = defense flagged, − = offense flagged; offsetting = 0. |
 | 63 | `penalized_team` | character | Team that committed the penalty. | NA with no penalty. | Both teams joined with `"; "` when offsetting or accepted on both. |

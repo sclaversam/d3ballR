@@ -2,47 +2,48 @@
 % Please edit documentation in R/game_state.R
 \name{flag_situation_suspect}
 \alias{flag_situation_suspect}
-\title{Snaps whose down and distance contradict the play before them}
+\title{Snaps whose down, distance or spot contradict the plays before them}
 \usage{
 flag_situation_suspect(kept)
 }
 \arguments{
 \item{kept}{Kept rows with \code{down}, \code{distance}, \code{yards_to_goal},
-\code{pos_team}, \code{penalized_team}, \code{penalty_no_play}, \code{play_type},
-\code{try_phase}, \code{new_series}, \code{half}, \code{period}.}
+\code{pos_team}, \code{penalty_no_play}, \code{penalty_flag}, \code{yards_gained},
+\code{scoring_play}, \code{turnover}, \code{play_type}, \code{try_phase}, \code{new_series},
+\code{series_cause}, \code{half}, \code{period}.}
 }
 \value{
 Logical, per row (FALSE on rows without a down).
 }
 \description{
-TRUE on snap rows where ncaa.com's down / distance can't be right given
-the plays before it, from the first such row to the end of its series.
-The printed values are kept as they are (\code{down}, \code{distance}, \code{situation});
-this column says not to trust them. Three cases:
+TRUE on snap rows where ncaa.com's down, distance or spot can't be right
+given the plays in the file, from the first such row to the end of its
+series (one wrong down shifts the rest). The printed values are kept as
+they are (\code{down}, \code{distance}, \code{yards_to_goal}, \code{situation}); this column
+says not to trust them. The reason can be a typo, a skipped down, or a
+line missing from the file; the column doesn't say which. Cases:
 \enumerate{
-\item \strong{A new series that doesn't start at 1st down.} The previous play
-reached the line to gain ("1ST DOWN" in its text, or its yardage), so
-\code{new_series} is TRUE, but the source's situation reads 2nd (or 3rd, 4th)
-down, usually "2nd and 10" at the spot. Either the source's down counter
-skipped the 1st down, or it dropped a 1st-down play that gained nothing
-(an incomplete pass); the play-by-play can't tell which, so every down
-in the rest of the series may be one too high.
-\item \strong{A replayed 1st down printed as a fresh 1st and 10.} After a no-play
-penalty on the offense on 1st down (a false start, a holding that wiped
-out the snap), the down is replayed with the distance moved back
-(1st and 15), but the source prints 1st and 10 again; every distance in
-the rest of the series is then short.
+\item \strong{A new series that doesn't start at 1st down}: the previous play
+reached the line to gain, or the ball changed hands, but the source
+prints 2nd (or 3rd, 4th) down, usually "2nd and 10".
+\item \strong{A replayed or continued 1st down with the wrong distance}: after a
+1st down that didn't earn a new series (a false start, a short gain, a
+penalty), the next 1st down's distance isn't the old one moved by the
+ball's movement (a fresh "1st and 10" again, or "1st and 25" where the
+ball moved back 9).
+\item \strong{A distance of zero or less} ("2nd and -5"): the line to gain was
+reached but the down didn't reset.
+\item \strong{A source 1st down nothing explains} (\code{new_series} cause
+"situation"): a 1st down right after a 2nd / 3rd / 4th down with no
+line causing it ("TURNOVER ON DOWNS" and the same team snaps, a false
+start on 3rd down then 1st and 10).
+\item \strong{A spot jump}: the snap is 3 or more yards from where the previous
+play ended ("rush for 6 yards to the WHTW29", then "1st and 10 at
+WHTW15"), with no penalty on that play. Spot fouls make penalty plays
+land elsewhere, so those aren't checked.
 }
 }
 \details{
-\enumerate{
-\item \strong{A distance of zero or less} ("2nd and -5", "4th and -3"): the line
-to gain was reached but the down didn't reset. In playoff files the
-distance is blank and rebuilt from the line to gain, which only moves
-when the source's down goes back to 1st, so a skipped 1st down shows up
-this way.
-}
-
 Dead-ball personal fouls before the ball is ready for play
 (\code{\link[=pre_ready_foul_row]{pre_ready_foul_row()}}) are not case 2: by Rule 5-2-7 they really are
 followed by 1st and 10.

@@ -627,38 +627,41 @@ derive_series_flags <- function(kept, nxt) {
   kept
 }
 
-#' Snaps whose down and distance contradict the play before them
+#' Snaps whose down, distance or spot contradict the plays before them
 #'
-#' TRUE on snap rows where ncaa.com's down / distance can't be right given
-#' the plays before it, from the first such row to the end of its series.
-#' The printed values are kept as they are (`down`, `distance`, `situation`);
-#' this column says not to trust them. Three cases:
-#' 1. **A new series that doesn't start at 1st down.** The previous play
-#'    reached the line to gain ("1ST DOWN" in its text, or its yardage), so
-#'    `new_series` is TRUE, but the source's situation reads 2nd (or 3rd, 4th)
-#'    down, usually "2nd and 10" at the spot. Either the source's down counter
-#'    skipped the 1st down, or it dropped a 1st-down play that gained nothing
-#'    (an incomplete pass); the play-by-play can't tell which, so every down
-#'    in the rest of the series may be one too high.
-#' 2. **A replayed 1st down printed as a fresh 1st and 10.** After a no-play
-#'    penalty on the offense on 1st down (a false start, a holding that wiped
-#'    out the snap), the down is replayed with the distance moved back
-#'    (1st and 15), but the source prints 1st and 10 again; every distance in
-#'    the rest of the series is then short.
-#'
-#' 3. **A distance of zero or less** ("2nd and -5", "4th and -3"): the line
-#'    to gain was reached but the down didn't reset. In playoff files the
-#'    distance is blank and rebuilt from the line to gain, which only moves
-#'    when the source's down goes back to 1st, so a skipped 1st down shows up
-#'    this way.
+#' TRUE on snap rows where ncaa.com's down, distance or spot can't be right
+#' given the plays in the file, from the first such row to the end of its
+#' series (one wrong down shifts the rest). The printed values are kept as
+#' they are (`down`, `distance`, `yards_to_goal`, `situation`); this column
+#' says not to trust them. The reason can be a typo, a skipped down, or a
+#' line missing from the file; the column doesn't say which. Cases:
+#' 1. **A new series that doesn't start at 1st down**: the previous play
+#'    reached the line to gain, or the ball changed hands, but the source
+#'    prints 2nd (or 3rd, 4th) down, usually "2nd and 10".
+#' 2. **A replayed or continued 1st down with the wrong distance**: after a
+#'    1st down that didn't earn a new series (a false start, a short gain, a
+#'    penalty), the next 1st down's distance isn't the old one moved by the
+#'    ball's movement (a fresh "1st and 10" again, or "1st and 25" where the
+#'    ball moved back 9).
+#' 3. **A distance of zero or less** ("2nd and -5"): the line to gain was
+#'    reached but the down didn't reset.
+#' 4. **A source 1st down nothing explains** (`new_series` cause
+#'    "situation"): a 1st down right after a 2nd / 3rd / 4th down with no
+#'    line causing it ("TURNOVER ON DOWNS" and the same team snaps, a false
+#'    start on 3rd down then 1st and 10).
+#' 5. **A spot jump**: the snap is 3 or more yards from where the previous
+#'    play ended ("rush for 6 yards to the WHTW29", then "1st and 10 at
+#'    WHTW15"), with no penalty on that play. Spot fouls make penalty plays
+#'    land elsewhere, so those aren't checked.
 #'
 #' Dead-ball personal fouls before the ball is ready for play
 #' ([pre_ready_foul_row()]) are not case 2: by Rule 5-2-7 they really are
 #' followed by 1st and 10.
 #'
 #' @param kept Kept rows with `down`, `distance`, `yards_to_goal`,
-#'   `pos_team`, `penalized_team`, `penalty_no_play`, `play_type`,
-#'   `try_phase`, `new_series`, `half`, `period`.
+#'   `pos_team`, `penalty_no_play`, `penalty_flag`, `yards_gained`,
+#'   `scoring_play`, `turnover`, `play_type`, `try_phase`, `new_series`,
+#'   `series_cause`, `half`, `period`.
 #' @return Logical, per row (FALSE on rows without a down).
 #' @keywords internal
 flag_situation_suspect <- function(kept) {
@@ -676,18 +679,25 @@ flag_situation_suspect <- function(kept) {
     if (!connected || kept$new_series[j]) suspect <- FALSE
     # case 1: a new series printed with a later down
     if (kept$new_series[j] && !(kept$down[j] %in% 1L)) suspect <- TRUE
-    # case 2: a replayed 1st down after an offensive no-play penalty printed
-    # as a fresh 1st and 10 (or goal)
-    if (connected && !kept$new_series[j] && kept$penalty_no_play[prev] %in% TRUE &&
-        isTRUE(kept$penalized_team[prev] == kept$pos_team[prev]) &&
-        kept$down[prev] %in% 1L && kept$down[j] %in% 1L) {
+    # case 2: a 1st down that didn't earn a new series, then a fresh 1st
+    # and 10 (or goal) instead of the down moved on
+    if (connected && !kept$new_series[j] && kept$down[prev] %in% 1L && kept$down[j] %in% 1L) {
       moved <- kept$distance[prev] - (kept$yards_to_goal[prev] - kept$yards_to_goal[j])
-      fresh <- min(10L, kept$yards_to_goal[j])
-      if (isTRUE(kept$distance[j] == fresh) && !isTRUE(kept$distance[j] == moved)) suspect <- TRUE
+      # a fresh 1st and 10, or any distance the ball's movement doesn't give
+      # (6461294: 1st and 10 at DVU38, a penalty back to the DVU47, then
+      # "1st and 25" where it's 1st and 19)
+      if (!isTRUE(kept$distance[j] == moved)) suspect <- TRUE
     }
     # case 3: a distance of zero or less (not goal to go): the line to gain
     # was reached but the down didn't reset
     if (isTRUE(kept$distance[j] <= 0L)) suspect <- TRUE
+    # case 4: a series start that only the source's 1st down explains
+    if (kept$new_series[j] && kept$series_cause[j] %in% "situation") suspect <- TRUE
+    # case 5: the snap isn't where the previous play ended (no penalty on it)
+    if (connected && !(kept$penalty_flag[prev] %in% TRUE) && !is.na(kept$yards_gained[prev]) &&
+        !(kept$scoring_play[prev] %in% TRUE) && !(kept$turnover[prev] %in% TRUE) &&
+        !is.na(kept$yards_to_goal[prev]) && !is.na(kept$yards_to_goal[j]) &&
+        abs(kept$yards_to_goal[prev] - kept$yards_gained[prev] - kept$yards_to_goal[j]) >= 3L) suspect <- TRUE
     out[j] <- suspect
     prev <- j
   }
