@@ -5,6 +5,44 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Overtime: periods 5, 6, 7 and the possession's yard line
+
+Decided by Sam (2026-11-25): number overtime periods 5, 6, 7, ... as
+cfbfastR does. Changes are only in overtime rows (25 of the 41 OT games);
+1,262 of 1,263 still reconcile.
+
+- **`period`** (`ot_periods()`, new). ncaa.com files all of overtime under
+  one "Overtime(1)", so every OT row was period 5. Each OT period is two
+  possessions; a possession starts at the first OT snap, at the first snap
+  after a try, a scoring play, a field goal attempt or a turnover, and after
+  a 4th down when the team changes or the next snap is a fresh 1st and 10
+  at the 25 (a converted 4th down goes on). From the 3rd OT on, a
+  two-point try with no snap is its own possession unless it's a replay
+  after a penalty on the last try. 2025: 28 games with one OT, 12 with two,
+  1 with three (6461698: Franklin's 3OT try, then Bluffton's); in every OT
+  period both teams snap.
+- **`yards_to_goal` / `situation` at the start of an OT possession** (32
+  rows). ncaa.com's "1 and 10 at 25" has no side, and `ncaa_play_table()`
+  took the side nearest the last spot in the text. Overtime has no kickoff
+  to carry the spot over, so after a possession ended that spot was the old
+  possession's, and the new offense was put at its own 25 (6461689:
+  "1st and 10 at BUFB25", `yards_to_goal` 75, for Bluffton's "rush for 4
+  yards to the ALBION21"). In overtime, the first 1st and 10 after a
+  possession ended (or at the start of OT, or at a snap by the other team)
+  now takes the side nearest the next spot in that possession, unless the
+  text stated a spot in between ("Change of possession, CSS ball on
+  MAC20"). No OT 1st-and-10 snap is now in the offense's own half (33
+  before).
+- **Try phase in overtime** (`flag_try_phase()`). With no kickoff, the try
+  phase ran on to the other team's first live snap, so a dead-ball penalty
+  or a nullified snap before it kept the scoring team as `pos_team`
+  (6461866: "PENALTY ROC False Start ... from HOB25" under Hobart). In
+  overtime, once the try is over (or right after a field goal), the next
+  row with a down closes it. 6 rows change `pos_team` (and the columns that
+  follow it: scores, `penalty_yards_signed`, drive numbers). Series
+  exceptions 261 to 262: the one added is labelled (a source "1st and 10"
+  after a dead-ball penalty, 6462402 play 160).
+
 ## Series flags: missing half-opening kickoffs and overtime periods (317 to 261)
 
 Asked by Sam (2026-11-25), working down the unexplained `first_downs.md`

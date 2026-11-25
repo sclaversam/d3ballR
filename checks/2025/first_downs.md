@@ -26,8 +26,8 @@ cfbfastR also puts `firstD_by_poss`, `firstD_by_yards`, `firstD_by_penalty` on t
 | firstD_by_kickoff | 12823 |
 | firstD_by_poss | 17121 |
 | firstD_by_yards | 37583 |
-| firstD_by_penalty | 3439 |
-| new_series | 70966 |
+| firstD_by_penalty | 3442 |
+| new_series | 70969 |
 
 Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
@@ -35,7 +35,7 @@ Exactly one of the four whenever `new_series` is TRUE: **yes**.
 
 Series are formed from the situation alone, not from the flags (`segment_series()`). A new series begins at the first snap row of a half / OT period, after a kickoff, when the offense changes, or when the next row shows a fresh 1st down rather than the same down moved by a penalty. Replays of the same down after a no-play penalty stay in their series.
 
-**70968 series; 70707 have exactly one `new_series` row on their first snap row; 261 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7249.
+**70972 series; 70710 have exactly one `new_series` row on their first snap row; 262 violations.** Flagged rows outside any series (kickoffs, tries): **0**. Replays after a no-play penalty inside a series (correctly unflagged): 7251.
 
 | game_id | first_play_index | last_play_index | offense | first_situation | flagged_rows | problem | likely_cause | first_row_text |
 |---|---|---|---|---|---|---|---|---|
@@ -206,6 +206,7 @@ Series are formed from the situation alone, not from the flags (`segment_series(
 | 6462100 | 76 | 77 | Hampden-Sydney | 1 & 10 | 76, 77 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter missed it, so the situation-only series runs on (source quirk; the flag follows the play) | Connor Creech pass complete to Tyler Hendley for 10 yards to the GAL18, 1ST DOWN HSC (Jacob Hundley;Trevin Ada |
 | 6462285 | 79 | 79 | Austin | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Leyton Riviere pass complete to Nick Lyons for 10 yards to the AC15 (Xiyiah Spencer-). |
 | 6462285 | 180 | 183 | Lyon | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Jacobi Williams rush for 4 yards to the LYON07 (Bryson McKnight). |
+| 6462402 | 160 | 163 | Westfield St. | 1 & 10 | none | no new_series row | previous row is a dead-ball penalty on the offense that started the series (flagged); the source printed 1st & 10 after it instead of a longer distance, so the replay looks like a fresh series (source quirk) | Miles Foerster pass incomplete. |
 | 6531808 | 131 | 134 | Anna Maria | 1 & 10 | 131, 132 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter missed it, so the situation-only series runs on (source quirk; the flag follows the play) | Jeremiah Cadet rush for 14 yards to the WORCESTE40 (Nathan Winco). |
 | 6461300 | 144 | 145 | Delaware Valley | 1 & 60 | 144, 145 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter missed it, so the situation-only series runs on (source quirk; the flag follows the play) | No Huddle-Shotgun Galasso,Mike rush middle for 0 yards to the DELVAL40 (Morris,Gavin), 1ST DOWN. |
 | 6461346 | 83 | 86 | MIT | 1 & 2 | 83, 85 | more than one new_series row | the play earned a first down (its text or yardage), but the source's next situation isn't a 1st down: its down counter missed it, so the situation-only series runs on (source quirk; the flag follows the play) | No Huddle-Shotgun Kulhan,Andrew rush middle for 0 yards to the MTIME02 (Denicker,Dylan). |
@@ -328,8 +329,8 @@ First snap row of an overtime possession (`firstD_by_poss`): 108.
 | 6462343 | 189 | 5 | Albion | pass_complete | Shotgun Murray,Ali pass complete short left to Davey,Connor caught at UWSP26, for 4 yards to the UWSP21 (Luedt |
 | 6461689 | 169 | 5 | Albion | rush | Ali Murray rush for 8 yards to the BUFB17 (Travion Curry). |
 | 6461689 | 174 | 5 | Bluffton | rush | Tywuan Clark rush for 4 yards to the ALBION21 (Jimmy Bona). |
-| 6461689 | 180 | 5 | Bluffton | pass_incomplete | Tywuan Clark pass incomplete to Jaivon Hudson (Alex Olenik). |
-| 6461689 | 185 | 5 | Albion | pass_complete | Ali Murray pass complete to Cameron Moore for 1 yard to the BUFB24 (Ryan Bourke;Devin Hogan). |
+| 6461689 | 180 | 6 | Bluffton | pass_incomplete | Tywuan Clark pass incomplete to Jaivon Hudson (Alex Olenik). |
+| 6461689 | 185 | 6 | Albion | pass_complete | Ali Murray pass complete to Cameron Moore for 1 yard to the BUFB24 (Ryan Bourke;Devin Hogan). |
 | 6461828 | 161 | 5 | Bates | rush | Ryan Lynskey rush for 3 yards to the AMHERST22 (Niles Riding3a Kevin Agnew). |
 | 6461828 | 165 | 5 | Amherst | rush | Demitrius Smith rush for loss of 1 yard to the BATES26 (Liam Keaney). |
 | 6461828 | 168 | 6 | Amherst | rush | Sam Gerber rush for loss of 2 yards to the BATES27 (Ryan Rozich). |
@@ -349,29 +350,29 @@ First snap row of an overtime possession (`firstD_by_poss`): 108.
 | 6462081 | 171 | 5 | Anna Maria | pass_complete | Nikolay Boyce pass complete to Max Gasinowski for 9 yards to the MMA16 (Lucas Casey-Moo). |
 | 6462081 | 176 | 5 | Mass. Maritime | rush | Evan Pierce rush for 4 yards to the AMA21 (Cullen Walsh). |
 | 6461267 | 149 | 5 | Benedictine (IL) | rush | (00:00) No Huddle-Shotgun Bruce,Negil rush middle for 2 yards gain to the CUW23 (Sellers,Marquiton). |
-| 6461267 | 154 | 5 | Concordia Wisconsin | rush | No Huddle Espinoza,Caleb rush middle for 9 yards gain to the BEN31 (Baugh,Corey). |
-| 6461267 | 157 | 5 | Concordia Wisconsin | rush | No Huddle-Shotgun Funk,Roman rush middle for 2 yards gain to the BEN23 (Sabah,Dean; Diamantos,Jake). |
-| 6461267 | 162 | 5 | Benedictine (IL) | sack | No Huddle-Shotgun Moses,Jack sacked for loss of 6 yards to the CUW18 (Birch,Ben, Sellers,Marquiton). |
+| 6461267 | 153 | 5 | Concordia Wisconsin | penalty_no_play | PENALTY CUW Personal Foul (Sellers,Marquiton) 15 yards from BEN25 to BEN40. NO PLAY. |
+| 6461267 | 157 | 6 | Concordia Wisconsin | rush | No Huddle-Shotgun Funk,Roman rush middle for 2 yards gain to the BEN23 (Sabah,Dean; Diamantos,Jake). |
+| 6461267 | 161 | 6 | Benedictine (IL) | pass_incomplete | No Huddle-Shotgun Moses,Jack pass incomplete deep right to Siebens,Alex thrown to CUW00 PENALTY CUW Roughing T |
 | 6461383 | 160 | 5 | Williams | rush | No Huddle Johansen,Owen rush right for 0 yards to the Trinit25 fumbled by Johansen,Owen at Trinit24 forced by  |
 | 6461383 | 161 | 5 | Trinity (CT) | pass_complete | No Huddle Carroll,Jaxon pass complete deep left to Hooper,Darison caught at Willia00, for 25 yards to the Will |
 | 6461987 | 169 | 5 | St. Scholastica | pass_incomplete | No Huddle-Shotgun West,Donald pass incomplete short left to Lubinski,Teagen thrown to MAC20. |
 | 6461987 | 173 | 5 | Macalester | rush | No Huddle-Shotgun Snow,Tucker rush middle for 1 yard gain to the CSS12 (Miller,Nathan). |
-| 6461987 | 177 | 5 | Macalester | pass_incomplete | No Huddle-Shotgun Scully,Jack pass incomplete deep middle to Ray,Jake thrown to CSS00 broken up by Gustafson,C |
-| 6461987 | 185 | 5 | St. Scholastica | rush | No Huddle-Shotgun Williams,Jevon rush middle for 5 yards gain to the MAC20 (Degnan,Jacob). |
+| 6461987 | 177 | 6 | Macalester | pass_incomplete | No Huddle-Shotgun Scully,Jack pass incomplete deep middle to Ray,Jake thrown to CSS00 broken up by Gustafson,C |
+| 6461987 | 185 | 6 | St. Scholastica | rush | No Huddle-Shotgun Williams,Jevon rush middle for 5 yards gain to the MAC20 (Degnan,Jacob). |
 | 6462266 | 173 | 5 | Bridgewater St. | pass_incomplete | Joseph Dube-Gar pass incomplete to Josh Registre (Amari Williams). |
 | 6462266 | 177 | 5 | Framingham St. | rush | Jarvin Simon rush for 6 yards to the BSU19 (Thomas Rocha). |
 | 6462339 | 156 | 5 | Hope | pass_complete | No Huddle-Shotgun Thole,Alex pass complete short right to DeHorn,Kaden caught at ALMA20, for 7 yards to the AL |
 | 6462339 | 160 | 5 | Alma | rush | No Huddle-Shotgun St. John,Carter rush middle for 6 yards gain to the HOPE19 (Danitz,Liam). |
 | 6461313 | 160 | 5 | Wis.-La Crosse | pass_incomplete | No Huddle-Shotgun Haas,Kyle pass incomplete deep middle to Janke,Jack thrown to UWW00. |
 | 6461313 | 164 | 5 | Wis.-Whitewater | rush | Shotgun Stanton,Brian rush middle for 1 yard gain to the UWL24 (Winters,Aaron). |
-| 6461313 | 168 | 5 | Wis.-Whitewater | rush | No Huddle-Shotgun Vasey,Tyler rush right for 0 yards to the UWL25 (Ott,Ben). |
-| 6461313 | 171 | 5 | Wis.-La Crosse | rush | No Huddle-Shotgun Lynch,Gabe rush right for 1 yard gain to the UWW24 (Gallagher,Ethan). |
+| 6461313 | 168 | 6 | Wis.-Whitewater | rush | No Huddle-Shotgun Vasey,Tyler rush right for 0 yards to the UWL25 (Ott,Ben). |
+| 6461313 | 171 | 6 | Wis.-La Crosse | rush | No Huddle-Shotgun Lynch,Gabe rush right for 1 yard gain to the UWW24 (Gallagher,Ethan). |
 | 6461494 | 143 | 5 | St. John Fisher | rush | Camden Chance rush for 2 yards to the BROCKPOR23 (Colton Thorp). |
 | 6461494 | 151 | 5 | SUNY Brockport | rush | Isaiah Simmons rush for 4 yards to the STJOHN21 (Timothy Vanderb). |
 | 6461812 | 178 | 5 | Rowan | rush | No Huddle-Shotgun Bukula IV,Nunes rush right for 4 yards gain to the CNU21 (Matheny,Lucas). |
 | 6461812 | 186 | 5 | Chris. Newport | rush | Shotgun Tharrington,Drevyon rush middle for 1 yard loss to the ROW26 (Henriquez,Anthony). |
-| 6461812 | 190 | 5 | Chris. Newport | pass_complete | No Huddle-Shotgun Barry,Connor pass complete short left to Viernes,Jayson caught at ROW10, for 20 yards to the |
-| 6461812 | 194 | 5 | Rowan | pass_complete | No Huddle-Shotgun Maiers,Nate pass complete short left to Hoke,Luke caught at CNU29, for 6 yards to the CNU19  |
+| 6461812 | 190 | 6 | Chris. Newport | pass_complete | No Huddle-Shotgun Barry,Connor pass complete short left to Viernes,Jayson caught at ROW10, for 20 yards to the |
+| 6461812 | 194 | 6 | Rowan | pass_complete | No Huddle-Shotgun Maiers,Nate pass complete short left to Hoke,Luke caught at CNU29, for 6 yards to the CNU19  |
 | 6461831 | 143 | 5 | Colby | rush | Antone Moreis rush for no gain to the BATES25 (Brooks Potter). |
 | 6461831 | 148 | 5 | Bates | pass_incomplete | Jack Perry pass incomplete to Jake Walters. |
 | 6461894 | 159 | 5 | Brevard | rush | Shotgun Deaton,Jadien rush middle for 3 yards gain to the BEL22 (Chaffier,Tre). |
@@ -382,8 +383,8 @@ First snap row of an overtime possession (`firstD_by_poss`): 108.
 | 6461351 | 166 | 5 | Widener | rush | No Huddle-Shotgun Leszczynski,Caiden rush left for 1 yard gain to the FDU24 (Noufal,Adam). |
 | 6461642 | 146 | 5 | Carthage | pass_incomplete | No Huddle Heafner,Easton pass incomplete deep middle to Betts,Gavin thrown to WAS00 broken up by Hill,Caiden. |
 | 6461642 | 152 | 5 | WashU | pass_complete | No Huddle-Shotgun Moore,Levi pass complete short right to Benke,John caught at CAR22, for 3 yards to the CAR22 |
-| 6461642 | 158 | 5 | WashU | rush | No Huddle-Shotgun Moore,Levi rush right for 6 yards gain to the CAR19 (Rowlett,Jeremy). |
-| 6461642 | 166 | 5 | Carthage | pass_complete | No Huddle-Shotgun Heafner,Easton pass complete short right to Surveyor,Omar caught at WAS13, for 14 yards to t |
+| 6461642 | 158 | 6 | WashU | rush | No Huddle-Shotgun Moore,Levi rush right for 6 yards gain to the CAR19 (Rowlett,Jeremy). |
+| 6461642 | 166 | 6 | Carthage | pass_complete | No Huddle-Shotgun Heafner,Easton pass complete short right to Surveyor,Omar caught at WAS13, for 14 yards to t |
 | 6461905 | 201 | 5 | Moravian | rush | No Huddle-Shotgun McCarthy,Declan rush right for 6 yards gain to the CathU19 (Desir,Maximus; Cavallaro,William |
 | 6461905 | 207 | 5 | Catholic | rush | No Huddle-Shotgun Harvin,Daequan rush right for 1 yard gain to the Morav24 (Johnson,Isaiah). |
 | 6462140 | 176 | 5 | Centenary (LA) | rush | No Huddle-Shotgun Butler,Obadiah rush middle for 14 yards gain to the LYON11 (Stubbs,Trampas), 1ST DOWN. |
@@ -392,32 +393,32 @@ First snap row of an overtime possession (`firstD_by_poss`): 108.
 | 6461424 | 160 | 5 | Wash. & Lee | pass_complete | No Huddle-Shotgun Collins,Ty pass complete deep right to Small,Fidel caught at BC00, for 25 yards to the BC00  |
 | 6461469 | 175 | 5 | Bluffton | pass_complete | No Huddle-Shotgun Clark,Tywuan pass complete short left to Cannon,Connor caught at RHIT15, for 20 yards to the |
 | 6461469 | 180 | 5 | Rose-Hulman | rush | No Huddle-Shotgun Smith,Jay rush middle for 2 yards gain to the BU23 (Bourke,Ryan; Stribling,Tre). |
-| 6461469 | 184 | 5 | Rose-Hulman | pass_incomplete | No Huddle-Shotgun Yue,Adam pass incomplete short right to Cody,Avery thrown to BU15 QB hurried by Wright,Dh'ma |
-| 6461469 | 188 | 5 | Bluffton | pass_complete | No Huddle-Shotgun Clark,Tywuan pass complete deep right to Payne,Niegel caught at RHIT00, for 25 yards to the  |
+| 6461469 | 184 | 6 | Rose-Hulman | pass_incomplete | No Huddle-Shotgun Yue,Adam pass incomplete short right to Cody,Avery thrown to BU15 QB hurried by Wright,Dh'ma |
+| 6461469 | 188 | 6 | Bluffton | pass_complete | No Huddle-Shotgun Clark,Tywuan pass complete deep right to Payne,Niegel caught at RHIT00, for 25 yards to the  |
 | 6462192 | 154 | 5 | CMS | rush | (00:00) No Huddle-Shotgun Nixon,Cooper rush left for 18 yards gain to the CHAP07 (Post,Kaulin), out of bounds, |
 | 6462192 | 159 | 5 | Chapman | rush | (00:00) No Huddle-Shotgun Latu,Andrew rush left for 20 yards gain to the CMS05 (Kruger,George; Hamlin,Tarius), |
-| 6462192 | 162 | 5 | Chapman | rush | (00:00) No Huddle-Shotgun Pacheco,Tyler rush right for 24 yards gain to the CMS01 (Davis,Jack), out of bounds, |
-| 6462192 | 166 | 5 | CMS | pass_complete | (00:00) No Huddle-Shotgun Boehm,Peter pass complete short right to Schwartz,Wilson caught at CHAP15, for 11 ya |
+| 6462192 | 162 | 6 | Chapman | rush | (00:00) No Huddle-Shotgun Pacheco,Tyler rush right for 24 yards gain to the CMS01 (Davis,Jack), out of bounds, |
+| 6462192 | 166 | 6 | CMS | pass_complete | (00:00) No Huddle-Shotgun Boehm,Peter pass complete short right to Schwartz,Wilson caught at CHAP15, for 11 ya |
 | 6462317 | 148 | 5 | Cal Lutheran | rush | (00:00) Shotgun Sumlin,JD rush left for 7 yards gain to the RED18 (Keddington,Tate; Williams,Laurence). |
-| 6462317 | 155 | 5 | Redlands | sack | (00:00) No Huddle-Shotgun Schmidt,Tobey sacked for loss of 2 yards to the CLU12 (Bowers,Logan). |
-| 6462317 | 158 | 5 | Redlands | pass_complete | (00:00) Shotgun Schmidt,Tobey pass complete short left to Walker,Julian caught at CLU20, for 9 yards to the CL |
-| 6462317 | 171 | 5 | Cal Lutheran | rush | (00:00) Shotgun Sumlin,JD rush left for 2 yards gain to the RED23 (Muniz,Aaron). |
+| 6462317 | 154 | 5 | Redlands | pass_incomplete | (00:00) Shotgun Schmidt,Tobey pass incomplete deep middle to Borrayo,Julian thrown to CLU00 QB hurried by Varg |
+| 6462317 | 158 | 6 | Redlands | pass_complete | (00:00) Shotgun Schmidt,Tobey pass complete short left to Walker,Julian caught at CLU20, for 9 yards to the CL |
+| 6462317 | 171 | 6 | Cal Lutheran | rush | (00:00) Shotgun Sumlin,JD rush left for 2 yards gain to the RED23 (Muniz,Aaron). |
 | 6461387 | 174 | 5 | Williams | pass_complete | Mustafa Mozawal pass complete to Daven Bailey for 15 yards to the WESLEYAN10 (Aiden Nelson). |
 | 6461387 | 178 | 5 | Wesleyan (CT) | pass_complete | Matt Fitzsimons pass complete to Sean Cannon for 24 yards to the WILLIAMS01, out-of-bounds. |
 | 6461866 | 158 | 5 | Hobart | rush | No Huddle-Shotgun Taylor,E.J. rush left for 8 yards gain to the ROC17 (Felsinger,Braydon). |
-| 6461866 | 164 | 5 | Rochester (NY) | rush | No Huddle-Shotgun Raux,Cole rush right for 11 yards gain to the HOB04 (Chachere,Noah; Minsterman,Blake), 1ST D |
+| 6461866 | 162 | 5 | Rochester (NY) | penalty_no_play | PENALTY ROC False Start (Schlitt,Jack) 5 yards from HOB25 to HOB30. NO PLAY. |
 | 6462402 | 150 | 5 | Mass. Maritime | pass_complete | Evan Pierce pass complete to Brennan Keefe for 8 yards to the WSU17 (Tom Cascio; Andrew Lovell). |
-| 6462402 | 160 | 5 | Westfield St. | pass_incomplete | Miles Foerster pass incomplete. |
+| 6462402 | 159 | 5 | Westfield St. | penalty_no_play | PENALTY WSU unsportmanlike conduct 5 yards to the MMA40. |
 | 6461310 | 163 | 5 | Tufts | rush | Shotgun Shapiro,Christian rush middle for 3 yards gain to the MID22 (Piechota,Matthew; Schwartz,Tommy). |
 | 6461310 | 168 | 5 | Middlebury | rush | No Huddle-Shotgun McClellan,Connor rush middle for 4 yards gain to the TUF21 (Orozco,Zahir; Ferrelli,Johnny). |
 | 6461346 | 180 | 5 | MIT | rush | No Huddle-Shotgun Kulhan,Andrew rush middle for 2 yards gain to the MTIME23 (Kellner,Jack). |
 | 6461346 | 187 | 5 | SUNY Maritime | rush | No Huddle-Shotgun Rogers,Joshua rush right for 2 yards gain to the MIT23 (Fishman,Chase; Shoales,Thomas). |
-| 6461346 | 193 | 5 | SUNY Maritime | pass_incomplete | No Huddle-Shotgun Pickett,Will pass incomplete short middle to Casaburi,Nate thrown to MIT20 broken up by Schu |
-| 6461346 | 197 | 5 | MIT | rush | No Huddle-Shotgun Mahabir,Colter rush middle for 1 yard gain to the MTIME24 (Matich,Dennis; Kellner,Jack). |
+| 6461346 | 193 | 6 | SUNY Maritime | pass_incomplete | No Huddle-Shotgun Pickett,Will pass incomplete short middle to Casaburi,Nate thrown to MIT20 broken up by Schu |
+| 6461346 | 197 | 6 | MIT | rush | No Huddle-Shotgun Mahabir,Colter rush middle for 1 yard gain to the MTIME24 (Matich,Dennis; Kellner,Jack). |
 | 6461698 | 170 | 5 | Franklin | pass_complete | No Huddle-Shotgun Kmiecik,Marshall pass complete short left to Fonda,Jordan caught at BLU25, for 5 yards to th |
 | 6461698 | 174 | 5 | Bluffton | rush | No Huddle-Shotgun Hudson,Jaivon rush left for 1 yard gain to the FRA24 (Loehmer,Michael), out of bounds. |
-| 6461698 | 178 | 5 | Bluffton | pass_complete | No Huddle-Shotgun Clark,Tywuan pass complete short middle to Brockington,Damien caught at FRA24, for 8 yards t |
-| 6461698 | 181 | 5 | Franklin | rush | No Huddle-Shotgun Kmiecik,Marshall rush middle for 4 yards gain to the BLU21 (Curry,Travion). |
+| 6461698 | 178 | 6 | Bluffton | pass_complete | No Huddle-Shotgun Clark,Tywuan pass complete short middle to Brockington,Damien caught at FRA24, for 8 yards t |
+| 6461698 | 181 | 6 | Franklin | rush | No Huddle-Shotgun Kmiecik,Marshall rush middle for 4 yards gain to the BLU21 (Curry,Travion). |
 | 6462085 | 166 | 5 | Anna Maria | rush | Treshawn Blair rush for 5 yards to the BSU20 (Thomas Rocha). |
 | 6462085 | 173 | 5 | Bridgewater St. | rush | Isaiah Wright rush for 19 yards to the AMC6, 1ST DOWN BSU (Elie Charles). |
 | 6462120 | 175 | 5 | Howard Payne | pass_complete | No Huddle-Shotgun Hernandez,Mateo pass complete deep right to Staton,Cooper caught at ETBU05, for 25 yards to  |

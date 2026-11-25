@@ -169,7 +169,7 @@ clock and seconds columns are NA in periods 5+.
 | 11 | `play_index` | integer | Row order within the game, 1..N. | Never NA. | |
 | 12 | `drive_number` | integer | Drive within the game, 1..N. | Never NA. | The opening kickoff starts drive 1. |
 | 13 | `drive_play_number` | integer | Row's position within its drive, from 1. | Never NA. | A kickoff is always 1. |
-| 14 | `period` | integer | Quarter 1-4; overtime periods 5, 6, ... | Never NA. | |
+| 14 | `period` | integer | Quarter 1-4; overtime periods 5, 6, 7, ... (one per OT period, two possessions each) | Never NA. | ncaa.com files all of overtime as one period; the OT periods are recovered from the possessions (`ot_periods()`). |
 | 15 | `half` | integer | 1 for periods 1-2, 2 for periods 3+. | Never NA. | Overtime counts as the second half. |
 | 16 | `clock_start` | character | Exact game clock at the snap (`"MM:SS"` left in the quarter). | NA when not known exactly; NA in overtime. | Known after a stop at a known reading (quarter start, timeout, drive start, score; carried through untimed rows to the next snap), or when the snap's range closes to one value. |
 | 17 | `clock_end` | character | Exact game clock when the play ended. | NA when not known; NA in overtime. | The play's own "clock M:SS" (scores, field goals, some kickoffs), else, after a hand-over (punt, turnover, downs, missed / blocked FG, kickoff), the next drive's start time in the same quarter. |

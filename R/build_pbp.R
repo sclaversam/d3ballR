@@ -595,6 +595,7 @@ build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
   kept$drive_result <- derive_drive_result(kept)
   clk <- derive_clock(classified, kept)
   kept <- clk$kept
+  kept$period <- ot_periods(kept)
   kept$home <- unname(team_map[game$matchup[["home"]]])
   kept$away <- unname(team_map[game$matchup[["away"]]])
 

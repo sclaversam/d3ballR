@@ -91,6 +91,45 @@ test_that("overtime: ncaa.com's single OT period -- the same team twice in a row
   expect_equal(flags_of(d, lead_in = FALSE), c("poss", "-", "-", "poss", "-", "-", "poss", "-"))
 })
 
+test_that("ot_periods numbers overtime 5, 6, 7 from possessions (two per period)", {
+  ot_rows <- function(...) {
+    d <- data.frame(...)
+    d$period <- 5L
+    d$distance <- ifelse(is.na(d$down), NA, 10L)
+    for (nm in c("scoring_play", "turnover", "try_phase")) if (!nm %in% names(d)) d[[nm]] <- FALSE
+    if (!"play_text" %in% names(d)) d$play_text <- ""
+    d
+  }
+  # OT1: A scores (TD + try); B scores; OT2: B first (team tag wrong on its
+  # first snap), B misses a field goal, then A; a converted 4th down goes on
+  d <- ot_rows(
+    play_type = c("rush", "rush", "extra_point", "rush", "pass_complete", "extra_point",
+                  "pass_incomplete", "rush", "field_goal_missed", "rush", "pass_complete", "rush"),
+    pos_team = c("A", "A", "A", "B", "B", "B", "A", "B", "B", "A", "A", "A"),
+    down = c(1L, 2L, NA, 1L, 2L, NA, 1L, 2L, 4L, 1L, 4L, 1L),
+    yards_to_goal = c(25L, 10L, NA, 25L, 12L, NA, 75L, 25L, 20L, 25L, 21L, 11L),
+    scoring_play = c(FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
+    try_phase = c(FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE)
+  )
+  expect_equal(ot_periods(d), c(5L, 5L, 5L, 5L, 5L, 5L, 6L, 6L, 6L, 6L, 6L, 6L))
+  # 3rd OT on: alternating two-point tries with no snap
+  d3 <- ot_rows(play_type = c("rush", "extra_point", "rush", "extra_point", "rush", "two_point", "rush", "two_point",
+                              "two_point", "two_point"),
+                pos_team = c("A", "A", "B", "B", "A", "A", "B", "B", "A", "B"),
+                down = c(1L, NA, 1L, NA, 1L, NA, 1L, NA, NA, NA), yards_to_goal = c(25L, NA, 25L, NA, 25L, NA, 25L, NA, NA, NA),
+                scoring_play = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE))
+  expect_equal(ot_periods(d3), c(5L, 5L, 5L, 5L, 6L, 6L, 6L, 6L, 7L, 7L))
+  # a try replayed after a penalty is the same possession; a second good try
+  # by the same team with no penalty is its 3rd-OT try (6461698)
+  d4 <- ot_rows(play_type = c("rush", "two_point", "two_point", "rush", "two_point", "two_point", "two_point"),
+                pos_team = c("A", "A", "A", "B", "B", "B", "A"),
+                down = c(1L, NA, NA, 1L, NA, NA, NA), yards_to_goal = c(25L, NA, NA, 25L, NA, NA, NA),
+                scoring_play = c(TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE),
+                play_text = c("", "pass attempt failed PENALTY B Holding", "rush attempt failed", "",
+                              "pass attempt Successful.", "pass attempt Successful.", "rush attempt failed."))
+  expect_equal(ot_periods(d4), c(5L, 5L, 5L, 5L, 5L, 6L, 6L))
+})
+
 test_that("a half with no kickoff line: its first snap is firstD_by_kickoff", {
   d <- series_rows(play_type = c("rush", "rush", "rush", "pass_complete"), pos_team = c("A", "A", "B", "B"),
                    half = c(1L, 1L, 2L, 2L), period = c(2L, 2L, 3L, 3L), down = c(1L, 2L, 1L, 2L))

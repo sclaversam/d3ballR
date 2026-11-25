@@ -834,10 +834,50 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
       k <- k - 1L
     }
   }
+  # overtime has no kickoffs to carry the spot to the next possession: after
+  # a possession ends (a try, a touchdown, a field goal, a turnover), the
+  # last spot is the old possession's, at the other end of the field from
+  # the new one's 25 (6461689: Albion's touchdown at BUFB00, then Bluffton
+  # "1 and 10 at 25" was put at BUFB25 for "rush for 4 yards to the
+  # ALBION21"). The new possession's first situation, a 1st and 10 right
+  # after a possession ended or at the start of overtime, takes the
+  # side nearest the next spot the text mentions in that possession (its own
+  # play's, or a later one's, up to the next possession end) instead.
+  in_ot <- lines$period >= 5L
+  ends_possession <- is_try | (is_snap & stringr::str_detect(txt, stringr::regex(
+    "TOUCHDOWN|field goal|intercepted|fumble.*recovered by|TURNOVER ON DOWNS", ignore_case = TRUE)))
+  # the first spot at or after each row, not past the next possession end
+  # nor past a snap by the other team (a 4th down that didn't convert has no
+  # end marker: 6461987 play 172)
+  next_x <- rep(NA_real_, n)
+  val <- NA_real_
+  later_team <- NA_character_
+  for (i in rev(seq_len(n))) {
+    if (ends_possession[i]) val <- NA_real_
+    if (is_snap[i]) {
+      if (!is.na(later_team) && !identical(lines$team_id[i], later_team)) val <- NA_real_
+      later_team <- lines$team_id[i]
+    }
+    if (!is.na(end_x[i])) val <- end_x[i]
+    next_x[i] <- val
+  }
+  # a 1st and 10 (usually at the 25; at the 35 after a foul, 6462402 play 159)
+  ot_start <- in_ot & !blank_sit & dt$down %in% 1L & dt$dist %in% 10L
   tok_out <- rep(NA_character_, n)
   x_out <- rep(NA_real_, n)
   cur <- NA_real_
+  ot_reset <- FALSE
+  spot_since_reset <- FALSE
+  last_snap_team <- NA_character_
   for (i in seq_len(n)) {
+    # overtime starts, or a snap by the other team (the line that ended the
+    # last possession can be missing: 6461313's field goal before play 164)
+    team_changed <- is_snap[i] && !is.na(last_snap_team) && !identical(lines$team_id[i], last_snap_team)
+    if (in_ot[i] && ((i == 1L || !in_ot[i - 1L]) || team_changed)) {
+      ot_reset <- TRUE
+      spot_since_reset <- FALSE
+    }
+    if (is_snap[i]) last_snap_team <- lines$team_id[i]
     if (!blank_sit[i]) {
       y <- dt$yard[i]
       if (!is.na(dt$token[i]) && dt$token[i] %in% tokens) {
@@ -850,11 +890,20 @@ ncaa_play_table <- function(lines, teams, final_total = NULL, scoring = NULL) {
         tok_out[i] <- kick_tok[i]
       } else {
         cand_x <- c(y, 100L - y)
-        pick <- if (is.na(cur)) 1L else which.min(abs(cand_x - cur))
+        # a spot stated after the possession ended ("Change of possession,
+        # CSS ball on MAC20", 6461987) is the new possession's: keep `cur`
+        ref <- if (ot_reset && !spot_since_reset && ot_start[i] && !is.na(next_x[i])) next_x[i] else cur
+        pick <- if (is.na(ref)) 1L else which.min(abs(cand_x - ref))
         tok_out[i] <- tokens[pick]
       }
       x_out[i] <- if (tok_out[i] == "") 50 else to_x(tok_out[i], y)
       cur <- x_out[i]
+      if (is_snap[i] || ot_start[i]) ot_reset <- FALSE
+    }
+    if (ot_reset && !is.na(end_x[i]) && !ends_possession[i] && !is_snap[i]) spot_since_reset <- TRUE
+    if (in_ot[i] && ends_possession[i]) {
+      ot_reset <- TRUE
+      spot_since_reset <- FALSE
     }
     if (!is.na(end_x[i])) cur <- end_x[i]
   }

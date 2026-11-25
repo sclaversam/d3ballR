@@ -16,6 +16,8 @@ flag_try_phase <- function(kept) {
   n <- nrow(kept)
   out <- logical(n)
   open <- FALSE
+  tried <- FALSE
+  has_down <- if (is.null(kept$down)) rep(FALSE, n) else !is.na(kept$down)
   for (i in seq_len(n)) {
     if (i > 1 && kept$period[i] != kept$period[i - 1]) open <- FALSE
     if (kept$play_type[i] == "kickoff") open <- FALSE
@@ -23,8 +25,17 @@ flag_try_phase <- function(kept) {
     # snap wiped out by a penalty doesn't (e.g. a two-point try nullified by
     # offside, then re-tried as a kick)
     if (kept$play_type[i] %in% play_type_categories && !kept$penalty_no_play[i]) open <- FALSE
+    # in overtime, once the try is over, the next row with a down is the
+    # next possession's, even a dead-ball penalty or a nullified snap
+    # (6461866: "PENALTY ROC False Start ... from HOB25" before Rochester's
+    # first OT snap)
+    if (open && tried && kept$period[i] >= 5L && has_down[i]) open <- FALSE
     if (open) out[i] <- TRUE
-    if (scoring[i]) open <- TRUE
+    if (open && kept$play_type[i] %in% c("extra_point", "two_point")) tried <- TRUE
+    if (scoring[i]) {
+      open <- TRUE
+      tried <- kept$play_type[i] == "field_goal_good"  # no try after a field goal
+    }
   }
   out
 }

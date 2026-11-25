@@ -298,6 +298,86 @@ series_next_snap <- function(kept, nxt) {
   ifelse(ok, nxt, NA_integer_)
 }
 
+#' Number the overtime periods 5, 6, 7, ... (cfbfastR's convention)
+#'
+#' ncaa.com files every overtime period under one "Overtime(1)" period, so
+#' all OT rows arrive as period 5. Each OT period is two possessions, one
+#' per team, and every possession starts with a 1st and 10 at the
+#' opponent's 25. A possession starts at the first OT snap; at the first
+#' snap after a try, a scoring play, a field goal attempt or a turnover;
+#' and after a 4th down, at the next snap if the team changed or it's a
+#' fresh 1st and 10 at the 25 (`yards_to_goal` 25, or 75 when the source's
+#' side is wrong), since a converted 4th down goes on. A team change alone
+#' doesn't start one: ncaa.com's team tag is wrong on some single lines
+#' (6462317 play 154). From the 3rd OT on, a period can be two
+#' two-point tries with no snap; each such try (one not after a touchdown)
+#' is its own possession. Possessions 1-2 are period 5, 3-4 period 6, and
+#' so on; tries go with the possession before them.
+#'
+#' @param kept Kept rows with `period`, `play_type`, `down`, `distance`,
+#'   `yards_to_goal`, `scoring_play`, `turnover`, `try_phase`.
+#' @return The `period` vector, overtime renumbered.
+#' @keywords internal
+ot_periods <- function(kept) {
+  ot <- which(kept$period >= 5L)
+  if (!length(ot)) return(kept$period)
+  fg_types <- c("field_goal_good", "field_goal_missed", "field_goal_blocked")
+  tries <- kept$play_type %in% c("extra_point", "two_point")
+  # by play type, not `try_phase`: a snap after a try with the wrong team tag
+  # is read as part of the try phase (6462317 play 154)
+  # ... but a dead-ball penalty between a touchdown and its try isn't a snap
+  # (6461346 play 185)
+  snap <- !is.na(kept$down) & !tries & !(kept$play_type == "penalty_no_play" & kept$try_phase)
+  ended_by <- kept$play_type %in% fg_types | tries | kept$scoring_play %in% TRUE | kept$turnover %in% TRUE
+  possession <- integer(length(ot))
+  k <- 0L
+  ended <- FALSE
+  fourth <- FALSE
+  last_team <- NA_character_
+  after_td <- FALSE
+  last_try_team <- NA_character_
+  last_try_penalty <- FALSE
+  for (m in seq_along(ot)) {
+    i <- ot[m]
+    # "at the 25" on either side: the side ncaa.com's OT lines are read with
+    # is sometimes the wrong team's (6461689 play 174: "at BUFB25" for
+    # Bluffton's own snap at the Albion 25), and no OT drive is at its own 25
+    fresh <- kept$down[i] %in% 1L && kept$distance[i] %in% 10L && kept$yards_to_goal[i] %in% c(25L, 75L)
+    # a two-point try is its own possession (3rd OT on) when no touchdown
+    # came before it, or when it follows another try that wasn't a penalty
+    # replay: a replay comes after a try with a penalty, by the same team
+    # (6462317 plays 167-170); 6461698 plays 185-187 are Franklin's 2OT try,
+    # Franklin's 3OT try, Bluffton's 3OT try
+    replay <- !is.na(last_try_team) && identical(kept$pos_team[i], last_try_team) && last_try_penalty
+    lone_two <- kept$play_type[i] == "two_point" && (!after_td || (!is.na(last_try_team) && !replay))
+    # after a 4th down the drive goes on if it converted: a new possession
+    # only when the team changes or the next snap is a fresh 1st and 10 at the 25
+    after_fourth <- fourth && (!identical(kept$pos_team[i], last_team) || fresh)
+    if ((snap[i] && (k == 0L || ended || after_fourth)) || lone_two) {
+      k <- k + 1L
+      ended <- FALSE
+    }
+    possession[m] <- max(k, 1L)
+    if (ended_by[i]) ended <- TRUE
+    if (snap[i]) {
+      fourth <- kept$down[i] %in% 4L && !ended_by[i]
+      last_team <- kept$pos_team[i]
+    }
+    # a try (and its replays after a penalty) follows a touchdown until the next snap
+    if (snap[i]) {
+      after_td <- kept$scoring_play[i] %in% TRUE
+      last_try_team <- NA_character_
+    }
+    if (tries[i]) {
+      last_try_team <- kept$pos_team[i]
+      last_try_penalty <- stringr::str_detect(kept$play_text[i], "\\bPENALTY\\b")
+    }
+  }
+  out <- kept$period
+  out[ot] <- 5L + (possession - 1L) %/% 2L
+  out
+}
+
 #' First-down / new-series flags, on the snap that starts the new series
 #'
 #' cfbfastR column names. Each flag sits on the FIRST SNAP of a new series

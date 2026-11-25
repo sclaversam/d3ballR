@@ -106,7 +106,7 @@ first-down exclusivity and placement.
 
 ## Known issues
 
-- **First-down series exceptions:** 261 of 70,968 series (0.4%) in
+- **First-down series exceptions:** 262 of 70,972 series (0.4%) in
   `first_downs.md` don't have exactly one `new_series` flag on their first
   snap (477 before the 2026-11-17 fixes, 317 before the 2026-11-25 ones;
   see the CHANGELOG). By cause:
