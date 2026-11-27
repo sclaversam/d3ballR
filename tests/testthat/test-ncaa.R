@@ -369,8 +369,23 @@ test_that("ncaa_season_games drops placeholders and second listings, and keeps n
   expect_equal(g$game_id, c("1", "2", "4", "6"))
   expect_equal(g$week, c(2L, 13L, 17L, 19L))
   expect_equal(g$season_type, c("regular", "postseason", "postseason", "postseason"))
+  expect_equal(g$bracket_round, c("", "1", "5", "6"))  # the placeholder's round 6 is carried to contest 6
   d <- attr(g, "dropped")
   expect_equal(d$contest, c("5", "3"))
   expect_match(d$why[2], "duplicate of contest 2")
   expect_true(file.exists(file.path(dir, "2025_games.csv")))
+})
+
+test_that("placeholder_bracket_round carries a round only to one postseason game between the same teams", {
+  sb <- data.frame(date = as.Date(c("2025-10-04", "2025-11-22", "2026-01-04")),
+                   away = c("Beta", "Gamma", "Beta"), home = c("Delta", "Delta", "Delta"),
+                   bracket_round = c("", "1", ""))
+  ph <- data.frame(date = as.Date("2025-01-04"), away = "Delta", home = "Beta", bracket_round = "6")
+  # the regular-season meeting (before the first tournament game) is not a candidate
+  expect_equal(placeholder_bracket_round(sb, ph), c("", "1", "6"))
+  # two postseason games between the same teams: ambiguous, nothing changes
+  sb2 <- rbind(sb, data.frame(date = as.Date("2025-12-06"), away = "Delta", home = "Beta", bracket_round = ""))
+  expect_equal(placeholder_bracket_round(sb2, ph), c("", "1", "", ""))
+  # a placeholder with no round changes nothing
+  expect_equal(placeholder_bracket_round(sb, transform(ph, bracket_round = "")), c("", "1", ""))
 })

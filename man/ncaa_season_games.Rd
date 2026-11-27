@@ -41,6 +41,9 @@ the lower id (2025: 6533522, beside 6529877).
 }
 }
 \details{
+A dropped placeholder's bracket round is kept on the real game
+(\code{\link[=placeholder_bracket_round]{placeholder_bracket_round()}}; 2025: the Stagg Bowl, round 6).
+
 The columns:
 \itemize{
 \item \code{home}, \code{away}: ncaa.com's home and away teams, by ncaa.com's short

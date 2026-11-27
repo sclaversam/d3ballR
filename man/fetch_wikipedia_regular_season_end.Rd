@@ -13,7 +13,7 @@ fetch_wikipedia_regular_season_end(season)
 Date, or NA if not found.
 }
 \description{
-Reads the infobox of "{season} NCAA Division III football season" via
+Reads the infobox of "YYYY NCAA Division III football season" via
 the Wikipedia API (one request).
 }
 \keyword{internal}

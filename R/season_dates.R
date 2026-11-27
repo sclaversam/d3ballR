@@ -61,7 +61,7 @@ read_season_dates <- function(path = season_dates_path()) {
 
 #' Read the regular-season end date off a Wikipedia season infobox
 #'
-#' The "{season} NCAA Division III football season" infobox has a line like
+#' The "YYYY NCAA Division III football season" infobox has a line like
 #' `| regular_season = {{nowrap|September 1 – November 16, 2024}}`. The end
 #' date is the last "Month Day (, Year)" in that value; a missing year means
 #' the season year.
@@ -82,7 +82,7 @@ parse_infobox_regular_season_end <- function(wikitext, season) {
 
 #' Fetch a season's regular-season end date from Wikipedia
 #'
-#' Reads the infobox of "{season} NCAA Division III football season" via
+#' Reads the infobox of "YYYY NCAA Division III football season" via
 #' the Wikipedia API (one request).
 #'
 #' @param season Season year.

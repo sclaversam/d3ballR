@@ -15,7 +15,7 @@ parse_infobox_regular_season_end(wikitext, season)
 Date, or NA if the field isn't there.
 }
 \description{
-The "{season} NCAA Division III football season" infobox has a line like
+The "YYYY NCAA Division III football season" infobox has a line like
 \verb{| regular_season = \{\{nowrap|September 1 – November 16, 2024\}\}}. The end
 date is the last "Month Day (, Year)" in that value; a missing year means
 the season year.

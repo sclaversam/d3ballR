@@ -313,6 +313,36 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
   list(table = tab, markers = markers)
 }
 
+#' Carry a dropped placeholder's bracket round to the real game
+#'
+#' ncaa.com can list a tournament game twice: the real contest with no
+#' bracket round, and a placeholder dated outside the season that has the
+#' round (2025: the Stagg Bowl is 6534822, round blank, beside placeholder
+#' 6529906 dated 2025-01-04, round 6). The placeholder is dropped by
+#' [ncaa_season_games()]; this gives its round to the kept game between
+#' the same two teams (either home team) that has no round and is dated on
+#' or after the first tournament game. Only when exactly one game fits;
+#' otherwise nothing changes.
+#'
+#' @param sb Kept scoreboard rows (`date`, `home`, `away`, `bracket_round`).
+#' @param placeholders Dropped rows dated outside the season (same columns).
+#' @return `sb$bracket_round`, with the carried rounds filled in.
+#' @keywords internal
+placeholder_bracket_round <- function(sb, placeholders) {
+  round <- sb$bracket_round
+  placeholders <- placeholders[placeholders$bracket_round != "", ]
+  if (!nrow(placeholders) || !any(round != "")) return(round)
+  first_tourney <- min(sb$date[round != ""], na.rm = TRUE)
+  pair <- function(a, b) paste(pmin(a, b), pmax(a, b))
+  sb_pair <- pair(sb$away, sb$home)
+  for (i in seq_len(nrow(placeholders))) {
+    hit <- which(sb_pair == pair(placeholders$away[i], placeholders$home[i]) &
+                   round == "" & !is.na(sb$date) & sb$date >= first_tourney)
+    if (length(hit) == 1) round[hit] <- placeholders$bracket_round[i]
+  }
+  round
+}
+
 #' The season's game list from ncaa.com's Division III scoreboards
 #'
 #' Every contest on the season's weekly
@@ -326,6 +356,9 @@ ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/n
 #' - a second contest for the same game (same date, teams and final
 #'   score): the tournament's contest (with a bracket round) is kept, else
 #'   the lower id (2025: 6533522, beside 6529877).
+#'
+#' A dropped placeholder's bracket round is kept on the real game
+#' ([placeholder_bracket_round()]; 2025: the Stagg Bowl, round 6).
 #'
 #' The columns:
 #' - `home`, `away`: ncaa.com's home and away teams, by ncaa.com's short
@@ -376,6 +409,7 @@ ncaa_season_games <- function(season, weeks = 1:20, dir = "data-raw/ncaa", seaso
     dropped <- rbind(dropped, d)
     sb <- sb[-dup_rows, ]
   }
+  sb$bracket_round <- placeholder_bracket_round(sb, dropped[dropped$why == "dated outside the season", ])
   if (is.null(season_dates)) season_dates <- ensure_season_dates(season)
 
   tourney <- sb$bracket_round != ""

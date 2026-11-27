@@ -5,6 +5,19 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## The Stagg Bowl's bracket round
+
+ncaa.com lists the 2025 Stagg Bowl twice: the real contest 6534822 with
+no bracket round, and a placeholder 6529906 dated 2025-01-04 with
+`roundNumber` 6. The placeholder is dropped (dated outside the season), and
+its round went with it, so the final read `bracket_round` "" like a
+non-tournament bowl. New `placeholder_bracket_round()`: a dropped
+placeholder's round goes to the one kept game between the same two teams
+with no round, dated on or after the first tournament game (none changes if
+two fit). 2025: 6534822 is now round 6, the only line changed in
+`2025_games.csv`. The play-by-play doesn't read `bracket_round`, so no game
+changed. Kept as numbers (decided by Sam, 2026-11-27): rounds 1-6 in 2025.
+
 ## Clock columns renamed
 
 Decided by Sam (2026-11-27), for readability. Names only; every value is
