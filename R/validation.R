@@ -12,8 +12,8 @@
 #'   own down / distance / yards to goal, and its team and text. The
 #'   `next_*` values are from the next snap's offense view, so across a
 #'   change of possession they are measured toward the other end zone.
-#' - `clock_bounds.csv`: any regulation row whose `clock_start_max` /
-#'   `clock_start_min` is NA, max < min, or `clock_start` (when known) falls
+#' - `clock_bounds.csv`: any regulation row whose `clock_start_at_most` /
+#'   `clock_start_at_least` is NA, max < min, or `clock_start` (when known) falls
 #'   outside them (should be
 #'   empty; overtime is untimed, so its clock columns are NA by design).
 #'
@@ -63,12 +63,12 @@ write_pbp_checks <- function(games, check_dir = "checks") {
 
   b <- dplyr::bind_rows(games)
   reg <- b$period <= 4L  # overtime is untimed: clock columns NA by design
-  mx <- clock_secs(b$clock_start_max)
-  mn <- clock_secs(b$clock_start_min)
+  mx <- clock_secs(b$clock_start_at_most)
+  mn <- clock_secs(b$clock_start_at_least)
   st <- clock_secs(b$clock_start)
   bad <- reg & (is.na(mx) | is.na(mn) | mx < mn | (!is.na(st) & (st > mx | st < mn)))
   reports$clock_bounds <- as.data.frame(b[bad, c("game_id", "play_index", "period", "clock_start", "clock_end",
-                                                 "clock_start_max", "clock_start_min", "play_text")])
+                                                 "clock_start_at_most", "clock_start_at_least", "play_text")])
 
   for (nm in names(reports)) {
     utils::write.csv(reports[[nm]], file.path(check_dir, paste0(nm, ".csv")), row.names = FALSE, na = "")

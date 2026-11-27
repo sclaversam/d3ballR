@@ -30,7 +30,7 @@ on every row, so any value can be traced back to its source.
 - **NA is an empty field.** Files are written with `write.csv(..., na = "")`,
   so read them with `read.csv(f, na.strings = "")`.
 - **Types:** logical columns are `TRUE` / `FALSE`. `clock_*` columns are
-  zero-padded `"MM:SS"` strings of time left in the quarter. `secs_remaining_*`
+  zero-padded `"MM:SS"` strings of time left in the quarter. `secs_left_*`
   columns are integers.
 - **Team names** (`home`, `away`, `pos_team`, `def_pos_team`, `penalized_team`)
   use ncaa.com's short names ("Alfred St.", "Carnegie Mellon"), one name
@@ -196,9 +196,10 @@ means neither contradiction was found.
 **Clock.** Two kinds of clock column:
 - **Exact or NA:** `clock_start` and `clock_end` are the game clock at the
   snap and when the play ended, filled only when known exactly.
-- **Always a range:** `clock_start_max` and `clock_start_min` are the most and
-  least time that could have been left at the snap. When `clock_start` is
-  known, all three are equal.
+- **Always a range:** `clock_start_at_most` and `clock_start_at_least` are
+  the most and least time that could have been left at the snap: at most
+  11:25 and at least 10:48 left means the snap came somewhere in that span.
+  When `clock_start` is known, all three are equal.
 
 The range uses every known reading:
 - drive starts, timeouts, quarter starts, score clocks;
@@ -207,7 +208,7 @@ The range uses every known reading:
 
 Readings that contradict the others are dropped. Nothing is interpolated.
 
-`secs_remaining_*` are the same four values as integer seconds left in the
+`secs_left_*` are the same four values as integer seconds left in the
 game: `(4 − period) × 900` plus the quarter clock. Overtime is untimed, so all
 clock and seconds columns are NA in periods 5+.
 
@@ -241,12 +242,12 @@ clock and seconds columns are NA in periods 5+.
 | 15 | `half` | integer | 1 for periods 1-2, 2 for periods 3+. | Never NA. | Overtime counts as the second half. |
 | 16 | `clock_start` | character | Exact game clock at the snap (`"MM:SS"` left in the quarter). | NA when not known exactly; NA in overtime. | Known after a stop at a known reading (quarter start, timeout, drive start, score; carried through untimed rows to the next snap), or when the snap's range closes to one value. |
 | 17 | `clock_end` | character | Exact game clock when the play ended. | NA when not known; NA in overtime. | The play's own "clock M:SS" (scores, field goals, some kickoffs), else, after a hand-over (punt, turnover, downs, missed / blocked FG, kickoff), the next drive's start time in the same quarter. |
-| 18 | `clock_start_max` | character | The most time that could have been left at the snap. | Never NA in regulation; NA in overtime. | Latest known reading at or before the snap (15:00 if none). |
-| 19 | `clock_start_min` | character | The least time that could have been left at the snap. | Never NA in regulation; NA in overtime. | Earliest known reading at or after the snap, including the play's own printed clock and `clock_end` (00:00 if none). |
-| 20 | `secs_remaining_start` | integer | `clock_start` as seconds left in the game. | As `clock_start`. | `(4 − period) × 900` + quarter clock seconds. |
-| 21 | `secs_remaining_end` | integer | `clock_end` as seconds left in the game. | As `clock_end`. | |
-| 22 | `secs_remaining_start_max` | integer | `clock_start_max` as seconds left in the game. | NA in overtime. | |
-| 23 | `secs_remaining_start_min` | integer | `clock_start_min` as seconds left in the game. | NA in overtime. | |
+| 18 | `clock_start_at_most` | character | The most time that could have been left at the snap. | Never NA in regulation; NA in overtime. | Latest known reading at or before the snap (15:00 if none). |
+| 19 | `clock_start_at_least` | character | The least time that could have been left at the snap. | Never NA in regulation; NA in overtime. | Earliest known reading at or after the snap, including the play's own printed clock and `clock_end` (00:00 if none). |
+| 20 | `secs_left_start` | integer | `clock_start` as seconds left in the game. | As `clock_start`. | `(4 − period) × 900` + quarter clock seconds. |
+| 21 | `secs_left_end` | integer | `clock_end` as seconds left in the game. | As `clock_end`. | |
+| 22 | `secs_left_start_at_most` | integer | `clock_start_at_most` as seconds left in the game. | NA in overtime. | |
+| 23 | `secs_left_start_at_least` | integer | `clock_start_at_least` as seconds left in the game. | NA in overtime. | |
 | 24 | `pos_team` | character | Team with the ball: the offense; the receiving team on a kickoff; the scoring team on a try. | Never NA. | Season-index spelling. |
 | 25 | `def_pos_team` | character | The other team. | Never NA. | The kicking team on a kickoff. |
 | 26 | `pos_team_score` | integer | `pos_team`'s score before the play. | Never NA. | |

@@ -141,17 +141,17 @@ clean_clock_anchors <- function(anchors) {
 #' goal, kickoff), the next drive's start time if that is in the same
 #' quarter (a hand-over that ends a quarter is left NA).
 #'
-#' **`clock_start_max` / `clock_start_min`** (always filled in regulation):
+#' **`clock_start_at_most` / `clock_start_at_least`** (always filled in regulation):
 #' the range the snap clock must lie in: the latest known reading at or
 #' before the snap (most time it could be) and the earliest at or after it
 #' (least time), within the quarter, with 15:00 at the quarter's start and
 #' 00:00 at its end. Readings include the per-play printed clocks. A play's
 #' own printed clock and `clock_end` are after its snap, so they can be its
-#' `clock_start_min` but never its `clock_start_max`. When the two meet,
+#' `clock_start_at_least` but never its `clock_start_at_most`. When the two meet,
 #' `clock_start` is set to that value; when `clock_start` is known, all three
 #' are equal. Never interpolated.
 #'
-#' **`secs_remaining_start` / `_end` / `_start_max` / `_start_min`**: the
+#' **`secs_left_start` / `_end` / `_start_at_most` / `_start_at_least`**: the
 #' same four as integer seconds remaining in the game (regulation):
 #' `(4 - period) * 900 + quarter clock seconds`.
 #'
@@ -163,8 +163,8 @@ clean_clock_anchors <- function(anchors) {
 #'   `penalty_no_play`, `touchdown`, `turnover`, `downs_turnover`,
 #'   `field_goal_made`, `safety`.
 #' @return A list: `kept` with `clock_start`, `clock_end`,
-#'   `clock_start_max`, `clock_start_min` ("MM:SS") and the four
-#'   `secs_remaining_*` (integer), and `discarded` (readings dropped as
+#'   `clock_start_at_most`, `clock_start_at_least` ("MM:SS") and the four
+#'   `secs_left_*` (integer), and `discarded` (readings dropped as
 #'   inconsistent).
 #' @keywords internal
 derive_clock <- function(full, kept) {
@@ -266,15 +266,15 @@ derive_clock <- function(full, kept) {
   lower[ot] <- NA
   kept$clock_start <- fmt_clock(start)
   kept$clock_end <- fmt_clock(end)
-  kept$clock_start_max <- fmt_clock(upper)
-  kept$clock_start_min <- fmt_clock(lower)
+  kept$clock_start_at_most <- fmt_clock(upper)
+  kept$clock_start_at_least <- fmt_clock(lower)
   # the same four as seconds remaining in the game (regulation): later
   # quarters' full 15:00 plus the quarter clock
   game_secs <- function(x) ifelse(is.na(x), NA_integer_, (4L - kept$period) * 900L + x)
-  kept$secs_remaining_start <- game_secs(start)
-  kept$secs_remaining_end <- game_secs(end)
-  kept$secs_remaining_start_max <- game_secs(upper)
-  kept$secs_remaining_start_min <- game_secs(lower)
+  kept$secs_left_start <- game_secs(start)
+  kept$secs_left_end <- game_secs(end)
+  kept$secs_left_start_at_most <- game_secs(upper)
+  kept$secs_left_start_at_least <- game_secs(lower)
   discarded$value <- fmt_clock(discarded$secs)
   list(kept = kept, discarded = discarded[, c("row", "quarter", "value", "kind", "text")],
        anchors = good, opening_rows = opening_rows)

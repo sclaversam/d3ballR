@@ -15,8 +15,8 @@ derive_clock(full, kept)
 }
 \value{
 A list: \code{kept} with \code{clock_start}, \code{clock_end},
-\code{clock_start_max}, \code{clock_start_min} ("MM:SS") and the four
-\verb{secs_remaining_*} (integer), and \code{discarded} (readings dropped as
+\code{clock_start_at_most}, \code{clock_start_at_least} ("MM:SS") and the four
+\verb{secs_left_*} (integer), and \code{discarded} (readings dropped as
 inconsistent).
 }
 \description{
@@ -41,17 +41,17 @@ that hands the ball over (punt, turnover, downs, missed / blocked field
 goal, kickoff), the next drive's start time if that is in the same
 quarter (a hand-over that ends a quarter is left NA).
 
-\strong{\code{clock_start_max} / \code{clock_start_min}} (always filled in regulation):
+\strong{\code{clock_start_at_most} / \code{clock_start_at_least}} (always filled in regulation):
 the range the snap clock must lie in: the latest known reading at or
 before the snap (most time it could be) and the earliest at or after it
 (least time), within the quarter, with 15:00 at the quarter's start and
 00:00 at its end. Readings include the per-play printed clocks. A play's
 own printed clock and \code{clock_end} are after its snap, so they can be its
-\code{clock_start_min} but never its \code{clock_start_max}. When the two meet,
+\code{clock_start_at_least} but never its \code{clock_start_at_most}. When the two meet,
 \code{clock_start} is set to that value; when \code{clock_start} is known, all three
 are equal. Never interpolated.
 
-\strong{\code{secs_remaining_start} / \verb{_end} / \verb{_start_max} / \verb{_start_min}}: the
+\strong{\code{secs_left_start} / \verb{_end} / \verb{_start_at_most} / \verb{_start_at_least}}: the
 same four as integer seconds remaining in the game (regulation):
 \verb{(4 - period) * 900 + quarter clock seconds}.
 

@@ -5,6 +5,22 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Clock columns renamed
+
+Decided by Sam (2026-11-27), for readability. Names only; every value is
+the same.
+
+| Old | New |
+|---|---|
+| `clock_start_max` | `clock_start_at_most` |
+| `clock_start_min` | `clock_start_at_least` |
+| `secs_remaining_start` | `secs_left_start` |
+| `secs_remaining_end` | `secs_left_end` |
+| `secs_remaining_start_max` | `secs_left_start_at_most` |
+| `secs_remaining_start_min` | `secs_left_start_at_least` |
+
+Earlier entries use the old names.
+
 ## Scorer's comments and the PAT heading
 
 - **`scorer_note`** (new row type, not kept): a short line with no play in

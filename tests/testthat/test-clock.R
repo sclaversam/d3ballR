@@ -19,16 +19,16 @@ test_that("built games: clock columns are consistent and the seconds columns mir
     g <- utils::read.csv(f, na.strings = "")
     reg <- g$period <= 4
     st <- clock_secs(g$clock_start); en <- clock_secs(g$clock_end)
-    mx <- clock_secs(g$clock_start_max); mn <- clock_secs(g$clock_start_min)
+    mx <- clock_secs(g$clock_start_at_most); mn <- clock_secs(g$clock_start_at_least)
     expect_true(all(!is.na(mx[reg]) & !is.na(mn[reg]) & mx[reg] >= mn[reg]), label = paste(basename(f), "bounds"))
     expect_true(all(is.na(st) | (st <= mx & st >= mn)), label = paste(basename(f), "start inside bounds"))
     expect_true(all(is.na(st) | is.na(en) | en <= st), label = paste(basename(f), "end <= start"))
     gs <- function(x) ifelse(is.na(x), NA, (4L - g$period) * 900L + x)
-    expect_equal(g$secs_remaining_start, gs(st), label = paste(basename(f), "secs start"))
-    expect_equal(g$secs_remaining_end, gs(en), label = paste(basename(f), "secs end"))
-    expect_equal(g$secs_remaining_start_max, gs(mx), label = paste(basename(f), "secs max"))
-    expect_equal(g$secs_remaining_start_min, gs(mn), label = paste(basename(f), "secs min"))
-    expect_true(all(is.na(g$clock_start_max[!reg])), label = paste(basename(f), "OT untimed"))
+    expect_equal(g$secs_left_start, gs(st), label = paste(basename(f), "secs start"))
+    expect_equal(g$secs_left_end, gs(en), label = paste(basename(f), "secs end"))
+    expect_equal(g$secs_left_start_at_most, gs(mx), label = paste(basename(f), "secs max"))
+    expect_equal(g$secs_left_start_at_least, gs(mn), label = paste(basename(f), "secs min"))
+    expect_true(all(is.na(g$clock_start_at_most[!reg])), label = paste(basename(f), "OT untimed"))
     p <- clock_secs(stringr::str_match(g$play_text, "^\\((\\d{1,2}:\\d{2})\\)")[, 2])
     # a printed clock that survived cleaning is a minimum for its own snap.
     # A printed clock that contradicts an official reading is discarded
@@ -48,7 +48,7 @@ test_that("bounds meeting pins clock_start (McDaniel game: printed clocks tighte
   skip_if_not(file.exists(f))
   g <- utils::read.csv(f, na.strings = "")
   r <- g[g$play_index == 162, ]
-  expect_equal(c(r$clock_start_max, r$clock_start_min), c("02:32", "01:59"))  # 09:09 typo ignored
-  pinned <- !is.na(g$clock_start) & g$clock_start_max == g$clock_start_min
-  expect_true(all(g$clock_start[pinned] == g$clock_start_max[pinned]))
+  expect_equal(c(r$clock_start_at_most, r$clock_start_at_least), c("02:32", "01:59"))  # 09:09 typo ignored
+  pinned <- !is.na(g$clock_start) & g$clock_start_at_most == g$clock_start_at_least
+  expect_true(all(g$clock_start[pinned] == g$clock_start_at_most[pinned]))
 })

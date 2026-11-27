@@ -28,8 +28,8 @@ snap belongs to the other team) with \code{yards_to_goal}, the next snap's
 own down / distance / yards to goal, and its team and text. The
 \verb{next_*} values are from the next snap's offense view, so across a
 change of possession they are measured toward the other end zone.
-\item \code{clock_bounds.csv}: any regulation row whose \code{clock_start_max} /
-\code{clock_start_min} is NA, max < min, or \code{clock_start} (when known) falls
+\item \code{clock_bounds.csv}: any regulation row whose \code{clock_start_at_most} /
+\code{clock_start_at_least} is NA, max < min, or \code{clock_start} (when known) falls
 outside them (should be
 empty; overtime is untimed, so its clock columns are NA by design).
 }
