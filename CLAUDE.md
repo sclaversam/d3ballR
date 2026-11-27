@@ -17,7 +17,11 @@ scope for now.
 **Roadmap:** CMU 2025 (done) → Centennial Conference 2025 (done; checkpoint
 tag `checkpoint-centennial-2025`) → all of
 D3 2025 (done 2026-11-17: all 1,263 games, 9 of them from saved
-stats.ncaa.org pages; 1,262 reconcile) → other seasons.
+stats.ncaa.org pages; 1,262 reconcile) → package release (2026-11-27:
+users get `load_d3_pbp()`, `load_d3_games()`, `build_season()`; everything
+else is internal) → other seasons. After any change to the output, rerun
+`Rscript scripts/release_season.R 2025` and re-upload the release file
+(`docs/pipeline.md`, "Releasing a season").
 Everything in `R/` must stay generic: no code may assume a team or a season.
 Each roadmap stage is the same `build_season()` call with a different `teams`
 filter or `season`, not a new pipeline.

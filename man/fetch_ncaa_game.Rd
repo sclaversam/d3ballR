@@ -24,3 +24,4 @@ parser reads with \code{\link[=ncaa_play_table]{ncaa_play_table()}}. Home and aw
 table. The final score is ncaa.com's
 scoreboard score, else its last running score.
 }
+\keyword{internal}

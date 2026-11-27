@@ -4,7 +4,9 @@
 \alias{load_known_exceptions}
 \title{Games whose score can't reconcile because of a gap in the source}
 \usage{
-load_known_exceptions(file = "data-raw/ncaa/known_exceptions.csv")
+load_known_exceptions(
+  file = d3_dir("data-raw", "ncaa", "known_exceptions.csv")
+)
 }
 \arguments{
 \item{file}{Path to the CSV.}

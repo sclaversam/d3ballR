@@ -23,3 +23,4 @@ away follow the game list; the page's two teams are matched to them by
 name (then the order on the page: away first). The
 final score is the game list's, else the page's.
 }
+\keyword{internal}

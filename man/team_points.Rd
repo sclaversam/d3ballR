@@ -19,3 +19,4 @@ Integer.
 \code{pos_team}, negative points (a defensive TD, a safety) to
 \code{def_pos_team}.
 }
+\keyword{internal}

@@ -34,3 +34,4 @@ outside them (should be
 empty; overtime is untimed, so its clock columns are NA by design).
 }
 }
+\keyword{internal}

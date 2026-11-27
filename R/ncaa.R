@@ -49,8 +49,8 @@ ncaa_cache_key <- function(path) {
 #' an ncaa-api server ([ncaa_api_base()]). Both store the same JSON.
 #'
 #' Every response is cached on disk
-#' (`getOption("d3ballR.ncaa_cache_dir")`, default `data-raw/cache/ncaa/`,
-#' gitignored) and never requested twice; requests are at least
+#' (`getOption("d3ballR.ncaa_cache_dir")`, default `data-raw/cache/ncaa/`
+#' under [d3_root()], gitignored in the repository) and never requested twice; requests are at least
 #' `d3ballR.delay` seconds apart and count against `d3ballR.max_requests`;
 #' with `options(d3ballR.offline = TRUE)` nothing is requested. A failed
 #' request (no play-by-play for the game yet: HTTP 502, as ncaa-api
@@ -62,7 +62,7 @@ ncaa_cache_key <- function(path) {
 #'   `simplifyVector = FALSE`).
 #' @keywords internal
 fetch_ncaa_json <- function(path, refresh = FALSE) {
-  cache_dir <- getOption("d3ballR.ncaa_cache_dir", "data-raw/cache/ncaa")
+  cache_dir <- getOption("d3ballR.ncaa_cache_dir", d3_dir("data-raw", "cache", "ncaa"))
   file <- file.path(cache_dir, ncaa_cache_key(path))
   if (!refresh && file.exists(file)) return(jsonlite::fromJSON(file, simplifyVector = FALSE))
   if (isTRUE(getOption("d3ballR.offline", FALSE))) {
@@ -282,8 +282,8 @@ conf_seo <- function(team) {
 #'   `table` (`season`, `team`, `conference`, `conference_code`,
 #'   `ncaa_conference`) and `markers` (`season`, `team`, `game_id`,
 #'   `conference_marker`; one row per index game, `team` is the home team).
-#' @export
-ncaa_conference_table <- function(season, index, weeks = 1:20, dir = "data-raw/ncaa") {
+#' @keywords internal
+ncaa_conference_table <- function(season, index, weeks = 1:20, dir = d3_dir("data-raw", "ncaa")) {
   sb <- list()
   for (w in weeks) {
     x <- tryCatch(ncaa_scoreboard_week(season, w), error = function(e) NULL)
@@ -379,8 +379,8 @@ placeholder_bracket_round <- function(sb, placeholders) {
 #' @return A data frame, one row per game: `game_id`, `season`,
 #'   `game_date`, `week`, `season_type`, `home`, `away`, `home_score`,
 #'   `away_score`, `bracket_round`.
-#' @export
-ncaa_season_games <- function(season, weeks = 1:20, dir = "data-raw/ncaa", season_dates = NULL) {
+#' @keywords internal
+ncaa_season_games <- function(season, weeks = 1:20, dir = d3_dir("data-raw", "ncaa"), season_dates = NULL) {
   sb <- list()
   for (w in weeks) {
     x <- tryCatch(ncaa_scoreboard_week(season, w), error = function(e) NULL)
@@ -618,7 +618,7 @@ ncaa_move_late_touchdowns <- function(lines) {
 #' @return A data frame with `game_id` and `reason` (no rows if the file is
 #'   missing).
 #' @keywords internal
-load_known_exceptions <- function(file = "data-raw/ncaa/known_exceptions.csv") {
+load_known_exceptions <- function(file = d3_dir("data-raw", "ncaa", "known_exceptions.csv")) {
   if (!file.exists(file)) return(data.frame(game_id = character(), reason = character()))
   utils::read.csv(file, colClasses = "character")
 }
@@ -780,7 +780,7 @@ ncaa_spot_token_map <- function(spots, dt) {
 #'   isn't trusted mid-drive.
 #' - ncaa.com leaves out some extra-point kicks. When a touchdown is
 #'   followed by no try line before the next kickoff or snap, and ncaa.com's
-#'   score has risen by exactly 1 by then, a line "kick attempt good [...]"
+#'   score has risen by exactly 1 by then, a line `"kick attempt good [...]"`
 #'   is added after the touchdown (after its last try line) and labelled as
 #'   added (see `ncaa_added_try_text`). Some games (every Carnegie Mellon
 #'   home game in 2025) have no running score at all. There, ncaa.com's
@@ -1490,7 +1490,7 @@ ncaa_own_token <- function(team_id, token, yard, tokens) {
 #' @param index The game list ([ncaa_season_games()]).
 #' @return A game list for [build_pbp()]: `game_id`, `season`, `teams`,
 #'   `finals`, `matchup`, `header_date`, `plays`, plus `contest`.
-#' @export
+#' @keywords internal
 fetch_ncaa_game <- function(game_id, contests, index) {
   hit <- contests[contests$game_id == game_id, ]
   if (nrow(hit) != 1) stop("Not on ncaa.com: no ncaa.com contest matched to ", game_id, call. = FALSE)

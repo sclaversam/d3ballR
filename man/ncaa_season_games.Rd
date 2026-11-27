@@ -7,7 +7,7 @@
 ncaa_season_games(
   season,
   weeks = 1:20,
-  dir = "data-raw/ncaa",
+  dir = d3_dir("data-raw", "ncaa"),
   season_dates = NULL
 )
 }
@@ -58,3 +58,4 @@ counts on through the postseason: in 2025 the regular season is weeks
 
 Writes \verb{\{dir\}/\{season\}_games.csv}.
 }
+\keyword{internal}

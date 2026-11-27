@@ -59,7 +59,7 @@ touchdown); ncaa.com's \code{teamId} is wrong on some single lines, so it
 isn't trusted mid-drive.
 \item ncaa.com leaves out some extra-point kicks. When a touchdown is
 followed by no try line before the next kickoff or snap, and ncaa.com's
-score has risen by exactly 1 by then, a line "kick attempt good \link{...}"
+score has risen by exactly 1 by then, a line \code{"kick attempt good [...]"}
 is added after the touchdown (after its last try line) and labelled as
 added (see \code{ncaa_added_try_text}). Some games (every Carnegie Mellon
 home game in 2025) have no running score at all. There, ncaa.com's

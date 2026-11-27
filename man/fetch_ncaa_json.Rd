@@ -25,8 +25,8 @@ an ncaa-api server (\code{\link[=ncaa_api_base]{ncaa_api_base()}}). Both store t
 }
 \details{
 Every response is cached on disk
-(\code{getOption("d3ballR.ncaa_cache_dir")}, default \verb{data-raw/cache/ncaa/},
-gitignored) and never requested twice; requests are at least
+(\code{getOption("d3ballR.ncaa_cache_dir")}, default \verb{data-raw/cache/ncaa/}
+under \code{\link[=d3_root]{d3_root()}}, gitignored in the repository) and never requested twice; requests are at least
 \code{d3ballR.delay} seconds apart and count against \code{d3ballR.max_requests};
 with \code{options(d3ballR.offline = TRUE)} nothing is requested. A failed
 request (no play-by-play for the game yet: HTTP 502, as ncaa-api

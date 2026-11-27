@@ -1,56 +1,74 @@
-#' Build a season's play-by-play: every game, or the games involving some teams
+#' Build a season's play-by-play from ncaa.com
 #'
-#' One pipeline for every stage of the roadmap. The games come from
-#' ncaa.com's scoreboards ([ncaa_season_games()]): with `teams = NULL`,
-#' every game in the list; with `teams`, only games involving one of them
-#' (e.g. a conference's members: any of their games, including
-#' non-conference and playoff games). Games already in `out_dir` are always
-#' rebuilt too, so `out_dir` and the reports in `check_dir` always cover
-#' every game built so far for the season.
+#' Scrapes ncaa.com and builds the play-by-play yourself: a whole season,
+#' or the games involving some teams. For seasons already released,
+#' [load_d3_pbp()] gives the same table without scraping.
 #'
-#' Each game's play-by-play is requested from ncaa.com directly from R (see
-#' [fetch_ncaa_json()]; an ncaa-api server is optional), fetched by
-#' [prefetch_ncaa_games()], and rebuilt into the (situation, play) table the
-#' parser reads by [fetch_ncaa_game()]. The few games ncaa.com can't give
-#' are built from a stats.ncaa.org page saved by hand instead
-#' ([stats_ncaa_games()], [fetch_stats_ncaa_game()]).
+#' The games come from ncaa.com's Division III scoreboards (one request per
+#' week). With `teams`, only games involving one of them are built: all
+#' their games, including non-conference and playoff games. Each game's
+#' play-by-play is then requested from ncaa.com and built with the same
+#' rules as the released data (68 columns; see the schema in the package's
+#' GitHub repository, `docs/schema.md`).
 #'
-#' Steps: fetch every game not yet cached, read each team's conference off
-#' the cached scoreboards ([ncaa_conference_table()]), build each game
-#' ([build_all_pbp()]), then write the build report ([write_build_report()])
-#' and the first-down report ([write_first_down_report()]).
+#' **Requests are cached, throttled and capped.** Every response is saved
+#' (by default in `tools::R_user_dir("d3ballR", "cache")`; see the
+#' `d3ballR.dir` option) and never requested again, so a second call is
+#' quick and an interrupted call continues where it stopped. Requests are
+#' `delay` seconds apart: one team's season is about 35 requests (about 4
+#' minutes), a whole season about 1,300 (about 2 hours). A game ncaa.com
+#' has no play-by-play for yet is skipped and reported as pending.
 #'
-#' Fetching is cached (nothing is requested twice), throttled (`delay`
-#' seconds apart) and capped (`max_requests` new requests per call).
-#' Anything not fetched is reported as pending, so calling `build_season()`
-#' again picks up where the last call stopped.
+#' Only the 2025 season has been validated. Other seasons run with the
+#' same rules, but ncaa.com's files vary by host school, so check the
+#' result (with `check_dir`, the score reconciliation shows any game whose
+#' plays don't add up to its final score).
 #'
-#' @param season Season year.
-#' @param teams Team names (the game list's spelling) to filter to, or NULL
-#'   for the whole season.
-#' @param max_requests Maximum new network requests in this call.
-#' @param delay Seconds between requests.
-#' @param out_dir Per-game CSVs. NULL means `pbp/{season}/`.
-#' @param check_dir Reports. NULL means `checks/{season}/`.
-#' @return Invisibly, the list of built games.
+#' In the d3ballR repository: steps are [prefetch_ncaa_games()],
+#' [ncaa_conference_table()], [build_all_pbp()], [write_build_report()] and
+#' [write_first_down_report()]; the few games ncaa.com can't give are built
+#' from stats.ncaa.org pages saved by hand ([stats_ncaa_games()]).
+#'
+#' @param season Season year (the fall it starts in: 2025 for 2025-26).
+#' @param teams Team names to filter to, as ncaa.com spells them
+#'   ("Carnegie Mellon", "Trinity (TX)"; see [load_d3_games()]), or NULL
+#'   for every game.
+#' @param max_requests Maximum new requests to ncaa.com in this call.
+#' @param delay Seconds between requests (at least 6 is polite).
+#' @param out_dir Folder to also write one CSV per game to, or NULL for
+#'   none. Games already in it are rebuilt too.
+#' @param check_dir Folder to write the validation reports to
+#'   (`build_report.md`, `score_reconciliation.csv`, ...), or NULL for none.
+#' @return A tibble, one row per play (see [load_d3_pbp()]). Games that
+#'   could not be fetched or built are left out, with a message.
+#' @examples
+#' \dontrun{
+#' cmu <- build_season(2025, teams = "Carnegie Mellon")
+#' }
 #' @export
 build_season <- function(season, teams = NULL, max_requests = Inf, delay = 6,
                          out_dir = NULL, check_dir = NULL) {
-  if (is.null(out_dir)) out_dir <- file.path("pbp", season)
-  if (is.null(check_dir)) check_dir <- file.path("checks", season)
   reset_fetch_state()
   old <- options(d3ballR.delay = delay, d3ballR.max_requests = max_requests)
   on.exit(options(old), add = TRUE)
+  # the reports are needed internally (write_build_report() reads them
+  # back); without check_dir they go to a temporary folder
+  keep_checks <- !is.null(check_dir)
+  if (!keep_checks) {
+    check_dir <- tempfile("d3ballR_checks_")
+    on.exit(unlink(check_dir, recursive = TRUE), add = TRUE)
+  }
 
   # the game list: ncaa.com's scoreboards (game_id = contest id)
   idx <- ncaa_season_games(season)
+  if (!is.null(teams)) check_team_names(teams, c(idx$home, idx$away))
   in_scope <- !is.na(idx$game_id) & (is.null(teams) | idx$home %in% teams | idx$away %in% teams)
-  existing <- sub("\\.csv$", "", list.files(out_dir, pattern = "\\.csv$"))
+  existing <- if (is.null(out_dir)) character() else sub("\\.csv$", "", list.files(out_dir, pattern = "\\.csv$"))
   games <- idx[in_scope | idx$game_id %in% existing, ]
   message(season, ": ", nrow(games), " games in scope (", sum(games$game_id %in% existing), " already built)")
 
   contests <- ncaa_contest_table(idx)
-  # games ncaa.com can't give, built from a stats.ncaa.org page Sam saved
+  # games ncaa.com can't give, built from a stats.ncaa.org page saved by hand
   stats_games <- stats_ncaa_games(season, idx)
   prefetch_ncaa_games(contests$contest[contests$game_id %in% games$game_id & !contests$game_id %in% names(stats_games)])
   conf <- ncaa_conference_table(season, idx)
@@ -61,7 +79,27 @@ build_season <- function(season, teams = NULL, max_requests = Inf, delay = 6,
                          loader = loader, season = season, index = idx)
   write_build_report(season, teams, games, built, conf, check_dir, out_dir = out_dir, stats_games = stats_games)
   write_first_down_report(built, check_dir)
-  invisible(built)
+  if (keep_checks) message("Reports: ", file.path(check_dir, "build_report.md"))
+  pbp <- tibble::as_tibble(dplyr::bind_rows(unname(built)))
+  pbp[order(pbp$game_date, pbp$game_id, pbp$play_index), , drop = FALSE]
+}
+
+#' Stop on team names that aren't in the game list, suggesting close ones
+#'
+#' @param teams Names asked for.
+#' @param known Names in the data.
+#' @keywords internal
+check_team_names <- function(teams, known) {
+  known <- sort(unique(stats::na.omit(known)))
+  bad <- setdiff(teams, known)
+  if (!length(bad)) return(invisible(TRUE))
+  hints <- vapply(bad, function(b) {
+    close <- known[agrepl(b, known, ignore.case = TRUE, max.distance = 0.2) |
+                     grepl(b, known, ignore.case = TRUE, fixed = FALSE)]
+    if (length(close)) paste0(" (did you mean ", paste0("\"", utils::head(close, 4), "\"", collapse = ", "), "?)") else ""
+  }, character(1))
+  stop("No games for: ", paste0("\"", bad, "\"", hints, collapse = "; "),
+       ". Team names are ncaa.com's short names; see load_d3_games().", call. = FALSE)
 }
 
 #' Fetch (and cache) the ncaa.com play-by-play of games not yet cached
@@ -80,7 +118,7 @@ build_season <- function(season, teams = NULL, max_requests = Inf, delay = 6,
 #' @keywords internal
 prefetch_ncaa_games <- function(contests) {
   contests <- unique(stats::na.omit(contests))
-  cache_dir <- getOption("d3ballR.ncaa_cache_dir", "data-raw/cache/ncaa")
+  cache_dir <- getOption("d3ballR.ncaa_cache_dir", d3_dir("data-raw", "cache", "ncaa"))
   cached <- function(p) file.exists(file.path(cache_dir, ncaa_cache_key(p)))
   pbp <- paste0("/game/", contests, "/play-by-play")
   summ <- paste0("/game/", contests, "/scoring-summary")
@@ -120,11 +158,11 @@ prefetch_ncaa_games <- function(contests) {
 #' @param built Output of [build_all_pbp()].
 #' @param conf Output of [ncaa_conference_table()].
 #' @param check_dir Report directory.
-#' @param out_dir Where the per-game CSVs are (named in the report).
+#' @param out_dir Where the per-game CSVs are (named in the report), or NULL.
 #' @param stats_games Output of [stats_ncaa_games()].
 #' @keywords internal
 write_build_report <- function(season, teams, games, built, conf, check_dir,
-                               out_dir = file.path("pbp", season), stats_games = character()) {
+                               out_dir = NULL, stats_games = character()) {
   md_table <- function(df) {
     if (!nrow(df)) return("None.")
     df[] <- lapply(df, function(x) ifelse(is.na(x), "", as.character(x)))
@@ -158,7 +196,7 @@ write_build_report <- function(season, teams, games, built, conf, check_dir,
     paste0("games involving: ", paste(sort(teams), collapse = ", "))
   out <- c(
     paste0("# ", season, " build report"), "",
-    paste0("Generated by `build_season()`. Per-game CSVs are in `", out_dir, "/`."), "",
+    paste0("Generated by `build_season()`.", if (!is.null(out_dir)) paste0(" Per-game CSVs are in `", out_dir, "/`.") else ""), "",
     "## Scope", "",
     paste0("- **Requested:** ", scope, "."),
     paste0("- **Games in scope:** ", nrow(games), " (includes every game already built for the season)."),

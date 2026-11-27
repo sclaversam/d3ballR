@@ -45,3 +45,4 @@ the game list (see \code{\link[=ncaa_season_games]{ncaa_season_games()}}).
 See \code{R/classify.R} and \code{R/parse_play_type.R} for the upstream row_type /
 play_type classification this builds on.
 }
+\keyword{internal}

@@ -42,3 +42,4 @@ last line (\code{home_score}, \code{visitor_score}); other lines are NA.
 any "clock MM:SS").
 }
 }
+\keyword{internal}

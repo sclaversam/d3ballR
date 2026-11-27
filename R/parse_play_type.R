@@ -39,7 +39,7 @@ play_type_categories <- c(
 #'   by [classify_plays()].
 #' @return `classified` with an added `play_type` column (character, `NA` for
 #'   non-`play` rows).
-#' @export
+#' @keywords internal
 parse_play_type <- function(classified) {
   p <- classified$play
   is_play <- classified$row_type == "play"

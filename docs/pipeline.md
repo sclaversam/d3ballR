@@ -25,10 +25,18 @@ used until 2026-11-08), set `options(d3ballR.ncaa_api =
 ```r
 devtools::load_all()
 conf <- read.csv("data-raw/ncaa/2025_conferences.csv")
-build_season(2025, teams = conf$team[conf$conference_code %in% "CC"])  # one conference's games
-build_season(2025)                           # every 2025 game
-build_season(2025, max_requests = 100)       # cap new requests this run
+cc <- conf$team[conf$conference_code %in% "CC"]
+build_season(2025, teams = cc, out_dir = "pbp/2025", check_dir = "checks/2025")  # one conference
+build_season(2025, out_dir = "pbp/2025", check_dir = "checks/2025")              # every 2025 game
+build_season(2025, max_requests = 100, out_dir = "pbp/2025", check_dir = "checks/2025")
 ```
+
+`build_season()` returns the plays as one tibble and writes the per-game
+CSVs and reports only when given `out_dir` / `check_dir` (the script below
+passes both). Run from the repository, its working files (cache, game
+lists, saved stats.ncaa.org pages) are the repo's `data-raw/`; an installed
+copy uses `tools::R_user_dir("d3ballR", "cache")` instead
+(`d3_root()`; `options(d3ballR.dir = ...)` overrides).
 
 From the command line:
 
@@ -40,6 +48,15 @@ OFFLINE=1 Rscript scripts/build_season.R 2025                   # cache only
 
 In the cloud, prefix R commands with `LC_ALL=C.UTF-8` so accented names are
 written as UTF-8.
+
+**Releasing a season** (what `load_d3_pbp()` and `load_d3_games()`
+serve): `Rscript scripts/release_season.R 2025` rebuilds the season from
+the cache (offline), saves every game in `release/pbp_2025.rds`
+(gitignored; about 6 MB) and copies the game list and conference table to
+`inst/extdata/games/`, which ship with the package. Then upload the `.rds`
+to the GitHub release `pbp_data` (`gh release upload pbp_data
+release/pbp_2025.rds --clobber`) and commit `inst/extdata/games/`. Rerun
+after any change to the output, so the release matches `pbp/`.
 
 **Resumable runs:** every run also rebuilds every game already in the
 output folder, so it and the reports always cover everything built so far.
@@ -309,7 +326,10 @@ read), 44 reconcile (`6529896` was a source gap, fixed later from stats.ncaa.org
    Conferences come from ncaa.com's scoreboards for every team. Expect new
    StatCrew formats to surface. The score-reconciliation test and the
    `first_downs.md` series check are the main guards.
-4. **Other seasons:** check that ncaa.com has the season's scoreboards and
+4. **Package release** (2026-11-27): users get three functions,
+   `load_d3_pbp()` (the released data), `load_d3_games()` (the game list)
+   and `build_season()` (scrape it yourself); everything else is internal.
+5. **Other seasons:** check that ncaa.com has the season's scoreboards and
    play-by-play, then `build_season(season)`.
 
 Not planned: EPA / win probability models and player names. Drive-level

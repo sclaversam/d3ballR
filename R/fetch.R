@@ -15,7 +15,7 @@ n_requests <- function() if (is.null(.fetch_state$n_requests)) 0L else .fetch_st
 #' [build_season()] calls this at the start of each run, so its
 #' `max_requests` cap counts this run's requests only, and a path that
 #' failed in an earlier run is asked again.
-#' @export
+#' @keywords internal
 reset_fetch_state <- function() {
   .fetch_state$n_requests <- 0L
   .fetch_state$http_failed <- character()

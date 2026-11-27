@@ -17,7 +17,7 @@ build_all_pbp(
 \arguments{
 \item{game_ids}{Game ids (one season).}
 
-\item{out_dir}{Directory to write per-game CSVs into.}
+\item{out_dir}{Directory to write per-game CSVs into, or NULL for none.}
 
 \item{check_dir}{Directory for the validation reports.}
 
@@ -43,3 +43,4 @@ and \code{build_failures.csv}. A game that fails to build is logged in
 \code{build_failures.csv} and skipped, so one bad game doesn't stop the batch.
 Prints the per-game counts.
 }
+\keyword{internal}

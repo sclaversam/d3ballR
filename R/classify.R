@@ -109,7 +109,7 @@ note_patterns <- c(
 #' @param plays A tibble with `situation` and `play` columns (a game's
 #'   `plays`, from [ncaa_play_table()]).
 #' @return `plays` with an added `row_type` column (character).
-#' @export
+#' @keywords internal
 classify_plays <- function(plays) {
   is_dd <- stringr::str_detect(plays$situation, dd_pattern)
   has_verb <- stringr::str_detect(plays$play, stringr::regex(verb_pattern, ignore_case = TRUE))

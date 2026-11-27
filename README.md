@@ -20,23 +20,41 @@ gap for Division III.
   validation report is clean or explains its exceptions.
 - **Generic:** nothing assumes a team or season.
 
-## Quick start
+## Install
 
 ```r
-# install.packages("devtools")
-devtools::load_all()
-
-# one game (ncaa.com contest id; the game list is data-raw/ncaa/2025_games.csv)
-games <- ncaa_season_games(2025)
-g <- build_pbp(fetch_ncaa_game("6461445", ncaa_contest_table(games), games), index = games)
-
-# a season, or the games involving some teams
-conf <- read.csv("data-raw/ncaa/2025_conferences.csv")
-build_season(2025, teams = conf$team[conf$conference_code %in% "CC"])   # writes pbp/2025/ and checks/2025/
+# install.packages("remotes")
+remotes::install_github("sclaversam/d3ballR")
 ```
 
-Or read the built CSVs directly: `read.csv("pbp/2025/6461445.csv",
-na.strings = "")`.
+## Quick start
+
+Three functions:
+
+```r
+library(d3ballR)
+
+# the play-by-play: downloaded once (about 6 MB a season), then read from disk
+pbp <- load_d3_pbp(2025)
+cmu <- load_d3_pbp(2025, teams = "Carnegie Mellon")
+
+# the game list: game ids, dates, scores, conferences, NCAA tournament round
+games <- load_d3_games(2025)
+
+# scrape and build it yourself, from ncaa.com (for seasons not released yet)
+cmu <- build_season(2025, teams = "Carnegie Mellon")
+```
+
+- **`load_d3_pbp(seasons, teams)`**: the released play-by-play, one row
+  per play. Released so far: 2025.
+- **`load_d3_games(seasons)`**: one row per game. Team names are ncaa.com's
+  short names ("Carnegie Mellon", "Trinity (TX)"); look them up here.
+- **`build_season(season, teams)`**: requests the season from ncaa.com and
+  builds it with the same rules as the released data. Requests are 6
+  seconds apart and cached, so one team's season takes about 4 minutes and
+  a whole season about 2 hours; a second run is instant. Only 2025 has been
+  validated, so check other seasons' results
+  (`build_season(..., check_dir = "checks")` writes the validation reports).
 
 ## What's in each row
 
@@ -57,7 +75,7 @@ Every column is defined in **[docs/schema.md](docs/schema.md)**.
 ```
 R/                 package code (pipeline stages; see docs/pipeline.md)
 tests/testthat/    unit tests + data tests over every built game
-scripts/           build_season.R
+scripts/           build_season.R (build into pbp/, checks/), release_season.R (make release files)
 pbp/{season}/      built play-by-play, one CSV per game
 checks/{season}/   validation reports for that season
 data-raw/          ncaa.com game lists and conference tables, known source gaps, saved stats.ncaa.org pages (response cache: gitignored)
@@ -75,5 +93,5 @@ docs/              schema.md, pipeline.md, CHANGELOG.md, coverage audit
 
 ## Roadmap
 
-CMU 2025 → Centennial Conference 2025 → all of D3 2025 (done) → a data
-loader and a package release → other seasons.
+CMU 2025 → Centennial Conference 2025 → all of D3 2025 → a package
+release (done) → other seasons.

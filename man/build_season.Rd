@@ -2,7 +2,7 @@
 % Please edit documentation in R/build_season.R
 \name{build_season}
 \alias{build_season}
-\title{Build a season's play-by-play: every game, or the games involving some teams}
+\title{Build a season's play-by-play from ncaa.com}
 \usage{
 build_season(
   season,
@@ -14,46 +14,59 @@ build_season(
 )
 }
 \arguments{
-\item{season}{Season year.}
+\item{season}{Season year (the fall it starts in: 2025 for 2025-26).}
 
-\item{teams}{Team names (the game list's spelling) to filter to, or NULL
-for the whole season.}
+\item{teams}{Team names to filter to, as ncaa.com spells them
+("Carnegie Mellon", "Trinity (TX)"; see \code{\link[=load_d3_games]{load_d3_games()}}), or NULL
+for every game.}
 
-\item{max_requests}{Maximum new network requests in this call.}
+\item{max_requests}{Maximum new requests to ncaa.com in this call.}
 
-\item{delay}{Seconds between requests.}
+\item{delay}{Seconds between requests (at least 6 is polite).}
 
-\item{out_dir}{Per-game CSVs. NULL means \verb{pbp/\{season\}/}.}
+\item{out_dir}{Folder to also write one CSV per game to, or NULL for
+none. Games already in it are rebuilt too.}
 
-\item{check_dir}{Reports. NULL means \verb{checks/\{season\}/}.}
+\item{check_dir}{Folder to write the validation reports to
+(\code{build_report.md}, \code{score_reconciliation.csv}, ...), or NULL for none.}
 }
 \value{
-Invisibly, the list of built games.
+A tibble, one row per play (see \code{\link[=load_d3_pbp]{load_d3_pbp()}}). Games that
+could not be fetched or built are left out, with a message.
 }
 \description{
-One pipeline for every stage of the roadmap. The games come from
-ncaa.com's scoreboards (\code{\link[=ncaa_season_games]{ncaa_season_games()}}): with \code{teams = NULL},
-every game in the list; with \code{teams}, only games involving one of them
-(e.g. a conference's members: any of their games, including
-non-conference and playoff games). Games already in \code{out_dir} are always
-rebuilt too, so \code{out_dir} and the reports in \code{check_dir} always cover
-every game built so far for the season.
+Scrapes ncaa.com and builds the play-by-play yourself: a whole season,
+or the games involving some teams. For seasons already released,
+\code{\link[=load_d3_pbp]{load_d3_pbp()}} gives the same table without scraping.
 }
 \details{
-Each game's play-by-play is requested from ncaa.com directly from R (see
-\code{\link[=fetch_ncaa_json]{fetch_ncaa_json()}}; an ncaa-api server is optional), fetched by
-\code{\link[=prefetch_ncaa_games]{prefetch_ncaa_games()}}, and rebuilt into the (situation, play) table the
-parser reads by \code{\link[=fetch_ncaa_game]{fetch_ncaa_game()}}. The few games ncaa.com can't give
-are built from a stats.ncaa.org page saved by hand instead
-(\code{\link[=stats_ncaa_games]{stats_ncaa_games()}}, \code{\link[=fetch_stats_ncaa_game]{fetch_stats_ncaa_game()}}).
+The games come from ncaa.com's Division III scoreboards (one request per
+week). With \code{teams}, only games involving one of them are built: all
+their games, including non-conference and playoff games. Each game's
+play-by-play is then requested from ncaa.com and built with the same
+rules as the released data (68 columns; see the schema in the package's
+GitHub repository, \code{docs/schema.md}).
 
-Steps: fetch every game not yet cached, read each team's conference off
-the cached scoreboards (\code{\link[=ncaa_conference_table]{ncaa_conference_table()}}), build each game
-(\code{\link[=build_all_pbp]{build_all_pbp()}}), then write the build report (\code{\link[=write_build_report]{write_build_report()}})
-and the first-down report (\code{\link[=write_first_down_report]{write_first_down_report()}}).
+\strong{Requests are cached, throttled and capped.} Every response is saved
+(by default in \code{tools::R_user_dir("d3ballR", "cache")}; see the
+\code{d3ballR.dir} option) and never requested again, so a second call is
+quick and an interrupted call continues where it stopped. Requests are
+\code{delay} seconds apart: one team's season is about 35 requests (about 4
+minutes), a whole season about 1,300 (about 2 hours). A game ncaa.com
+has no play-by-play for yet is skipped and reported as pending.
 
-Fetching is cached (nothing is requested twice), throttled (\code{delay}
-seconds apart) and capped (\code{max_requests} new requests per call).
-Anything not fetched is reported as pending, so calling \code{build_season()}
-again picks up where the last call stopped.
+Only the 2025 season has been validated. Other seasons run with the
+same rules, but ncaa.com's files vary by host school, so check the
+result (with \code{check_dir}, the score reconciliation shows any game whose
+plays don't add up to its final score).
+
+In the d3ballR repository: steps are \code{\link[=prefetch_ncaa_games]{prefetch_ncaa_games()}},
+\code{\link[=ncaa_conference_table]{ncaa_conference_table()}}, \code{\link[=build_all_pbp]{build_all_pbp()}}, \code{\link[=write_build_report]{write_build_report()}} and
+\code{\link[=write_first_down_report]{write_first_down_report()}}; the few games ncaa.com can't give are built
+from stats.ncaa.org pages saved by hand (\code{\link[=stats_ncaa_games]{stats_ncaa_games()}}).
+}
+\examples{
+\dontrun{
+cmu <- build_season(2025, teams = "Carnegie Mellon")
+}
 }

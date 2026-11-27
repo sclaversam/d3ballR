@@ -39,3 +39,4 @@ Only rows with \code{row_type == "play"} are categorized; every other row_type
 gets \code{NA_character_} in \code{play_type} (this function does not parse down,
 yards, or yardline -- that's a later step).
 }
+\keyword{internal}

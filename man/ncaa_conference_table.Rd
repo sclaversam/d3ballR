@@ -4,7 +4,12 @@
 \alias{ncaa_conference_table}
 \title{Team-to-conference table and conference games, from ncaa.com}
 \usage{
-ncaa_conference_table(season, index, weeks = 1:20, dir = "data-raw/ncaa")
+ncaa_conference_table(
+  season,
+  index,
+  weeks = 1:20,
+  dir = d3_dir("data-raw", "ncaa")
+)
 }
 \arguments{
 \item{season}{Season year.}
@@ -38,3 +43,4 @@ ncaa.com has no conference-game marker, so \code{conference_marker} is TRUE
 for a regular-season game (the game list's \code{season_type}) between two
 teams of the same conference. Playoff and bowl games are FALSE.
 }
+\keyword{internal}

@@ -11,7 +11,7 @@ write_build_report(
   built,
   conf,
   check_dir,
-  out_dir = file.path("pbp", season),
+  out_dir = NULL,
   stats_games = character()
 )
 }
@@ -28,7 +28,7 @@ write_build_report(
 
 \item{check_dir}{Report directory.}
 
-\item{out_dir}{Where the per-game CSVs are (named in the report).}
+\item{out_dir}{Where the per-game CSVs are (named in the report), or NULL.}
 
 \item{stats_games}{Output of \code{\link[=stats_ncaa_games]{stats_ncaa_games()}}.}
 }

@@ -20,7 +20,7 @@
 #' @param games List of tibbles from [build_pbp()].
 #' @param check_dir Output directory.
 #' @return Invisibly, a named list of the report data frames.
-#' @export
+#' @keywords internal
 write_pbp_checks <- function(games, check_dir = "checks") {
   dir.create(check_dir, showWarnings = FALSE, recursive = TRUE)
   reports <- list()

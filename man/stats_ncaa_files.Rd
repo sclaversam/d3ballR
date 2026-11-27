@@ -4,7 +4,7 @@
 \alias{stats_ncaa_files}
 \title{Saved stats.ncaa.org pages in a folder, by the game they belong to}
 \usage{
-stats_ncaa_files(games, dir = "data-raw/stats_ncaa")
+stats_ncaa_files(games, dir = d3_dir("data-raw", "stats_ncaa"))
 }
 \arguments{
 \item{games}{The game list (\code{\link[=ncaa_season_games]{ncaa_season_games()}}).}
@@ -22,3 +22,4 @@ or ours; either is fine. Each page is matched to a game in the game list
 by date (at most a day apart) and teams (the page's names, either
 order).
 }
+\keyword{internal}

@@ -24,3 +24,4 @@ committed; with an installed package it is the user copy (see
 \code{\link[=season_dates_path]{season_dates_path()}}). Then compares every date with the Thanksgiving
 rule (\code{\link[=check_season_dates]{check_season_dates()}}), warning on disagreements.
 }
+\keyword{internal}

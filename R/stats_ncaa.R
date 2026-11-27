@@ -28,7 +28,7 @@
 #'   `clock`, `drive_text`, `home_score`, `visitor_score`, `text`),
 #'   `teams` (`away`, `home`: the names on the page's logos), `finals`
 #'   (named integer, away and home), `date` (Date).
-#' @export
+#' @keywords internal
 stats_ncaa_lines <- function(file) {
   doc <- xml2::read_html(file, encoding = "UTF-8")
   sq <- function(x) stringr::str_squish(x)
@@ -193,7 +193,7 @@ stats_ncaa_drive_text <- function(x) {
 #' @param file The saved page.
 #' @param index The game list ([ncaa_season_games()]).
 #' @return A list like [fetch_ncaa_game()]'s, with `source = "stats.ncaa.org"`.
-#' @export
+#' @keywords internal
 fetch_stats_ncaa_game <- function(game_id, file, index) {
   s <- stats_ncaa_lines(file)
   lines <- s$lines
@@ -241,8 +241,8 @@ fetch_stats_ncaa_game <- function(game_id, file, index) {
 #' @return Named character vector: names are our game ids, values file
 #'   paths. Pages that match no game, or more than one, are reported and
 #'   left out.
-#' @export
-stats_ncaa_files <- function(games, dir = "data-raw/stats_ncaa") {
+#' @keywords internal
+stats_ncaa_files <- function(games, dir = d3_dir("data-raw", "stats_ncaa")) {
   fs <- list.files(dir, pattern = "\\.html?$", full.names = TRUE)
   out <- character()
   for (f in fs) {
@@ -275,8 +275,8 @@ stats_ncaa_files <- function(games, dir = "data-raw/stats_ncaa") {
 #' @param dir Folder of the candidate list.
 #' @param pages_dir Folder of saved pages.
 #' @return Named character vector: our game ids -> saved page paths.
-#' @export
-stats_ncaa_games <- function(season, games, dir = "data-raw/ncaa", pages_dir = "data-raw/stats_ncaa") {
+#' @keywords internal
+stats_ncaa_games <- function(season, games, dir = d3_dir("data-raw", "ncaa"), pages_dir = d3_dir("data-raw", "stats_ncaa")) {
   f <- file.path(dir, paste0(season, "_stats_ncaa_candidates.csv"))
   if (!file.exists(f) || !dir.exists(pages_dir)) return(character())
   cand <- utils::read.csv(f, colClasses = "character", na.strings = "")

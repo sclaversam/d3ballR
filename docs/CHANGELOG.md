@@ -5,6 +5,37 @@ for reading it. Newest first. Current definitions are in
 [`schema.md`](schema.md); how to run and check the pipeline is in
 [`pipeline.md`](pipeline.md).
 
+## Package release: three user functions
+
+Decided by Sam (2026-11-27): the first version has the basic functions
+only.
+
+- **`load_d3_pbp(seasons, teams)`** (new): downloads the released
+  play-by-play (`pbp_{season}.rds`, an asset of the GitHub release
+  `pbp_data`; 2025 is 5.6 MB, 206,670 rows) once into
+  `tools::R_user_dir("d3ballR", "cache")`, then reads it from disk.
+- **`load_d3_games(seasons)`** (new): the game list with each team's
+  conference; `bracket_round` is an integer (NA outside the NCAA
+  tournament). 2025's list and conference table ship in
+  `inst/extdata/games/`.
+- **`build_season()`** now returns the plays as one tibble and writes the
+  per-game CSVs and reports only when given `out_dir` / `check_dir`
+  (`scripts/build_season.R` passes both). A team name not in the game
+  list is an error suggesting close names.
+- **Working files** (cache, game lists, saved stats.ncaa.org pages) are
+  under `d3_root()`: the repository's `data-raw/` when run from it, else
+  R's per-user cache folder.
+- **Exports:** only these three. The other 14 (`build_pbp()`,
+  `classify_plays()`, `ncaa_season_games()`, ...) are internal; scripts
+  reach them through `devtools::load_all()`.
+- `scripts/release_season.R` (new) makes the release file from an offline
+  rebuild.
+
+No game changed: the offline rebuild leaves `pbp/` and `checks/` as they
+were, and an installed copy builds Carnegie Mellon's 11 games identical to
+their rows in the release file. `devtools::check()`: 0 errors, 0 warnings,
+0 notes.
+
 ## The Stagg Bowl's bracket round
 
 ncaa.com lists the 2025 Stagg Bowl twice: the real contest 6534822 with

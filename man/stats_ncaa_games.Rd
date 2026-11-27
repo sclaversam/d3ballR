@@ -7,8 +7,8 @@
 stats_ncaa_games(
   season,
   games,
-  dir = "data-raw/ncaa",
-  pages_dir = "data-raw/stats_ncaa"
+  dir = d3_dir("data-raw", "ncaa"),
+  pages_dir = d3_dir("data-raw", "stats_ncaa")
 )
 }
 \arguments{
@@ -31,3 +31,4 @@ rows of \verb{\{dir\}/\{season\}_stats_ncaa_candidates.csv} with
 is such a row and a saved page for it is in \code{pages_dir}
 (\code{\link[=stats_ncaa_files]{stats_ncaa_files()}}). Every other saved page is ignored.
 }
+\keyword{internal}

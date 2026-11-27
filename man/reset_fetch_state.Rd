@@ -12,3 +12,4 @@ reset_fetch_state()
 \code{max_requests} cap counts this run's requests only, and a path that
 failed in an earlier run is asked again.
 }
+\keyword{internal}

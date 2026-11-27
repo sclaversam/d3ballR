@@ -129,7 +129,7 @@ two_saturdays_before_thanksgiving <- function(season) {
 #' @param warn Emit warnings for disagreements.
 #' @return Data frame: `season`, `regular_season_end`, `rule_date`,
 #'   `agrees`, `note`.
-#' @export
+#' @keywords internal
 check_season_dates <- function(season_dates = read_season_dates(), warn = TRUE) {
   rule <- two_saturdays_before_thanksgiving(season_dates$season)
   end <- season_dates$regular_season_end
@@ -165,7 +165,7 @@ check_season_dates <- function(season_dates = read_season_dates(), warn = TRUE) 
 #' @param seasons Integer vector of seasons needed.
 #' @param path CSV path (default [season_dates_path()]).
 #' @return The (possibly extended) season-dates table.
-#' @export
+#' @keywords internal
 ensure_season_dates <- function(seasons, path = season_dates_path()) {
   d <- read_season_dates(path)
   missing <- setdiff(unique(stats::na.omit(as.integer(seasons))), d$season)

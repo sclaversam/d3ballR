@@ -522,7 +522,7 @@ scoring_team <- function(kept, text_team, teams) {
 #'   `first_down_text` (the text-only first-down flags), and `next_snap`
 #'   (row index of the next scrimmage snap in the half), `clock_discards`
 #'   (stated clocks dropped as inconsistent).
-#' @export
+#' @keywords internal
 build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
   if (!is.list(game) || is.null(game$plays)) stop("build_pbp() needs a game already read (see fetch_ncaa_game()).")
   if (is.null(season_dates)) season_dates <- ensure_season_dates(game$season)
@@ -673,7 +673,7 @@ build_pbp <- function(game, index = NULL, season_dates = NULL, conf = NULL) {
 #' @param g One game's tibble from [build_pbp()].
 #' @param team Canonical team name.
 #' @return Integer.
-#' @export
+#' @keywords internal
 team_points <- function(g, team) {
   as.integer(sum(g$score_pts[g$score_pts > 0 & g$pos_team == team]) +
                sum(-g$score_pts[g$score_pts < 0 & g$def_pos_team == team]))
@@ -691,7 +691,7 @@ team_points <- function(g, team) {
 #' Prints the per-game counts.
 #'
 #' @param game_ids Game ids (one season).
-#' @param out_dir Directory to write per-game CSVs into.
+#' @param out_dir Directory to write per-game CSVs into, or NULL for none.
 #' @param check_dir Directory for the validation reports.
 #' @param conf Conference data from [ncaa_conference_table()], or NULL.
 #' @param loader A function taking a game id and returning the game read
@@ -699,9 +699,9 @@ team_points <- function(g, team) {
 #' @param season The games' season.
 #' @param index The season's game list ([ncaa_season_games()]).
 #' @return Invisibly, a named list of the per-game tibbles (by `game_id`).
-#' @export
+#' @keywords internal
 build_all_pbp <- function(game_ids, out_dir, check_dir, conf = NULL, loader, season, index = NULL) {
-  dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
+  if (!is.null(out_dir)) dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
   season_dates <- ensure_season_dates(season)
 
   failures <- list()
@@ -731,7 +731,7 @@ build_all_pbp <- function(game_ids, out_dir, check_dir, conf = NULL, loader, sea
   counts$score_reconciled <- counts$away_final == counts$away_pts_parsed &
     counts$home_final == counts$home_pts_parsed
 
-  for (g in games) {
+  if (!is.null(out_dir)) for (g in games) {
     utils::write.csv(g, file.path(out_dir, paste0(g$game_id[1], ".csv")), row.names = FALSE, na = "")
   }
   dir.create(check_dir, showWarnings = FALSE, recursive = TRUE)

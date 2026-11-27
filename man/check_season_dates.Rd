@@ -21,3 +21,4 @@ lists Sunday Nov 12 while the last game day (and the rule) is Saturday
 Nov 11. Both classify every game the same way, since nothing is played on
 that Sunday.
 }
+\keyword{internal}
